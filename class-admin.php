@@ -71,13 +71,13 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
             wp_register_script('search-insights',
                 trailingslashit(wp_search_insights_url)
-                . 'assets/js/scripts.js', "", wp_search_insights_version);
+                . 'assets/js/scripts.js', array("jquery"), wp_search_insights_version);
             wp_enqueue_script('search-insights');
 
             //Datatables javascript for interactive tables
             wp_register_script('datatables',
                 trailingslashit(wp_search_insights_url)
-                . 'assets/js/datatables.min.js', "", wp_search_insights_version);
+                . 'assets/js/datatables.min.js',  array("jquery"), wp_search_insights_version);
             wp_enqueue_script('datatables');
 
             // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
@@ -91,7 +91,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             //Datatables plugin to hide pagination when it isn't needed
             wp_register_script('datatables-pagination',
                 trailingslashit(wp_search_insights_url)
-                . 'assets/js/dataTables.conditionalPaging.js', "", wp_search_insights_version);
+                . 'assets/js/dataTables.conditionalPaging.js',  array("jquery"), wp_search_insights_version);
             wp_enqueue_script('datatables-pagination');
         }
     }
