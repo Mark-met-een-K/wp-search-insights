@@ -43,7 +43,13 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
         add_action('admin_menu', array($this, 'add_settings_page'), 40);
 
-        $plugin = "wp_search_insights";
+        if (!get_option('wpsi_welcome_message_shown') ) {
+	        add_action( 'admin_notices', array( $this, 'wpsi_welcome_notice' ) );
+	        add_action( 'admin_print_footer_scripts', array( $this, 'insert_dismiss_welcome_message' ) );
+	        add_action( 'wp_ajax_dismiss_welcome_message', array( $this, 'dismiss_welcome_message_callback' ) );
+        }
+
+	    $plugin = "wp_search_insights";
         add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
@@ -307,6 +313,19 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         }
     }
 
+    public function wpsi_welcome_notice()
+    {
+    // Inline style because stylesheet is only loaded on settings page, notice also shows on plugins overview after activation
+    ?>
+    <div class="wpsi-welcome-notice notice notice-success is-dismissible" style="height: 35px; line-height: 35px;">
+        <?php
+        $settings_link = '<a href="'.admin_url('tools.php?page=wpsi-settings-page').'">';
+        echo sprintf(__("Thank you for choosing Search Insights. See the %sdashboard%s in the Tools->Search Insights menu for recorded searches and settings" , "wp-search-insights"), $settings_link, "</a>");
+        ?>
+	</div>
+    <?php
+    }
+
     /**
      *
      * Content of the settings page
@@ -555,5 +574,50 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
          </table>
         <?php
      }
+
+    /**
+    *
+    * Add script to dismiss the welcome notice
+    *
+    * @since 1.0
+    *
+    */
+
+    public function insert_dismiss_welcome_message()
+    {
+    $ajax_nonce = wp_create_nonce("wpsi-dismiss");
+    ?>
+    <script type='text/javascript'>
+        jQuery(document).ready(function ($) {
+            $(".wpsi-welcome-notice").on("click", ".notice-dismiss", function (event) {
+                var data = {
+                    'action': 'dismiss_welcome_message',
+                    'security': '<?php echo $ajax_nonce; ?>'
+                };
+
+                $.post(ajaxurl, data, function (response) {
+
+                });
+            });
+        });
+    </script>
+    <?php
+    }
+
+    /**
+    *
+    * Call function for the welcome notice dismissal
+    *
+    * @since 1.0
+    *
+    */
+
+    public function dismiss_welcome_message_callback()
+    {
+        if (!current_user_can($this->capability) ) return;
+        check_ajax_referer( 'wpsi-dismiss', 'security' );
+        update_option('wpsi_welcome_message_shown', true);
+        wp_die();
+    }
  }
 }//Class closure

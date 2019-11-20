@@ -469,6 +469,11 @@ table td {
     display: none;
 }
 
+#welcome-notice {
+    height: 35px;
+    line-height: 35px;
+}
+
 /* wpsi-tooltip for settings page */
 /* Base styles for the element that has a wpsi-tooltip */
 [data-wpsi-tooltip],
