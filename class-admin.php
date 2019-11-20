@@ -406,10 +406,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     /**
-     *
-     * Dashboard widget
-     *
-     */
+    *
+    * Add a dashboard widget
+    *
+    * @since 1.0
+    *
+    */
 
     public function add_wpsi_dashboard_widget() {
         wp_add_dashboard_widget('dashboard_widget_wpsi', 'Recent Searches', array($this, 'generate_dashboard_widget') ) ;
@@ -429,6 +431,15 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     </div>
     <?php
     }
+
+    /**
+    * @param bool $dashboard_widget
+    *
+    * Generate the recent searches table in dashboard
+    *
+    * @since 1.0
+     *
+    */
 
      public function generate_recent_table($dashboard_widget = false)
      {
@@ -500,8 +511,16 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             ?>
             </tbody>
          </table>
-         <?php
+        <?php
  }
+
+    /**
+    *
+    * Generate the popular searches table in
+    *
+    * @since 1.0
+    *
+    */
 
      public function generate_popular_table() {
 
@@ -534,10 +553,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
              ?>
              </tbody>
          </table>
-    <?php
-
+        <?php
      }
  }
-
-    }//Class closure
-?>
+}//Class closure

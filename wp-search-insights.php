@@ -105,8 +105,9 @@ class WP_SEARCH_INSIGHTS {
 
 	/**
 	 *
-	 * Since 1.0
 	 * Create two database tables, _single contains each individual result, including duplicates and one _archive table.
+     *
+     * @since 1.0
 	 *
 	 **/
 
@@ -122,13 +123,13 @@ class WP_SEARCH_INSIGHTS {
 
 		$sql
 			= "CREATE TABLE IF NOT EXISTS $table_name_single (
-id mediumint(9) NOT NULL AUTO_INCREMENT,
-time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-term text NOT NULL,
-result_count INT(10),
-referer text,
-PRIMARY KEY  (id)
-) $charset_collate";
+    id mediumint(9) NOT NULL AUTO_INCREMENT,
+    time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+    term text NOT NULL,
+    result_count INT(10),
+    referer text,
+    PRIMARY KEY  (id)
+    ) $charset_collate";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
@@ -178,7 +179,6 @@ PRIMARY KEY  (id)
 			update_option( "search_insights_db_version",
 				$search_insights_db_version );
 		}
-
 	}
 
 	public function search_insights_update_db_check() {
@@ -189,9 +189,6 @@ PRIMARY KEY  (id)
 			$this->create_database_tables();
 		}
 	}
-
-
-
 }//Class closure
 
 function wp_search_insights() {

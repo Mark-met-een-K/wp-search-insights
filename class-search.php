@@ -41,7 +41,6 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
                 array(
                     'ajaxurl' => admin_url( 'admin-ajax.php' ),
                     'token'   => wp_create_nonce( 'search_insights_nonce', 'token' ),
-//                    wp_create_nonce('token'),
                 ) );
 		}
 
@@ -50,6 +49,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 * Get the search term from query
 		 *
 		 * @since 1.0
+         *
 		 */
 
 		public function get_regular_search() {
@@ -70,9 +70,15 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             }
 		}
 
-		public function get_ajax_search() {
+        /**
+         *
+         * Listen for an AJAX post containing a search term
+         *
+         * @since 1.0
+         *
+         */
 
-            global $wp_query;
+		public function get_ajax_search() {
 
             //Check and verify nonce
             if (!isset($_POST['token']) || !wp_verify_nonce($_POST['token'], 'search_insights_nonce') ) return;
@@ -86,6 +92,16 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             }
         }
 
+        /**
+         * @param $search_term
+         * @param $result_count
+         *
+         * Check if conditions are met, if so write the term to DB
+         *
+         * @since 1.0
+         *
+         */
+
         public function process_search_term($search_term, $result_count) {
 
             // Return if the query comes from an administrator and the exclude admin searches option is been enabled
@@ -96,7 +112,25 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             // Get the query arg. Use esc_url_raw instead of esc_url because it doesn't decode &
             $current_url = esc_url_raw( home_url( add_query_arg( $_GET ) ) );
             // When clicking on 'see results' in dashboard, &searchinsights will be added to the url. If this is found current url, return.
-            if ( strpos( $current_url, "&searchinsights" ) == ! false ) {
+            if ( strpos( $current_url, "&searchinsights" ) !== false ) {
+                return;
+            }
+
+            // Check if the term length is below minimum value option
+            if ( (strlen($search_term) < (get_option('wpsi_min_term_length') ) ) && (get_option('wpsi_min_term_length') !== 0) ) {
+                //Update the option before each return, otherwise the get_option checks later on will fail
+                update_option('wpsi_latest_term', $search_term);
+                return;
+            }
+
+            if ( (strlen($search_term) > (get_option('wpsi_max_term_length') ) ) && (get_option('wpsi_max_term_length') !== 0 ) ) {
+                update_option('wpsi_latest_term', $search_term);
+                return;
+            }
+
+            // Check if term starts with previous term and is exactly one character longer
+            if ( (strpos($search_term, get_option('wpsi_latest_term') ) === 0) && (abs(strlen($search_term) - strlen(get_option('wpsi_latest_term'))) === 1) ) {
+                update_option('wpsi_latest_term', $search_term);
                 return;
             }
 
@@ -112,16 +146,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             // Now compare the search term to the previous term and see if it's within the time minus X limit. If so, it's a duplicate search and we'll ignore it.
             if (get_option('wpsi_latest_term') === $search_term && $time_minus_5_seconds < get_option('wpsi_latest_term_time')) {
                 // Update the latest search time option to keep up-to-date before returning. This option is updated at the end of the function when this condition hasn't been met.
-                update_option('wpsi_latest_term_time', date("Y-m-d H:i:s"));
-                return;
-            }
-
-            // Check if the term length is below minimum value option
-            if ( (strlen($search_term) < (get_option('wpsi_min_term_length') ) ) && (get_option('wpsi_min_term_length') !== 0) ) {
-                return;
-            }
-
-            if ( (strlen($search_term) > (get_option('wpsi_max_term_length') ) ) && (get_option('wpsi_min_term_length') !== 0 ) ) {
+                update_option('wpsi_latest_term', $search_term);
                 return;
             }
 
@@ -181,6 +206,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 		/**
 		 * @param $search_term
+         * @param $result_count
 		 *
 		 * Write search term to single table. Any additional information such as time and referer is added here too
 		 *
@@ -239,5 +265,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		public function get_referer() {
 			return get_the_title(url_to_postid(wp_get_referer()));
 		}
+
 	}//Class closure
-}
+} //if class exists closure
+
