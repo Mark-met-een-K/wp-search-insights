@@ -16,12 +16,11 @@ if ( ! class_exists( 'wpsi_help' ) ) {
         }
 
         public function get_help_tip($str){
-            ?>
+        ?>
             <span class="wpsi-tooltip-right tooltip-right" data-wpsi-tooltip="<?php echo $str?>">
-      <span class="dashicons dashicons-editor-help"></span>
-    </span>
-            <?php
+                <span class="dashicons dashicons-editor-help"></span>
+            </span>
+        <?php
         }
-
     }//class closure
 } //if class exists closure

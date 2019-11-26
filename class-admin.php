@@ -43,7 +43,13 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
         add_action('admin_menu', array($this, 'add_settings_page'), 40);
 
-        $plugin = "wp_search_insights";
+        if (!get_option('wpsi_welcome_message_shown') ) {
+	        add_action( 'admin_notices', array( $this, 'wpsi_welcome_notice' ) );
+	        add_action( 'admin_print_footer_scripts', array( $this, 'insert_dismiss_welcome_message' ) );
+	        add_action( 'wp_ajax_dismiss_welcome_message', array( $this, 'dismiss_welcome_message_callback' ) );
+        }
+
+	    $plugin = "wp_search_insights";
         add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
@@ -65,7 +71,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
             wp_register_style('search-insights',
-                trailingslashit(wp_search_insights_url) . 'assets/css/style.css', "",
+                trailingslashit(wp_search_insights_url) . "assets/css/style.css", "",
                 wp_search_insights_version);
             wp_enqueue_style('search-insights');
 
@@ -223,9 +229,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     {
     ?>
         <div class="tg-list-item">
-            <input class="tgl tgl-skewed" id="wpsi_exclude_admin" name="wpsi_exclude_admin" size="40" value="1"
-                   type="checkbox" <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> </input>
-            <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="wpsi_exclude_admin"></label>
+            <label class="wpsi-switch">
+                <input name="wpsi_exclude_admin" type="hidden" value=""/>
+
+                <input name="wpsi_exclude_admin" size="40" type="checkbox"
+                       value="1" checked <?php //checked(1, get_option('wpsi_exclude_admin'), true) ?> />
+                <span class="wpsi-slider wpsi-round"></span>
+            </label>
+
             <?php
             WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
             ?>
@@ -257,9 +268,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function option_wpsi_clear_database()
     {
+        add_thickbox();
     ?>
-        <div><input class="thickbox button" title="" type="button" style="display: block; float: left;" alt="#TB_inline?
-        height=270&width=400&inlineId=wpsi_clear_database" value="<?php echo __('Clear database', 'wp-search-insights'); ?>"/></div>
+        <div>
+            <input class="thickbox button" title="" type="button" style="display: block; float: left;" alt="#TB_inline?
+             height=170&width=400&inlineId=wpsi_clear_database" value="<?php echo __('Clear database', 'wp-search-insights'); ?>"/>
+        </div>
         <div id="wpsi_clear_database" style="display: none;">
 
             <h1 style="margin: 10px 0; text-align: center;"><?php _e("Are you sure?", "wp-search-insights") ?></h1>
@@ -270,7 +284,13 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             $clear_db_link = admin_url("tools.php?page=wpsi-settings-page&action=clear_database&token=" . $token);
 
             ?>
-            <a class="button" href="<?php echo $clear_db_link ?>">
+
+            <script>
+                jQuery(document).ready(function ($) {
+                    $('#wpsi_cancel_database_clearing').click(tb_remove);
+                });
+            </script>
+            <a class="button" href="<?php echo $clear_db_link ?>" style="margin-right:25px">
                 <?php _e("I'm sure I want to clear the database", "wp-search-insights") ?>
             </a>
 
@@ -307,6 +327,19 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         }
     }
 
+    public function wpsi_welcome_notice()
+    {
+    // Inline style because stylesheet is only loaded on settings page, notice also shows on plugins overview after activation
+    ?>
+    <div class="wpsi-welcome-notice notice notice-success is-dismissible" style="height: 35px; line-height: 35px;">
+        <?php
+        $settings_link = '<a href="'.admin_url('tools.php?page=wpsi-settings-page').'">';
+        echo sprintf(__("Thank you for choosing Search Insights! Searches are already being recorded. See the %sdashboard%s in the Tools->Search Insights menu for recorded searches and settings" , "wp-search-insights"), $settings_link, "</a>");
+        ?>
+	</div>
+    <?php
+    }
+
     /**
      *
      * Content of the settings page
@@ -323,13 +356,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     ?>
+        <div id="wpsi-dashboard">
     <!--    Navigation-->
-    <a class="wp-search-insights-container">
-    <ul class="tabs">
-        <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard">Dashboard</li>
-        <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings">Settings</li>
-    </ul>
-    </a>
+    <div class="wp-search-insights-container">
+        <ul class="tabs">
+            <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard#top">Dashboard</a></li>
+            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
+        </ul>
+    </div>
     <div class="wp-search-insights-main">
     <!--    Dashboard tab   -->
         <div id="dashboard" class="tab-content current">
@@ -360,6 +394,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             </form>
         </div>
     </div>
+        </div>
     <?php
     }
 
@@ -406,10 +441,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     /**
-     *
-     * Dashboard widget
-     *
-     */
+    *
+    * Add a dashboard widget
+    *
+    * @since 1.0
+    *
+    */
 
     public function add_wpsi_dashboard_widget() {
         wp_add_dashboard_widget('dashboard_widget_wpsi', 'Recent Searches', array($this, 'generate_dashboard_widget') ) ;
@@ -429,6 +466,15 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     </div>
     <?php
     }
+
+    /**
+    * @param bool $dashboard_widget
+    *
+    * Generate the recent searches table in dashboard
+    *
+    * @since 1.0
+     *
+    */
 
      public function generate_recent_table($dashboard_widget = false)
      {
@@ -500,8 +546,16 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             ?>
             </tbody>
          </table>
-         <?php
+        <?php
  }
+
+    /**
+    *
+    * Generate the popular searches table in
+    *
+    * @since 1.0
+    *
+    */
 
      public function generate_popular_table() {
 
@@ -534,10 +588,52 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
              ?>
              </tbody>
          </table>
-    <?php
-
+        <?php
      }
- }
 
-    }//Class closure
-?>
+    /**
+    *
+    * Add script to dismiss the welcome notice
+    *
+    * @since 1.0
+    *
+    */
+
+    public function insert_dismiss_welcome_message()
+    {
+    $ajax_nonce = wp_create_nonce("wpsi-dismiss");
+    ?>
+    <script type='text/javascript'>
+        jQuery(document).ready(function ($) {
+            $(".wpsi-welcome-notice").on("click", ".notice-dismiss", function (event) {
+                var data = {
+                    'action': 'dismiss_welcome_message',
+                    'security': '<?php echo $ajax_nonce; ?>'
+                };
+
+                $.post(ajaxurl, data, function (response) {
+
+                });
+            });
+        });
+    </script>
+    <?php
+    }
+
+    /**
+    *
+    * Call function for the welcome notice dismissal
+    *
+    * @since 1.0
+    *
+    */
+
+    public function dismiss_welcome_message_callback()
+    {
+        if (!current_user_can($this->capability) ) return;
+        check_ajax_referer( 'wpsi-dismiss', 'security' );
+        update_option('wpsi_welcome_message_shown', true);
+        wp_die();
+    }
+ }
+}//Class closure
