@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
  * @wordpress-plugin
  * Plugin Name:       WP Search Insights
  * Description:       Plugin to provide insights into your users searches
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Mark Wolters
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

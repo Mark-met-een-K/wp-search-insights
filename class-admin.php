@@ -229,9 +229,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     {
     ?>
         <div class="tg-list-item">
-            <input class="tgl tgl-skewed" id="wpsi_exclude_admin" name="wpsi_exclude_admin" size="40" value="1"
-                   type="checkbox" <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> </input>
-            <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="wpsi_exclude_admin"></label>
+            <label class="wpsi-switch">
+                <input name="wpsi_exclude_admin" type="hidden" value=""/>
+
+                <input name="wpsi_exclude_admin" size="40" type="checkbox"
+                       value="1" checked <?php //checked(1, get_option('wpsi_exclude_admin'), true) ?> />
+                <span class="wpsi-slider wpsi-round"></span>
+            </label>
+
             <?php
             WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
             ?>
