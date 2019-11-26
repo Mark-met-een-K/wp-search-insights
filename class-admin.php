@@ -349,12 +349,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     ?>
         <div id="wpsi-dashboard">
     <!--    Navigation-->
-    <a class="wp-search-insights-container">
-    <ul class="tabs">
-        <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard">Dashboard</li>
-        <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings">Settings</li>
-    </ul>
-    </a>
+    <div class="wp-search-insights-container">
+        <ul class="tabs">
+            <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard#top">Dashboard</li>
+            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</li>
+        </ul>
+    </div>
     <div class="wp-search-insights-main">
     <!--    Dashboard tab   -->
         <div id="dashboard" class="tab-content current">
