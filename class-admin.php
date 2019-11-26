@@ -245,7 +245,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <span class="wpsi-slider wpsi-round"></span>
             </label>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Enable this option to ignore all searches of logged in administrators", "wp-search-insights"));
             ?>
         </div>
     <?php
@@ -257,7 +257,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             <input id="wpsi_min_term_length" class="wpsi_term_length" name="wpsi_min_term_length" size="40" min="0" max ="24" value="<?php echo intval(get_option('wpsi_min_term_length')) ?>"
                type="number" <?php checked(1, intval(get_option('wpsi_min_term_length'), true)) ?> </input>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
+            WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations", "wp-search-insights"));
             ?>
         <?php
     }
@@ -268,7 +268,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         <input id="wpsi_max_term_length" class="wpsi_term_length" name="wpsi_max_term_length" size="40" min="0" max ="255" value="<?php echo intval(get_option('wpsi_max_term_length')) ?>"
                type="number" <?php checked(1, intval(get_option('wpsi_max_term_length'), true)) ?> </input>
         <?php
-        WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
+        WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations", "wp-search-insights"));
         ?>
         <?php
     }
@@ -285,7 +285,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <span class="wpsi-slider wpsi-round"></span>
             </label>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Enable this option to exclude urls from the search results", "wp-search-insights"));
             ?>
         </div>
         <?php
