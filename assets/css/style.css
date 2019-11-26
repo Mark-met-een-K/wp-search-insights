@@ -8,8 +8,8 @@
       Navigation & tabs
    */
   /*
-      General table styling
-  */
+  General table styling
+*/
   /*
       Individual table styling
    */
@@ -46,10 +46,6 @@
   flex-flow: row wrap;
   word-break: break-all;
 }
-#wpsi-dashboard .tab-link:hover {
-  background-color: #EDEDED;
-  opacity: 0.6;
-}
 #wpsi-dashboard .wp-search-insights-main .unix-timestamp {
   display: none;
 }
@@ -65,7 +61,7 @@
   display: inline-block;
   padding: 15px 15px 15px 15px;
   cursor: pointer;
-  margin: 2px 2px 2px 2px;
+  margin: 0;
 }
 #wpsi-dashboard ul.tabs li.current {
   background: #ffffff;
@@ -78,15 +74,15 @@
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;
+  background-color: #fff;
+  height: 100vh;
 }
 #wpsi-dashboard .tab-text {
   color: #444444;
   font-size: 1.4em;
   text-decoration: none;
-}
-#wpsi-dashboard .tab-text a:active,
-#wpsi-dashboard a:hover {
-  color: grey;
+  outline: 0;
+  box-shadow: 0 0 0 0;
 }
 #wpsi-dashboard .dataTables_wrapper {
   max-width: 800px;
@@ -97,6 +93,7 @@
 #wpsi-dashboard .search-insights-table {
   flex: 1;
   margin: 0 auto;
+  margin-right: 25px;
 }
 #wpsi-dashboard .search-insights-table table {
   border: 1px solid #ccc;

@@ -325,7 +325,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     <div class="wpsi-welcome-notice notice notice-success is-dismissible" style="height: 35px; line-height: 35px;">
         <?php
         $settings_link = '<a href="'.admin_url('tools.php?page=wpsi-settings-page').'">';
-        echo sprintf(__("Thank you for choosing Search Insights. See the %sdashboard%s in the Tools->Search Insights menu for recorded searches and settings" , "wp-search-insights"), $settings_link, "</a>");
+        echo sprintf(__("Thank you for choosing Search Insights! Searches are already being recorded. See the %sdashboard%s in the Tools->Search Insights menu for recorded searches and settings" , "wp-search-insights"), $settings_link, "</a>");
         ?>
 	</div>
     <?php
@@ -351,8 +351,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     <!--    Navigation-->
     <div class="wp-search-insights-container">
         <ul class="tabs">
-            <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard#top">Dashboard</li>
-            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</li>
+            <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard#top">Dashboard</a></li>
+            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
         </ul>
     </div>
     <div class="wp-search-insights-main">

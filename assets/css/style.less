@@ -14,8 +14,8 @@
   }
 
   .tab-link:hover {
-    background-color: #EDEDED;
-    opacity: 0.6;
+    //background-color: #EDEDED;
+    //opacity: 0.6;
   }
 
   .wp-search-insights-main .unix-timestamp {
@@ -39,7 +39,7 @@
     display: inline-block;
     padding: 15px 15px 15px 15px;
     cursor: pointer;
-    margin: 2px 2px 2px 2px;
+    margin: 0;
   }
 
   ul.tabs li.current {
@@ -55,21 +55,22 @@
 
   .tab-content.current {
     display: inherit;
+    background-color:#fff;
+    height: 100vh;
   }
 
   .tab-text {
     color: #444444;
     font-size: 1.4em;
     text-decoration: none;
-  }
+    outline: 0;
+    box-shadow: 0 0 0 0;
+}
 
-  .tab-text a:active, a:hover {
-    color: grey;
-  }
 
-  /*
-      General table styling
-  */
+/*
+  General table styling
+*/
 
 
   .dataTables_wrapper {
@@ -82,6 +83,7 @@
   .search-insights-table {
     flex: 1;
     margin: 0 auto;
+    margin-right:25px;
 
     table {
       border: 1px solid #ccc;
