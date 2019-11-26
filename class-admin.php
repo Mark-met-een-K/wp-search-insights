@@ -268,9 +268,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function option_wpsi_clear_database()
     {
+        add_thickbox();
     ?>
-        <div><input class="thickbox button" title="" type="button" style="display: block; float: left;" alt="#TB_inline?
-        height=270&width=400&inlineId=wpsi_clear_database" value="<?php echo __('Clear database', 'wp-search-insights'); ?>"/></div>
+        <div>
+            <input class="thickbox button" title="" type="button" style="display: block; float: left;" alt="#TB_inline?
+             height=170&width=400&inlineId=wpsi_clear_database" value="<?php echo __('Clear database', 'wp-search-insights'); ?>"/>
+        </div>
         <div id="wpsi_clear_database" style="display: none;">
 
             <h1 style="margin: 10px 0; text-align: center;"><?php _e("Are you sure?", "wp-search-insights") ?></h1>
@@ -281,7 +284,13 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             $clear_db_link = admin_url("tools.php?page=wpsi-settings-page&action=clear_database&token=" . $token);
 
             ?>
-            <a class="button" href="<?php echo $clear_db_link ?>">
+
+            <script>
+                jQuery(document).ready(function ($) {
+                    $('#wpsi_cancel_database_clearing').click(tb_remove);
+                });
+            </script>
+            <a class="button" href="<?php echo $clear_db_link ?>" style="margin-right:25px">
                 <?php _e("I'm sure I want to clear the database", "wp-search-insights") ?>
             </a>
 
