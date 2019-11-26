@@ -76,7 +76,8 @@ class WP_SEARCH_INSIGHTS {
 
 		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		$plugin_data = get_plugin_data( __FILE__ );
-		define( 'wp_search_insights_version', $plugin_data['Version'] );
+		$debug = defined("WP_DEBUG") && WP_DEBUG ? time() : "";
+		define( 'wp_search_insights_version', $plugin_data['Version'].$debug );
 	}
 
 	private function includes() {

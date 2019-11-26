@@ -71,7 +71,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
             wp_register_style('search-insights',
-                trailingslashit(wp_search_insights_url) . 'assets/css/style.css', "",
+                trailingslashit(wp_search_insights_url) . "assets/css/style.css", "",
                 wp_search_insights_version);
             wp_enqueue_style('search-insights');
 
@@ -347,6 +347,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     ?>
+        <div id="wpsi-dashboard">
     <!--    Navigation-->
     <a class="wp-search-insights-container">
     <ul class="tabs">
@@ -384,6 +385,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             </form>
         </div>
     </div>
+        </div>
     <?php
     }
 

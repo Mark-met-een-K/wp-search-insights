@@ -3,29 +3,63 @@
     *   Dashboard styling
     *
  */
-.search-insights-dashboard {
+#wpsi-dashboard {
+  /*
+      Navigation & tabs
+   */
+  /*
+      General table styling
+  */
+  /*
+      Individual table styling
+   */
+  /*
+      Table footer
+   */
+  /*
+      *
+      *   Settings page styling
+      *
+   */
+  /*Tooltips on dashboard/settings page*/
+  /*Dashboard widget*/
+  /*
+      Fancy checkboxes
+   */
+  /* wpsi-tooltip for settings page */
+  /* Base styles for the element that has a wpsi-tooltip */
+  /* Base styles for the entire tooltip */
+  /* Show the entire wpsi-tooltip on hover and focus */
+  /* Base styles for the wpsi-tooltip's directional arrow */
+  /* Base styles for the wpsi-tooltip's content area */
+  /* Directions */
+  /* Top (default) */
+  /* Horizontally align top/bottom wpsi-tooltips */
+  /* Left */
+  /* Bottom */
+  /* Right */
+  /* Move directional arrows down a bit for left/right wpsi-tooltips */
+  /* Vertically center wpsi-tooltip content for left/right wpsi-tooltips */
+}
+#wpsi-dashboard .search-insights-dashboard {
   display: flex;
   flex-flow: row wrap;
   word-break: break-all;
 }
-.tab-link:hover {
+#wpsi-dashboard .tab-link:hover {
   background-color: #EDEDED;
   opacity: 0.6;
 }
-.wp-search-insights-main .unix-timestamp {
+#wpsi-dashboard .wp-search-insights-main .unix-timestamp {
   display: none;
 }
-/*
-    Navigation & tabs
- */
-ul.tabs {
+#wpsi-dashboard ul.tabs {
   margin: 0px;
   margin-top: 15px;
   padding: 0px;
   list-style: none;
-  background-color: #FFFFFF;
 }
-ul.tabs li {
+#wpsi-dashboard ul.tabs li {
   background: none;
   color: #222;
   display: inline-block;
@@ -33,41 +67,38 @@ ul.tabs li {
   cursor: pointer;
   margin: 2px 2px 2px 2px;
 }
-ul.tabs li.current {
-  background: #ededed;
+#wpsi-dashboard ul.tabs li.current {
+  background: #ffffff;
   color: #222;
 }
-.tab-content {
+#wpsi-dashboard .tab-content {
   display: none;
   background: #ededed;
   padding: 15px;
 }
-.tab-content.current {
+#wpsi-dashboard .tab-content.current {
   display: inherit;
 }
-.tab-text {
+#wpsi-dashboard .tab-text {
   color: #444444;
   font-size: 1.4em;
   text-decoration: none;
 }
-.tab-text a:active,
-a:hover {
+#wpsi-dashboard .tab-text a:active,
+#wpsi-dashboard a:hover {
   color: grey;
 }
-/*
-    General table styling
-*/
-.dataTables_wrapper {
+#wpsi-dashboard .dataTables_wrapper {
   max-width: 800px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
-.search-insights-table {
+#wpsi-dashboard .search-insights-table {
   flex: 1;
   margin: 0 auto;
 }
-.search-insights-table table {
+#wpsi-dashboard .search-insights-table table {
   border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 0;
@@ -75,66 +106,66 @@ a:hover {
   table-layout: fixed;
   justify-content: normal;
 }
-.search-insights-table table caption {
+#wpsi-dashboard .search-insights-table table caption {
   font-size: 1.5em;
   margin: 0.5em 0 0.75em;
 }
-.search-insights-table table.dataTable thead .sorting {
+#wpsi-dashboard .search-insights-table table.dataTable thead .sorting {
   background-image: url("../images/sort_both.png");
   background-repeat: no-repeat;
   background-position: center right;
 }
-.search-insights-table table.dataTable thead .sorting_asc {
+#wpsi-dashboard .search-insights-table table.dataTable thead .sorting_asc {
   background-image: url("../images/sort_asc.png");
   background-repeat: no-repeat;
   background-position: center right;
 }
-.search-insights-table table.dataTable thead .sorting_desc {
+#wpsi-dashboard .search-insights-table table.dataTable thead .sorting_desc {
   background-image: url("../images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: center right;
 }
-.search-insights-table table tr {
+#wpsi-dashboard .search-insights-table table tr {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   padding: 0.35em;
 }
-.search-insights-table table th,
-.search-insights-table table td {
+#wpsi-dashboard .search-insights-table table th,
+#wpsi-dashboard .search-insights-table table td {
   padding: 0.625em;
   text-align: center;
 }
-.search-insights-table table th {
+#wpsi-dashboard .search-insights-table table th {
   font-size: 0.85em;
   letter-spacing: 0.1em;
 }
-.search-insights-table thead tr:first-of-type {
+#wpsi-dashboard .search-insights-table thead tr:first-of-type {
   background-color: #FFFFFF;
 }
-.search-insights-table tr:nth-child(even) {
+#wpsi-dashboard .search-insights-table tr:nth-child(even) {
   background-color: #FFFFFF;
 }
-.search-insights-table tr:nth-child(odd) {
+#wpsi-dashboard .search-insights-table tr:nth-child(odd) {
   background-color: #F6F6F6;
 }
-.search-insights-table tr:first-child {
+#wpsi-dashboard .search-insights-table tr:first-child {
   border-top-left-radius: 0.55rem;
   border-top-right-radius: 0.55rem;
 }
-.search-insights-table tr:last-child {
+#wpsi-dashboard .search-insights-table tr:last-child {
   margin-bottom: 0;
   border-bottom-left-radius: 0.55rem;
   border-bottom-right-radius: 0.55rem;
 }
 @media screen and (max-width: 800px) {
-  .search-insights-table table {
+  #wpsi-dashboard .search-insights-table table {
     border: 0;
     width: 80%;
   }
-  .search-insights-table table caption {
+  #wpsi-dashboard .search-insights-table table caption {
     font-size: 1.3em;
   }
-  .search-insights-table table thead {
+  #wpsi-dashboard .search-insights-table table thead {
     border: none;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -144,71 +175,65 @@ a:hover {
     position: absolute;
     width: 1px;
   }
-  .search-insights-table table tr {
+  #wpsi-dashboard .search-insights-table table tr {
     border-bottom: 3px solid #ddd;
     display: block;
     margin-bottom: 0.625em;
   }
-  .search-insights-table table td {
+  #wpsi-dashboard .search-insights-table table td {
     border-bottom: 1px solid #ddd;
     display: block;
     font-size: 0.8em;
     text-align: right;
   }
-  .search-insights-table table td::before {
+  #wpsi-dashboard .search-insights-table table td::before {
     content: attr(data-label);
     float: left;
     font-weight: bold;
     text-transform: uppercase;
   }
-  .search-insights-table table td:last-child {
+  #wpsi-dashboard .search-insights-table table td:last-child {
     border-bottom: 0;
   }
-  #search-insights-most-popular-table {
+  #wpsi-dashboard #search-insights-most-popular-table {
     margin-left: 15px;
   }
 }
-/*
-    Individual table styling
- */
-#search-insights-recent-table {
+#wpsi-dashboard #search-insights-recent-table {
   width: 100%;
   margin-right: 15px;
 }
-#search-insights-most-popular-table {
+#wpsi-dashboard #search-insights-most-popular-table {
   width: 100%;
 }
-.hit-icon {
+#wpsi-dashboard .hit-icon {
   font-size: 1.6em;
 }
-.icon-cancel {
+#wpsi-dashboard .icon-cancel {
   color: #D4246A;
 }
-.icon-ok {
+#wpsi-dashboard .icon-ok {
   color: #308c3a;
 }
-#term-link {
+#wpsi-dashboard #term-link {
   text-decoration: none;
 }
-/*
-    Table footer
- */
-.table-footer {
+#wpsi-dashboard .table-footer {
   display: flex;
   align-items: center;
   justify-content: center;
   padding-top: 10px;
 }
-.dataTables_info {
+#wpsi-dashboard .dataTables_info {
   flex: 1;
   text-align: left;
   margin-left: 15px;
 }
-.dt-buttons {
+#wpsi-dashboard .dt-buttons {
   flex: 1;
   text-align: center;
 }
-.dt-button {
+#wpsi-dashboard .dt-button {
   position: relative;
   display: inline-block;
   box-sizing: border-box;
@@ -233,85 +258,75 @@ a:hover {
   text-decoration: none;
   outline: none;
 }
-.dt-button:hover {
+#wpsi-dashboard .dt-button:hover {
   opacity: 0.75;
 }
-.dt-button:before {
+#wpsi-dashboard .dt-button:before {
   font-family: fontello;
   /*font-size: 1.2em;*/
   content: "\e800";
   margin-right: 5px;
 }
-.dataTables_paginate {
+#wpsi-dashboard .dataTables_paginate {
   flex: 1;
   text-align: right;
   cursor: pointer;
 }
-.dataTables_paginate .paginate_button {
+#wpsi-dashboard .dataTables_paginate .paginate_button {
   color: black;
   padding: 0.5em 0.8em;
   box-sizing: border-box;
 }
-.dataTables_paginate .current {
+#wpsi-dashboard .dataTables_paginate .current {
   border: 1px solid #979797;
   border-radius: 0.3em;
   background: linear-gradient(to bottom, #fff 0%, #F6F6F6 100%);
   font-weight: 600;
   border: 1px solid black;
 }
-/*
-    *
-    *   Settings page styling
-    *
- */
-#settings td {
+#wpsi-dashboard #settings td {
   display: flex;
 }
-#wpsi_exclude_admin {
+#wpsi-dashboard #wpsi_exclude_admin {
   display: none;
 }
-.wpsi_term_length {
+#wpsi-dashboard .wpsi_term_length {
   width: 60px;
   text-align: center;
 }
-/*Tooltips on dashboard/settings page*/
-#settings .wpsi-tooltip-right {
+#wpsi-dashboard #settings .wpsi-tooltip-right {
   float: right;
   margin-left: 8px;
   margin-top: 1px;
 }
-#dashboard .wpsi-tooltip-right {
+#wpsi-dashboard #dashboard .wpsi-tooltip-right {
   float: right;
 }
-.dashboard-tooltip-hits > span:nth-child(1) > span:nth-child(1) {
+#wpsi-dashboard .dashboard-tooltip-hits > span:nth-child(1) > span:nth-child(1) {
   margin-left: -135px;
 }
-.dashboard-tooltip-from > span:nth-child(1) > span:nth-child(1) {
+#wpsi-dashboard .dashboard-tooltip-from > span:nth-child(1) > span:nth-child(1) {
   margin-left: -65px;
 }
-/*Dashboard widget*/
-#wpsi-dashboard-widget .table-footer {
+#wpsi-dashboard #wpsi-dashboard-widget .table-footer {
   display: none !important;
 }
-#wpsi-dashboard-widget td {
+#wpsi-dashboard #wpsi-dashboard-widget td {
   text-align: left;
 }
-#wpsi-dashboard-widget th {
+#wpsi-dashboard #wpsi-dashboard-widget th {
   text-align: left;
 }
-/*
-    Fancy checkboxes
- */
-.wpsi-switch {
+#wpsi-dashboard .wpsi-switch {
   position: relative;
   display: inline-block;
   width: 40px;
   height: 21px;
 }
-.wpsi-switch input {
+#wpsi-dashboard .wpsi-switch input {
   display: none;
 }
-.wpsi-slider {
+#wpsi-dashboard .wpsi-slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -322,7 +337,7 @@ a:hover {
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
-.wpsi-slider:before {
+#wpsi-dashboard .wpsi-slider:before {
   position: absolute;
   content: "";
   height: 15px;
@@ -333,38 +348,35 @@ a:hover {
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
-.wpsi-slider.wpsi-round {
+#wpsi-dashboard .wpsi-slider.wpsi-round {
   border-radius: 20px;
 }
-.wpsi-slider.wpsi-round:before {
+#wpsi-dashboard .wpsi-slider.wpsi-round:before {
   border-radius: 50%;
 }
-input:checked + .wpsi-slider {
+#wpsi-dashboard input:checked + .wpsi-slider {
   background-color: #29b6f6;
 }
-input:checked + .wpsi-slider:before {
+#wpsi-dashboard input:checked + .wpsi-slider:before {
   -webkit-transform: translateX(17px);
   -ms-transform: translateX(17px);
   transform: translateX(17px);
 }
-input:checked:disabled + .wpsi-slider {
+#wpsi-dashboard input:checked:disabled + .wpsi-slider {
   background-color: #edf9fe;
 }
-input:focus + .wpsi-slider {
+#wpsi-dashboard input:focus + .wpsi-slider {
   box-shadow: 0 0 1px #29b6f6;
 }
-/* wpsi-tooltip for settings page */
-/* Base styles for the element that has a wpsi-tooltip */
-[data-wpsi-tooltip],
-.wpsi-tooltip {
+#wpsi-dashboard [data-wpsi-tooltip],
+#wpsi-dashboard .wpsi-tooltip {
   position: relative;
   cursor: pointer;
 }
-/* Base styles for the entire tooltip */
-[data-wpsi-tooltip]:before,
-[data-wpsi-tooltip]:after,
-.wpsi-tooltip:before,
-.wpsi-tooltip:after {
+#wpsi-dashboard [data-wpsi-tooltip]:before,
+#wpsi-dashboard [data-wpsi-tooltip]:after,
+#wpsi-dashboard .wpsi-tooltip:before,
+#wpsi-dashboard .wpsi-tooltip:after {
   position: absolute;
   visibility: hidden;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -378,31 +390,28 @@ input:focus + .wpsi-slider {
   transform: translate3d(0, 0, 0);
   pointer-events: none;
 }
-/* Show the entire wpsi-tooltip on hover and focus */
-[data-wpsi-tooltip]:hover:before,
-[data-wpsi-tooltip]:hover:after,
-[data-wpsi-tooltip]:focus:before,
-[data-wpsi-tooltip]:focus:after,
-.wpsi-tooltip:hover:before,
-.wpsi-tooltip:hover:after,
-.wpsi-tooltip:focus:before,
-.wpsi-tooltip:focus:after {
+#wpsi-dashboard [data-wpsi-tooltip]:hover:before,
+#wpsi-dashboard [data-wpsi-tooltip]:hover:after,
+#wpsi-dashboard [data-wpsi-tooltip]:focus:before,
+#wpsi-dashboard [data-wpsi-tooltip]:focus:after,
+#wpsi-dashboard .wpsi-tooltip:hover:before,
+#wpsi-dashboard .wpsi-tooltip:hover:after,
+#wpsi-dashboard .wpsi-tooltip:focus:before,
+#wpsi-dashboard .wpsi-tooltip:focus:after {
   visibility: visible;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-/* Base styles for the wpsi-tooltip's directional arrow */
-.wpsi-tooltip:before,
-[data-wpsi-tooltip]:before {
+#wpsi-dashboard .wpsi-tooltip:before,
+#wpsi-dashboard [data-wpsi-tooltip]:before {
   z-index: 1001;
   border: 6px solid transparent;
   background: transparent;
   content: "";
 }
-/* Base styles for the wpsi-tooltip's content area */
-.wpsi-tooltip:after,
-[data-wpsi-tooltip]:after {
+#wpsi-dashboard .wpsi-tooltip:after,
+#wpsi-dashboard [data-wpsi-tooltip]:after {
   z-index: 1000;
   padding: 8px;
   width: 160px;
@@ -413,55 +422,51 @@ input:focus + .wpsi-slider {
   font-size: 14px;
   line-height: 1.2;
 }
-/* Directions */
-/* Top (default) */
-[data-wpsi-tooltip]:before,
-[data-wpsi-tooltip]:after,
-.wpsi-tooltip:before,
-.wpsi-tooltip:after,
-.wpsi-tooltip-top:before,
-.wpsi-tooltip-top:after {
+#wpsi-dashboard [data-wpsi-tooltip]:before,
+#wpsi-dashboard [data-wpsi-tooltip]:after,
+#wpsi-dashboard .wpsi-tooltip:before,
+#wpsi-dashboard .wpsi-tooltip:after,
+#wpsi-dashboard .wpsi-tooltip-top:before,
+#wpsi-dashboard .wpsi-tooltip-top:after {
   bottom: 100%;
   left: 50%;
 }
-[data-wpsi-tooltip]:before,
-.wpsi-tooltip:before,
-.wpsi-tooltip-top:before {
+#wpsi-dashboard [data-wpsi-tooltip]:before,
+#wpsi-dashboard .wpsi-tooltip:before,
+#wpsi-dashboard .wpsi-tooltip-top:before {
   margin-left: -6px;
   margin-bottom: -12px;
   border-top-color: #000;
   border-top-color: hsla(0, 0%, 20%, 0.9);
 }
-/* Horizontally align top/bottom wpsi-tooltips */
-[data-wpsi-tooltip]:after,
-.wpsi-tooltip:after,
-.wpsi-tooltip-top:after {
+#wpsi-dashboard [data-wpsi-tooltip]:after,
+#wpsi-dashboard .wpsi-tooltip:after,
+#wpsi-dashboard .wpsi-tooltip-top:after {
   margin-left: -80px;
 }
-[data-wpsi-tooltip]:hover:before,
-[data-wpsi-tooltip]:hover:after,
-[data-wpsi-tooltip]:focus:before,
-[data-wpsi-tooltip]:focus:after,
-.wpsi-tooltip:hover:before,
-.wpsi-tooltip:hover:after,
-.wpsi-tooltip:focus:before,
-.wpsi-tooltip:focus:after,
-.wpsi-tooltip-top:hover:before,
-.wpsi-tooltip-top:hover:after,
-.wpsi-tooltip-top:focus:before,
-.wpsi-tooltip-top:focus:after {
+#wpsi-dashboard [data-wpsi-tooltip]:hover:before,
+#wpsi-dashboard [data-wpsi-tooltip]:hover:after,
+#wpsi-dashboard [data-wpsi-tooltip]:focus:before,
+#wpsi-dashboard [data-wpsi-tooltip]:focus:after,
+#wpsi-dashboard .wpsi-tooltip:hover:before,
+#wpsi-dashboard .wpsi-tooltip:hover:after,
+#wpsi-dashboard .wpsi-tooltip:focus:before,
+#wpsi-dashboard .wpsi-tooltip:focus:after,
+#wpsi-dashboard .wpsi-tooltip-top:hover:before,
+#wpsi-dashboard .wpsi-tooltip-top:hover:after,
+#wpsi-dashboard .wpsi-tooltip-top:focus:before,
+#wpsi-dashboard .wpsi-tooltip-top:focus:after {
   -webkit-transform: translateY(-12px);
   -moz-transform: translateY(-12px);
   transform: translateY(-12px);
 }
-/* Left */
-.wpsi-tooltip-left:before,
-.wpsi-tooltip-left:after {
+#wpsi-dashboard .wpsi-tooltip-left:before,
+#wpsi-dashboard .wpsi-tooltip-left:after {
   right: 100%;
   bottom: 50%;
   left: auto;
 }
-.wpsi-tooltip-left:before {
+#wpsi-dashboard .wpsi-tooltip-left:before {
   margin-left: 0;
   margin-right: -12px;
   margin-bottom: 0;
@@ -469,65 +474,61 @@ input:focus + .wpsi-slider {
   border-left-color: #000;
   border-left-color: hsla(0, 0%, 20%, 0.9);
 }
-.wpsi-tooltip-left:hover:before,
-.wpsi-tooltip-left:hover:after,
-.wpsi-tooltip-left:focus:before,
-.wpsi-tooltip-left:focus:after {
+#wpsi-dashboard .wpsi-tooltip-left:hover:before,
+#wpsi-dashboard .wpsi-tooltip-left:hover:after,
+#wpsi-dashboard .wpsi-tooltip-left:focus:before,
+#wpsi-dashboard .wpsi-tooltip-left:focus:after {
   -webkit-transform: translateX(-12px);
   -moz-transform: translateX(-12px);
   transform: translateX(-12px);
 }
-/* Bottom */
-.wpsi-tooltip-bottom:before,
-.wpsi-tooltip-bottom:after {
+#wpsi-dashboard .wpsi-tooltip-bottom:before,
+#wpsi-dashboard .wpsi-tooltip-bottom:after {
   top: 100%;
   bottom: auto;
   left: 50%;
 }
-.wpsi-tooltip-bottom:before {
+#wpsi-dashboard .wpsi-tooltip-bottom:before {
   margin-top: -12px;
   margin-bottom: 0;
   border-top-color: transparent;
   border-bottom-color: #000;
   border-bottom-color: hsla(0, 0%, 20%, 0.9);
 }
-.wpsi-tooltip-bottom:hover:before,
-.wpsi-tooltip-bottom:hover:after,
-.wpsi-tooltip-bottom:focus:before,
-.wpsi-tooltip-bottom:focus:after {
+#wpsi-dashboard .wpsi-tooltip-bottom:hover:before,
+#wpsi-dashboard .wpsi-tooltip-bottom:hover:after,
+#wpsi-dashboard .wpsi-tooltip-bottom:focus:before,
+#wpsi-dashboard .wpsi-tooltip-bottom:focus:after {
   -webkit-transform: translateY(12px);
   -moz-transform: translateY(12px);
   transform: translateY(12px);
 }
-/* Right */
-.wpsi-tooltip-right:before,
-.wpsi-tooltip-right:after {
+#wpsi-dashboard .wpsi-tooltip-right:before,
+#wpsi-dashboard .wpsi-tooltip-right:after {
   bottom: 50%;
   left: 100%;
 }
-.wpsi-tooltip-right:before {
+#wpsi-dashboard .wpsi-tooltip-right:before {
   margin-bottom: 0;
   margin-left: -12px;
   border-top-color: transparent;
   border-right-color: #000;
   border-right-color: hsla(0, 0%, 20%, 0.9);
 }
-.wpsi-tooltip-right:hover:before,
-.wpsi-tooltip-right:hover:after,
-.wpsi-tooltip-right:focus:before,
-.wpsi-tooltip-right:focus:after {
+#wpsi-dashboard .wpsi-tooltip-right:hover:before,
+#wpsi-dashboard .wpsi-tooltip-right:hover:after,
+#wpsi-dashboard .wpsi-tooltip-right:focus:before,
+#wpsi-dashboard .wpsi-tooltip-right:focus:after {
   -webkit-transform: translateX(12px);
   -moz-transform: translateX(12px);
   transform: translateX(12px);
 }
-/* Move directional arrows down a bit for left/right wpsi-tooltips */
-.wpsi-tooltip-left:before,
-.wpsi-tooltip-right:before {
+#wpsi-dashboard .wpsi-tooltip-left:before,
+#wpsi-dashboard .wpsi-tooltip-right:before {
   top: 3px;
 }
-/* Vertically center wpsi-tooltip content for left/right wpsi-tooltips */
-.wpsi-tooltip-left:after,
-.wpsi-tooltip-right:after {
+#wpsi-dashboard .wpsi-tooltip-left:after,
+#wpsi-dashboard .wpsi-tooltip-right:after {
   margin-left: 0;
   margin-bottom: -16px;
 }
