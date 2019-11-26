@@ -142,7 +142,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             if ( get_option('wpsi_exclude_urls') ) {
 	            $pattern = '/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/';
 	            if ( preg_match( $pattern, $search_term ) ) {
-		            //ia url
+		            //is url
 		            return;
 	            }
             }
