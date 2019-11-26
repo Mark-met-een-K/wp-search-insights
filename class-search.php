@@ -104,7 +104,12 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
         public function process_search_term( $search_term , $result_count ) {
 
-            // Return if the query comes from an administrator and the exclude admin searches option is been enabled
+        	// Return if search is empty
+        	if (strlen( $search_term ) === 0) {
+        		return;
+	        }
+
+	        // Return if the query comes from an administrator and the exclude admin searches option is been enabled
             if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
                 return;
             }
@@ -132,6 +137,14 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             if ( (strpos($search_term, get_option('wpsi_latest_term') ) === 0) && (abs(strlen($search_term) - strlen(get_option('wpsi_latest_term'))) === 1) ) {
                 update_option('wpsi_latest_term', $search_term);
                 return;
+            }
+
+            if ( get_option('wpsi_exclude_urls') ) {
+	            $pattern = '/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/';
+	            if ( preg_match( $pattern, $search_term ) ) {
+		            //ia url
+		            return;
+	            }
             }
 
             // Get the date and time. Required to prevent duplicate (spam) queries from being registered. See below.

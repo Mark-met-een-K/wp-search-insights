@@ -178,6 +178,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             'wpsi-settings-tab'
         );
 
+	    add_settings_field(
+		    'exclude_urls',
+		    __("Exclude urls from search results", 'wp-search-insights'),
+		    array($this, 'option_wpsi_exclude_urls'),
+		    'wpsi-settings',
+		    'wpsi-settings-tab'
+	    );
+
         add_settings_field(
             'min_search_length',
             __("Exclude searches shorter than characters", 'wp-search-insights'),
@@ -205,11 +213,11 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         // Register our setting so that $_POST handling is done for us and
         // our callback function just has to echo the <input>
         register_setting('wpsi-settings-tab', 'wpsi_exclude_admin');
-        register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
+	    register_setting('wpsi-settings-tab', 'wpsi_exclude_urls');
+	    register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
 
     }
-
 
     /**
      *
@@ -233,10 +241,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <input name="wpsi_exclude_admin" type="hidden" value=""/>
 
                 <input name="wpsi_exclude_admin" size="40" type="checkbox"
-                       value="1" checked <?php //checked(1, get_option('wpsi_exclude_admin'), true) ?> />
+                       value="1" <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> />
                 <span class="wpsi-slider wpsi-round"></span>
             </label>
-
             <?php
             WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
             ?>
@@ -263,6 +270,24 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         <?php
         WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
         ?>
+        <?php
+    }
+
+    public function option_wpsi_exclude_urls()
+    {
+        ?>
+        <div class="tg-list-item">
+            <label class="wpsi-switch">
+                <input name="wpsi_exclude_urls" type="hidden" value=""/>
+
+                <input name="wpsi_exclude_urls" size="40" type="checkbox"
+                       value="1" <?php checked(1, get_option('wpsi_exclude_urls'), true) ?> />
+                <span class="wpsi-slider wpsi-round"></span>
+            </label>
+            <?php
+            WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
+            ?>
+        </div>
         <?php
     }
 
@@ -356,7 +381,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     ?>
-        <div id="wpsi-dashboard">
+    <div id="wpsi-dashboard">
     <!--    Navigation-->
     <div class="wp-search-insights-container">
         <ul class="tabs">
