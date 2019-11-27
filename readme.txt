@@ -1,6 +1,6 @@
 === WP Search Insights ===
 Contributors: markwolters
-Tags: SSL, search, search term, record search term, meter searches,
+Tags: Search, Analytics, Search Insights, Search Records
 Requires at least: 4.2
 License: GPL2
 Tested up to: 5.3
@@ -14,7 +14,7 @@ Do you want to know what visitors search for on your site? Keep track of search 
 2. See results and settings in the Tools->Search Insights menu
 
 == Description ==
-Record all searches made on your site. See from which post, page or product a search originated in one oogopslag. The dashboard can be found in the Tools->Search Insights menu.
+Record all searches made on your site. See from which post, page or product a search originated from. The dashboard can be found in the Tools -> Search Insights menu.
 
 = Features =
 
