@@ -180,7 +180,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 	    add_settings_field(
 		    'exclude_urls',
-		    __("Exclude urls from search results", 'wp-search-insights'),
+		    __("Exclude URLs from search results", 'wp-search-insights'),
 		    array($this, 'option_wpsi_exclude_urls'),
 		    'wpsi-settings',
 		    'wpsi-settings-tab'
@@ -285,7 +285,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <span class="wpsi-slider wpsi-round"></span>
             </label>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("Enable this option to exclude urls from the search results", "wp-search-insights"));
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Enable this option to exclude URLs from the search results", "wp-search-insights"));
             ?>
         </div>
         <?php
