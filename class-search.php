@@ -173,17 +173,17 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			global $wpdb;
 
 			// Write the search term to the single database which contains each query
-            $this->write_search_term_to_single_table( $search_term, $result_count );
+            $this->write_search_term_to_single_table( $search_term );
 
             // Check if search term exists in the archive database, if it does update the term count. Create a new entry otherwise
             $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-			$term_in_database = $wpdb->get_results( "SELECT * FROM $table_name_archive WHERE term = '$search_term'" );
+			$term_in_database = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name_archive WHERE term = %s", $search_term) );
 			if ( $term_in_database && $wpdb->num_rows > 0 ) {
 				// Exists, update the count in archive
-				$this->update_term_count( $search_term );
+				$this->update_term_count( $search_term, $result_count);
 			} else {
 				// Doesn't exists, write a new entry to archive
-				$this->write_search_term_to_archive_table( $search_term );
+				$this->write_search_term_to_archive_table( $search_term, $result_count );
 			}
 		}
 
@@ -196,13 +196,46 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 *
 		 */
 
-		public function update_term_count( $search_term ) {
+		public function update_term_count( $search_term, $result_count) {
 
 			global $wpdb;
 
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			//Have to use query on INT because $wpdb->update assumes string.
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET frequency = frequency +1 WHERE term = %s", $search_term ) );
+			$result_count = intval($result_count);
+			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET frequency = frequency +1, result_count=$result_count WHERE term = %s", $search_term ) );
+		}
+
+		/**
+		 * Get popular searches
+		 * @param int $count
+		 * @return $searches
+		 */
+
+		public function get_searches($args){
+			$defaults = array(
+				'orderby' => 'frequency',
+                'order' => 'DESC',
+                'result_count' => false,
+				'number' => -1,
+			);
+			$args = wp_parse_args( $args,$defaults);
+			global $wpdb;
+			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+			$limit = '';
+			if ($args['number']!=-1){
+				$count = intval($args['number']);
+				$limit = "LIMIT $count";
+			}
+			$order = $args['order']=='ASC' ? 'ASC' : 'DESC';
+			$orderby = sanitize_title($args['orderby']);
+			$where = '';
+			if ($args['result_count']!==FALSE){
+				$where = " AND result_count = ".intval($args['result_count']);
+			}
+			$searches =$wpdb->get_results( "SELECT * from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit" );
+
+			return $searches;
 		}
 
 		/**
@@ -215,7 +248,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 *
 		 */
 
-		public function write_search_term_to_single_table( $search_term , $result_count ) {
+		public function write_search_term_to_single_table( $search_term  ) {
 			global $wpdb;
 
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
@@ -225,7 +258,6 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				array(
 					'time' => current_time( 'mysql' ),
 					'term' => $search_term,
-					'result_count' => $result_count,
 					'referer' => $this->get_referer(),
 				)
 			);
@@ -240,7 +272,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 *
 		 */
 
-		public function write_search_term_to_archive_table( $search_term ) {
+		public function write_search_term_to_archive_table( $search_term, $result_count) {
 			global $wpdb;
 
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
@@ -249,7 +281,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				array(
 					'time'      => current_time( 'mysql' ),
 					'term'      => $search_term,
-					'referer'		=> $this->get_referer(),
+					'result_count'      => $result_count,
 					//First occurance, set frequency to 1 so count can be updated when term is searched again
 					'frequency' => '1',
 				)
