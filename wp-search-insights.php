@@ -154,5 +154,4 @@ add_action( 'plugins_loaded', 'wp_search_insights', 8 );
 function search_insights_activation_hook() {
     update_option('wpsi_min_term_length', 0);
     update_option('wpsi_max_term_length', 50);
-    WP_SEARCH_INSIGHTS()->create_database_tables();
 }

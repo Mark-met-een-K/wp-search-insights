@@ -489,7 +489,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             <ul>
 		        <?php foreach ($popular_items as $search ){
 			        $results = sprintf( _n( '%s result', '%s results', $search->result_count), $search->result_count );
-			        $link = get_term_link($search->term);
+			        $link = $this->get_term_link($search->term);
 			        echo "<li>$search->frequency $link ($results)</li>";
 		        }
 		        ?>
