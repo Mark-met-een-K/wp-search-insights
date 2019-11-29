@@ -38,6 +38,7 @@ class WP_SEARCH_INSIGHTS {
 
 	public $WP_Search_Insights_Search;
 	public $WP_Search_Insights_Admin;
+	public $review;
 
 	private function __construct() {
 	}
@@ -56,6 +57,7 @@ class WP_SEARCH_INSIGHTS {
 				= new WP_Search_Insights_Search();
 
 			if ( is_admin() ) {
+				self::$instance->review = new wpsi_review();
 				self::$instance->WP_Search_Insights_Admin
 					= new WP_Search_Insights_Admin();
 			}
@@ -90,6 +92,7 @@ class WP_SEARCH_INSIGHTS {
 		if ( is_admin() ) {
 			require_once( wp_search_insights_path . 'class-admin.php' );
             require_once( wp_search_insights_path . 'class-help.php' );
+            require_once( wp_search_insights_path . 'class-review.php' );
         }
 
 		require_once( wp_search_insights_path . 'class-search.php' );

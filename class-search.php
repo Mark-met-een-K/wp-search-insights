@@ -207,12 +207,12 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		}
 
 		/**
-		 * Get popular searches
-		 * @param int $count
-		 * @return $searches
+		 * Get searches
+		 * @param array $args
+		 * @return array $searches
 		 */
 
-		public function get_searches($args){
+		public function get_searches($args=array()){
 			$defaults = array(
 				'orderby' => 'frequency',
                 'order' => 'DESC',
@@ -234,6 +234,36 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				$where = " AND result_count = ".intval($args['result_count']);
 			}
 			$searches =$wpdb->get_results( "SELECT * from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit" );
+
+			return $searches;
+		}
+
+
+		/**
+		 * Get popular searches
+		 * @param array $args
+		 * @return array $searches
+		 */
+
+		public function get_searches_single($args=array()){
+			$defaults = array(
+				'number' => -1,
+				'order' => 'DESC',
+				'orderby' => 'term',
+			);
+			$args = wp_parse_args( $args,$defaults);
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'searchinsights_single';
+			$limit = '';
+			if ($args['number']!=-1){
+				$count = intval($args['number']);
+				$limit = "LIMIT $count";
+			}
+			$order = $args['order']=='ASC' ? 'ASC' : 'DESC';
+			$orderby = sanitize_title($args['orderby']);
+			$where = '';
+
+			$searches =$wpdb->get_results( "SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 
 			return $searches;
 		}
