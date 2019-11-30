@@ -106,6 +106,7 @@
 #wpsi-dashboard .search-insights-table table caption {
   font-size: 1.5em;
   margin: 0.5em 0 0.75em;
+  text-align: left;
 }
 #wpsi-dashboard .search-insights-table table.dataTable thead .sorting {
   background-image: url("../images/sort_both.png");
