@@ -607,9 +607,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                  <?php
                  echo "<th scope='col' style='width: 20%;'>" . __("Term", "wp-search-insights")
                      . "</th>";
-                 echo "<th scope='col' style='width: 5%;'>" . __("Count", "wp-search-insights")
+                 echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
                      . "</th>";
-                  echo '<th scope="col" style="width: 5%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
+                  echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
 
                  ?>
              </tr>
