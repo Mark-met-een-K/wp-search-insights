@@ -9,6 +9,9 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 		private static $_this;
 		public $search_insights_db_version = '1.0';
+		public $filtered_terms = array(
+			'{search_term_string}'
+		);
 
 		function __construct() {
 
@@ -126,6 +129,10 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             if ( (strlen($search_term) > (get_option('wpsi_max_term_length') ) ) && (get_option('wpsi_max_term_length') !== 0 ) ) {
                 update_option('wpsi_latest_term', $search_term);
                 return;
+            }
+
+            if ( in_array($search_term, $this->filtered_terms) ) {
+            	return;
             }
 
             // Check if term starts with previous term and is exactly one character longer
