@@ -286,7 +286,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$wpdb->insert(
 				$table_name_single,
 				array(
-					'time' => current_time( 'mysql' ),
+					'time' => time(),
 					'term' => $search_term,
 					'referer' => $this->get_referer(),
 				)
@@ -309,7 +309,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$wpdb->insert(
 				$table_name_archive,
 				array(
-					'time'      => current_time( 'mysql' ),
+					'time'      => time(),
 					'term'      => $search_term,
 					'result_count'      => $result_count,
 					//First occurance, set frequency to 1 so count can be updated when term is searched again

@@ -125,7 +125,7 @@ class WP_SEARCH_INSIGHTS {
 			$table_name_single  = $wpdb->prefix . 'searchinsights_single';
 			$sql = "CREATE TABLE $table_name_single (
                       `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                      `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+                      `time` INT(11) NOT NULL,
                       `term` text NOT NULL,
                       `referrer` text NOT NULL,
                       PRIMARY KEY (id)
@@ -135,7 +135,7 @@ class WP_SEARCH_INSIGHTS {
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			$sql = "CREATE TABLE $table_name_archive (
                         `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                        `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+                        `time` INT(11) NOT NULL,
                         `term` text NOT NULL,
                         `frequency` INT(10) NOT NULL,
                         `result_count` INT(10) NOT NULL,
