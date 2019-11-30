@@ -329,6 +329,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
             $this->clear_database_tables();
         }
+        wp_redirect(admin_url('tools.php?page=wpsi-settings-page'));exit;
     }
 
     public function wpsi_welcome_notice()
@@ -543,7 +544,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
                 // Show the full time on dashboard, shorten the time on the dashboard widget.
                 //if (!$dashboard_widget) {
-                    $search_time_td = "<td data-label='When'>$search->time</td>";
+                    $search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
                // } else {
                     //Create a human readable timestamp
 //                    $time_diff = human_time_diff($search->time, current_time('timestamp'));
@@ -553,10 +554,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	            //Add &searchinsights to 'see results' link to prevent it from counting as search;
 	            $link = $this->get_term_link($search->term);
 	            $search_term_td = "<td data-label='Term'>$link</td>";
-                $referer_td = "<td>$search->referer</td>";
+                $referrer_td = "<td>$search->referrer</td>";
 
                 //Generate the row with or without hits and referer, depending on where the table is generated
-                echo "<tr>" . $search_term_td . $search_time_td . $referer_td . "</tr>";
+                echo "<tr>" . $search_term_td . $search_time_td . $referrer_td . "</tr>";
 
             }
             ?>
