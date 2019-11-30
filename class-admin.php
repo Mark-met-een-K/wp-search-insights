@@ -255,6 +255,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         <?php
     }
 
+	    /**
+	     * shows option max term length
+	     */
+
     public function option_max_term_length()
     {
         ?>
@@ -368,14 +372,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     <!--    Dashboard tab   -->
         <div id="dashboard" class="tab-content current">
             <div class="search-insights-dashboard">
-                <div class="search-insights-recent-searches search-insights-table">
-                    <?php $this->generate_recent_table(); ?>
-                </div>
-
                 <div class="search-insights-most-popular-searches search-insights-table">
                     <div class="search-insights-most-popular search-insights-table">
                        <?php $this->generate_popular_table(); ?>
                     </div>
+                </div>
+
+                <div class="search-insights-recent-searches search-insights-table">
+		            <?php $this->generate_recent_table(); ?>
                 </div>
             </div>
         </div>
@@ -408,6 +412,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     private function clear_database_tables()
     {
+
         // Nonce is already verified before calling this function
         if (!current_user_can($this->capability)) return;
 
@@ -456,7 +461,41 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     {
     ?>
     <div id="wpsi-dashboard-widget">
-    <?php $this->generate_recent_table($dashboard_widget = true); ?>
+        <div>
+            <h3><?php _e("Popular searches without results", "wp-search-insights")?></h3>
+            <?php
+            $args = array(
+                    'orderby' => 'frequency',
+                    'order' => 'DESC',
+                    'result_count' =>0,
+            );
+            $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args); ?>
+            <ul>
+		            <?php foreach ($popular_items as $search ){
+		                $link = $this->get_term_link($search->term);
+                        echo "<li>$search->frequency $link</li>";
+                    }
+		            ?>
+
+            </ul>
+
+            <h3><?php _e("Top searches", "wp-search-insights")?></h3>
+	        <?php
+	        $args = array(
+		        'orderby' => 'frequency',
+		        'order' => 'DESC',
+	        );
+	        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args); ?>
+            <ul>
+		        <?php foreach ($popular_items as $search ){
+			        $results = sprintf( _n( '%s result', '%s results', $search->result_count), $search->result_count );
+			        $link = $this->get_term_link($search->term);
+			        echo "<li>$search->frequency $link ($results)</li>";
+		        }
+		        ?>
+
+            </ul>
+        </div>
         <div id="wpsi-dashboard-widget-footer">
             <?php
             $admin_url = admin_url("tools.php?page=wpsi-settings-page");
@@ -493,7 +532,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                  <th scope='col'><?php _e("Search term", "wp-search-insights");?> </th>
                  <th scope='col'><?php _e("When", "wp-search-insights");?> </th>
                  <?php if (!$dashboard_widget) { ?>
-                 <th scope='col' class="dashboard-tooltip-hits"><?php _e("Results", "wp-search-insights")?> </th>
                  <th scope='col' class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
                 <?php } ?>
                 </tr>
@@ -514,40 +552,35 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                     $search_time_td = "<td data-label='When'>$time_diff ago</td>";
                 }
 
-                if ($search->result_count == 0) {
-                    // No hits, show an error icon
-                    $results = "<i class='hit-icon icon-cancel'></i>";
-                    $search_term_td = "<td data-label='Term'><b> $search->term </b></td>";
-                } else {
-                    // There are hits, show an checkmark icon. Also make the term clickable to show results
-                    $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
-                    // Add &searchinsights to 'see results' link to prevent it from counting as search;
-                    $search_url = home_url() . "?s=" . $search->term . "&searchinsights";
-                if (!$dashboard_widget) {
-                     $search_term_td = "<td data-label='Term'><a href='$search_url' id='term-link' target='_blank'><b> $search->term </b></a></td>";
-                    } else {
-                     $search_term_td = "<td data-label='Term'><b> $search->term </b></td>";
-                    }
-                }
 
+
+	            //Add &searchinsights to 'see results' link to prevent it from counting as search;
+	            $link = $this->get_term_link($search->term);
+	            $search_term_td = "<td data-label='Term'>$link</td>";
                 // Do not generate the hits and referer in the dashboard widget.
-                if(!$dashboard_widget) {
-                    $hits_td = "<td>$results</td>";
-                    $referer_td = "<td>$search->referer</td>";
-                }
+                $referer_td = "<td>$search->referer</td>";
 
                 //Generate the row with or without hits and referer, depending on where the table is generated
-                if (!$dashboard_widget) {
-                    echo "<tr>" . $search_term_td . $search_time_td . $hits_td . $referer_td . "</tr>";
-                } else {
-                    echo "<tr>" . $search_term_td . $search_time_td . "</tr>";
-                }
+                echo "<tr>" . $search_term_td . $search_time_td . $referer_td . "</tr>";
+
             }
             ?>
             </tbody>
          </table>
         <?php
  }
+
+	    /**
+         * Create a link which isn't included in the search results
+	     * @param $term
+	     *
+	     * @return string
+	     */
+
+        public function get_term_link($term){
+	        $search_url = home_url() . "?s=" . $term . "&searchinsights";
+	        return '<a href="'.$search_url.'" target="_blank">'.$term.'</a>';
+        }
 
     /**
     *
@@ -559,9 +592,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
      public function generate_popular_table() {
 
-        global $wpdb;
-        $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-        $popular_searches = $wpdb->get_results("SELECT * FROM $table_name_archive ORDER BY frequency DESC LIMIT 1000");
+	     $args = array(
+		     'orderby' => 'frequency',
+		     'order' => 'DESC',
+		     'number' =>1000,
+	     );
+	     $popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
          ?>
 
          <table id="search-insights-most-popular-table">
@@ -573,6 +609,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                      . "</th>";
                  echo "<th scope='col'>" . __("Count", "wp-search-insights")
                      . "</th>";
+                  echo '<th scope="col" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
+
                  ?>
              </tr>
              </thead>
@@ -580,8 +618,17 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
              <?php
 
              foreach ($popular_searches as $search) {
-                 echo "<tr>" . "<td data-label='Term'>" . "<b>" . $search->term . "</b>"
+	             if ($search->result_count == 0) {
+		             // No hits, show an error icon
+		             $results = "<i class='hit-icon icon-cancel'></i>";
+	             } else {
+		             // There are hits, show an checkmark icon. Also make the term clickable to show results
+		             $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
+	             }
+
+                 echo "<tr>" . "<td data-label='Term'>". $this->get_term_link($search->term)
                      . "</td>" . "<td data-label='Count'>" . $search->frequency
+                     . "<td>$results</td>"
                      . "</td>" . "</tr>";
              }
 
