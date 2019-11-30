@@ -2,13 +2,10 @@
 
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-global $search_insights_db_version;
-
 if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 	class WP_Search_Insights_Search {
 
 		private static $_this;
-		public $search_insights_db_version = '1.0';
 
 		function __construct() {
 
@@ -103,7 +100,6 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
          */
 
         public function process_search_term( $search_term , $result_count ) {
-
             // Return if the query comes from an administrator and the exclude admin searches option is been enabled
             if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
                 return;
@@ -135,13 +131,9 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             }
 
             // Get the date and time. Required to prevent duplicate (spam) queries from being registered. See below.
-            $datetime = date("Y-m-d H:i:s");
-            // Convert datetime to Unix timestamp
-            $timestamp = strtotime($datetime);
             // Subtract X seconds from the time to create a date slightly in the past.
-            $time = $timestamp - 6;
+	        $time_minus_5_seconds = time() - 6;
             // Date and time after subtraction
-            $time_minus_5_seconds = date("Y-m-d H:i:s", $time);
 
             // Now compare the search term to the previous term and see if it's within the time minus X limit. If so, it's a duplicate search and we'll ignore it.
             if (get_option('wpsi_latest_term') === $search_term && $time_minus_5_seconds < get_option('wpsi_latest_term_time')) {
@@ -286,9 +278,9 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$wpdb->insert(
 				$table_name_single,
 				array(
-					'time' => current_time( 'mysql' ),
+					'time' => time(),
 					'term' => $search_term,
-					'referer' => $this->get_referer(),
+					'referrer' => $this->get_referer(),
 				)
 			);
 		}
@@ -309,7 +301,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$wpdb->insert(
 				$table_name_archive,
 				array(
-					'time'      => current_time( 'mysql' ),
+					'time'      => time(),
 					'term'      => $search_term,
 					'result_count'      => $result_count,
 					//First occurance, set frequency to 1 so count can be updated when term is searched again
