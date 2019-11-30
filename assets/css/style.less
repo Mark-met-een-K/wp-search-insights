@@ -119,6 +119,7 @@
 
 
     table tr {
+      height: 40px;
       background-color: #f8f8f8;
       border: 1px solid #ddd;
       padding: .35em;
@@ -205,9 +206,18 @@
       border-bottom: 0;
     }
 
+    //.search-insights-most-popular {
+    //  width: 20%;
+    //}
+
     #search-insights-most-popular-table {
       margin-left: 15px;
     }
+
+    .dataTables_info {
+      display: none;
+    }
+
   }
 
   /*
@@ -215,12 +225,12 @@
    */
 
   #search-insights-recent-table {
-    width: 100%;
+    width: 80%;
     margin-right: 15px;
   }
 
   #search-insights-most-popular-table {
-    width: 100%;
+    width: 70%;
   }
 
   .hit-icon {
@@ -243,7 +253,15 @@
       Table footer
    */
 
-  .table-footer {
+  #search-insights-recent-table_wrapper .table-footer {
+    width: 80%;
+  }
+
+  #search-insights-most-popular-table_wrapper .table-footer {
+    width: 70%;
+  }
+
+    .table-footer {
     display: flex;
     align-items: center;
     justify-content: center;

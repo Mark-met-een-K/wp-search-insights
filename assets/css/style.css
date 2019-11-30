@@ -123,6 +123,7 @@
   background-position: center right;
 }
 #wpsi-dashboard .search-insights-table table tr {
+  height: 40px;
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   padding: 0.35em;
@@ -195,13 +196,16 @@
   #wpsi-dashboard #search-insights-most-popular-table {
     margin-left: 15px;
   }
+  #wpsi-dashboard .dataTables_info {
+    display: none;
+  }
 }
 #wpsi-dashboard #search-insights-recent-table {
-  width: 100%;
+  width: 80%;
   margin-right: 15px;
 }
 #wpsi-dashboard #search-insights-most-popular-table {
-  width: 100%;
+  width: 70%;
 }
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
@@ -214,6 +218,12 @@
 }
 #wpsi-dashboard #term-link {
   text-decoration: none;
+}
+#wpsi-dashboard #search-insights-recent-table_wrapper .table-footer {
+  width: 80%;
+}
+#wpsi-dashboard #search-insights-most-popular-table_wrapper .table-footer {
+  width: 70%;
 }
 #wpsi-dashboard .table-footer {
   display: flex;

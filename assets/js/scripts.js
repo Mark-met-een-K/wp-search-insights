@@ -26,6 +26,11 @@ jQuery(document).ready(function ($) {
         buttons: [
             'csv', 'excel'
         ],
+        // "columns": [
+        //     { "width": "20%" },
+        //     { "width": "10%" },
+        //     { "width": "10%" },
+        // ],
         fixedHeader: {
             footer: true
         },
