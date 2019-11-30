@@ -100,6 +100,12 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
          */
 
         public function process_search_term( $search_term , $result_count ) {
+
+        	//Exclude empty search queries
+	        if (strlen( $search_term ) === 0) {
+		        return;
+	        }
+
             // Return if the query comes from an administrator and the exclude admin searches option is been enabled
             if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
                 return;
