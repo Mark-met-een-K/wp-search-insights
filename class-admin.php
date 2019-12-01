@@ -221,7 +221,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function wpsi_settings_tab_intro()
     {
-        echo "<p>" . __('Configure Search Insights here', 'wp-search-insights')
+        echo "<p>" . __('You can configure WP Search Insights here.', 'wp-search-insights')
             . "</p>";
     }
 
@@ -230,10 +230,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     ?>
         <div class="tg-list-item">
             <label class="wpsi-switch">
-                <input name="wpsi_exclude_admin" type="hidden" value=""/>
+                <input name="wpsi_exclude_admin" type="hidden" value="0"/>
 
                 <input name="wpsi_exclude_admin" size="40" type="checkbox"
-                       value="1" checked <?php //checked(1, get_option('wpsi_exclude_admin'), true) ?> />
+                       value="1"  <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> />
                 <span class="wpsi-slider wpsi-round"></span>
             </label>
 
