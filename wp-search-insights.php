@@ -1,28 +1,33 @@
 <?php
-
-defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
-
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @since             0.8
- * @package           Search Insights
- *
- * @wordpress-plugin
- * Plugin Name:       WP Search Insights
- * Description:       Plugin to provide insights into your users searches
- * Version:           1.0.1
- * Author:            Mark Wolters
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wp_search_insights
- * Domain Path:       /languages
+ * Plugin Name: WP Search Insights
+ * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
+ * Description: WP Search Insights shows you what your users are looking for on your site, and which searches don't have results
+ * Version: 0.9.4
+ * Text Domain: wp-search-insights
+ * Domain Path: /languages
+ * Author: Mark Wolters,
+ * Author URI: https://www.wpsearchinsights.com
  */
+
+/*
+    Copyright 2018  WP Search Insights  (email : support@wpsearchinsights.com)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+*/
+defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
 //Call register activation hook outside of class.
 register_activation_hook(__FILE__, 'search_insights_activation_hook' );
@@ -33,6 +38,7 @@ class WP_SEARCH_INSIGHTS {
 
 	public $WP_Search_Insights_Search;
 	public $WP_Search_Insights_Admin;
+	public $review;
 
 	private function __construct() {
 	}
@@ -51,6 +57,7 @@ class WP_SEARCH_INSIGHTS {
 				= new WP_Search_Insights_Search();
 
 			if ( is_admin() ) {
+				self::$instance->review = new wpsi_review();
 				self::$instance->WP_Search_Insights_Admin
 					= new WP_Search_Insights_Admin();
 			}
@@ -85,6 +92,7 @@ class WP_SEARCH_INSIGHTS {
 		if ( is_admin() ) {
 			require_once( wp_search_insights_path . 'class-admin.php' );
             require_once( wp_search_insights_path . 'class-help.php' );
+            require_once( wp_search_insights_path . 'class-review.php' );
         }
 
 		require_once( wp_search_insights_path . 'class-search.php' );
@@ -105,91 +113,39 @@ class WP_SEARCH_INSIGHTS {
 	}
 
 	/**
-	 *
-	 * Create two database tables, _single contains each individual result, including duplicates and one _archive table.
-     *
-     * @since 1.0
-	 *
-	 **/
-
-	public function create_database_tables() {
-
-		global $wpdb;
-		global $search_insights_db_version;
-
-		$table_name_single  = $wpdb->prefix . 'searchinsights_single';
-		$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-
-		$charset_collate = $wpdb->get_charset_collate();
-
-		$sql
-			= "CREATE TABLE IF NOT EXISTS $table_name_single (
-    id mediumint(9) NOT NULL AUTO_INCREMENT,
-    time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-    term text NOT NULL,
-    result_count INT(10),
-    referer text,
-    PRIMARY KEY  (id)
-    ) $charset_collate";
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		dbDelta( $sql );
-
-		$sql
-			= "CREATE TABLE IF NOT EXISTS $table_name_archive (
-	  id mediumint(9) NOT NULL AUTO_INCREMENT,
-	  time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-	  term text NOT NULL,
-	  frequency INT(10) NOT NULL,
-	  referer text,
-	  PRIMARY KEY  (id)
-	) $charset_collate";
-
-		dbDelta( $sql );
-
-		add_option( 'search_insights_db_version', $search_insights_db_version );
-
-		$installed_ver = get_option( "wp_search_insights_db_version" );
-
-		if ( $installed_ver != $search_insights_db_version ) {
-
-			$sql
-				= "CREATE TABLE IF NOT EXISTS $table_name_single (
-                      id mediumint(9) NOT NULL AUTO_INCREMENT,
-                      time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-                      term text NOT NULL,
-                      result_count INT(10),
-                      referer text,
-                      PRIMARY KEY  (id)
-                    )";
-
-			dbDelta( $sql );
-
-			$sql
-				= "CREATE TABLE IF NOT EXISTS $table_name_archive (
-                        id mediumint(9) NOT NULL AUTO_INCREMENT,
-                        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-                        term text NOT NULL,
-                        frequency INT(10) NOT NULL,
-                        referer text,
-                        PRIMARY KEY  (id)
-                      )";
-
-			dbDelta( $sql );
-
-			update_option( "search_insights_db_version",
-				$search_insights_db_version );
-		}
-	}
+	 * Check if database is still up to date. If not, update
+	 */
 
 	public function search_insights_update_db_check() {
-		global $search_insights_db_version;
-		if ( get_site_option( 'search_insights_db_version' )
-			!= $search_insights_db_version
-		) {
-			$this->create_database_tables();
+		if ( get_option( 'search_insights_db_version' ) != wp_search_insights_version ) {
+			global $wpdb;
+			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			$charset_collate = $wpdb->get_charset_collate();
+
+			$table_name_single  = $wpdb->prefix . 'searchinsights_single';
+			$sql = "CREATE TABLE $table_name_single (
+                      `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                      `time` INT(11) NOT NULL,
+                      `term` text NOT NULL,
+                      `referrer` text NOT NULL,
+                      PRIMARY KEY (id)
+                    ) $charset_collate;";
+			dbDelta( $sql );
+
+			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+			$sql = "CREATE TABLE $table_name_archive (
+                        `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                        `time` INT(11) NOT NULL,
+                        `term` text NOT NULL,
+                        `frequency` INT(10) NOT NULL,
+                        `result_count` INT(10) NOT NULL,
+                        PRIMARY KEY  (id)
+                      ) $charset_collate;";
+			dbDelta( $sql );
+			update_option( 'search_insights_db_version' , wp_search_insights_version);
 		}
 	}
+
 }//Class closure
 
 function wp_search_insights() {
@@ -201,5 +157,4 @@ add_action( 'plugins_loaded', 'wp_search_insights', 8 );
 function search_insights_activation_hook() {
     update_option('wpsi_min_term_length', 3);
     update_option('wpsi_max_term_length', 50);
-    WP_SEARCH_INSIGHTS()->create_database_tables();
 }
