@@ -71,7 +71,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
             wp_register_style('search-insights',
-                trailingslashit(wp_search_insights_url) . "assets/css/style.css", "",
+                trailingslashit(wp_search_insights_url) . "assets/css/style.min.css", "",
                 wp_search_insights_version);
             wp_enqueue_style('search-insights');
 
@@ -86,7 +86,37 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 . 'assets/js/datatables.min.js',  array("jquery"), wp_search_insights_version);
             wp_enqueue_script('datatables');
 
-            // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
+	        wp_register_script('wpsi-tether',
+		        trailingslashit(wp_search_insights_url)
+		        . 'assets/includes/tether/tether.min.js', "", wp_search_insights_version);
+	        wp_enqueue_script('wpsi-tether');
+
+//	        wp_register_script('wpsi-shepherd',
+//		        trailingslashit(wp_search_insights_url)
+//		        . 'assets/includes/tether-shepherd/shepherd.min.js', "", wp_search_insights_version);
+//	        wp_enqueue_script('wpsi-shepherd');
+
+	        wp_register_script('wpsi-shepherd',
+		        trailingslashit(wp_search_insights_url)
+		        . 'assets/includes/tether-shepherd/shepherd.min.js', "", wp_search_insights_version);
+	        wp_enqueue_script('wpsi-shepherd');
+
+	        wp_register_script('wpsi-shepherd-tour',
+		        trailingslashit(wp_search_insights_url)
+		        . 'assets/js/wpsi-tour.js', "", wp_search_insights_version);
+	        wp_enqueue_script('wpsi-shepherd-tour');
+
+	        wp_register_style('wpsi-shepherd',
+		        trailingslashit(wp_search_insights_url) . "assets/css/tether-shepherd/shepherd-theme-arrows.css", "",
+		        wp_search_insights_version);
+	        wp_enqueue_style('wpsi-shepherd');
+
+	        wp_register_style('wpsi-shepherd-tour',
+		        trailingslashit(wp_search_insights_url) . "assets/css/wpsi-tour.min.css", array("jquery"),
+		        wp_search_insights_version);
+	        wp_enqueue_style('wpsi-shepherd-tour');
+
+	        // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
             if ($hook == 'index.php') return;
 
             wp_register_style('fontello',
@@ -535,6 +565,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	public function dashboard_row(){
 
     }
+
     public function generate_dashboard_widget( )
     {
         $widget = $this->get_template('dashboard-widget.php');
