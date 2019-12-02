@@ -6,6 +6,10 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 	class WP_Search_Insights_Search {
 
 		private static $_this;
+		public $filtered_terms = array(
+			'{search_term_string}'
+		);
+
 
 		function __construct() {
 
@@ -125,6 +129,10 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
             if ( (strlen($search_term) > (get_option('wpsi_max_term_length') ) ) && (get_option('wpsi_max_term_length') !== 0 ) ) {
                 return;
+            }
+
+            if ( in_array($search_term, $this->filtered_terms) ) {
+            	return;
             }
 
             $this->write_terms_to_db($search_term, $result_count);
