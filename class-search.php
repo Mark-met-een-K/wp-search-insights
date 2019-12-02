@@ -154,7 +154,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			//check if this search was written with five seconds ago
 			$replace_search_term=false;
 			$old_search_term = $search_term;
-			$now = time();
+			$now = $this->current_time();
 			$five_seconds_ago = $now-5;
 			$last_search = $this->get_last_search_term();
 
@@ -164,7 +164,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			}
 
 			//differs only one character, overwrite existing entries with new search term
-			if ($last_search && $last_search->time > $five_seconds_ago && substr($search_term, 0, -1)===$last_search->term){
+			if ($last_search && $last_search->time > $five_seconds_ago && strpos($search_term, $last_search->term)!==FALSE ){
 				$replace_search_term = $last_search;
 				$old_search_term = $last_search->term;
 			}
@@ -180,11 +180,16 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				// Exists, update the count in archive
 				// if it's one character different, update only term and result count, not frequency
 				if ($search_term !== $old_search_term){
+					error_log("replace $old_search_term with $search_term");
 					$this->replace_term( $old_search_term, $search_term, $result_count);
 				} else {
+					error_log("update term count of $search_term");
+
 					$this->update_term_count( $search_term, $result_count);
 				}
 			} else {
+				error_log("does not exist yet, add new term for $search_term");
+
 				// Doesn't exists, write a new entry to archive
 				$this->write_search_term_to_archive_table( $search_term, $result_count );
 			}
@@ -247,7 +252,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			//Have to use query on INT because $wpdb->update assumes string.
 			$result_count = intval($result_count);
-			$time = time();
+			$time = $this->current_time();
 			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", sanitize_text_field($new_term), $time, sanitize_text_field($search_term) ) );
 		}
 
@@ -379,7 +384,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				$wpdb->insert(
 					$table_name_single,
 					array(
-						'time'     => time(),
+						'time'     => $this->current_time(),
 						'term'     => sanitize_text_field($search_term),
 						'referrer' => $this->get_referer(),
 					)
@@ -390,13 +395,25 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 					array(
 						'term'     => sanitize_text_field($search_term),
 						'referrer' => $this->get_referer(),
-						'time'     => time(),
+						'time'     => $this->current_time(),
 					),
 					array(
 						'id' => intval($replace_search_term->id),
 					)
 				);
 			}
+		}
+
+		/**
+		 * Get current time
+		 * @return float|int
+		 */
+
+		public function current_time(){
+			//store the date
+			$timezone_offset = get_option('gmt_offset');
+			return time() + (60 * 60 * $timezone_offset);
+
 		}
 
 		/**
@@ -415,7 +432,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$wpdb->insert(
 				$table_name_archive,
 				array(
-					'time'      => time(),
+					'time'      => $this->current_time(),
 					'term'      => sanitize_text_field($search_term),
 					'result_count'      => intval($result_count),
 					//First occurance, set frequency to 1 so count can be updated when term is searched again
