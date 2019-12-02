@@ -530,10 +530,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
          </caption>
             <thead>
                 <tr class="wpsi-thead-th">
-                 <th scope='col'><?php _e("Search term", "wp-search-insights");?> </th>
-                 <th scope='col'><?php _e("When", "wp-search-insights");?> </th>
+                 <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
+                 <th scope='col' style="width: 15%;"><?php _e("When", "wp-search-insights");?> </th>
                  <?php if (!$dashboard_widget) { ?>
-                 <th scope='col' class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
+                 <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
                 <?php } ?>
                 </tr>
             </thead>
@@ -632,11 +632,11 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
              <thead>
              <tr class="wpsi-thead-th">
                  <?php
-                 echo "<th scope='col'>" . __("Term", "wp-search-insights")
+                 echo "<th scope='col' style='width: 20%;'>" . __("Term", "wp-search-insights")
                      . "</th>";
-                 echo "<th scope='col'>" . __("Count", "wp-search-insights")
+                 echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
                      . "</th>";
-                  echo '<th scope="col" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
+                  echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
 
                  ?>
              </tr>
