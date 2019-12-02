@@ -1,57 +1,63 @@
 === WP Search Insights ===
-Contributors: markwolters
+Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, search term, record search term, meter searches,
+Tags: search, search term, record search term, search queries
 Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
 Requires PHP: 5.6
 Stable tag: 1.0.0
 
-Do you want to know what visitors search for on your site? Keep track of search activity with Search Insights. See terms, hits and more!
+What are your visitors searching for? Keep track of on-site search activity with WP Search Insights. See terms, hits, results, and more!
 
 == Description ==
-Record all searches made on your site. See from which post, page or product a search originated at a glance. The dashboard can be found in the Tools->Search Insights menu.
+Records all searches made on your site. See from which post, page, or product a search originated in a simple and clean dashboard. The dashboard can be found in the Tools -> Search Insights menu.
 
 Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-search-insights) as well!
 
+== Features ==
+* Records search activity on your website
+* Sort recorded searches alphabetically, on data, results, and popularity
+* Records originating pages and subsequent landing page after a search query
+* Export records in CSV and for Excel
+
 = Love WP Search Insights? =
-Hopefully this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
+Hopefully, this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
 
-Check out other plugins developed by us as well: [Complianz](https://wordpress.org/plugins/complianz-gdpr/), [Really Simple SSL](https://wordpress.org/plugins/really-simple-ssl/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
+Check out other plugins developed by Really Simple Plugins as well: 
+[Complianz](https://wordpress.org/plugins/complianz-gdpr/), 
+[Really Simple SSL](https://wordpress.org/plugins/really-simple-ssl/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
 
-[contact](https://www.wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
+[Contact](https://www.wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
 
-= Like to have this plugin in your language? =
+= WP Search Insights in your language? =
 Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/wp-search-insights).
+
+== Frequently asked questions ==
+= Where can I find documentation? =
+* WP Search Insights maintains a knowledgebase at https://wpsearchinsights.com.
+= Where can I find the search results or settings? =
+* You can find the plugins dashboard and settings in the Tools -> Search Insights menu
+= How does it work?
+* Search forms are standard in WordPress and should be used by anyone to improve user experience. Recording visitors searches will give you insight into what your visitors are looking for, from which page, and what post is most relevant for their query. Analyzing this data will make your website a better fit for your next visitors!
+= Can I leave a feature request? =
+* Yes, and please do! After our first release we will keep adding new features to free and develop premium add-ons to complement the data recorded by WP Search Insights. 
+= Can I remove results? =
+* Yes. Under settings you can clear your database searches. This cannot be overturned. Deleting single search queries can be removed from the dashboard by using the ‘delete’ option.
 
 == Installation ==
 To install this plugin:
 
 1. Download the plugin
 2. Upload the plugin to the wp-content/plugins directory,
-3. Searches are already recorded. Follow the link in the activation notice to your search dasbhoard
-
-== Frequently Asked Questions ==
-
-= Knowledge base =
+3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
 = 1.0.0 =
 * Initial release
 
 == Upgrade notice ==
+* Please backup before upgrading.
 
 == Screenshots ==
-
-
-== Frequently asked questions ==
-= Where can I find documentation? =
-* WP Search Insights maintains an extensive knowledge-base at https://wpsearchinsights.com.
-
-= Where can I find the search results or settings? =
-You can find the plugins dashboard and settings in the Tools->Search Insights menu
-
-= Features =
-* Record search activity on your site.
-
+1. WP Search Insights Dashboard
