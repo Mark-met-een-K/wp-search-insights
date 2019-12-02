@@ -11,7 +11,7 @@ if (!class_exists("wpsi_review")) {
 		function __construct()
 		{
 			if (isset(self::$_this))
-				wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.', 'complianz-gdpr'), get_class($this)));
+				wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.', 'wpsi-search-insights'), get_class($this)));
 
 			self::$_this = $this;
 
@@ -31,7 +31,6 @@ if (!class_exists("wpsi_review")) {
 					add_action('admin_notices', array($this, 'show_leave_review_notice'));
 					add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_review'));
 				}
-
 
 			}
 
@@ -56,7 +55,7 @@ if (!class_exists("wpsi_review")) {
 		public function show_leave_review_notice()
 		{
 
-			/*
+			/**
 			 * Prevent notice from being shown on Gutenberg page, as it strips off the class we need for the ajax callback.
 			 *
 			 * */
@@ -64,24 +63,43 @@ if (!class_exists("wpsi_review")) {
 			if ( $screen->parent_base === 'edit' ) return;
 
 			?>
+            <style>
+                .wpsi-container {
+                    display: flex;
+                    padding:12px;
+                }
+                .wpsi-container .dashicons {
+                    margin-left:10px;
+                    margin-right:5px;
+                }
+                .wpsi-review-image img{
+                   margin-top:0.5em;
+                }
+                .wpsi-buttons-row {
+                    margin-top:10px;
+                }
+            </style>
 			<div id="message" class="updated fade notice is-dismissible wpsi-review really-simple-plugins">
+                <div class="wpsi-container">
+                    <div class="wpsi-review-image"><img width=80px" src="<?php echo wp_search_insights_url?>/assets/images/logo.png" alt="review-logo"></div>
+                <div style="margin-left:30px">
                 <?php if ($this->searchcount>$this->minimum_count){?>
-				<p><?php printf(__('Hi, WP Search Insights has given you insights on over %s searches on your site already, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), $this->searchcount, '<a href="https://complianz.io/contact" target="_blank">', '</a>'); ?></p>
+				<p><?php printf(__('Hi, WP Search Insights has given you insights on over %s searches on your site already, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), $this->searchcount, '<a href="wpsearchinsights.com/contact" target="_blank">', '</a>'); ?></p>
 				<?php } else { ?>
-                    <p><?php printf(__('Hi, you have been using WP Search Insights for a month now, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), '<a href="https://complianz.io/contact" target="_blank">', '</a>'); ?></p>
+                    <p><?php printf(__('Hi, you have been using WP Search Insights for a month now, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), '<a href="https://wpsearchinsights.com/contact " target="_blank">', '</a>'); ?></p>
                 <?php } ?>
-                <i>- Mark</i>
-				<ul style="margin-left: 30px; list-style: square;">
-					<li><p style="margin-top: -5px;"><a target="_blank"
-					                                    href="https://wordpress.org/support/plugin/wp-search-insights/reviews/#new-post"><?php _e('Leave a review', 'wp-search-insights'); ?></a>
-						</p></li>
-					<li><p style="margin-top: -5px;"><a href="#"
-					                                    id="maybe-later"><?php _e('Maybe later', 'wp-search-insights'); ?></a>
-						</p></li>
-					<li><p style="margin-top: -5px;"><a href="#"
-					                                    class="review-dismiss"><?php _e('I already placed a review', 'wp-search-insights'); ?></a>
-						</p></li>
-				</ul>
+                <i class="wpsi-signature">- Mark</i>
+
+                <div class="wpsi-buttons-row">
+                    <a class="button button-primary" target="_blank"
+                       href="https://wordpress.org/support/plugin/wp-search-insights/reviews/#new-post"><?php _e('Leave a review', 'wp-search-insights'); ?></a>
+
+                    <div class="dashicons dashicons-calendar"></div><a href="#" id="maybe-later"><?php _e('Maybe later', 'wp-search-insights'); ?></a>
+
+                    <div class="dashicons dashicons-smiley"></div><a href="#" class="review-dismiss"><?php _e('Don\'t show again', 'wp-search-insights'); ?></a>
+                </div>
+                </div>
+                </div>
 			</div>
 			<?php
 
