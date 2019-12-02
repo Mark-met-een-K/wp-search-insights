@@ -28,7 +28,7 @@ Check out other plugins developed by Really Simple Plugins as well:
 [Complianz](https://wordpress.org/plugins/complianz-gdpr/), 
 [Really Simple SSL](https://wordpress.org/plugins/really-simple-ssl/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
 
-[Contact](https://www.wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
+[Contact](https://wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
 
 = WP Search Insights in your language? =
 Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/wp-search-insights).
