@@ -455,56 +455,87 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     */
 
     public function add_wpsi_dashboard_widget() {
-        wp_add_dashboard_widget('dashboard_widget_wpsi', 'Recent Searches', array($this, 'generate_dashboard_widget') ) ;
+        wp_add_dashboard_widget('dashboard_widget_wpsi', 'WP Search Insights', array($this, 'generate_dashboard_widget') ) ;
     }
 
+
+
+    public function get_template($file)
+    {
+
+        $file = trailingslashit(wp_search_insights_path) . 'templates/' . $file;
+        $theme_file = trailingslashit(get_stylesheet_directory()) . dirname(wp_search_insights_path) . $file;
+
+        if (file_exists($theme_file)) {
+            $file = $theme_file;
+        }
+
+        if (strpos($file, '.php') !== FALSE) {
+            ob_start();
+            require $file;
+            $contents = ob_get_clean();
+        } else {
+            $contents = file_get_contents($file);
+        }
+
+        return $contents;
+    }
+
+
+	public function dashboard_row(){
+
+    }
     public function generate_dashboard_widget( )
     {
-    ?>
-    <div id="wpsi-dashboard-widget">
-        <div>
-            <h3><?php _e("Popular searches without results", "wp-search-insights")?></h3>
-            <?php
-            $args = array(
-                    'orderby' => 'frequency',
-                    'order' => 'DESC',
-                    'result_count' =>0,
-            );
-            $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args); ?>
-            <ul>
-		            <?php foreach ($popular_items as $search ){
-		                $link = $this->get_term_link($search->term);
-                        echo "<li>$search->frequency $link</li>";
-                    }
-		            ?>
+        $widget = $this->get_template('dashboard-widget.php');
 
-            </ul>
+        $html = "";
+        $args = array(
+            'orderby' => 'frequency',
+            'order' => 'DESC',
+            'result_count' =>0,
+        );
+        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args, $trend=true, 'MONTH', true); ?>
+        <?php foreach ($popular_items as $search ){
+            if ($search->frequency==$search->previous_frequency){
+                $icon = 'dashicons-minus';
+            } elseif ($search->frequency>$search->previous_frequency){
+                $icon = 'dashicons-arrow-up-alt';
+            } else {
+                $icon = 'dashicons-arrow-down-alt';
+            }
+            $time = sprintf(__("%s ago","wp-search-insights"), human_time_diff($search->time, current_time('timestamp')));
+            $tmpl = $this->get_template('dashboard-row.html');
+            $searches = sprintf( _n( '%s search', '%s searches', $search->frequency, 'wpsi-search-insights' ), number_format_i18n( $search->frequency ) );
+            $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array($icon,$this->get_term_link($search->term), $searches, $time), $tmpl);
+        }
 
-            <h3><?php _e("Top searches", "wp-search-insights")?></h3>
-	        <?php
-	        $args = array(
-		        'orderby' => 'frequency',
-		        'order' => 'DESC',
-	        );
-	        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args); ?>
-            <ul>
-		        <?php foreach ($popular_items as $search ){
-			        $results = sprintf( _n( '%s result', '%s results', $search->result_count), $search->result_count );
-			        $link = $this->get_term_link($search->term);
-			        echo "<li>$search->frequency $link ($results)</li>";
-		        }
-		        ?>
+        $widget = str_replace('{popular_searches}', $html, $widget);
 
-            </ul>
-        </div>
-        <div id="wpsi-dashboard-widget-footer">
-            <?php
-            $admin_url = admin_url("tools.php?page=wpsi-settings-page");
-            echo sprintf(__("%sGo to dashboard%s ", "wp-search-insights"), "<a target='_blank' href='$admin_url'>", '</a>');
-            ?>
-        </div>
-    </div>
-    <?php
+        $args = array(
+            'orderby' => 'frequency',
+            'order' => 'DESC',
+        );
+	    $html = "";
+        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args, $trend=true, 'MONTH', true); ?>
+        <?php foreach ($popular_items as $search ){
+            if ($search->frequency==$search->previous_frequency){
+                $icon = 'dashicons-minus';
+            } elseif ($search->frequency>$search->previous_frequency){
+                $icon = 'dashicons-arrow-up-alt';
+            } else {
+                $icon = 'dashicons-arrow-down-alt';
+            }
+            $time = sprintf(__("%s ago","wp-search-insights"), human_time_diff($search->time, current_time('timestamp')));
+
+            $tmpl = $this->get_template('dashboard-row.html');
+            $searches = sprintf( _n( '%s search', '%s searches', $search->frequency, 'wpsi-search-insights' ), number_format_i18n( $search->frequency ) );
+            $html .= str_replace(array("{icon}", "{link}", "{searches}","{time}"), array($icon,$this->get_term_link($search->term), $searches, $time ), $tmpl);
+        }
+
+	    $widget = str_replace('{top_searches}', $html, $widget);
+        echo $widget;
+
     }
 
     /**

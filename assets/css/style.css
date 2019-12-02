@@ -1,3 +1,33 @@
+/**
+widget
+ */
+#wpsi-dashboard-widget .wpsi-widget-logo span {
+  padding: 20px;
+}
+#wpsi-dashboard-widget li {
+  padding-top: 8px;
+  border-top: 1px solid #f2f2f2;
+}
+#wpsi-dashboard-widget li .wpsi-frequency {
+  float: right;
+}
+#wpsi-dashboard-widget li .wpsi-time {
+  margin-left: 25px;
+  color: #666;
+}
+#wpsi-dashboard-widget .dashicons-arrow-up-alt {
+  color: #61ce70;
+}
+#wpsi-dashboard-widget .dashicons-arrow-down-alt {
+  color: #d7263d;
+}
+#wpsi-dashboard-widget #wpsi-dashboard-widget-footer {
+  margin-top: 0;
+  margin-bottom: -10px;
+  padding: 12px;
+  border-top: 1px solid #eee;
+  color: #ddd;
+}
 /*
     *
     *   Dashboard styling
@@ -22,7 +52,6 @@
       *
    */
   /*Tooltips on dashboard/settings page*/
-  /*Dashboard widget*/
   /*
       Fancy checkboxes
    */
@@ -206,8 +235,7 @@
 }
 #wpsi-dashboard #search-insights-recent-table,
 #wpsi-dashboard #search-insights-most-popular-table {
-  width: 450px;
-
+  width: 100%;
 }
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
@@ -314,15 +342,6 @@
 }
 #wpsi-dashboard .dashboard-tooltip-from > span:nth-child(1) > span:nth-child(1) {
   margin-left: -65px;
-}
-#wpsi-dashboard #wpsi-dashboard-widget .table-footer {
-  display: none !important;
-}
-#wpsi-dashboard #wpsi-dashboard-widget td {
-  text-align: left;
-}
-#wpsi-dashboard #wpsi-dashboard-widget th {
-  text-align: left;
 }
 #wpsi-dashboard .wpsi-switch {
   position: relative;
