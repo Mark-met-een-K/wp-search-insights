@@ -79,7 +79,7 @@ if (!class_exists("wpsi_review")) {
                     margin-top:10px;
                 }
             </style>
-			<div id="message" class="updated fade notice is-dismissible wpsi-review really-simple-plugins">
+			<div id="message" class="updated fade notice is-dismissible wpsi-review really-simple-plugins" style="border-left:4px solid #333">
                 <div class="wpsi-container">
                     <div class="wpsi-review-image"><img width=80px" src="<?php echo wp_search_insights_url?>/assets/images/logo.png" alt="review-logo"></div>
                 <div style="margin-left:30px">
@@ -96,7 +96,7 @@ if (!class_exists("wpsi_review")) {
 
                     <div class="dashicons dashicons-calendar"></div><a href="#" id="maybe-later"><?php _e('Maybe later', 'wp-search-insights'); ?></a>
 
-                    <div class="dashicons dashicons-smiley"></div><a href="#" class="review-dismiss"><?php _e('Don\'t show again', 'wp-search-insights'); ?></a>
+                    <div class="dashicons dashicons-no-alt"></div><a href="#" class="review-dismiss"><?php _e('Don\'t show again', 'wp-search-insights'); ?></a>
                 </div>
                 </div>
                 </div>

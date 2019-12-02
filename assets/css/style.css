@@ -202,11 +202,12 @@
   }
 }
 #wpsi-dashboard #search-insights-recent-table {
-  width: 80%;
   margin-right: 15px;
 }
+#wpsi-dashboard #search-insights-recent-table,
 #wpsi-dashboard #search-insights-most-popular-table {
-  width: 70%;
+  width: 450px;
+
 }
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
@@ -233,12 +234,10 @@
   padding-top: 10px;
 }
 #wpsi-dashboard .dataTables_info {
-  flex: 1;
   text-align: left;
   margin-left: 15px;
 }
 #wpsi-dashboard .dt-buttons {
-  flex: 1;
   text-align: center;
 }
 #wpsi-dashboard .dt-button {
