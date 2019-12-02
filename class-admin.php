@@ -62,8 +62,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
-//	    add_action('wp_head', 'wpsi_thickbox_style', 100);
-
     }
 
     public function enqueue_assets($hook)
@@ -361,8 +359,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         <?php
     }
 
-
-		    /**
+    /**
      *
      * Check if the clear database button is pressed
      *
@@ -493,7 +490,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     public function redirect_to_settings_tab()
     {
         $url = add_query_arg(array(
-            "page" => "wpsi-settings-page#settings",
+            "page" => "wpsi-settings-page#settings#top",
         ), admin_url("tools.php"));
         wp_safe_redirect($url);
         exit;
