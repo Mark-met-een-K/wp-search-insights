@@ -62,6 +62,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
+//	    add_action('wp_head', 'wpsi_thickbox_style', 100);
+
     }
 
     public function enqueue_assets($hook)
@@ -163,7 +165,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         // Add a settings section to the 'Settings' tab
         add_settings_section(
             'wpsi-settings-tab',
-            __("Settings", "wpsi-search-insights"),
+            __("", "wpsi-search-insights"),
             array($this, 'wpsi_settings_tab_intro'),
             'wpsi-settings'
         );
@@ -221,8 +223,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function wpsi_settings_tab_intro()
     {
-        echo "<p>" . __('You can configure WP Search Insights here.', 'wp-search-insights')
-            . "</p>";
+        ?>
+        <div class="wpsi-settings-intro">
+            <span class="wpsi-settings-logo"><i class="icon-cog-alt"></i></span>
+            <span class="wpsi-settings-intro-text"><?php  _e('Configure Search Insights here', 'wp-search-insights'); ?></span>
+        </div>
+        <?php
     }
 
     public function option_wpsi_exclude_admin()
@@ -310,9 +316,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 color: #f2f2f2;
                 visibility: visible;
                 display: inline-block;
-                /*content: '\e806';*/
                 content: "\f335";
-                /*content: url('../wp-content/plugins/wp-search-insights/assets/svg/cancel.svg');*/
+                opacity: 0.7;
             }
         </style>
 
@@ -340,7 +345,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 });
             </script>
             <a class="button button-primary"
-               style="width: 130px; height: 25px; line-height: 25px; margin-right:25px; text-align: center; font-weight: 700;"
+               style="width: 130px; height: 25px; line-height: 25px; margin-right:20px; text-align: center; font-weight: 700;"
                href="<?php echo $clear_db_link ?>">
                 <?php _e( "Clear database", "wp-search-insights" ) ?>
             </a>
@@ -414,6 +419,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         <ul class="tabs">
             <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard#top">Dashboard</a></li>
             <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
+            <?php echo "<img class='rsp-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
         </ul>
     </div>
     <div class="wp-search-insights-main">
@@ -439,7 +445,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 do_settings_sections('wpsi-settings');
                 ?>
 
-                <input class="button button-primary" name="Submit"
+                <input class="button button-primary wpsi-save-button" name="Submit"
                        type="submit"
                        value="<?php echo __("Save",
                            "wp-search-insights"); ?>"/>
