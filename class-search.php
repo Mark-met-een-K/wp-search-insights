@@ -10,7 +10,6 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			'{search_term_string}'
 		);
 
-
 		function __construct() {
 
 			if ( isset( self::$_this ) ) {
@@ -227,7 +226,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			//Have to use query on INT because $wpdb->update assumes string.
 			$result_count = intval($result_count);
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET frequency = frequency +1, result_count=$result_count WHERE term = %s", $search_term ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET frequency = frequency +1, result_count=$result_count WHERE term = %s", sanitize_text_field($search_term) ) );
 		}
 
 		/**
@@ -249,7 +248,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			//Have to use query on INT because $wpdb->update assumes string.
 			$result_count = intval($result_count);
 			$time = time();
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", $new_term, $time, $search_term ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", sanitize_text_field($new_term), $time, sanitize_text_field($search_term) ) );
 		}
 
 		/**
@@ -381,23 +380,20 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 					$table_name_single,
 					array(
 						'time'     => time(),
-						'term'     => $search_term,
+						'term'     => sanitize_text_field($search_term),
 						'referrer' => $this->get_referer(),
 					)
 				);
 			} else {
-				error_log("update single");
-				error_log(print_r($replace_search_term,true));
-				error_log("new term $search_term");
 				$wpdb->update(
 					$table_name_single,
 					array(
-						'term'     => $search_term,
+						'term'     => sanitize_text_field($search_term),
 						'referrer' => $this->get_referer(),
 						'time'     => time(),
 					),
 					array(
-						'id' => $replace_search_term->id,
+						'id' => intval($replace_search_term->id),
 					)
 				);
 			}
@@ -420,8 +416,8 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				$table_name_archive,
 				array(
 					'time'      => time(),
-					'term'      => $search_term,
-					'result_count'      => $result_count,
+					'term'      => sanitize_text_field($search_term),
+					'result_count'      => intval($result_count),
 					//First occurance, set frequency to 1 so count can be updated when term is searched again
 					'frequency' => '1',
 				)
