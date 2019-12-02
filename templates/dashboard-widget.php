@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 ?>
 <div id="wpsi-dashboard-widget">
     <div>
-        <div class="wpsi-widget-logo"><img width=50px" src="<?php echo wp_search_insights_url?>/assets/images/logo.png" alt="review-logo">
+        <div class="wpsi-widget-logo"><img width=35px" height="35px" src="<?php echo wp_search_insights_url?>/assets/images/noname_logo.png" alt="review-logo">
             <span><?php printf("WP Search Insights %s", wp_search_insights_version)?></span>
         </div>
 

@@ -24,7 +24,7 @@ if (!class_exists("wpsi_review")) {
 					$this->searchcount = count($items);
 					set_transient('wpsi_total_searchcount', $this->searchcount, 'DAY_IN_SECONDS');
 				}
-				$notice_has_been_shown= false;//get_option('wpsi_review_notice_shown');
+				$notice_has_been_shown= get_option('wpsi_review_notice_shown');
 				$over_one_month_old = get_option('wpsi_activation_time') && (get_option('wpsi_activation_time') < strtotime("-1 month"));
 				if (!$notice_has_been_shown && $over_one_month_old ){
 					add_action('wp_ajax_dismiss_review_notice', array($this, 'dismiss_review_notice_callback'));
