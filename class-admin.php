@@ -221,7 +221,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function wpsi_settings_tab_intro()
     {
-        echo "<p>" . __('Configure Search Insights here', 'wp-search-insights')
+        echo "<p>" . __('You can configure WP Search Insights here.', 'wp-search-insights')
             . "</p>";
     }
 
@@ -230,10 +230,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     ?>
         <div class="tg-list-item">
             <label class="wpsi-switch">
-                <input name="wpsi_exclude_admin" type="hidden" value=""/>
+                <input name="wpsi_exclude_admin" type="hidden" value="0"/>
 
                 <input name="wpsi_exclude_admin" size="40" type="checkbox"
-                       value="1" checked <?php //checked(1, get_option('wpsi_exclude_admin'), true) ?> />
+                       value="1"  <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> />
                 <span class="wpsi-slider wpsi-round"></span>
             </label>
 
@@ -329,6 +329,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
             $this->clear_database_tables();
         }
+        wp_redirect(admin_url('tools.php?page=wpsi-settings-page'));exit;
     }
 
     public function wpsi_welcome_notice()
@@ -541,27 +542,22 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             // Start generating rows
             foreach ($recent_searches as $search) {
 
-                // Show the full time on dashboard, shorthen the time on the dashboard widget.
-                if (!$dashboard_widget) {
-                    $search_time_td = "<td data-label='When'>$search->time</td>";
-                } else {
-                    //Convert SQL timestamp to Unix time
-                    $unix_timestamp = strtotime($search->time);
+                // Show the full time on dashboard, shorten the time on the dashboard widget.
+                //if (!$dashboard_widget) {
+                    $search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
+               // } else {
                     //Create a human readable timestamp
-                    $time_diff = human_time_diff($unix_timestamp, current_time('timestamp'));
-                    $search_time_td = "<td data-label='When'>$time_diff ago</td>";
-                }
-
-
+//                    $time_diff = human_time_diff($search->time, current_time('timestamp'));
+//                    $search_time_td = "<td data-label='When'>".sprintf(__("%s ago","wp-search-insights"), $time_diff)."</td>";
+                //}
 
 	            //Add &searchinsights to 'see results' link to prevent it from counting as search;
 	            $link = $this->get_term_link($search->term);
 	            $search_term_td = "<td data-label='Term'>$link</td>";
-                // Do not generate the hits and referer in the dashboard widget.
-                $referer_td = "<td>$search->referer</td>";
+                $referrer_td = "<td>$search->referrer</td>";
 
                 //Generate the row with or without hits and referer, depending on where the table is generated
-                echo "<tr>" . $search_term_td . $search_time_td . $referer_td . "</tr>";
+                echo "<tr>" . $search_term_td . $search_time_td . $referrer_td . "</tr>";
 
             }
             ?>
@@ -581,6 +577,37 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        $search_url = home_url() . "?s=" . $term . "&searchinsights";
 	        return '<a href="'.$search_url.'" target="_blank">'.$term.'</a>';
         }
+
+
+
+
+	    public function get_date($unix)
+	    {
+
+            $date = date(get_option('date_format'), $unix);
+            $date = $this->localize_date($date);
+            $time = date(get_option('time_format'), $unix);
+            $date = sprintf(__("%s at %s", 'complianz-gdpr'), $date, $time);
+
+		    return $date;
+	    }
+
+	    /**
+         * Get translated date
+	     * @param $date
+	     *
+	     * @return mixed
+	     */
+	    public function localize_date($date)
+	    {
+		    $month = date('F', strtotime($date)); //june
+		    $month_localized = __($month); //juni
+		    $date = str_replace($month, $month_localized, $date);
+		    $weekday = date('l', strtotime($date)); //wednesday
+		    $weekday_localized = __($weekday); //woensdag
+		    $date = str_replace($weekday, $weekday_localized, $date);
+		    return $date;
+	    }
 
     /**
     *

@@ -104,19 +104,19 @@ if (!class_exists("wpsi_review")) {
 			?>s
 			<script type='text/javascript'>
                 jQuery(document).ready(function ($) {
-                    $(".wpdi-review.notice.is-dismissible").on("click", ".notice-dismiss", function (event) {
-                        rsssl_dismiss_review('dismiss');
+                    $(".wpsi-review.notice.is-dismissible").on("click", ".notice-dismiss", function (event) {
+                        wpsi_dismiss_review('dismiss');
                     });
-                    $(".wpdi-review.notice.is-dismissible").on("click", "#maybe-later", function (event) {
-                        rsssl_dismiss_review('later');
-                        $(this).closest('.wpdi-review').remove();
+                    $(".wpsi-review.notice.is-dismissible").on("click", "#maybe-later", function (event) {
+                        wpsi_dismiss_review('later');
+                        $(this).closest('.wpsi-review').remove();
                     });
-                    $(".wpdi-review.notice.is-dismissible").on("click", ".review-dismiss", function (event) {
-                        rsssl_dismiss_review('dismiss');
-                        $(this).closest('.wpdi-review').remove();
+                    $(".wpsi-review.notice.is-dismissible").on("click", ".review-dismiss", function (event) {
+                        wpsi_dismiss_review('dismiss');
+                        $(this).closest('.wpsi-review').remove();
                     });
 
-                    function rsssl_dismiss_review(type) {
+                    function wpsi_dismiss_review(type) {
                         var data = {
                             'action': 'dismiss_review_notice',
                             'type': type,
