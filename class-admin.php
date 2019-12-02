@@ -494,9 +494,16 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             'orderby' => 'frequency',
             'order' => 'DESC',
             'result_count' =>0,
+            'number' => 5,
+
         );
-        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args, $trend=true, 'MONTH', true); ?>
-        <?php foreach ($popular_items as $search ){
+        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args, $trend=true, 'MONTH', true);
+	    $tmpl = $this->get_template('dashboard-row.html');
+
+	    if (count($popular_items)==0){
+		    $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array('dashicons-no-alt',__("No recorded searches yet","wp-search-insights"), '', ''), $tmpl);
+	    }
+        foreach ($popular_items as $search ){
             if ($search->frequency==$search->previous_frequency){
                 $icon = 'dashicons-minus';
             } elseif ($search->frequency>$search->previous_frequency){
@@ -505,7 +512,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 $icon = 'dashicons-arrow-down-alt';
             }
             $time = sprintf(__("%s ago","wp-search-insights"), human_time_diff($search->time, current_time('timestamp')));
-            $tmpl = $this->get_template('dashboard-row.html');
             $searches = sprintf( _n( '%s search', '%s searches', $search->frequency, 'wpsi-search-insights' ), number_format_i18n( $search->frequency ) );
             $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array($icon,$this->get_term_link($search->term), $searches, $time), $tmpl);
         }
@@ -515,10 +521,15 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         $args = array(
             'orderby' => 'frequency',
             'order' => 'DESC',
+            'number' => 5,
+
         );
 	    $html = "";
-        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args, $trend=true, 'MONTH', true); ?>
-        <?php foreach ($popular_items as $search ){
+        $popular_items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args, $trend=true, 'MONTH', true);
+	    if (count($popular_items)==0){
+		    $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array('dashicons-no-alt',__("No recorded searches yet","wp-search-insights"), '', ''), $tmpl);
+	    }
+        foreach ($popular_items as $search ){
             if ($search->frequency==$search->previous_frequency){
                 $icon = 'dashicons-minus';
             } elseif ($search->frequency>$search->previous_frequency){
@@ -528,7 +539,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             }
             $time = sprintf(__("%s ago","wp-search-insights"), human_time_diff($search->time, current_time('timestamp')));
 
-            $tmpl = $this->get_template('dashboard-row.html');
             $searches = sprintf( _n( '%s search', '%s searches', $search->frequency, 'wpsi-search-insights' ), number_format_i18n( $search->frequency ) );
             $html .= str_replace(array("{icon}", "{link}", "{searches}","{time}"), array($icon,$this->get_term_link($search->term), $searches, $time ), $tmpl);
         }
