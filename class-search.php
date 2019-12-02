@@ -262,7 +262,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 * @return array $searches
 		 */
 
-		public function get_searches($args=array(), $trend=false, $trendperiod='MONTH', $cache=false){
+		public function get_searches($args=array(), $trend=false, $trendperiod='MONTH'){
 			$defaults = array(
 				'orderby' => 'frequency',
                 'order' => 'DESC',
