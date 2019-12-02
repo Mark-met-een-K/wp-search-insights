@@ -120,37 +120,12 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
             // Check if the term length is below minimum value option
             if ( (strlen($search_term) < (get_option('wpsi_min_term_length') ) ) && (get_option('wpsi_min_term_length') !== 0) ) {
-                //Update the option before each return, otherwise the get_option checks later on will fail
-                update_option('wpsi_latest_term', $search_term);
                 return;
             }
 
             if ( (strlen($search_term) > (get_option('wpsi_max_term_length') ) ) && (get_option('wpsi_max_term_length') !== 0 ) ) {
-                update_option('wpsi_latest_term', $search_term);
                 return;
             }
-
-            // Check if term starts with previous term and is exactly one character longer
-            if ( (strpos($search_term, get_option('wpsi_latest_term') ) === 0) && (abs(strlen($search_term) - strlen(get_option('wpsi_latest_term'))) === 1) ) {
-                update_option('wpsi_latest_term', $search_term);
-                return;
-            }
-
-            // Get the date and time. Required to prevent duplicate (spam) queries from being registered. See below.
-            // Subtract X seconds from the time to create a date slightly in the past.
-	        $time_minus_5_seconds = time() - 6;
-            // Date and time after subtraction
-
-            // Now compare the search term to the previous term and see if it's within the time minus X limit. If so, it's a duplicate search and we'll ignore it.
-            if (get_option('wpsi_latest_term') === $search_term && $time_minus_5_seconds < get_option('wpsi_latest_term_time')) {
-                // Update the latest search time option to keep up-to-date before returning. This option is updated at the end of the function when this condition hasn't been met.
-                update_option('wpsi_latest_term', $search_term);
-                return;
-            }
-
-            // Update these options with the latest search term and time
-            update_option('wpsi_latest_term', $search_term);
-            update_option('wpsi_latest_term_time', date("Y-m-d H:i:s"));
 
             $this->write_terms_to_db($search_term, $result_count);
 
@@ -169,20 +144,63 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		public function write_terms_to_db( $search_term, $result_count ) {
 
 			global $wpdb;
+			//check if this search was written with five seconds ago
+			$replace_search_term=false;
+			$old_search_term = $search_term;
+			$now = time();
+			$five_seconds_ago = $now-5;
+			$last_search = $this->get_last_search_term();
+
+			//exact match, ignore.
+			if ($last_search && $last_search->time > $five_seconds_ago && $last_search->term===$search_term){
+				return;
+			}
+
+			//differs only one character, overwrite existing entries with new search term
+			if ($last_search && $last_search->time > $five_seconds_ago && substr($search_term, 0, -1)===$last_search->term){
+				$replace_search_term = $last_search;
+				$old_search_term = $last_search->term;
+			}
 
 			// Write the search term to the single database which contains each query
-            $this->write_search_term_to_single_table( $search_term );
+			// if it's only one char different, it will replace the previous one.
+            $this->write_search_term_to_single_table( $search_term , $replace_search_term);
 
             // Check if search term exists in the archive database, if it does update the term count. Create a new entry otherwise
             $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-			$term_in_database = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name_archive WHERE term = %s", $search_term) );
+			$term_in_database = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name_archive WHERE term = %s", $old_search_term) );
 			if ( $term_in_database && $wpdb->num_rows > 0 ) {
 				// Exists, update the count in archive
-				$this->update_term_count( $search_term, $result_count);
+				// if it's one character different, update only term and result count, not frequency
+				if ($search_term !== $old_search_term){
+					$this->replace_term( $old_search_term, $search_term, $result_count);
+				} else {
+					$this->update_term_count( $search_term, $result_count);
+				}
 			} else {
 				// Doesn't exists, write a new entry to archive
 				$this->write_search_term_to_archive_table( $search_term, $result_count );
 			}
+		}
+
+		/**
+		 * Get the last term that has been added to the list.
+		 * @return object $row
+		 */
+
+		public function get_last_search_term(){
+			global $wpdb;
+			$table_name_archive = $wpdb->prefix . 'searchinsights_single';
+			$sql = "SELECT * FROM $table_name_archive ORDER BY ID DESC LIMIT 1";
+			$row = $wpdb->get_row($sql);
+			if (!$row) return false;
+
+			return $row;
+
+		}
+
+		public function get_duplicate_and_fuzzy($term){
+
 		}
 
 		/**
@@ -205,6 +223,28 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		}
 
 		/**
+		 * @param $search_term
+		 * @param $new_term
+		 * @param $result_count
+		 *
+		 * Update term count in archive table
+		 *
+		 * @since 1.0
+		 *
+		 */
+
+		public function replace_term( $search_term, $new_term, $result_count) {
+
+			global $wpdb;
+
+			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+			//Have to use query on INT because $wpdb->update assumes string.
+			$result_count = intval($result_count);
+			$time = time();
+			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", $new_term, $time, $search_term ) );
+		}
+
+		/**
 		 * Get searches
 		 * @param array $args
 		 * @return array $searches
@@ -216,6 +256,9 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
                 'order' => 'DESC',
                 'result_count' => false,
 				'number' => -1,
+				'term'=> false,
+				'time' => false,
+				'compare' => ">",
 			);
 			$args = wp_parse_args( $args,$defaults);
 			global $wpdb;
@@ -229,7 +272,16 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$orderby = sanitize_title($args['orderby']);
 			$where = '';
 			if ($args['result_count']!==FALSE){
-				$where = " AND result_count = ".intval($args['result_count']);
+				$where .= " AND result_count = ".intval($args['result_count']);
+			}
+			if ($args['term']){
+				$where .= $wpdb->prepare(' AND term = %s ',sanitize_text_field($args['term']));
+			}
+
+			if ($args['time']){
+				$compare = $args['compare']=='>' ? '>' : '<';
+				$time = intval($args['time']);
+				$where .=" AND time $compare $time ";
 			}
 			$searches =$wpdb->get_results( "SELECT * from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 
@@ -248,6 +300,9 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				'number' => -1,
 				'order' => 'DESC',
 				'orderby' => 'term',
+				'term'=> false,
+				'time' => false,
+				'compare' => ">",
 			);
 			$args = wp_parse_args( $args,$defaults);
 			global $wpdb;
@@ -260,7 +315,14 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$order = $args['order']=='ASC' ? 'ASC' : 'DESC';
 			$orderby = sanitize_title($args['orderby']);
 			$where = '';
-
+			if ($args['term']){
+				$where .= $wpdb->prepare(' AND term = %s ',sanitize_text_field($args['term']));
+			}
+			if ($args['time']){
+				$compare = $args['compare']=='>' ? '>' : '<';
+				$time = intval($args['time']);
+				$where .=" AND time $compare $time ";
+			}
 			$searches =$wpdb->get_results( "SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 
 			return $searches;
@@ -268,7 +330,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 		/**
 		 * @param $search_term
-         * @param $result_count
+         * @param $replace_search_term
 		 *
 		 * Write search term to single table. Any additional information such as time and referer is added here too
 		 *
@@ -276,19 +338,35 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 *
 		 */
 
-		public function write_search_term_to_single_table( $search_term  ) {
+		public function write_search_term_to_single_table( $search_term , $replace_search_term=false) {
 			global $wpdb;
 
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
-
-			$wpdb->insert(
-				$table_name_single,
-				array(
-					'time' => time(),
-					'term' => $search_term,
-					'referrer' => $this->get_referer(),
-				)
-			);
+			if (!$replace_search_term) {
+				$wpdb->insert(
+					$table_name_single,
+					array(
+						'time'     => time(),
+						'term'     => $search_term,
+						'referrer' => $this->get_referer(),
+					)
+				);
+			} else {
+				error_log("update single");
+				error_log(print_r($replace_search_term,true));
+				error_log("new term $search_term");
+				$wpdb->update(
+					$table_name_single,
+					array(
+						'term'     => $search_term,
+						'referrer' => $this->get_referer(),
+						'time'     => time(),
+					),
+					array(
+						'id' => $replace_search_term->id,
+					)
+				);
+			}
 		}
 
 		/**
