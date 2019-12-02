@@ -5,34 +5,57 @@
 /**
 widget
  */
-#wpsi-dashboard-widget{
-  .wpsi-widget-logo span {
-    padding:20px;
-  }
-  li {
-    padding-top:8px;
-    border-top: 1px solid #f2f2f2;
-  }
-  li .wpsi-frequency {
-    float:right;
-  }
-  li .wpsi-time{
-    margin-left:25px;
-    color:#666;
-  }
-  .dashicons-arrow-up-alt{
-          color:@color-success;
-  }
-  .dashicons-arrow-down-alt{
-    color:@color-error;
-  }
+#dashboard_widget_wpsi {
+  .inside {
+    padding:0;
 
-  #wpsi-dashboard-widget-footer {
-    margin-top: 0;
-    margin-bottom: -10px;
-    padding: 12px;
-    border-top: 1px solid #eee;
-    color: #ddd;
+  #wpsi-dashboard-widget{
+    h3 {
+      font-weight:600;
+      margin-top:10px;
+      margin-left:20px;
+    }
+    .wpsi-widget-logo {
+      margin-left:20px;
+      display:flex;
+      span {
+        padding: 10px;
+      }
+    }
+    ul {
+      background-color: #fafafa;
+      margin:0;
+    }
+    li {
+      border-top: 1px solid #eee;
+      margin: 0;
+      padding: 8px 12px;
+      color: #32373c;
+    }
+    li .wpsi-frequency {
+      float:right;
+      color:#666;
+
+    }
+    li .wpsi-time{
+      margin-left:25px;
+      color:#666;
+    }
+    .dashicons-arrow-up-alt{
+            color:@color-success;
+    }
+    .dashicons-arrow-down-alt{
+      color:@color-error;
+    }
+
+    #wpsi-dashboard-widget-footer {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 12px;
+      border-top: 1px solid #eee;
+      color: #ddd;
+    }
+  }
   }
 }
 /*
