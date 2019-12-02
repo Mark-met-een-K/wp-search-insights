@@ -270,22 +270,67 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         <?php
     }
 
-    public function option_wpsi_clear_database()
-    {
+
+
+    public function option_wpsi_clear_database() {
         add_thickbox();
-    ?>
+        ?>
+        <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
+        <style>
+            div#TB_window {
+                height: 260px;
+                width: 450px;
+            }
+
+            div#TB_ajaxWindowTitle {
+                line-height: 50px;
+            }
+
+            div#TB_ajaxContent {
+                font-size: 1.1em;
+            }
+
+            div#TB_title {
+                font-size: 1.2em;
+                font-weight: 900;
+                height: 50px;
+                background-color: #d7263d;
+                color: #f2f2f2;
+            }
+
+            span.tb-close-icon {
+                visibility: hidden;
+            }
+
+            span.tb-close-icon::before {
+                font-family: dashicons;
+                font-size: 2.3em;
+                line-height: 50px;
+                margin-left: -25px;
+                color: #f2f2f2;
+                visibility: visible;
+                display: inline-block;
+                /*content: '\e806';*/
+                content: "\f335";
+                /*content: url('../wp-content/plugins/wp-search-insights/assets/svg/cancel.svg');*/
+            }
+        </style>
+
         <div>
-            <input class="thickbox button" title="" type="button" style="display: block; float: left;" alt="#TB_inline?
-             height=170&width=400&inlineId=wpsi_clear_database" value="<?php echo __('Clear database', 'wp-search-insights'); ?>"/>
+            <input class="thickbox button"
+                   title="<?php _e( "You're about to clear your database!", "wp-search-insights" ); ?>"
+                   type="button" style="display: block;" alt="#TB_inline?
+         height=260&width=450&inlineId=wpsi_clear_database"
+                   value="<?php echo __( 'Clear database', 'wp-search-insights' ); ?>"/>
         </div>
         <div id="wpsi_clear_database" style="display: none;">
 
-            <h1 style="margin: 10px 0; text-align: center;"><?php _e("Are you sure?", "wp-search-insights") ?></h1>
-            <p><?php _e("Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables." , "wp-search-insights"); ?>"</p>
+            <h1 style="padding-top: 5px;"><?php _e( "Are you sure?", "wp-search-insights" ) ?></h1>
+            <p><?php _e( "Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables.", "wp-search-insights" ); ?></p>
 
             <?php
-            $token = wp_create_nonce('wpsi_clear_database');
-            $clear_db_link = admin_url("tools.php?page=wpsi-settings-page&action=clear_database&token=" . $token);
+            $token         = wp_create_nonce( 'wpsi_clear_database' );
+            $clear_db_link = admin_url( "tools.php?page=wpsi-settings-page&action=clear_database&token=" . $token );
 
             ?>
 
@@ -294,23 +339,25 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                     $('#wpsi_cancel_database_clearing').click(tb_remove);
                 });
             </script>
-            <a class="button" href="<?php echo $clear_db_link ?>" style="margin-right:25px">
-                <?php _e("I'm sure I want to clear the database", "wp-search-insights") ?>
+            <a class="button button-primary"
+               style="width: 130px; height: 25px; line-height: 25px; margin-right:25px; text-align: center; font-weight: 700;"
+               href="<?php echo $clear_db_link ?>">
+                <?php _e( "Clear database", "wp-search-insights" ) ?>
             </a>
 
-            <a class="button" href="#" id="wpsi_cancel_database_clearing">
-                <?php _e("Cancel", "wp-search-insights") ?>
+            <a class="button" style="height: 25px; line-height: 25px;" href="#" id="wpsi_cancel_database_clearing">
+                <?php _e( "Cancel", "wp-search-insights" ) ?>
             </a>
 
         </div>
         <?php
-        WP_Search_insights()->wpsi_help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
+        WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
         ?>
-    <?php
+        <?php
     }
 
 
-    /**
+		    /**
      *
      * Check if the clear database button is pressed
      *
