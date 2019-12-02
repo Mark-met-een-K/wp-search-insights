@@ -18,8 +18,8 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 			//Misschien moet deze juist wel als allerlaatste, dat de code uitgevoerd wordt na pageload
 			add_action( 'template_redirect', array( $this, 'get_regular_search' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-			add_action( 'init', array( $this, 'get_ajax_search') );
+			//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			//add_action( 'init', array( $this, 'get_ajax_search') );
 		}
 
 		static function this() {
@@ -37,7 +37,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
             wp_localize_script( 'search-insights-frontend-js', 'search_insights_ajax',
                 array(
                     'ajaxurl' => admin_url( 'admin-ajax.php' ),
-                    'token'   => wp_create_nonce( 'search_insights_nonce', 'token' ),
+                    'token'   => wp_create_nonce( 'search_insights_nonce'),
                 ) );
 		}
 
