@@ -1,4 +1,11 @@
-.shepherd-content header {
+.shepherd-element.shepherd-theme-arrows.shepherd-has-title .shepherd-content header {
   background-color: #d7263d;
+}
+.shepherd-element.shepherd-theme-arrows .shepherd-content header h3 {
+  color: white;
+  font-weight: 700;
+}
+.shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons li:last-child .shepherd-button {
+  font-weight: 700;
 }
 /*# sourceMappingURL=wpsi-tour.css.map */

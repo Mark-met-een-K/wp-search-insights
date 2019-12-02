@@ -3,6 +3,8 @@
 $('document').ready(function() {
 
 var tour;
+var pluginUrl = search_insights_tour_ajax.pluginUrl;
+console.log(pluginUrl);
 
 tour = new Shepherd.Tour({
     defaults: {
@@ -13,12 +15,13 @@ tour = new Shepherd.Tour({
 
 tour.addStep('wpsi-step-1', {
     title: 'We are recording your searches!',
-    text: '<span></span><b>Welcome to Search Insights, get insigth in what your visitors are looking for!</b>',
+    text: pluginUrl,
+    // text: '<span>pluginUrl,/"assets/images/logo.png"</span><b>Welcome to Search Insights</b>, get insigth in what your visitors are looking for!',
     attachTo: '.search-insights-most-popular bottom',
     classes: 'shepherd-theme-arrows',
     buttons: [
         {
-            text: 'Next',
+            text: 'Press here to start!',
             action: tour.next
         }
     ]

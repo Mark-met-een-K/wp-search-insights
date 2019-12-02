@@ -91,20 +91,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		        . 'assets/includes/tether/tether.min.js', "", wp_search_insights_version);
 	        wp_enqueue_script('wpsi-tether');
 
-//	        wp_register_script('wpsi-shepherd',
-//		        trailingslashit(wp_search_insights_url)
-//		        . 'assets/includes/tether-shepherd/shepherd.min.js', "", wp_search_insights_version);
-//	        wp_enqueue_script('wpsi-shepherd');
-
 	        wp_register_script('wpsi-shepherd',
 		        trailingslashit(wp_search_insights_url)
 		        . 'assets/includes/tether-shepherd/shepherd.min.js', "", wp_search_insights_version);
 	        wp_enqueue_script('wpsi-shepherd');
-
-	        wp_register_script('wpsi-shepherd-tour',
-		        trailingslashit(wp_search_insights_url)
-		        . 'assets/js/wpsi-tour.js', "", wp_search_insights_version);
-	        wp_enqueue_script('wpsi-shepherd-tour');
 
 	        wp_register_style('wpsi-shepherd',
 		        trailingslashit(wp_search_insights_url) . "assets/css/tether-shepherd/shepherd-theme-arrows.css", "",
@@ -112,9 +102,19 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        wp_enqueue_style('wpsi-shepherd');
 
 	        wp_register_style('wpsi-shepherd-tour',
-		        trailingslashit(wp_search_insights_url) . "assets/css/wpsi-tour.min.css", array("jquery"),
+		        trailingslashit(wp_search_insights_url) . "assets/css/wpsi-tour.min.css", "",
 		        wp_search_insights_version);
 	        wp_enqueue_style('wpsi-shepherd-tour');
+
+	        wp_register_script('wpsi-shepherd-tour',
+		        trailingslashit(wp_search_insights_url)
+		        . 'assets/js/wpsi-tour.js', "", wp_search_insights_version);
+	        wp_enqueue_script('wpsi-shepherd-tour');
+	        wp_localize_script( 'wpsi-shepherd-tour', 'search_insights_tour_ajax',
+		        array(
+			        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                    'pluginUrl' => plugin_dir_url( __FILE__ ),
+		        ) );
 
 	        // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
             if ($hook == 'index.php') return;
