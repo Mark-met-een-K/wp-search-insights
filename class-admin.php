@@ -49,7 +49,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        add_action( 'wp_ajax_dismiss_welcome_message', array( $this, 'dismiss_welcome_message_callback' ) );
         }
 
-	    $plugin = "wp_search_insights";
+	    $plugin = wp_search_insights_plugin;
         add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
@@ -106,21 +106,30 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
      * @param $links
      *
      * Create a settings link to show in plugins overview
-     *
+     * @return $links
      * @since 1.0
      */
 
     public function plugin_settings_link($links)
     {
         $settings_link = '<a href="tools.php?page=wpsi-settings-page">'
-            . _e("Settings", "wp-search-insights") . '</a>';
+            . __("Settings", "wp-search-insights") . '</a>';
         array_unshift($links, $settings_link);
 
         $faq_link
             = '<a target="_blank" href="https://wp-search-insights.com/knowledge-base/">'
-            . _e('Docs', 'wp-search-insights') . '</a>';
+            . __('Docs', 'wp-search-insights') . '</a>';
         array_unshift($links, $faq_link);
+
+//	    if (!defined("wpsi_pro_version")) {
+//		    if (!class_exists('RSSSL_PRO')) {
+//			    $premium_link = '<a target="_blank" href="https://wpsearchinsights.com/downloads/wp-searchinsights-pro/">' . __('Premium Support', 'really-simple-ssl') . '</a>';
+//			    array_unshift($links, $premium_link);
+//		    }
+//	    }
+	    return $links;
     }
+
 
     /**
      *
@@ -302,6 +311,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         ?>
         <?php
     }
+
 
 
 
