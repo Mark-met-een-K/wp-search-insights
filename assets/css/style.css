@@ -268,12 +268,6 @@ widget
 #wpsi-dashboard #term-link {
   text-decoration: none;
 }
-#wpsi-dashboard #search-insights-recent-table_wrapper .table-footer {
-  width: 80%;
-}
-#wpsi-dashboard #search-insights-most-popular-table_wrapper .table-footer {
-  width: 70%;
-}
 #wpsi-dashboard .table-footer {
   display: flex;
   align-items: center;
@@ -337,6 +331,34 @@ widget
   background: linear-gradient(to bottom, #fff 0%, #F6F6F6 100%);
   font-weight: 600;
   border: 1px solid black;
+}
+#wpsi-dashboard .wpsi-settings-intro {
+  display: inline-block;
+  padding-top: 10px;
+  margin-bottom: 25px;
+}
+#wpsi-dashboard .icon-cog-alt {
+  display: inline-block;
+  font-size: 2.3em;
+  color: #d7263d;
+  vertical-align: middle;
+}
+#wpsi-dashboard .wpsi-settings-intro-text {
+  font-size: 1.3em;
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+#wpsi-dashboard .rsp-image {
+  height: 35px;
+  margin-left: 10px;
+  margin-bottom: -12px;
+}
+#wpsi-dashboard .wpsi-save-button {
+  margin-left: 50px;
+}
+#wpsi-dashboard .form-table {
+  margin-left: 50px;
 }
 #wpsi-dashboard #settings td {
   display: flex;
