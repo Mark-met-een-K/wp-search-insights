@@ -117,7 +117,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         array_unshift($links, $settings_link);
 
         $faq_link
-            = '<a target="_blank" href="https://wp-search-insights.com/knowledge-base/">'
+            = '<a target="_blank" href=" https://wpsearchinsights.com/documentation/">'
             . __('Docs', 'wp-search-insights') . '</a>';
         array_unshift($links, $faq_link);
 
