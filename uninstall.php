@@ -4,7 +4,13 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     exit();
 }
 
-delete_all_options('wp_search_insights_options');
+if (!get_option('wpsi_cleardatabase')) exit();
+
+delete_all_options('wpsi_exclude_admin');
+delete_all_options('wpsi_min_term_length');
+delete_all_options('wpsi_max_term_length');
+delete_all_options('wpsi_welcome_message_shown');
+delete_all_options('search_insights_db_version');
 
 function delete_all_options($option_name) {
   delete_option( $option_name );
