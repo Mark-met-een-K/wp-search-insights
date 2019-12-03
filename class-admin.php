@@ -204,8 +204,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 	    add_settings_field(
 		    'wpsi_cleardatabase',
-		    __("Clear data on deactivation", 'wp-search-insights'),
-		    array($this, 'option_clear_database_on_deactivation'),
+		    __("Clear data on plugin uninstall", 'wp-search-insights'),
+		    array($this, 'option_clear_database_on_uninstall'),
 		    'wpsi-settings',
 		    'wpsi-settings-tab'
 	    );
@@ -258,7 +258,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
 
-    public function option_clear_database_on_deactivation()
+    public function option_clear_database_on_uninstall()
     {
         ?>
         <div class="tg-list-item">
