@@ -50,7 +50,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         }
 
 	    $plugin = wp_search_insights_plugin;
-	    add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
+
+        add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
 
@@ -210,9 +211,18 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             'wpsi-settings-tab'
         );
 
+	    add_settings_field(
+		    'wpsi_cleardatabase',
+		    __("Clear data on plugin uninstall", 'wp-search-insights'),
+		    array($this, 'option_clear_database_on_uninstall'),
+		    'wpsi-settings',
+		    'wpsi-settings-tab'
+	    );
+
         // Register our setting so that $_POST handling is done for us and
         // our callback function just has to echo the <input>
         register_setting('wpsi-settings-tab', 'wpsi_exclude_admin');
+        register_setting('wpsi-settings-tab', 'wpsi_cleardatabase');
         register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
 
@@ -256,6 +266,26 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     <?php
     }
 
+
+    public function option_clear_database_on_uninstall()
+    {
+        ?>
+        <div class="tg-list-item">
+            <label class="wpsi-switch">
+                <input name="wpsi_cleardatabase" type="hidden" value="0"/>
+
+                <input name="wpsi_cleardatabase" size="40" type="checkbox"
+                       value="1"  <?php checked(1, get_option('wpsi_cleardatabase'), true) ?> />
+                <span class="wpsi-slider wpsi-round"></span>
+            </label>
+
+            <?php
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables on deactivation.", "wp-search-insights"));
+            ?>
+        </div>
+        <?php
+    }
+
     public function option_min_term_length()
     {
         ?>
@@ -281,6 +311,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         ?>
         <?php
     }
+
 
 
 
@@ -385,6 +416,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         //check for action
         if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
             $this->clear_database_tables();
+	        delete_transient('wpsi_popular_searches');
         }
         wp_redirect(admin_url('tools.php?page=wpsi-settings-page'));exit;
     }

@@ -77,6 +77,8 @@ if (!class_exists("wpsi_review")) {
                 }
                 .wpsi-buttons-row {
                     margin-top:10px;
+                    display: flex;
+                    align-items: center;
                 }
             </style>
 			<div id="message" class="updated fade notice is-dismissible wpsi-review really-simple-plugins" style="border-left:4px solid #333">

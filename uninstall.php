@@ -4,13 +4,6 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     exit();
 }
 
-delete_all_options('wp_search_insights_options');
-
-function delete_all_options($option_name) {
-  delete_option( $option_name );
-  // For site options in Multisite
-  delete_site_option( $option_name );
-}
 
 /**
  *
@@ -23,13 +16,29 @@ function delete_all_options($option_name) {
 function remove_db_entries_on_uninstall()
 {
 
-    global $wpdb;
+	global $wpdb;
 
-    $table_name_single = $wpdb->prefix . 'searchinsights_single';
-    $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+	$table_name_single = $wpdb->prefix . 'searchinsights_single';
+	$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 
-    $wpdb->query("DROP TABLE IF EXISTS $table_name_single , $table_name_archive");
+	$wpdb->query("DROP TABLE IF EXISTS $table_name_single , $table_name_archive");
 
 }
 
-remove_db_entries_on_uninstall();
+if (get_option('wpsi_cleardatabase')) {
+	$options = array(
+		'wpsi_exclude_admin',
+		'wpsi_min_term_length',
+		'wpsi_max_term_length',
+		'wpsi_welcome_message_shown',
+		'search_insights_db_version',
+	);
+	foreach($options as $option_name){
+		delete_option( $option_name );
+		// For site options in Multisite
+		delete_site_option( $option_name );
+	}
+	remove_db_entries_on_uninstall();
+}
+
+
