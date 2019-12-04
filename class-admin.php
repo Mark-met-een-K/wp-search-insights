@@ -49,8 +49,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        add_action( 'wp_ajax_dismiss_welcome_message', array( $this, 'dismiss_welcome_message_callback' ) );
         }
 
-	    $plugin = "wp_search_insights";
-        add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
+	    $plugin = wp_search_insights_plugin;
+	    add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
 
@@ -68,6 +68,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     {
         global $search_insights_settings_page;
         // Enqueue assest when on index.php (WP dashboard) or plugins settings page
+
         if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
             wp_register_style('search-insights',
@@ -85,36 +86,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 trailingslashit(wp_search_insights_url)
                 . 'assets/js/datatables.min.js',  array("jquery"), wp_search_insights_version);
             wp_enqueue_script('datatables');
-
-	        wp_register_script('wpsi-tether',
-		        trailingslashit(wp_search_insights_url)
-		        . 'assets/includes/tether/tether.min.js', "", wp_search_insights_version);
-	        wp_enqueue_script('wpsi-tether');
-
-	        wp_register_script('wpsi-shepherd',
-		        trailingslashit(wp_search_insights_url)
-		        . 'assets/includes/tether-shepherd/shepherd.min.js', "", wp_search_insights_version);
-	        wp_enqueue_script('wpsi-shepherd');
-
-	        wp_register_style('wpsi-shepherd',
-		        trailingslashit(wp_search_insights_url) . "assets/css/tether-shepherd/shepherd-theme-arrows.css", "",
-		        wp_search_insights_version);
-	        wp_enqueue_style('wpsi-shepherd');
-
-	        wp_register_style('wpsi-shepherd-tour',
-		        trailingslashit(wp_search_insights_url) . "assets/css/wpsi-tour.min.css", "",
-		        wp_search_insights_version);
-	        wp_enqueue_style('wpsi-shepherd-tour');
-
-	        wp_register_script('wpsi-shepherd-tour',
-		        trailingslashit(wp_search_insights_url)
-		        . 'assets/js/wpsi-tour.js', "", wp_search_insights_version);
-	        wp_enqueue_script('wpsi-shepherd-tour');
-	        wp_localize_script( 'wpsi-shepherd-tour', 'search_insights_tour_ajax',
-		        array(
-			        'ajaxurl' => admin_url( 'admin-ajax.php' ),
-                    'pluginUrl' => plugin_dir_url( __FILE__ ),
-		        ) );
 
 	        // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
             if ($hook == 'index.php') return;
@@ -136,20 +107,27 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
      * @param $links
      *
      * Create a settings link to show in plugins overview
-     *
+     * @return $links
      * @since 1.0
+     *
      */
-
     public function plugin_settings_link($links)
     {
-        $settings_link = '<a href="tools.php?page=wpsi-settings-page">'
-            . _e("Settings", "wp-search-insights") . '</a>';
+        $settings_link = '<span class="wpsi-settings-link"></span><a href="tools.php?page=wpsi-settings-page">'
+                         . __("Settings", "wp-search-insights") . '</a></span>';
         array_unshift($links, $settings_link);
 
         $faq_link
-            = '<a target="_blank" href="https://wp-search-insights.com/knowledge-base/">'
-            . _e('Docs', 'wp-search-insights') . '</a>';
+            = '<a target="_blank" href=" https://wpsearchinsights.com/documentation/">'
+              . __('Docs', 'wp-search-insights') . '</a>';
         array_unshift($links, $faq_link);
+//	    if (!defined("wpsi_pro_version")) {
+//		    if (!class_exists('RSSSL_PRO')) {
+//			    $premium_link = '<a target="_blank" href="https://wpsearchinsights.com/downloads/wp-searchinsights-pro/">' . __('Premium Support', 'really-simple-ssl') . '</a>';
+//			    array_unshift($links, $premium_link);
+//		    }
+//	    }
+        return $links;
     }
 
     /**

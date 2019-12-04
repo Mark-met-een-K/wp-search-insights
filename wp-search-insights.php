@@ -38,6 +38,7 @@ class WP_SEARCH_INSIGHTS {
 
 	public $WP_Search_Insights_Search;
 	public $WP_Search_Insights_Admin;
+	public $tour;
 	public $review;
 
 	private function __construct() {
@@ -58,8 +59,8 @@ class WP_SEARCH_INSIGHTS {
 
 			if ( is_admin() ) {
 				self::$instance->review = new wpsi_review();
-				self::$instance->WP_Search_Insights_Admin
-					= new WP_Search_Insights_Admin();
+				self::$instance->WP_Search_Insights_Admin = new WP_Search_Insights_Admin();
+				self::$instance->tour = new wpsi_tour();
 			}
 
             if ( is_admin() ) {
@@ -93,6 +94,7 @@ class WP_SEARCH_INSIGHTS {
 			require_once( wp_search_insights_path . 'class-admin.php' );
             require_once( wp_search_insights_path . 'class-help.php' );
             require_once( wp_search_insights_path . 'class-review.php' );
+			require_once( wp_search_insights_path . 'class-tour.php' );
         }
 
 		require_once( wp_search_insights_path . 'class-search.php' );
@@ -105,11 +107,9 @@ class WP_SEARCH_INSIGHTS {
 			array( $this, 'search_insights_update_db_check' ) );
 
 		if ( is_admin() ) {
-			add_action( 'plugins_loaded',
-				array( self::$instance->WP_Search_Insights_Admin, 'init' ),
-				10 );
+			add_action( 'plugins_loaded', array( self::$instance->WP_Search_Insights_Admin, 'init' ), 10 );
+			add_action( 'plugins_loaded', array( self::$instance->tour, 'init' ), 10 );
 		}
-
 	}
 
 	/**
