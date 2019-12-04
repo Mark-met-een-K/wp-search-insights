@@ -416,6 +416,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         //check for action
         if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
             $this->clear_database_tables();
+	        delete_transient('wpsi_popular_searches');
         }
         wp_redirect(admin_url('tools.php?page=wpsi-settings-page'));exit;
     }
