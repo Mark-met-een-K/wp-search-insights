@@ -50,6 +50,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         }
 
 	    $plugin = wp_search_insights_plugin;
+
         add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
@@ -68,10 +69,11 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     {
         global $search_insights_settings_page;
         // Enqueue assest when on index.php (WP dashboard) or plugins settings page
+
         if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
             wp_register_style('search-insights',
-                trailingslashit(wp_search_insights_url) . "assets/css/style.css", "",
+                trailingslashit(wp_search_insights_url) . "assets/css/style.min.css", "",
                 wp_search_insights_version);
             wp_enqueue_style('search-insights');
 
@@ -86,7 +88,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 . 'assets/js/datatables.min.js',  array("jquery"), wp_search_insights_version);
             wp_enqueue_script('datatables');
 
-            // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
+	        // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
             if ($hook == 'index.php') return;
 
             wp_register_style('fontello',
@@ -108,28 +110,26 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
      * Create a settings link to show in plugins overview
      * @return $links
      * @since 1.0
+     *
      */
-
     public function plugin_settings_link($links)
     {
-        $settings_link = '<a href="tools.php?page=wpsi-settings-page">'
-            . __("Settings", "wp-search-insights") . '</a>';
+        $settings_link = '<span class="wpsi-settings-link"></span><a href="tools.php?page=wpsi-settings-page">'
+                         . __("Settings", "wp-search-insights") . '</a></span>';
         array_unshift($links, $settings_link);
 
         $faq_link
             = '<a target="_blank" href=" https://wpsearchinsights.com/documentation/">'
-            . __('Docs', 'wp-search-insights') . '</a>';
+              . __('Docs', 'wp-search-insights') . '</a>';
         array_unshift($links, $faq_link);
-
 //	    if (!defined("wpsi_pro_version")) {
 //		    if (!class_exists('RSSSL_PRO')) {
 //			    $premium_link = '<a target="_blank" href="https://wpsearchinsights.com/downloads/wp-searchinsights-pro/">' . __('Premium Support', 'really-simple-ssl') . '</a>';
 //			    array_unshift($links, $premium_link);
 //		    }
 //	    }
-	    return $links;
+        return $links;
     }
-
 
     /**
      *
@@ -575,6 +575,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	public function dashboard_row(){
 
     }
+
     public function generate_dashboard_widget( )
     {
         $widget = $this->get_template('dashboard-widget.php');
