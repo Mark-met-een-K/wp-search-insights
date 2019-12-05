@@ -76,7 +76,7 @@ class wpsi_tour {
 					. 'assets/js/wpsi-tour.js', "", wp_search_insights_version );
 				wp_enqueue_script( 'wpsi-shepherd-tour' );
 
-				$logo = "<span class='wpsi-tour-logo'><img class='wpsi-tour-logo' style='width: 70px; height: 70px;' src=" . wp_search_insights_url . "assets/images/logo.png'></span>";
+				$logo = '<span class="wpsi-tour-logo"><img class="wpsi-tour-logo" style="width: 70px; height: 70px;" src="' . wp_search_insights_url . 'assets/images/logo.png"></span>';
 
 				wp_localize_script( 'wpsi-shepherd-tour', 'search_insights_tour_ajax',
 					array(
