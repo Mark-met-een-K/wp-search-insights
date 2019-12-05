@@ -30,7 +30,6 @@ if (get_option('wpsi_cleardatabase')) {
 		'wpsi_exclude_admin',
 		'wpsi_min_term_length',
 		'wpsi_max_term_length',
-		'wpsi_welcome_message_shown',
 		'search_insights_db_version',
 	);
 	foreach($options as $option_name){

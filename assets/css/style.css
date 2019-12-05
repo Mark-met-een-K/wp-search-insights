@@ -53,6 +53,7 @@ widget
     *
  */
 #wpsi-dashboard {
+  padding-right: 15px;
   /*
       Navigation & tabs
    */
@@ -119,6 +120,9 @@ widget
   display: none;
   background: #ededed;
   padding: 15px;
+}
+#wpsi-dashboard .tab-content > div {
+  margin-left: 50px;
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;
@@ -336,6 +340,7 @@ widget
   display: inline-block;
   padding-top: 10px;
   margin-bottom: 25px;
+  margin-left: -58px;
 }
 #wpsi-dashboard .icon-cog-alt {
   display: inline-block;
@@ -354,11 +359,8 @@ widget
   margin-left: 10px;
   margin-bottom: -12px;
 }
-#wpsi-dashboard .wpsi-save-button {
-  margin-left: 50px;
-}
 #wpsi-dashboard .form-table {
-  margin-left: 50px;
+  padding-left: 50px;
 }
 #wpsi-dashboard #settings td {
   display: flex;
