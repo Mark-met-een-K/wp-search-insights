@@ -155,7 +155,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$replace_search_term=false;
 			$old_search_term = $search_term;
 			$now = $this->current_time();
-			$five_seconds_ago = $now-5;
+			$five_seconds_ago = $now-10;
 			$last_search = $this->get_last_search_term();
 
 			//exact match, ignore.
@@ -175,21 +175,23 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
             // Check if search term exists in the archive database, if it does update the term count. Create a new entry otherwise
             $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-			$term_in_database = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name_archive WHERE term = %s", $old_search_term) );
-			if ( $term_in_database && $wpdb->num_rows > 0 ) {
+			$old_term_in_database = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name_archive WHERE term = %s", $old_search_term) );
+			$old_term_exists = $old_term_in_database && $wpdb->num_rows > 0;
+			$current_term_in_database = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name_archive WHERE term = %s", $search_term) );
+			$current_term_exists = $current_term_in_database && $wpdb->num_rows > 0;
+
+			if ( $old_term_exists || $current_term_exists) {
 				// Exists, update the count in archive
 				// if it's one character different, update only term and result count, not frequency
-				if ($search_term !== $old_search_term){
+				if ($old_search_term && ($search_term !== $old_search_term)){
 					error_log("replace $old_search_term with $search_term");
 					$this->replace_term( $old_search_term, $search_term, $result_count);
 				} else {
 					error_log("update term count of $search_term");
-
 					$this->update_term_count( $search_term, $result_count);
 				}
 			} else {
 				error_log("does not exist yet, add new term for $search_term");
-
 				// Doesn't exists, write a new entry to archive
 				$this->write_search_term_to_archive_table( $search_term, $result_count );
 			}
@@ -254,6 +256,33 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$result_count = intval($result_count);
 			$time = $this->current_time();
 			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", sanitize_text_field($new_term), $time, sanitize_text_field($search_term) ) );
+
+
+			//now, in case we have double terms, do some clean up
+			$sql = $wpdb->prepare("select * from $table_name_archive where term = %s",$new_term);
+			$results = $wpdb->get_results($sql);
+			if (count($results)>1){
+				//get total frequency
+				$sql = $wpdb->prepare("select SUM(frequency) as frequency from $table_name_archive where term = %s",$new_term);
+				$frequency = $wpdb->get_var($sql);
+				$sql = $wpdb->prepare("select id from $table_name_archive where term = %s order by frequency DESC",$new_term);
+				$id = $wpdb->get_var($sql);
+
+				$IDS = wp_list_pluck($results, 'id');
+				if (($key = array_search($id, $IDS)) !== false) {
+					unset($IDS[$key]);
+				}
+				$sql = implode(' OR id =', $IDS);
+				$sql = "DELETE from $table_name_archive where id=".$sql;
+				$wpdb->query($sql);
+
+				$wpdb->update(
+					$table_name_archive,
+					array('frequency' => $frequency),
+					array('id' => $id)
+				);
+			}
+
 		}
 
 		/**
