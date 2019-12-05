@@ -39,7 +39,6 @@ class wpsi_tour {
 		if ( ! current_user_can( $this->capability ) ) {
 			return;
 		}
-		update_option('wpsi_tour_cancelled', false);
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 	}
