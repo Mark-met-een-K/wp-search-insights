@@ -21,6 +21,8 @@
         var recent_searches_text = search_insights_tour_ajax.recent_searches_text;
         var settings_title = search_insights_tour_ajax.settings_title;
         var settings_text = search_insights_tour_ajax.settings_text;
+        var finish_title = search_insights_tour_ajax.finish_title;
+        var finish_text = search_insights_tour_ajax.finish_text;
 
 
         plugins_overview_tour.options.defaults = main_tour.options.defaults = {
@@ -42,24 +44,17 @@
         plugins_overview_tour.addStep('intro', {
             // classes: 'wpsi-plugins-overview-tour-container shepherd-has-cancel-link',
             classes: 'shepherd-theme-arrows wpsi-plugins-overview-tour-container shepherd-has-cancel-link',
-            attachTo: '.wpsi-settings-link top',
+            attachTo: '.wpsi-settings-link right',
             title: plugins_overview_title,
             text: plugins_overview_text,
             buttons: [
-                // {
-                //     text: search_insights_tour_ajax.endTour,
-                //     action: plugins_overview_tour.cancel
-                // },
                 {
                     text: startTourtext,
                     action: function() {
                         window.location = search_insights_tour_ajax.linkTo;
                     }
-                }
-                // {
-                //     text: search_insights_tour_ajax.endTour,
-                //     action: main_tour.cancel
-                // },
+                },
+
             ],
         });
 
@@ -67,7 +62,7 @@
 
         main_tour.addStep('popular-searches', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            attachTo: '#search-insights-most-popular-table_wrapper bottom',
+            attachTo: '#search-insights-most-popular-table_info right',
             title: dashboard_title,
             text: dashboard_text,
             buttons: [
@@ -82,7 +77,7 @@
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: recent_searches_title,
             text: recent_searches_text,
-            attachTo: '#search-insights-recent-table_wrapper bottom',
+            attachTo: '#search-insights-recent-table_info right',
             buttons: [
                 {
                     text: search_insights_tour_ajax.backBtnText,
@@ -90,7 +85,12 @@
                 },
                 {
                     text: nextBtnText,
-                    action: main_tour.next
+                    action: function() {
+                        $('.tab-settings').click();
+                        main_tour.next();
+                    },
+
+
                 }
             ],
         });
@@ -99,6 +99,40 @@
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: settings_title,
             text: settings_text,
+            attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
+            buttons: [
+                {
+                    text: search_insights_tour_ajax.backBtnText,
+                    action: function() {
+                        $('.tab-dashboard').click();
+                        main_tour.back();
+                    },
+                },
+                {
+                    text: search_insights_tour_ajax.nextBtnText,
+                    action: main_tour.next
+                }
+                // {
+                //     text: nextBtnText,
+                //     action: main_tour.next
+                // }
+            ],
+            tetherOptions: {
+                constraints: [
+                    {
+                        to: 'scrollParent',
+                        attachment: 'together',
+                        pin: false
+                    }
+                ],
+                offset: '20px 0'
+            },
+        });
+
+        main_tour.addStep('settings', {
+            classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
+            title: finish_title,
+            text: finish_text,
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {

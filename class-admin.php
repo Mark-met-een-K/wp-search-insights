@@ -144,8 +144,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         $search_insights_settings_page = add_submenu_page(
                 'tools.php',
-            __("Search Insights", "wp-search-insights"), //page title
-            __("Search Insights", "wp-search-insights"), //submenu title
+            __("WP Search Insights", "wp-search-insights"), //page title
+            __("WP Search Insights", "wp-search-insights"), //submenu title
             $this->capability, //capability
             'wpsi-settings-page', //url
             array($this, 'settings_page')); //function
@@ -437,7 +437,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     <!--    Navigation-->
     <div class="wp-search-insights-container">
         <ul class="tabs">
-            <li class="tab-link current" data-tab="dashboard"><a class="tab-text" href="#dashboard#top">Dashboard</a></li>
+            <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top">Dashboard</a></li>
             <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
             <?php echo "<img class='rsp-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
         </ul>
@@ -753,7 +753,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	     $popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
          ?>
 
-         <table id="search-insights-most-popular-table">
+         <table id="search-insights-most-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
              <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
              <thead>
              <tr class="wpsi-thead-th">

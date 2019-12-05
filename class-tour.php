@@ -39,7 +39,7 @@ class wpsi_tour {
 		if ( ! current_user_can( $this->capability ) ) {
 			return;
 		}
-
+		update_option('wpsi_tour_cancelled', false);
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 	}
@@ -73,7 +73,7 @@ class wpsi_tour {
 
 				wp_register_script( 'wpsi-shepherd-tour',
 					trailingslashit( wp_search_insights_url )
-					. 'assets/js/wpsi-tour.js', "", wp_search_insights_version );
+					. 'assets/js/wpsi-tour.js', array('jquery'), wp_search_insights_version );
 				wp_enqueue_script( 'wpsi-shepherd-tour' );
 
 				$logo = '<span class="wpsi-tour-logo"><img class="wpsi-tour-logo" style="width: 70px; height: 70px;" src="' . wp_search_insights_url . 'assets/images/logo.png"></span>';
@@ -87,20 +87,24 @@ class wpsi_tour {
 						'endTour'       => __( "End tour", "wp-search-insights" ),
 						'backBtnText'   => __( "Previous", "wp-search-insights" ),
 						// Plugins overview tour start
-						'po_title'      => __( 'Welcome to Search Insights', 'wp-search-insights' ),
+						'po_title'      => __( 'Welcome to WP Search Insights', 'wp-search-insights' ),
 						'po_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><b>"
-						                   . __( 'Welcome to Search Insights', 'wp-search-insights' ) . "</b>" .  __( 'get insight in what your visitors are looking for!', 'wp-search-insights' ) . "</span></div>",
+						                   . __( 'Welcome to WP Search Insights', 'wp-search-insights' ) . "</b>" .  __( 'WP Search Insights will give you insights into your visitor\'s search behaviour. Let\'s take a look at the dashboard!', 'wp-search-insights' ) . "</span></div>",
 						'startTourtext' => __( "Start tour", "wp-search-insights" ),
 						'linkTo'        => admin_url( "tools.php?page=wpsi-settings-page" ),
 						// Dashboard step 1
-						'dashboard_title' => __( "Find out what your visitors are looking for", "wp-search-insights" ),
-						'dashboard_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><p>" . __('Search Insights is now tracking search activity on your site. The most popular search terms can be found in the sortable table above.', 'wp-search-insights') . "</p></span></div>",
+						'dashboard_title' => __( "Popular searches", "wp-search-insights" ),
+						'dashboard_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><p>" . __('WP Search Insights is now tracking search activity on your site. The most popular search terms will be displayed here.', 'wp-search-insights') . "</p></span></div>",
 						// Main tour step 2
-						'recent_searches_title' => __( "Never miss a search", "wp-search-insights" ),
-						'recent_searches_text'  => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('The recent searches section shows all recorder searches. It also displays when the search was made and from which post or page it originated.' ,'wp-search-insights') . "</span></div>",
+						'recent_searches_title' => __( "Recent searches", "wp-search-insights" ),
+						'recent_searches_text'  => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('The recent searches section shows all recorded searches. It also displays when the search was made and from which post or page it originated.' ,'wp-search-insights') . "</span></div>",
 						// Main tour step 3
-						'settings_title' => 'Configure Search Insights',
+						'settings_title' => __('Configure WP Search Insights','wp-search-insights'),
 						'settings_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('The plugin can be configured to your liking in the settings menu. Exclude searches made by administrators, short or long terms and more.', 'wp-search-insights') . "</span></div>",
+						// Main tour step 4
+						'finish_title' => __('Start using WP Search Insights!','wp-search-insights'),
+						'finish_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('Search tracking is already enabled. You can just relax, and in a few days, check back to see the results!', 'wp-search-insights') . "</span></div>",
+
 					) );
 			}
 		}
