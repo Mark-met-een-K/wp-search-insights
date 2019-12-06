@@ -48,7 +48,6 @@ class wpsi_tour {
 		if ( ! get_option( 'wpsi_tour_cancelled' ) ) {
 
 			global $search_insights_settings_page;
-			error_log(print_r($hook,true));
 			if ( $hook == 'plugins.php' || $hook == $search_insights_settings_page || $hook=='index.php' ) {
 				wp_register_script( 'wpsi-tether',
 					trailingslashit( wp_search_insights_url )
@@ -87,28 +86,28 @@ class wpsi_tour {
 						'backBtnText'   => __( "Previous", "wp-search-insights" ),
 						// Plugins overview tour start
 						'po_title'      => __( 'Welcome to WP Search Insights', 'wp-search-insights' ),
-						'po_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><b>"
-						                   . __( 'Welcome to WP Search Insights', 'wp-search-insights' ) . "</b>" .  __( 'WP Search Insights will give you insights into your visitor\'s search behaviour. Let\'s take a look at the dashboard!', 'wp-search-insights' ) . "</span></div>",
+						'po_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>"
+						                    .  __( 'WP Search Insights will give you insights into your visitor\'s search behaviour. Let\'s take a look at the dashboard!', 'wp-search-insights' ) . "</span></div>",
 						'startTourtext' => __( "Start tour", "wp-search-insights" ),
 						'linkToDashboard'  => admin_url( "index.php" ),
 
 						//show dashboard widget
 						'widget_title'      => __( 'Dashboard widget', 'wp-search-insights' ),
-						'widget_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><b>"
-						                   . __( 'Dashboard widget', 'wp-search-insights' ) . "</b>" .  __( 'Your dashboard widget will show you the search trends, top 5 searches without results, and top 5 searches. You can quickly access your dashboard from here.', 'wp-search-insights' ) . "</span></div>",
+						'widget_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>"
+						                    .  __( 'Your dashboard widget will show you the search trends, top 5 searches without results and top 5 searches. You can quickly access your dashboard from here.', 'wp-search-insights' ) . "</span></div>",
 						'linkToSettings'        => admin_url( "tools.php?page=wpsi-settings-page" ),
 						// Dashboard step 2
 						'dashboard_title' => __( "Popular searches", "wp-search-insights" ),
-						'dashboard_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><p>" . __('WP Search Insights is has already started search activity on your site. The most popular search terms will be displayed here.', 'wp-search-insights') . "</p></span></div>",
+						'dashboard_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'><p>" . __('WP Search Insights is recording your searches. The most popular search terms will be displayed here.', 'wp-search-insights') . "</p></span></div>",
 						// Main tour step 3
 						'recent_searches_title' => __( "Recent searches", "wp-search-insights" ),
 						'recent_searches_text'  => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('The recent searches section shows all recorded searches. It also displays when the search was made and from which post or page it originated.' ,'wp-search-insights') . "</span></div>",
 						// Main tour step 4
 						'settings_title' => __('Configure WP Search Insights','wp-search-insights'),
-						'settings_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('The plugin can be configured to your liking in the settings menu. Exclude searches made by administrators, short or long terms and more.', 'wp-search-insights') . "</span></div>",
+						'settings_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('Exclude admin searches and configure character length for short and longer queries.', 'wp-search-insights') . "</span></div>",
 						// Main tour step 5
 						'finish_title' => __('Start using WP Search Insights!','wp-search-insights'),
-						'finish_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('Search tracking is already enabled. You can just relax, and in a few days, check back to see the results!', 'wp-search-insights') . "</span></div>",
+						'finish_text'=> "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>" . __('The tour has ended. Please come back in a few days to see the results.', 'wp-search-insights') . "</span></div>",
 
 					) );
 			}
