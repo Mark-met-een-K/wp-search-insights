@@ -21,8 +21,9 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 			//Misschien moet deze juist wel als allerlaatste, dat de code uitgevoerd wordt na pageload
 			add_action( 'template_redirect', array( $this, 'get_regular_search' ) );
-			//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-			//add_action( 'init', array( $this, 'get_ajax_search') );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			add_action( 'wp_ajax_nopriv_wpsi_process_search', array( $this, 'get_ajax_search') );
+			add_action( 'wp_ajax_wpsi_process_search', array( $this, 'get_ajax_search') );
 		}
 
 		static function this() {
@@ -80,8 +81,8 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 		public function get_ajax_search() {
 
-            //Check and verify nonce
-            if (!isset($_POST['token']) || !wp_verify_nonce($_POST['token'], 'search_insights_nonce') ) return;
+			//Check and verify nonce
+            if (!isset($_POST['token']) || !wp_verify_nonce($_POST['token'], 'search_insights_nonce') ) exit;
 
             if (isset($_POST['searchterm'])) {
                 $search_term = sanitize_text_field($_POST['searchterm']);
@@ -90,7 +91,10 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
                 $result_count = $search_query->found_posts;
                 $this->process_search_term($search_term, $result_count);
             }
+            exit;
         }
+
+
 
         /**
          * @param $search_term
@@ -480,6 +484,8 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		public function get_referer() {
 			$referrer = wp_get_referer();
 
+			$uri_parts = explode('?', $referrer, 2);
+			if ($uri_parts && isset($uri_parts[0])) $referrer = $uri_parts[0];
 			$post_id = url_to_postid($referrer);
 			if ($post_id){
 				return get_the_title($post_id);
