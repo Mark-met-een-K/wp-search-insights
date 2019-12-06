@@ -6,7 +6,7 @@
  * Version: 1.0.0
  * Text Domain: wp-search-insights
  * Domain Path: /languages
- * Author: Mark Wolters,
+ * Author: Mark Wolters, Rogier Lankhorst
  * Author URI: https://www.wpsearchinsights.com
  */
 
