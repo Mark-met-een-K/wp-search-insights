@@ -7,7 +7,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     private static $_this;
 
-    public $capability = 'activate_plugins';
+    public $capability = 'edit_posts';
 
     function __construct()
     {
@@ -457,7 +457,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 </div>
             </div>
         </div>
-<!--    Settings tab    -->
+        <!--    Settings tab    -->
         <div id="settings" class="tab-content">
             <div>
             <form action="options.php" method="post">
@@ -530,7 +530,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     */
 
     public function add_wpsi_dashboard_widget() {
-        wp_add_dashboard_widget('dashboard_widget_wpsi', 'WP Search Insights', array($this, 'generate_dashboard_widget') ) ;
+	    if (!current_user_can($this->capability)) return;
+
+	    wp_add_dashboard_widget('dashboard_widget_wpsi', 'WP Search Insights', array($this, 'generate_dashboard_widget') ) ;
     }
 
 
@@ -667,15 +669,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             <?php
             // Start generating rows
             foreach ($recent_searches as $search) {
-
-                // Show the full time on dashboard, shorten the time on the dashboard widget.
-                //if (!$dashboard_widget) {
-                    $search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
-               // } else {
-                    //Create a human readable timestamp
-//                    $time_diff = human_time_diff($search->time, current_time('timestamp'));
-//                    $search_time_td = "<td data-label='When'>".sprintf(__("%s ago","wp-search-insights"), $time_diff)."</td>";
-                //}
+                $search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
 
 	            //Add &searchinsights to 'see results' link to prevent it from counting as search;
 	            $link = $this->get_term_link($search->term);

@@ -44,6 +44,9 @@ class wpsi_tour {
 	}
 
 	public function enqueue_assets($hook) {
+		if (!current_user_can('edit_posts')) {
+			return;
+		}
 
 		if ( ! get_option( 'wpsi_tour_cancelled' ) ) {
 
