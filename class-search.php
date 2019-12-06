@@ -155,6 +155,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			global $wpdb;
 			//check if this search was written with five seconds ago
 			$replace_search_term=false;
+			$search_term = sanitize_text_field($search_term);
 			$old_search_term = $search_term;
 			$now = $this->current_time();
 			$five_seconds_ago = $now-10;
@@ -250,11 +251,14 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 
 			global $wpdb;
 
+			$new_term = sanitize_text_field($new_term);
+			$search_term = sanitize_text_field($search_term);
+
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			//Have to use query on INT because $wpdb->update assumes string.
 			$result_count = intval($result_count);
 			$time = $this->current_time();
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", sanitize_text_field($new_term), $time, sanitize_text_field($search_term) ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET term=%s, time=%s, result_count=$result_count WHERE term = %s", $new_term, $time, $search_term ) );
 
 
 			//now, in case we have double terms, do some clean up
@@ -287,6 +291,8 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		/**
 		 * Get searches
 		 * @param array $args
+		 * @param bool $trend
+		 * @param string $trendperiod
 		 * @return array $searches
 		 */
 
