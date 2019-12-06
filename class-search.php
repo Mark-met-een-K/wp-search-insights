@@ -31,13 +31,11 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		}
 
 		public function enqueue_assets() {
-
+			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
             wp_register_script( 'search-insights-frontend-js',
                 trailingslashit( wp_search_insights_url )
-                . 'assets/js/frontend.js', array('jquery'), wp_search_insights_version );
-
+                . "assets/js/frontend$minified.js", array('jquery'), wp_search_insights_version , true);
             wp_enqueue_script( 'search-insights-frontend-js' );
-
             wp_localize_script( 'search-insights-frontend-js', 'search_insights_ajax',
                 array(
                     'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -188,14 +186,11 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				// Exists, update the count in archive
 				// if it's one character different, update only term and result count, not frequency
 				if ($old_search_term && ($search_term !== $old_search_term)){
-					error_log("replace $old_search_term with $search_term");
 					$this->replace_term( $old_search_term, $search_term, $result_count);
 				} else {
-					error_log("update term count of $search_term");
 					$this->update_term_count( $search_term, $result_count);
 				}
 			} else {
-				error_log("does not exist yet, add new term for $search_term");
 				// Doesn't exists, write a new entry to archive
 				$this->write_search_term_to_archive_table( $search_term, $result_count );
 			}
