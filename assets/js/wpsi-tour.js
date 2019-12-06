@@ -1,11 +1,9 @@
-(function ($) {
-
-    $('document').ready(function() {
-
+jQuery(document).ready(function($) {
         if (!window.Shepherd) return;
 
-        var plugins_overview_tour = window.wpsi_plugins_overview_tour = new Shepherd.Tour();
-        var main_tour = window.wpsi_main_tour = new Shepherd.Tour();
+        var plugins_overview_tour = new Shepherd.Tour();
+        var widget_tour = new Shepherd.Tour();
+        var main_tour = new Shepherd.Tour();
 
         // Localized variables
         var startTourtext = search_insights_tour_ajax.startTourtext;
@@ -14,6 +12,8 @@
 
         var plugins_overview_title = search_insights_tour_ajax.po_title;
         var plugins_overview_text = search_insights_tour_ajax.po_text;
+        var widget_title = search_insights_tour_ajax.widget_title;
+        var widget_text = search_insights_tour_ajax.widget_text;
         var dashboard_title = search_insights_tour_ajax.dashboard_title;
         var dashboard_text = search_insights_tour_ajax.dashboard_text;
 
@@ -25,8 +25,14 @@
         var finish_text = search_insights_tour_ajax.finish_text;
 
 
-        plugins_overview_tour.options.defaults = main_tour.options.defaults = {
+        plugins_overview_tour.options.defaults = widget_tour.options.defaults = main_tour.options.defaults = {
             classes: 'shepherd-theme-arrows',
+            scrollTo: true,
+            scrollToHandler: function(e) {
+                $('html, body').animate({
+                    scrollTop: $(e).offset().top-200
+                }, 1000);
+            },
             showCancelLink: true,
             tetherOptions: {
                 constraints: [
@@ -42,7 +48,6 @@
         // Plugins overview tour
 
         plugins_overview_tour.addStep('intro', {
-            // classes: 'wpsi-plugins-overview-tour-container shepherd-has-cancel-link',
             classes: 'shepherd-theme-arrows wpsi-plugins-overview-tour-container shepherd-has-cancel-link',
             attachTo: '.wpsi-settings-link right',
             title: plugins_overview_title,
@@ -51,7 +56,26 @@
                 {
                     text: startTourtext,
                     action: function() {
-                        window.location = search_insights_tour_ajax.linkTo;
+                        window.location = search_insights_tour_ajax.linkToDashboard;
+                    }
+                },
+
+            ],
+        });
+
+        //widget
+
+
+        widget_tour.addStep('widget', {
+            classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
+            attachTo: '.wpsi-widget-logo right',
+            title: widget_title,
+            text: widget_text,
+            buttons: [
+                {
+                    text: nextBtnText,
+                    action: function() {
+                        window.location = search_insights_tour_ajax.linkToSettings;
                     }
                 },
 
@@ -66,6 +90,12 @@
             title: dashboard_title,
             text: dashboard_text,
             buttons: [
+                {
+                    text: backBtnText,
+                    action: function() {
+                        window.location = search_insights_tour_ajax.linkToDashboard;
+                    }
+                },
                 {
                     text: nextBtnText,
                     action: main_tour.next
@@ -160,6 +190,7 @@
             },
         });
 
+        widget_tour.on('cancel', cancel_tour);
         plugins_overview_tour.on('cancel', cancel_tour);
         main_tour.on('cancel', cancel_tour);
 
@@ -192,6 +223,9 @@
             plugins_overview_tour.start();
         }
 
-    });
+        if ($('.wpsi-widget-logo').length) {
+            widget_tour.start();
+        }
 
-})(jQuery);
+
+});

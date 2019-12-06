@@ -478,7 +478,16 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 */
 
 		public function get_referer() {
-			return get_the_title(url_to_postid(wp_get_referer()));
+			$referrer = wp_get_referer();
+
+			$post_id = url_to_postid($referrer);
+			if ($post_id){
+				return get_the_title($post_id);
+			} elseif (trailingslashit($referrer)==trailingslashit(site_url())) {
+				return __('Home','wp-search-insights');
+			} else {
+				return str_replace(site_url(), '', $referrer);
+			}
 		}
 
 	}//Class closure
