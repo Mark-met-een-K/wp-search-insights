@@ -1,11 +1,9 @@
 jQuery(document).ready(function ($) {
     "use strict";
-
     //Input type search is default WP
     var input_type_search = $('input[type="search"]');
     //Elementor and some themes use input name=s
     var input_name_search = $('input[name="s"]');
-
     var term = "";
     listen_for_search();
 
