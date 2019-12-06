@@ -94,7 +94,7 @@ class wpsi_tour {
 						//show dashboard widget
 						'widget_title'      => __( 'Dashboard widget', 'wp-search-insights' ),
 						'widget_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>"
-						                    .  __( 'Your dashboard widget will show you the search trends, top 5 searches without results and top 5 searches. You can quickly access your dashboard from here.', 'wp-search-insights' ) . "</span></div>",
+						                    .  __( 'Your dashboard widget will show you the top 5 searches without results, and top 5 searches overall. You can quickly access your dashboard from here.', 'wp-search-insights' ) . "</span></div>",
 						'linkToSettings'        => admin_url( "tools.php?page=wpsi-settings-page" ),
 						// Dashboard step 2
 						'dashboard_title' => __( "Popular searches", "wp-search-insights" ),
