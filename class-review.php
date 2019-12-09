@@ -163,7 +163,11 @@ if (!class_exists("wpsi_review")) {
 		{
 			check_ajax_referer('wpsi_dismiss_review', 'token');
 
-			$type = isset($_POST['type']) ? $_POST['type'] : false;
+			if (isset($_POST['type'])) {
+				$type = sanitize_title( $_POST['type'] );
+            } else {
+			    $type = false;
+            }
 
 			if ($type === 'dismiss') {
 				update_option('wpsi_review_notice_shown',true);
