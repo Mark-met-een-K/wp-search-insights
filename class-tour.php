@@ -16,6 +16,10 @@ class wpsi_tour {
 		}
 
 		self::$_this = $this;
+		if ( ! current_user_can( $this->capability ) ) {
+			return;
+		}
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 		add_action( 'init', array( $this, 'listen_for_cancel_tour') );
 
@@ -26,22 +30,6 @@ class wpsi_tour {
 		return self::$_this;
 	}
 
-	/**
-	 * Initializes the admin class
-	 *
-	 * @since  1.0
-	 *
-	 * @access public
-	 *
-	 */
-
-	public function init() {
-		if ( ! current_user_can( $this->capability ) ) {
-			return;
-		}
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-
-	}
 
 	public function enqueue_assets($hook) {
 

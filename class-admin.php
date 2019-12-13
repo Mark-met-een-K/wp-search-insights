@@ -16,48 +16,40 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 'wp-search-insights'), get_class($this)));
         }
 
+
+
+
         self::$_this = $this;
+	    if (!current_user_can($this->capability)) {
+		    return;
+	    }
+
+	    add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+	    add_action('admin_menu', array($this, 'add_settings_page'), 40);
+
+	    $plugin = wp_search_insights_plugin;
+
+	    add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
+
+	    add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+
+	    add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
+
+	    add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
+	    add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
+	    add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
+
+	    add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
     }
 
     static function this()
     {
         return self::$_this;
-    }
-
-    /**
-     * Initializes the admin class
-     *
-     * @since  1.0
-     *
-     * @access public
-     *
-     */
-
-    public function init()
-    {
-        if (!current_user_can($this->capability)) {
-            return;
-        }
-
-        add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
-        add_action('admin_menu', array($this, 'add_settings_page'), 40);
-
-	    $plugin = wp_search_insights_plugin;
-
-        add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
-
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
-
-        add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
-
-        add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
-        add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
-        add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
-
-        add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
     }
+
+
 
     public function enqueue_assets($hook)
     {
@@ -144,8 +136,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         $search_insights_settings_page = add_submenu_page(
                 'tools.php',
-            __("WP Search Insights", "wp-search-insights"), //page title
-            __("WP Search Insights", "wp-search-insights"), //submenu title
+            "WP Search Insights", //page title
+            "WP Search Insights", //submenu title
             $this->capability, //capability
             'wpsi-settings-page', //url
             array($this, 'settings_page')); //function
@@ -433,7 +425,18 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     ?>
+
+
+
         <div id="wpsi-dashboard">
+
+
+
+
+
+
+
+
     <!--    Navigation-->
     <div class="wp-search-insights-container">
         <ul class="tabs">
@@ -443,19 +446,49 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         </ul>
     </div>
     <div class="wp-search-insights-main">
+
+
+
+
+
     <!--    Dashboard tab   -->
         <div id="dashboard" class="tab-content current">
-            <div class="search-insights-dashboard">
-                <div class="search-insights-most-popular-searches search-insights-table">
-                    <div class="search-insights-most-popular search-insights-table">
-                       <?php $this->generate_popular_table(); ?>
-                    </div>
-                </div>
 
-                <div class="search-insights-recent-searches search-insights-table">
-		            <?php $this->generate_recent_table(); ?>
+
+
+            <div class="grid">
+                <div class="item" data-id="1">
+                    <div class="item-content"><?php //$this->generate_popular_table(); ?></div>
+                </div>
+                <div class="item" data-id="2">
+                    <div class="item-content">2</div>
+                </div>
+                <div class="item" data-id="3">
+                    <div class="item-content">3</div>
+                </div>
+                <div class="item" data-id="4">
+                    <div class="item-content">4</div>
+                </div>
+                <div class="item" data-id="5">
+                    <div class="item-content">5</div>
+                </div>
+                <div class="item" data-id="6">
+                    <div class="item-content">6</div>
                 </div>
             </div>
+
+
+<!--            <div class="search-insights-dashboard">-->
+<!--                <div class="search-insights-most-popular-searches search-insights-table">-->
+<!--                    <div class="search-insights-most-popular search-insights-table">-->
+<!--                       --><?php //$this->generate_popular_table(); ?>
+<!--                    </div>-->
+<!--                </div>-->
+<!---->
+<!--                <div class="search-insights-recent-searches search-insights-table">-->
+<!--		            --><?php //$this->generate_recent_table(); ?>
+<!--                </div>-->
+<!--            </div>-->
         </div>
 <!--    Settings tab    -->
         <div id="settings" class="tab-content">
