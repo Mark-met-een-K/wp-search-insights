@@ -7,11 +7,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     private static $_this;
 
-    public $capability = 'activate_plugins';
+    public $capability;
 
     function __construct()
     {
-        if (isset(self::$_this)) {
+
+	    if (isset(self::$_this)) {
             wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.',
                 'wp-search-insights'), get_class($this)));
         }
@@ -36,7 +37,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function init()
     {
-        if (!current_user_can($this->capability)) {
+
+	    $this->capability = get_option('wpsi_select_dashboard_capability');
+
+	    if (!current_user_can($this->capability)) {
             return;
         }
 
@@ -49,13 +53,16 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
 
-        add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
+        if (current_user_can('manage_options')) {
+	        add_action( 'update_option_wpsi_exclude_admin', array( $this, 'redirect_to_settings_tab' ) );
+	        add_action( 'update_option_wpsi_min_term_length', array( $this, 'redirect_to_settings_tab' ) );
+	        add_action( 'update_option_wpsi_max_term_length', array( $this, 'redirect_to_settings_tab' ) );
+	        add_action( 'update_option_wpsi_select_dashboard_capability', array( $this, 'redirect_to_settings_tab' ) );
 
-        add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
-        add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
-        add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
+	        add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
+        }
 
-        add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
+	    add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
     }
 
@@ -161,7 +168,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function wpsi_settings_section_and_fields()
     {
-        if (!current_user_can($this->capability)) return;
+        if (!current_user_can('manage_options')) return;
 
         // Add a settings section to the 'Settings' tab
         add_settings_section(
@@ -181,6 +188,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             'wpsi-settings-tab'
         );
 
+
         add_settings_field(
             'min_search_length',
             __("Exclude searches shorter than characters", 'wp-search-insights'),
@@ -196,6 +204,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             'wpsi-settings',
             'wpsi-settings-tab'
         );
+
+	    add_settings_field(
+		    'wpsi_select_dashboard_capability',
+		    __("Who can view the dashboard", 'wp-search-insights'),
+		    array($this, 'option_wpsi_select_dashboard_capability'),
+		    'wpsi-settings',
+		    'wpsi-settings-tab'
+	    );
 
         add_settings_field(
             'clear_database',
@@ -219,6 +235,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         register_setting('wpsi-settings-tab', 'wpsi_cleardatabase');
         register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
+        register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
 
     }
 
@@ -258,6 +275,22 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             ?>
         </div>
     <?php
+    }
+
+    public function option_wpsi_select_dashboard_capability()
+    {
+        ?>
+            <label class="wpsi-select-capability">
+                <select name="wpsi_select_dashboard_capability" id="wpsi_select_dashboard_capability">
+                    <option value="activate_plugins" <?php if ( get_option('wpsi_select_dashboard_capability') == 'activate_plugins')  echo 'selected="selected"'; ?>><?php _e('Administrators', 'wp-search-insights');?></option>
+                    <option value="edit_others_posts" <?php if ( get_option('wpsi_select_dashboard_capability') == 'edit_others_posts') echo 'selected="selected"'; ?>><?php _e('Editors', 'wp-search-insights');?></option>
+                    <option value="edit_posts" <?php if ( get_option('wpsi_select_dashboard_capability') == 'edit_posts') echo 'selected="selected"'; ?>><?php _e('Authors', 'wp-search-insights');?></option>
+                </select>
+            </label>
+            <?php
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Choose the minimum capability of user roles who can visit the dashboard. When selecting Editor, all editors and above (administrators) can view the dashboard. Settings are only be available for administratos.", "wp-search-insights"));
+            ?>
+        <?php
     }
 
 
@@ -305,9 +338,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         ?>
         <?php
     }
-
-
-
 
     public function option_wpsi_clear_database() {
         add_thickbox();
@@ -403,7 +433,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     public function listen_for_clear_database()
     {
 
-        if (!current_user_can($this->capability)) return;
+        // Capability is checked before adding action for this function
 
         //check nonce
         if (!isset($_GET['token']) || (!wp_verify_nonce($_GET['token'], 'wpsi_clear_database'))) return;
@@ -433,12 +463,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     ?>
-        <div id="wpsi-dashboard">
+    <div id="wpsi-dashboard">
     <!--    Navigation-->
     <div class="wp-search-insights-container">
         <ul class="tabs">
             <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top">Dashboard</a></li>
+            <?php if (current_user_can('manage_options') ) { ?>
             <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
+            <?php } ?>
             <?php echo "<img class='rsp-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
         </ul>
     </div>
@@ -458,6 +490,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             </div>
         </div>
 <!--    Settings tab    -->
+	    <?php if (current_user_can('manage_options') ) { ?>
         <div id="settings" class="tab-content">
             <div>
             <form action="options.php" method="post">
@@ -473,8 +506,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             </form>
             </div>
         </div>
+	    <?php } ?>
     </div>
-        </div>
+    </div>
     <?php
     }
 
