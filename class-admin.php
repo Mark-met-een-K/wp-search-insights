@@ -288,7 +288,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 </select>
             </label>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("Choose the minimum capability of user roles who can visit the dashboard. When selecting Editor, all editors and above (administrators) can view the dashboard. Settings are only be available for administratos.", "wp-search-insights"));
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Choose the minimum capability of user roles who can visit the dashboard. When selecting authors, all authors and above (administrators and editors) can view the dashboard. Settings are only be available for administrators.", "wp-search-insights"));
             ?>
         <?php
     }
