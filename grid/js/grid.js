@@ -5,8 +5,41 @@ jQuery(document).ready(function($) {
     function initGrid() {
         var grid = new Muuri('.grid', {
             dragEnabled: true,
+            dragSortHeuristics: {
+                sortInterval: 50,
+                minDragDistance: 10,
+                minBounceBackAngle: 1
+            },
+            dragPlaceholder: {
+                enabled: true,
+                duration: 400,
+                createElement: function (item) {
+                    return item.getElement().cloneNode(true);
+                }
+            },
+            dragReleaseDuration: 400,
+            dragReleseEasing: 'ease',
             layoutOnInit: false
-        }).on('move', function () {
+        })
+            // .on('dragStart', function (item) {
+            //     ++dragCounter;
+            //     docElem.classList.add('dragging');
+            //     item.getElement().style.width = item.getWidth() + 'px';
+            //     item.getElement().style.height = item.getHeight() + 'px';
+            // })
+            // .on('dragEnd', function (item) {
+            //     if (--dragCounter < 1) {
+            //         docElem.classList.remove('dragging');
+            //     }
+            // })
+            // .on('dragReleaseEnd', function (item) {
+            //     item.getElement().style.width = '';
+            //     item.getElement().style.height = '';
+            //     columnGrids.forEach(function (muuri) {
+            //         muuri.refreshItems();
+            //     });
+            // })
+        .on('move', function () {
             saveLayout(grid);
         });
 
