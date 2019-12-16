@@ -445,30 +445,32 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                             <div class="wpsi-grid">
                                 <div class="wpsi-item" data-id="1">
                                     <div class="item-container">
-										<?php $this->generate_popular_table(); ?>
+                                        <div class="item-content"><?php $this->generate_popular_table(); ?></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item small" data-id="2">
                                     <div class="item-container">
-	                                    <?php $this->generate_dashboard_widget(); ?>
+	                                    <div class="item-content"><?php $this->generate_dashboard_widget(); ?></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item" data-id="3">
                                     <div class="item-container">
-										<?php $this->generate_recent_table(); ?>
+										<div class="item-content"><?php $this->generate_recent_table(); ?></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item small" data-id="4">
                                     <div class="item-container">
+                                    <div class="item-content"></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item" data-id="5">
                                     <div class="item-container">
+                                    <div class="item-content"></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item" data-id="6">
                                     <div class="item-container">
-
+                                        <div class="item-content"></div>
                                     </div>
                                 </div>
                             </div>

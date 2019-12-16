@@ -26,6 +26,9 @@
   width: 580px;
   height: 430px;
 }
+.wpsi-grid .wpsi-item .item-container .item-content {
+  margin: 15px;
+}
 .wpsi-grid .wpsi-item.small .item-container {
   width: 280px;
 }
