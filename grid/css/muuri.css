@@ -1,41 +1,36 @@
-.grid {
-    position: relative;
+.wpsi-grid {
+  position: relative;
 }
-.item {
-    position: absolute;
-    width: 400px;
-    height: 300px;
-    line-height: 200px;
-    margin: 25px;
-    z-index: 1;
+.wpsi-grid .wpsi-item {
+  width: 600px;
+  position: absolute;
+  height: 450px;
+  z-index: 1;
 }
-.item.muuri-item-hidden {
-    z-index: 0;
+.wpsi-grid .wpsi-item.small {
+  width: 300px;
 }
-.item.muuri-item-releasing {
-    z-index: 2;
+.wpsi-grid .wpsi-item.muuri-item-hidden {
+  z-index: 0;
 }
-.item.muuri-item-dragging {
-    z-index: 3;
+.wpsi-grid .wpsi-item.muuri-item-releasing {
+  z-index: 2;
 }
-.item-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+.wpsi-grid .wpsi-item.muuri-item-dragging {
+  z-index: 3;
 }
-.item.muuri-item-dragging .item-content {
+.wpsi-grid .wpsi-item .item-container {
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #cecece;
+  width: 580px;
+  height: 430px;
 }
-.item.muuri-item-releasing .item-content {
+.wpsi-grid .wpsi-item.small .item-container {
+  width: 280px;
 }
-.item .item-content{
-    border: 1px solid blue;
+.wpsi-grid .wpsi-item.muuri-item-placeholder .item-container {
+  border-style: dashed;
+  padding: 0;
 }
-.item.muuri-item-placeholder {
-}
-
-.item.muuri-item-placeholder .item-content {
-    border-style: dashed;
-    padding:0;
-    margin:0;
-}
+/*# sourceMappingURL=muuri.css.map */

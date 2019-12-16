@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
     console.log("initialized");
 
     function initGrid() {
-        var grid = new Muuri('.grid', {
+        var grid = new Muuri('.wpsi-grid', {
             dragEnabled: true,
             dragSortHeuristics: {
                 sortInterval: 50,

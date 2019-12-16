@@ -127,7 +127,6 @@ widget
 #wpsi-dashboard .tab-content.current {
   display: inherit;
   background-color: #fff;
-  height: 100vh;
 }
 #wpsi-dashboard .tab-text {
   color: #444444;
