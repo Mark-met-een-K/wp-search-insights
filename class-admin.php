@@ -283,12 +283,11 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             <label class="wpsi-select-capability">
                 <select name="wpsi_select_dashboard_capability" id="wpsi_select_dashboard_capability">
                     <option value="activate_plugins" <?php if ( get_option('wpsi_select_dashboard_capability') == 'activate_plugins')  echo 'selected="selected"'; ?>><?php _e('Administrators', 'wp-search-insights');?></option>
-                    <option value="edit_others_posts" <?php if ( get_option('wpsi_select_dashboard_capability') == 'edit_others_posts') echo 'selected="selected"'; ?>><?php _e('Editors', 'wp-search-insights');?></option>
-                    <option value="edit_posts" <?php if ( get_option('wpsi_select_dashboard_capability') == 'edit_posts') echo 'selected="selected"'; ?>><?php _e('Authors', 'wp-search-insights');?></option>
+                    <option value="edit_posts" <?php if ( get_option('wpsi_select_dashboard_capability') == 'edit_posts') echo 'selected="selected"'; ?>><?php _e('All Users', 'wp-search-insights');?></option>
                 </select>
             </label>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("Choose the minimum capability of user roles who can visit the dashboard. When selecting authors, all authors and above (administrators and editors) can view the dashboard. Settings are only be available for administrators.", "wp-search-insights"));
+            WP_Search_insights()->wpsi_help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users (contributor and above)", "wp-search-insights"));
             ?>
         <?php
     }
