@@ -60,7 +60,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        add_action( 'update_option_wpsi_max_term_length', array( $this, 'redirect_to_settings_tab' ) );
 	        add_action( 'update_option_wpsi_select_dashboard_capability', array( $this, 'redirect_to_settings_tab' ) );
 	        add_action( 'update_option_wpsi_filter_textarea', array( $this, 'redirect_to_settings_tab' ) );
-	        add_action( 'update_option_wpsi_filter_textarea', array( $this, 'update_filtered_terms_array' ) );
 
 	        add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
         }
@@ -443,26 +442,19 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         error_log(print_r($filtered_terms_option, true) );
 
+
 	    ?>
-<!--        <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">-->
-        <input type='text' name='wpsi_filter_textarea' id='wpsi_filter_textarea' size='60' value='<?php
-        foreach ($filtered_terms_option as $term) {
-        $this->filtered_terms[] = $term;
-	     echo esc_attr( $term . " ");
-        }?>'
-        />
+        <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">
         <?php
+	     echo implode(" " , $filtered_terms_option);
         ?>
-<!--        </textarea>-->
+        </textarea>
         <?php
 
-    }
+        error_log(print_r($filtered_terms_option, true));
 
-    public function update_filtered_terms_array() {
-        error_log("Updating filtered terms");
-//        error_log($this->filtered_terms);
-        error_log(is_array($this->filtered_terms));
-        update_option('wpsi_filter_textarea' , $this->filtered_terms);
+//        update_option('wpsi_filter_textarea' , $filtered_terms_option);
+
     }
 
     /**
