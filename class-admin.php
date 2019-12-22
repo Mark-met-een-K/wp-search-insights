@@ -8,6 +8,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     private static $_this;
 
     public $capability;
+    public $filtered_terms = array();
 
     function __construct()
     {
@@ -58,6 +59,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        add_action( 'update_option_wpsi_min_term_length', array( $this, 'redirect_to_settings_tab' ) );
 	        add_action( 'update_option_wpsi_max_term_length', array( $this, 'redirect_to_settings_tab' ) );
 	        add_action( 'update_option_wpsi_select_dashboard_capability', array( $this, 'redirect_to_settings_tab' ) );
+	        add_action( 'update_option_wpsi_filter_textarea', array( $this, 'redirect_to_settings_tab' ) );
+	        add_action( 'update_option_wpsi_filter_textarea', array( $this, 'update_filtered_terms_array' ) );
 
 	        add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
         }
@@ -214,6 +217,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	    );
 
         add_settings_field(
+            'wpsi_filter_textarea',
+            __("Search term filter", 'wp-search-insights'),
+            array($this, 'option_textarea_filter'),
+            'wpsi-settings',
+            'wpsi-settings-tab'
+        );
+
+        add_settings_field(
             'clear_database',
             __("Clear database", 'wp-search-insights'),
             array($this, 'option_wpsi_clear_database'),
@@ -236,6 +247,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
+	    register_setting('wpsi-settings-tab', 'wpsi_filter_textarea');
 
     }
 
@@ -419,6 +431,38 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
         ?>
         <?php
+    }
+
+    public function option_textarea_filter()
+    {
+        $filtered_terms_option = get_option('wpsi_filter_textarea');
+
+        if (!is_array($filtered_terms_option)) {
+	        $filtered_terms_option = explode(" ", $filtered_terms_option);
+        }
+
+        error_log(print_r($filtered_terms_option, true) );
+
+	    ?>
+<!--        <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">-->
+        <input type='text' name='wpsi_filter_textarea' id='wpsi_filter_textarea' size='60' value='<?php
+        foreach ($filtered_terms_option as $term) {
+        $this->filtered_terms[] = $term;
+	     echo esc_attr( $term . " ");
+        }?>'
+        />
+        <?php
+        ?>
+<!--        </textarea>-->
+        <?php
+
+    }
+
+    public function update_filtered_terms_array() {
+        error_log("Updating filtered terms");
+//        error_log($this->filtered_terms);
+        error_log(is_array($this->filtered_terms));
+        update_option('wpsi_filter_textarea' , $this->filtered_terms);
     }
 
     /**

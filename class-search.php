@@ -111,7 +111,19 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		        return;
 	        }
 
-            // Return if the query comes from an administrator and the exclude admin searches option is been enabled
+	        $filtered_terms = get_option('wpsi_filter_textarea');
+	        error_log(is_array($filtered_terms));
+//
+	        error_log(print_r($filtered_terms, true));
+
+//	        if (isset($filtered_terms[$search_term])) return;
+
+	        // If search term is in filtered terms, return
+//	        if ( strpos( get_option('wpsi_filter_textarea'), $search_term ) !== false ) {
+//	        	return;
+//	        }
+
+	        // Return if the query comes from an administrator and the exclude admin searches option is been enabled
             if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
                 return;
             }
