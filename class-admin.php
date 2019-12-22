@@ -152,9 +152,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         global $search_insights_settings_page;
 
         $search_insights_settings_page = add_submenu_page(
-                'tools.php',
-            __("WP Search Insights", "wp-search-insights"), //page title
-            __("Search Insights", "wp-search-insights"), //submenu title
+            'tools.php',
+            "WP Search Insights",
+            "Search Insights",
             $this->capability, //capability
             'wpsi-settings-page', //url
             array($this, 'settings_page')); //function

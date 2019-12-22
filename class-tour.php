@@ -87,7 +87,7 @@ class wpsi_tour {
 						// Plugins overview tour start
 						'po_title'      => __( 'Welcome to WP Search Insights', 'wp-search-insights' ),
 						'po_text'       => "<div class='wpsi-tour-logo-text'>$logo<span class='wpsi-tour-text'>"
-						                    .  __( 'WP Search Insights will give you insights into your visitor\'s search behaviour. Let\'s take a look at the dashboard!', 'wp-search-insights' ) . "</span></div>",
+						                    .  __( 'WP Search Insights will give you insights into your visitor\'s search behavior. Let\'s take a look at the dashboard!', 'wp-search-insights' ) . "</span></div>",
 						'startTourtext' => __( "Start tour", "wp-search-insights" ),
 						'linkToDashboard'  => admin_url( "index.php" ),
 
