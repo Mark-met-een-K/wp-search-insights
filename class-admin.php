@@ -47,6 +47,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
         add_action('admin_menu', array($this, 'add_settings_page'), 40);
 
+	    add_action('admin_init', array($this, 'add_privacy_info'));
+
 	    $plugin = wp_search_insights_plugin;
 
         add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
@@ -237,6 +239,23 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
 
+    }
+
+    public function add_privacy_info()
+    {
+        if (!function_exists('wp_add_privacy_policy_content')) {
+            return;
+        }
+
+        $content = sprintf(
+            __('WP Search Insights does not process any personal identifiable information, so the GDPR does not apply to these plugins or usage of these plugins on your website. You can find our privacy policy <a href="%s" target="_blank">here</a>.', 'wp-search-insights'),
+            'https://wpsearchinsights.com/privacy-statement/'
+        );
+
+        wp_add_privacy_policy_content(
+            'WP Search Insights',
+            wp_kses_post(wpautop($content, false))
+        );
     }
 
 
