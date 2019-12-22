@@ -434,26 +434,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
     public function option_textarea_filter()
     {
-        $filtered_terms_option = get_option('wpsi_filter_textarea');
-
-        if (!is_array($filtered_terms_option)) {
-	        $filtered_terms_option = explode(" ", $filtered_terms_option);
-        }
-
-        error_log(print_r($filtered_terms_option, true) );
-
-
 	    ?>
         <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">
-        <?php
-	     echo implode(" " , $filtered_terms_option);
-        ?>
+<?php
+echo
+esc_html(get_option('wpsi_filter_textarea') );
+?>
         </textarea>
         <?php
-
-        error_log(print_r($filtered_terms_option, true));
-
-//        update_option('wpsi_filter_textarea' , $filtered_terms_option);
 
     }
 
