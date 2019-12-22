@@ -19,8 +19,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         self::$_this = $this;
 
-	    add_action('admin_init', array($this, 'add_privacy_info'));
-
     }
 
     static function this()
@@ -48,6 +46,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
         add_action('admin_menu', array($this, 'add_settings_page'), 40);
+
+	    add_action('admin_init', array($this, 'add_privacy_info'));
 
 	    $plugin = wp_search_insights_plugin;
 
