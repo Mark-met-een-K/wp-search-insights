@@ -84,6 +84,12 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 trailingslashit(wp_search_insights_url)
                 . 'assets/js/scripts.js', array("jquery"), wp_search_insights_version);
             wp_enqueue_script('search-insights');
+	        wp_localize_script( 'search-insights', 'wpsi',
+		        array(
+			        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			        'token'   => wp_create_nonce( 'search_insights_nonce'),
+		        )
+            );
 
             //Datatables javascript for interactive tables
             wp_register_script('datatables',
@@ -624,7 +630,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        $args = array(
 		        'orderby' => 'frequency',
 		        'order' => 'DESC',
-		        'result_count' =>0,
+		        'result_count' => 0,
 		        'number' => 5,
 
 	        );
@@ -650,7 +656,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         }
 
         $widget = str_replace('{popular_searches}', $html, $widget);
-
 
 	    $html = "";
 	    $top_searches = get_transient('wpsi_top_searches');
@@ -721,17 +726,11 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             foreach ($recent_searches as $search) {
 
                 // Show the full time on dashboard, shorten the time on the dashboard widget.
-                //if (!$dashboard_widget) {
-                    $search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
-               // } else {
-                    //Create a human readable timestamp
-//                    $time_diff = human_time_diff($search->time, current_time('timestamp'));
-//                    $search_time_td = "<td data-label='When'>".sprintf(__("%s ago","wp-search-insights"), $time_diff)."</td>";
-                //}
+                $search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
 
 	            //Add &searchinsights to 'see results' link to prevent it from counting as search;
 	            $link = $this->get_term_link($search->term);
-	            $search_term_td = "<td data-label='Term'>$link</td>";
+	            $search_term_td = '<td data-label="Term" data-term_id="'.$search->id.'">'.$link.'</td>';
                 $referrer_td = "<td>$search->referrer</td>";
 
                 //Generate the row with or without hits and referer, depending on where the table is generated
@@ -815,6 +814,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                  echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
                      . "</th>";
                   echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
+                  echo '<th scope="col" style="width: 10%;" class=""></th>';
 
                  ?>
              </tr>
@@ -834,6 +834,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                  echo "<tr>" . "<td data-label='Term'>". $this->get_term_link($search->term)
                      . "</td>" . "<td data-label='Count'>" . $search->frequency
                      . "<td>$results</td>"
+                     . '<td><a href="#" class="wpsi-delete-term" data-term_id="'.$search->id.'">'.__("delete","wp-search-insights").'</a></td>'
                      . "</td>" . "</tr>";
              }
 

@@ -64,5 +64,32 @@ jQuery(document).ready(function ($) {
         window.location.href = href; //causes the browser to refresh and load the requested url
     }
     // },15);
+
+
+    $(document).on('click', '.wpsi-delete-term', function(){
+        var row = $(this).closest('tr');
+        var term_id= $(this).data('term_id');
+        row.css('background-color', 'red');
+
+        $.ajax({
+            type: "POST",
+            url: wpsi.ajaxurl,
+            dataType: 'json',
+            data: ({
+                action: 'wpsi_delete_term',
+                term_id: term_id,
+                token: wpsi.token
+            }),
+            success: function (response) {
+                row.remove();
+                //get all occurrences on this page for this term id
+                $('td[data-term_id="'+term_id+'"]').closest('tr').each(function(){
+                    $(this).remove();
+                });
+            }
+        });
+    });
+
+
 });
 
