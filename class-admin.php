@@ -38,7 +38,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     public function init()
     {
 
-	    $this->capability = get_option('wpsi_select_dashboard_capability');
+	    $this->capability = 'manage_options';//get_option('wpsi_select_dashboard_capability');
 
 	    if (!current_user_can($this->capability)) {
             return;
