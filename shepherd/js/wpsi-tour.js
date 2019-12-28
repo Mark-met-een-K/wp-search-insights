@@ -5,25 +5,6 @@ jQuery(document).ready(function($) {
         var widget_tour = new Shepherd.Tour();
         var main_tour = new Shepherd.Tour();
 
-        // Localized variables
-        var startTourtext = wpsi_tour.startTourtext;
-        var nextBtnText = wpsi_tour.nextBtnText;
-        var backBtnText = wpsi_tour.backBtnText;
-
-        var plugins_overview_title = wpsi_tour.po_title;
-        var plugins_overview_text = wpsi_tour.po_text;
-        var widget_title = wpsi_tour.widget_title;
-        var widget_text = wpsi_tour.widget_text;
-        var dashboard_title = wpsi_tour.dashboard_title;
-        var dashboard_text = wpsi_tour.dashboard_text;
-
-        var recent_searches_title = wpsi_tour.recent_searches_title;
-        var recent_searches_text = wpsi_tour.recent_searches_text;
-        var settings_title = wpsi_tour.settings_title;
-        var settings_text = wpsi_tour.settings_text;
-        var finish_title = wpsi_tour.finish_title;
-        var finish_text = wpsi_tour.finish_text;
-
         plugins_overview_tour.options.defaults = widget_tour.options.defaults = main_tour.options.defaults = {
             classes: 'shepherd-theme-arrows',
             scrollTo: true,
@@ -44,13 +25,12 @@ jQuery(document).ready(function($) {
             }
         };
         var steps = wpsi_tour.steps;
-    console.log(steps[1]['title']);
 
-    plugins_overview_tour.addStep('intro', {
+    plugins_overview_tour.addStep('wpsi-step-1', {
             classes: 'shepherd-theme-arrows wpsi-plugins-overview-tour-container shepherd-has-cancel-link',
             attachTo: '.wpsi-settings-link right',
             title: steps[1]['title'],
-            text: wpsi_tour.html.replace('{content}', steps[1]['text']),    
+            text: wpsi_tour.html.replace('{content}', steps[1]['text']),
             buttons: [
                 {
                     text: wpsi_tour.startTour,
@@ -61,14 +41,14 @@ jQuery(document).ready(function($) {
 
             ],
         });
-        widget_tour.addStep('widget', {
+        widget_tour.addStep('wpsi-step-2', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             attachTo: '.wpsi-widget-logo right',
             title: steps[2]['title'],
             text: steps[2]['text'],
             buttons: [
                 {
-                    text: nextBtnText,
+                    text: wpsi_tour.nextBtnText,
                     action: function() {
                         window.location = steps[2]['link'];
                     }
@@ -76,29 +56,29 @@ jQuery(document).ready(function($) {
 
             ],
         });
-        main_tour.addStep('popular-searches', {
+        main_tour.addStep('wpsi-step-3', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             attachTo: '#search-insights-most-popular-table_info right',
-            title: dashboard_title,
-            text: dashboard_text,
+            title: steps[3]['title'],
+            text: steps[3]['text'],
             buttons: [
                 {
-                    text: backBtnText,
+                    text: wpsi_tour.backBtnText,
                     action: function() {
-                        window.location = wpsi_tour.linkToDashboard;
+                        window.location = steps[2]['link'];
                     }
                 },
                 {
-                    text: nextBtnText,
+                    text: wpsi_tour.nextBtnText,
                     action: main_tour.next
                 },
             ],
         });
 
-        main_tour.addStep('recent-searches', {
+        main_tour.addStep('wpsi-step-4', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: recent_searches_title,
-            text: recent_searches_text,
+            title: steps[4]['title'],
+            text: steps[4]['text'],
             attachTo: '#search-insights-recent-table_info right',
             buttons: [
                 {
@@ -106,7 +86,7 @@ jQuery(document).ready(function($) {
                     action: main_tour.back
                 },
                 {
-                    text: nextBtnText,
+                    text: wpsi_tour.nextBtnText,
                     action: function() {
                         $('.tab-settings').click();
                         main_tour.next();
@@ -117,10 +97,10 @@ jQuery(document).ready(function($) {
             ],
         });
 
-        main_tour.addStep('settings', {
+        main_tour.addStep('wpsi-step-5', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: settings_title,
-            text: settings_text,
+            title: steps[5]['title'],
+            text: steps[5]['text'],
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {
@@ -147,10 +127,10 @@ jQuery(document).ready(function($) {
             },
         });
 
-        main_tour.addStep('settings', {
+        main_tour.addStep('wpsi-step-6', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: finish_title,
-            text: finish_text,
+            title: steps[6]['title'],
+            text: steps[6]['text'],
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {

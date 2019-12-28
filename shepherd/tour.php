@@ -103,22 +103,18 @@ class wpsi_tour {
 								'link'  => admin_url( "tools.php?page=wpsi-settings-page" ),
 							),
 							3 => array(
-								'title' => __( 'Dashboard widget', 'wp-search-insights' ),
-								'text'  => __( 'WP Search Insights will give you insights into your visitor\'s search behavior. Let\'s take a look at the dashboard!', 'wp-search-insights' ) ,
-							),
-							4 => array(
 								'title' => __( "Popular searches", "wp-search-insights" ),
 								'text'  => __('WP Search Insights is recording your searches. The most popular search terms will be displayed here.', 'wp-search-insights') ,
 							),
-							5 => array(
+							4 => array(
 								'title' => __( "Recent searches", "wp-search-insights" ),
 								'text'  => __('The recent searches section shows all recorded searches. It also displays when the search was made and from which post or page it originated.' ,'wp-search-insights') ,
 							),
-							6 => array(
+							5 => array(
 								'title' => __('Configure WP Search Insights','wp-search-insights'),
 								'text'  => __('Exclude admin searches and configure character length for short and longer queries.', 'wp-search-insights') ,
 							),
-							7 => array(
+							6 => array(
 								'title' => __('Start using WP Search Insights!','wp-search-insights'),
 								'text'  => __('The tour has ended. Please come back in a few days to see the results.', 'wp-search-insights'),
 							),
