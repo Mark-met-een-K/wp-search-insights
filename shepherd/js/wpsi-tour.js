@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             attachTo: '.wpsi-widget-logo right',
             title: steps[2]['title'],
-            text: steps[2]['text'],
+            text: wpsi_tour.html.replace('{content}', steps[2]['text']),
             buttons: [
                 {
                     text: wpsi_tour.nextBtnText,
@@ -60,12 +60,12 @@ jQuery(document).ready(function($) {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             attachTo: '#search-insights-most-popular-table_info right',
             title: steps[3]['title'],
-            text: steps[3]['text'],
+            text: wpsi_tour.html.replace('{content}', steps[3]['text']),
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,
                     action: function() {
-                        window.location = steps[2]['link'];
+                        window.location = steps[1]['link'];
                     }
                 },
                 {
@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
         main_tour.addStep('wpsi-step-4', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: steps[4]['title'],
-            text: steps[4]['text'],
+            text: wpsi_tour.html.replace('{content}', steps[4]['text']),
             attachTo: '#search-insights-recent-table_info right',
             buttons: [
                 {
@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
         main_tour.addStep('wpsi-step-5', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: steps[5]['title'],
-            text: steps[5]['text'],
+            text: wpsi_tour.html.replace('{content}', steps[5]['text']),
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {
@@ -130,7 +130,7 @@ jQuery(document).ready(function($) {
         main_tour.addStep('wpsi-step-6', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: steps[6]['title'],
-            text: steps[6]['text'],
+            text: wpsi_tour.html.replace('{content}', steps[6]['text']),
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {

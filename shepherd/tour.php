@@ -11,7 +11,7 @@ class wpsi_tour {
 
 	function __construct()
 	{
-
+		delete_option( 'wpsi_tour_cancelled' );
 		if (isset(self::$_this)) {
 			wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.',
 				'wp-search-insights'), get_class($this)));
