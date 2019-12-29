@@ -34,6 +34,7 @@ jQuery(document).ready(function($) {
             buttons: [
                 {
                     text: wpsi_tour.startTour,
+                    classes: 'button button-primary',
                     action: function() {
                         window.location = steps[1]['link'];
                     }
@@ -49,6 +50,7 @@ jQuery(document).ready(function($) {
             buttons: [
                 {
                     text: wpsi_tour.nextBtnText,
+                    classes: 'button button-primary',
                     action: function() {
                         window.location = steps[2]['link'];
                     }
@@ -64,13 +66,15 @@ jQuery(document).ready(function($) {
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,
+                    classes: 'button button-primary',
                     action: function() {
                         window.location = steps[1]['link'];
                     }
                 },
                 {
                     text: wpsi_tour.nextBtnText,
-                    action: main_tour.next
+                    action: main_tour.next,
+                    classes: 'button button-primary',
                 },
             ],
         });
@@ -83,7 +87,8 @@ jQuery(document).ready(function($) {
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,
-                    action: main_tour.back
+                    action: main_tour.back,
+                    classes: 'button button-primary',
                 },
                 {
                     text: wpsi_tour.nextBtnText,
@@ -91,6 +96,8 @@ jQuery(document).ready(function($) {
                         $('.tab-settings').click();
                         main_tour.next();
                     },
+                    classes: 'button button-primary',
+
 
 
                 }
@@ -109,10 +116,14 @@ jQuery(document).ready(function($) {
                         $('.tab-dashboard').click();
                         main_tour.back();
                     },
+                    classes: 'button button-primary',
+
                 },
                 {
                     text: wpsi_tour.nextBtnText,
-                    action: main_tour.next
+                    action: main_tour.next,
+                    classes: 'button button-primary',
+
                 }
             ],
             tetherOptions: {
@@ -135,11 +146,15 @@ jQuery(document).ready(function($) {
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,
-                    action: main_tour.back
+                    action: main_tour.back,
+                    classes: 'button button-primary',
+
                 },
                 {
                     text: wpsi_tour.endTour,
-                    action: main_tour.cancel
+                    action: main_tour.cancel,
+                    classes: 'button button-primary',
+
                 }
             ],
             tetherOptions: {
