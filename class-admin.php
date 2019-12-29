@@ -42,6 +42,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
         if (!$capability) {
             $this->capability = 'activate_plugins';
+            update_option('wpsi_select_dashboard_capability', 'activate_plugins');
         } else {
 	        $this->capability = get_option( 'wpsi_select_dashboard_capability' );
         }
