@@ -6,7 +6,7 @@ Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 What are your visitors searching for? Keep track of on-site search activity with WP Search Insights. See terms, hits, results, and more!
 
@@ -53,6 +53,9 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.0.1 =
+* Added option to select which user roles can view the dashboard
+
 = 1.0.0 =
 * Initial release
 
