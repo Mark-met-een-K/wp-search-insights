@@ -31,7 +31,7 @@ if ( ! class_exists( 'WPSI_GRID' ) ) {
 			global $search_insights_settings_page;
 			// Enqueue assest when on index.php (WP dashboard) or plugins settings page
 
-			//sif ($hook == $search_insights_settings_page) {
+			if ($hook == $search_insights_settings_page) {
 
 				wp_register_style('wpsi-muuri',
 					trailingslashit(wp_search_insights_url) . "grid/css/muuri.css", "",
@@ -48,7 +48,7 @@ if ( ! class_exists( 'WPSI_GRID' ) ) {
 				. 'grid/js/grid.js', array("jquery", "wpsi-muuri"), wp_search_insights_version);
 			wp_enqueue_script('wpsi-grid');
 
-			//}
+			}
 		}
 	}
 }//Class closure

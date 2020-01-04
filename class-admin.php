@@ -422,8 +422,33 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             <div class="wrap">
 
                 <div id="wpsi-dashboard">
+                    <div id="wpsi-toggle-dashboard">
+                        <label for="dashboard_search_meter-hide">
+                            <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1">
+                            Tab 1
+                        </label>
+                        <label for="dashboard_search_meter-hide">
+                            <input class="wpsi-toggle-items" name="toggle_data_id_2" type="checkbox" id="toggle_data_id_2" value="data_id_2">
+                            Tab 2
+                        </label>
+                        <label for="dashboard_search_meter-hide">
+                            <input class="wpsi-toggle-items" name="toggle_data_id_3" type="checkbox" id="toggle_data_id_3" value="data_id_3">
+                            Tab 3
+                        </label>
+                    </div>
 
-
+<!--                    <script>-->
+<!--                        jQuery(document).ready(function ($) {-->
+<!--                            "use strict";-->
+<!--                            $('.hide-postbox-tog').click(function () {-->
+<!--                                if ($('input#toggle_data_id_1').is(':checked')) {-->
+<!--                                    console.log("Data id 1 is checked!");-->
+<!--                                } else {-->
+<!--                                    console.log("Data id 1 is unchecked");-->
+<!--                                }-->
+<!--                            });-->
+<!--                        });-->
+<!--                    </script>-->
                     <!--    Navigation-->
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
@@ -441,9 +466,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
 
-
                             <div class="wpsi-grid">
-                                <div class="wpsi-item" data-id="1">
+                                <div class="wpsi-item grid-active" data-id="1">
                                     <div class="item-container">
                                         <div class="item-content"><?php $this->generate_popular_table(); ?></div>
                                     </div>
@@ -456,21 +480,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                                 <div class="wpsi-item" data-id="3">
                                     <div class="item-container">
 										<div class="item-content"><?php $this->generate_recent_table(); ?></div>
-                                    </div>
-                                </div>
-                                <div class="wpsi-item small" data-id="4">
-                                    <div class="item-container">
-                                    <div class="item-content"></div>
-                                    </div>
-                                </div>
-                                <div class="wpsi-item" data-id="5">
-                                    <div class="item-container">
-                                    <div class="item-content"></div>
-                                    </div>
-                                </div>
-                                <div class="wpsi-item" data-id="6">
-                                    <div class="item-container">
-                                        <div class="item-content"></div>
                                     </div>
                                 </div>
                             </div>

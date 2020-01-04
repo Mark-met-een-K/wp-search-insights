@@ -11,7 +11,7 @@ jQuery(document).ready(function($) {
                 minBounceBackAngle: 1
             },
             dragPlaceholder: {
-                enabled: true,
+                enabled: false,
                 duration: 400,
                 createElement: function (item) {
                     return item.getElement().cloneNode(true);
@@ -73,14 +73,25 @@ jQuery(document).ready(function($) {
         var itemId;
         var itemIndex;
 
+        window.$ = document.querySelectorAll.bind(document);
+
         for (var i = 0; i < layout.length; i++) {
             itemId = layout[i];
             itemIndex = currentItemIds.indexOf(itemId);
             if (itemIndex > -1) {
-                newItems.push(currentItems[itemIndex])
+                    newItems.push(currentItems[itemIndex])
             }
         }
 
-        grid.sort(newItems, {layout: 'instant'});
+        // if ($('toggle_data_id_' + itemId).checked) {
+        //     console.log("Is checked, adding");
+        //     console.log("currentItems");
+        // }
+
+        // https://codepen.io/JeffMaciejko/pen/OZOKGM
+        // grid.hide([elemA, elemB], {instant: true})
+
+         grid.sort(newItems, {layout: 'instant'});
+         // grid.filter('.grid-active');
     }
 });
