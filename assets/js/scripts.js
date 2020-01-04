@@ -75,8 +75,30 @@ jQuery(document).ready(function ($) {
     // },15);
 
     /**
-     *
+     * Checkboxes
      */
+
+    // Save checkbox values
+
+    var formValues = JSON.parse(localStorage.getItem('formValues')) || {};
+    var $checkboxes = $("#wpsi-toggle-dashboard :checkbox");
+
+    function updateStorage(){
+        $checkboxes.each(function(){
+            formValues[this.id] = this.checked;
+        });
+
+        localStorage.setItem("formValues", JSON.stringify(formValues));
+    }
+
+    $checkboxes.on("change", function(){
+        updateStorage();
+    });
+
+// On page load
+    $.each(formValues, function(key, value) {
+        $("#" + key).prop('checked', value);
+    });
 
     show_hide_dashboard_items();
 
@@ -84,11 +106,11 @@ jQuery(document).ready(function ($) {
         show_hide_dashboard_items();
     });
 
-   // $('#toggle_data_id_1').change(function() {
-        //     location.reload();
- //   });
+   $('#toggle_data_id_1').change(function() {
+       show_hide_dashboard_items();
+   });
 
-    //
+
     // $('#toggle_data_id_2').change(function() {
     //     location.reload();
     // });
@@ -98,6 +120,7 @@ jQuery(document).ready(function ($) {
     // });
 
     function show_hide_dashboard_items() {
+        console.log("Showing/hiding dashboard items");
         if ($('input#toggle_data_id_1').is(':checked')) {
             $('*[data-id="1"]').show();
         } else {

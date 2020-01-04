@@ -423,17 +423,17 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
                 <div id="wpsi-dashboard">
                     <div id="wpsi-toggle-dashboard">
-                        <label for="dashboard_search_meter-hide">
+                        <label for="wpsi-hide-panel-1">
                             <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1">
-                            Tab 1
+                            <?php _e("Popular Searches" , "wp-search-insights") ?>
                         </label>
-                        <label for="dashboard_search_meter-hide">
+                        <label for="wpsi-hide-panel-2">
                             <input class="wpsi-toggle-items" name="toggle_data_id_2" type="checkbox" id="toggle_data_id_2" value="data_id_2">
-                            Tab 2
+	                        <?php _e("Popular Searches without results" , "wp-search-insights") ?>
                         </label>
-                        <label for="dashboard_search_meter-hide">
+                        <label for="wpsi-hide-panel-3">
                             <input class="wpsi-toggle-items" name="toggle_data_id_3" type="checkbox" id="toggle_data_id_3" value="data_id_3">
-                            Tab 3
+	                        <?php _e("Recent Searches" , "wp-search-insights") ?>
                         </label>
                     </div>
 
