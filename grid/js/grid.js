@@ -3,6 +3,8 @@ jQuery(document).ready(function($) {
 
     function initGrid() {
 
+        console.log("Initing grid");
+
         var grid = new Muuri('.wpsi-grid', {
             dragEnabled: true,
             dragSortHeuristics: {
@@ -66,8 +68,6 @@ jQuery(document).ready(function($) {
     function loadLayout(grid, serializedLayout) {
         var layout = JSON.parse(serializedLayout);
         var currentItems = grid.getItems();
-
-        // currentItems - niet gecheckte checkbox
 
         var a = document.querySelector('div[data-id="1"]');
         var b = document.querySelector('div[data-id="2"]');

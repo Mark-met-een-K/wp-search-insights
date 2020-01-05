@@ -79,29 +79,42 @@ jQuery(document).ready(function ($) {
      */
 
     // Save checkbox values
-
     var formValues = JSON.parse(localStorage.getItem('formValues')) || {};
+
     var $checkboxes = $("#wpsi-toggle-dashboard :checkbox");
 
-    function updateStorage(){
-        $checkboxes.each(function(){
-            formValues[this.id] = this.checked;
-        });
-
-        localStorage.setItem("formValues", JSON.stringify(formValues));
+    // Check if defaults have been set, if not, show all items
+    if (localStorage.getItem("wpsiDashboardDefaultsSet") === null) {
+            console.log("localstorage default not set, enable all");
+            $checkboxes.each(function () {
+                formValues[this.id] = 'checked';
+            });
+            localStorage.setItem("formValues", JSON.stringify(formValues));
+        localStorage.setItem('wpsiDashboardDefaultsSet', 'set');
+        return;
     }
 
+    // Update storage when a value changes
     $checkboxes.on("change", function(){
         updateStorage();
     });
 
-// On page load
+    function updateStorage(){
+    $checkboxes.each(function(){
+        formValues[this.id] = this.checked;
+    });
+        localStorage.setItem("formValues", JSON.stringify(formValues));
+    }
+
+    // Get checkbox values on pageload
     $.each(formValues, function(key, value) {
         $("#" + key).prop('checked', value);
     });
 
+    // Hide screen options by default
     $("#wpsi-toggle-dashboard").hide();
 
+    // Show/hide screen options on toggle click
     $('#wpsi-show-toggles').click(function(){
         if ($("#wpsi-toggle-dashboard").is(":visible") ){
             $("#wpsi-toggle-dashboard").hide();
@@ -109,12 +122,7 @@ jQuery(document).ready(function ($) {
         } else {
             $("#wpsi-toggle-dashboard").show();
             $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-up');
-
         }
-
     });
-
-
-
 });
 
