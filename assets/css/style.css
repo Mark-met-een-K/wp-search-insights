@@ -51,14 +51,18 @@ widget
     Toggle boxes styling
  */
 #wpsi-toggle-dashboard {
-  display: block;
+  display: none;
   height: 60px;
   background-color: #fff;
   padding: 8px 20px 12px;
+  margin-top: -10px;
 }
 #wpsi-toggle-dashboard-text {
   padding-bottom: 10px;
   font-weight: 600;
+}
+#wpsi-toggle-link-wrap {
+  float: right;
 }
 /*
     *

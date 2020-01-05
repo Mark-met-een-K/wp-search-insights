@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
         grid.sort(newItems, {layout: 'instant'});
         grid.filter('.muuri-active');
     }
-    
+
     $('#toggle_data_id_1').change(function() {
         initGrid();
      });

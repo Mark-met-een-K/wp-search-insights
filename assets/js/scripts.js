@@ -100,5 +100,14 @@ jQuery(document).ready(function ($) {
         $("#" + key).prop('checked', value);
     });
 
+    $("#wpsi-toggle-dashboard").hide();
+
+    $('#wpsi-show-toggles').click(function(){
+        // Add class show, then show
+        $("#wpsi-toggle-dashboard").show()
+    });
+
+
+
 });
 

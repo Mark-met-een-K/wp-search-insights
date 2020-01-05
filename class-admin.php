@@ -439,6 +439,11 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                     </label>
                     </div>
                 </div>
+                <div id="wpsi-toggle-options">
+                    <div id="wpsi-toggle-link-wrap">
+                        <button type="button" id="wpsi-show-toggles" class="button show-settings" aria-controls="screen-options-wrap" aria-expanded="true">Screen Options</button>
+                    </div>
+                </div>
                 <div id="wpsi-dashboard">
 
 <!--                    <script>-->
