@@ -447,33 +447,16 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                     </div>
                 </div>
                 <div id="wpsi-dashboard">
-
-<!--                    <script>-->
-<!--                        jQuery(document).ready(function ($) {-->
-<!--                            "use strict";-->
-<!--                            $('.hide-postbox-tog').click(function () {-->
-<!--                                if ($('input#toggle_data_id_1').is(':checked')) {-->
-<!--                                    console.log("Data id 1 is checked!");-->
-<!--                                } else {-->
-<!--                                    console.log("Data id 1 is unchecked");-->
-<!--                                }-->
-<!--                            });-->
-<!--                        });-->
-<!--                    </script>-->
                     <!--    Navigation-->
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
-                            <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard"
-                                                                                 href="#dashboard#top">Dashboard</a>
+                            <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top">Dashboard</a>
                             </li>
-                            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings"
-                                                                        href="#settings#top">Settings</a></li>
+                            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
 							<?php echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
                         </ul>
                     </div>
                     <div class="wp-search-insights-main">
-
-
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
 
