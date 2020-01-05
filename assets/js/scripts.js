@@ -78,12 +78,12 @@ jQuery(document).ready(function ($) {
      * Checkboxes
      */
 
-    // Save checkbox values
+    // Get grid toggle checkbox values
     var formValues = JSON.parse(localStorage.getItem('formValues')) || {};
 
     var $checkboxes = $("#wpsi-toggle-dashboard :checkbox");
 
-    // Check if defaults have been set, if not, show all items
+    // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
     if (localStorage.getItem("wpsiDashboardDefaultsSet") === null) {
             console.log("localstorage default not set, enable all");
             $checkboxes.each(function () {
@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
         localStorage.setItem('wpsiDashboardDefaultsSet', 'set');
     }
 
-    // Update storage when a value changes
+    // Update storage checkbox value when checkbox value changes
     $checkboxes.on("change", function(){
         updateStorage();
     });

@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
         } else {
             grid.layout(true);
         }
-        // Save the layout, otherwise filtering won't work on a new install
+        // Must save the layout on first load, otherwise filtering the grid won't work on a new install.
         saveLayout(grid);
     }
 
@@ -69,6 +69,7 @@ jQuery(document).ready(function($) {
         var layout = JSON.parse(serializedLayout);
         var currentItems = grid.getItems();
 
+        // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
         var a = document.querySelector('div[data-id="1"]');
         var b = document.querySelector('div[data-id="2"]');
         var c = document.querySelector('div[data-id="3"]');
@@ -106,10 +107,12 @@ jQuery(document).ready(function($) {
             }
         }
 
+        // Sort and filter the grid
         grid.sort(newItems, {layout: 'instant'});
         grid.filter('.muuri-active');
     }
 
+    // Reload the grid when checkbox value changes
     $('#toggle_data_id_1').change(function() {
         initGrid();
      });
