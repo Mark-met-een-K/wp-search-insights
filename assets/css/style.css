@@ -78,8 +78,10 @@ widget
 }
 #wpsi-toggle-link-wrap {
   float: right;
+  margin-top: -1px;
 }
 #wpsi-show-toggles {
+  position: relative;
   border: 1px solid #ccd0d4;
   border-top-color: #ccd0d4;
   border-top-style: solid;

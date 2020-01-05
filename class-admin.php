@@ -442,7 +442,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 </div>
                     <div id="wpsi-toggle-options">
                         <div id="wpsi-toggle-link-wrap">
-                            <button type="button" id="wpsi-show-toggles" class="button show-settings" aria-controls="screen-options-wrap">Screen Options<span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
+                            <button type="button" id="wpsi-show-toggles" class="button show-settings" aria-controls="screen-options-wrap"><?php _e("Screen options" , "wp-search-insights"); ?><span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
                         </div>
                     </div>
                 </div>
