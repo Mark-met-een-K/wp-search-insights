@@ -48,6 +48,19 @@ widget
   color: #ddd;
 }
 /*
+    Toggle boxes styling
+ */
+#wpsi-toggle-dashboard {
+  display: block;
+  height: 60px;
+  background-color: #fff;
+  padding: 8px 20px 12px;
+}
+#wpsi-toggle-dashboard-text {
+  padding-bottom: 10px;
+  font-weight: 600;
+}
+/*
     *
     *   Dashboard styling
     *

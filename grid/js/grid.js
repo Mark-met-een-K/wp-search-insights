@@ -106,27 +106,10 @@ jQuery(document).ready(function($) {
             }
         }
 
-        // if ($('toggle_data_id_' + itemId).checked) {
-        //     console.log("Is checked, adding");
-        // }
-
-        // https://codepen.io/JeffMaciejko/pen/OZOKGM
-        // grid.hide([elemA, elemB], {instant: true})
-
         grid.sort(newItems, {layout: 'instant'});
-         grid.filter('.muuri-active');
+        grid.filter('.muuri-active');
     }
-
-    // // Bind action to checkbox change
-    // var checkboxes = document.getElementsByClassName('wpsi-toggle-items');
-    //
-    // for(var index in checkboxes){
-    //     //bind event to each checkbox
-    //     //refresh the grid on checkbox change
-    //     // checkboxes[index].onchange = initGrid();
-    // checkboxes[index].onchange = changedLol();
-    // }
-
+    
     $('#toggle_data_id_1').change(function() {
         initGrid();
      });
@@ -138,8 +121,4 @@ jQuery(document).ready(function($) {
     $('#toggle_data_id_3').change(function() {
         initGrid();
     });
-
-    function changedLol() {
-        console.log("Changed!");
-    }
 });

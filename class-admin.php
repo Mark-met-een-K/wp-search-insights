@@ -421,6 +421,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
             <div class="wrap">
                 <div id="wpsi-toggle-dashboard">
+                    <div id="wpsi-toggle-dashboard-text">
+                        <?php _e("Select which dashboard items should be shown", "wp-search-insights") ?>
+                    </div>
+                    <div id="wpsi-checkboxes">
                     <label for="wpsi-hide-panel-1">
                         <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1" onchange="changedLol()">
 			            <?php _e("Popular Searches" , "wp-search-insights") ?>
@@ -433,6 +437,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                         <input class="wpsi-toggle-items" name="toggle_data_id_3" type="checkbox" id="toggle_data_id_3" value="data_id_3">
 			            <?php _e("Recent Searches" , "wp-search-insights") ?>
                     </label>
+                    </div>
                 </div>
                 <div id="wpsi-dashboard">
 
