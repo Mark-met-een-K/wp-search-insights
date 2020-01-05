@@ -3,8 +3,6 @@ jQuery(document).ready(function($) {
 
     function initGrid() {
 
-        console.log("Initing grid");
-
         var grid = new Muuri('.wpsi-grid', {
             dragEnabled: true,
             dragSortHeuristics: {
@@ -23,7 +21,7 @@ jQuery(document).ready(function($) {
             dragReleseEasing: 'ease',
             layoutOnInit: false
         })
-            // .on('dragStart', function (item) {
+        // .on('dragStart', function (item) {
             //     ++dragCounter;
             //     docElem.classList.add('dragging');
             //     item.getElement().style.width = item.getWidth() + 'px';
@@ -51,6 +49,8 @@ jQuery(document).ready(function($) {
         } else {
             grid.layout(true);
         }
+        // Save the layout, otherwise filtering won't work on a new install
+        saveLayout(grid);
     }
 
     function serializeLayout(grid) {

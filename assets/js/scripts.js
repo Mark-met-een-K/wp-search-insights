@@ -91,7 +91,6 @@ jQuery(document).ready(function ($) {
             });
             localStorage.setItem("formValues", JSON.stringify(formValues));
         localStorage.setItem('wpsiDashboardDefaultsSet', 'set');
-        return;
     }
 
     // Update storage when a value changes
