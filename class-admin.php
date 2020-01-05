@@ -422,7 +422,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
             <div class="wrap">
                 <div id="wpsi-toggle-dashboard">
                     <label for="wpsi-hide-panel-1">
-                        <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1">
+                        <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1" onchange="changedLol()">
 			            <?php _e("Popular Searches" , "wp-search-insights") ?>
                     </label>
                     <label for="wpsi-hide-panel-2">

@@ -1,8 +1,8 @@
 jQuery(document).ready(function($) {
     initGrid();
-    console.log("initialized");
 
     function initGrid() {
+
         var grid = new Muuri('.wpsi-grid', {
             dragEnabled: true,
             dragSortHeuristics: {
@@ -73,12 +73,9 @@ jQuery(document).ready(function($) {
         var b = document.querySelector('div[data-id="2"]');
         var c = document.querySelector('div[data-id="3"]');
 
-
         if (!document.getElementById("toggle_data_id_1").checked ) {
-            console.log("removing class");
             a.classList.remove("muuri-active");
         } else {
-            console.log("adding class");
             a.classList.add("muuri-active");
         }
 
@@ -109,65 +106,40 @@ jQuery(document).ready(function($) {
             }
         }
 
-        // if (document.getElementById('toggle_data_id_' + itemId + '').change) {
-        //     initGrid();
-        // }
-
-
         // if ($('toggle_data_id_' + itemId).checked) {
         //     console.log("Is checked, adding");
-        //     console.log("currentItems");
         // }
 
         // https://codepen.io/JeffMaciejko/pen/OZOKGM
         // grid.hide([elemA, elemB], {instant: true})
 
-        // grid.sort(newItems, {layout: 'instant'});
-        grid.filter('.muuri-active');
+        grid.sort(newItems, {layout: 'instant'});
+         grid.filter('.muuri-active');
     }
 
-    // Bind action to checkbox change
-    var checkboxes = document.getElementsByClassName('wpsi-toggle-items');
+    // // Bind action to checkbox change
+    // var checkboxes = document.getElementsByClassName('wpsi-toggle-items');
+    //
+    // for(var index in checkboxes){
+    //     //bind event to each checkbox
+    //     //refresh the grid on checkbox change
+    //     // checkboxes[index].onchange = initGrid();
+    // checkboxes[index].onchange = changedLol();
+    // }
 
-    for(var index in checkboxes){
-        //bind event to each checkbox
-        //refresh the grid on checkbox change
-        checkboxes[index].onchange = initGrid();
+    $('#toggle_data_id_1').change(function() {
+        initGrid();
+     });
+
+    $('#toggle_data_id_2').change(function() {
+        initGrid();
+    });
+
+    $('#toggle_data_id_3').change(function() {
+        initGrid();
+    });
+
+    function changedLol() {
+        console.log("Changed!");
     }
-
-    // // Filter grid ------------------------------------------------
-    // function filterGrid() {
-    //
-    //     // Get latest select values
-    //     selectedCategory = categoryFilter.value;
-    //
-    //     // Reset filtered categories & types
-    //     filteredCategories.splice(0,filteredCategories.length);
-    //
-    //
-    //     // Types
-    //     if( selectedType == 'all' ) {
-    //         allTypes.forEach(function(item) {
-    //             // exlude the actual 'all' value
-    //             ( item.value !="all" ? filteredTypes.push(item.value) : '' );
-    //         });
-    //     } else {
-    //         filteredTypes.push(typeFilter.value);
-    //     }
-    //     console.table(filteredTypes);
-    //
-    //     // Filter the grid
-    //     // For each item in the grid array (which corresponds to a gallery item), check if the data-categories and data-types value match any of the values in the select field. If they do, return true
-    //     grid.filter( (item) => {
-    //         if (
-    //             filteredCategories.some( (cat) => {
-    //                 return (item.getElement().dataset.category).indexOf(cat) >= 0;
-    //             })
-    //         {
-    //             // return items that match both IFs
-    //             return true;
-    //         }
-    //
-    //     });
-    // } // end filter grid function
 });
