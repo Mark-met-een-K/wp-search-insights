@@ -420,9 +420,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			?>
 
             <div class="wrap">
+                <div id="wpsi-toggle-wrap">
                 <div id="wpsi-toggle-dashboard">
                     <div id="wpsi-toggle-dashboard-text">
-                        <?php _e("Select which dashboard items should be shown", "wp-search-insights") ?>
+                        <?php _e("Select which dashboard items should be displayed", "wp-search-insights") ?>
                     </div>
                     <div id="wpsi-checkboxes">
                     <label for="wpsi-hide-panel-1">
@@ -439,9 +440,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                     </label>
                     </div>
                 </div>
-                <div id="wpsi-toggle-options">
-                    <div id="wpsi-toggle-link-wrap">
-                        <button type="button" id="wpsi-show-toggles" class="button show-settings" aria-controls="screen-options-wrap" aria-expanded="true">Screen Options</button>
+                    <div id="wpsi-toggle-options">
+                        <div id="wpsi-toggle-link-wrap">
+                            <button type="button" id="wpsi-show-toggles" class="button show-settings" aria-controls="screen-options-wrap">Screen Options<span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
+                        </div>
                     </div>
                 </div>
                 <div id="wpsi-dashboard">

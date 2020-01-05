@@ -103,8 +103,15 @@ jQuery(document).ready(function ($) {
     $("#wpsi-toggle-dashboard").hide();
 
     $('#wpsi-show-toggles').click(function(){
-        // Add class show, then show
-        $("#wpsi-toggle-dashboard").show()
+        if ($("#wpsi-toggle-dashboard").is(":visible") ){
+            $("#wpsi-toggle-dashboard").hide();
+            $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-down');
+        } else {
+            $("#wpsi-toggle-dashboard").show();
+            $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-up');
+
+        }
+
     });
 
 

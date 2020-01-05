@@ -63,21 +63,58 @@ widget
     Toggle boxes styling
  */
 
+#wpsi-toggle-wrap {
+  margin-top: -15px;
+}
+
 #wpsi-toggle-dashboard {
+  height: 80px;
   display: none;
-  height: 60px;
+  position: relative;
   background-color: #fff;
-  padding: 8px 20px 12px;
-  margin-top: -10px;
+  border: 1px solid #ccd0d4;
+  border-top-color: rgb(204, 208, 212);
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top: 0;
+  box-shadow: 0 0 0 transparent;
 }
 
 #wpsi-toggle-dashboard-text {
-  padding-bottom: 10px;
+  padding-top: 15px;
+  padding-left: 15px;
   font-weight: 600;
+}
+
+#wpsi-checkboxes {
+  padding-top: 10px;
+}
+
+.wpsi-toggle-items {
+  margin-left: 15px !important;
 }
 
 #wpsi-toggle-link-wrap {
   float: right;
+}
+
+#wpsi-show-toggles {
+  border: 1px solid #ccd0d4;
+  border-top-color: rgb(204, 208, 212);
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top: 0;
+  height: auto;
+  margin-bottom: 0;
+  padding: 3px 6px 3px 16px;
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  color: #72777c;
+  line-height: 1.7;
+  box-shadow: 0 0 0 transparent;
+  transition: box-shadow .1s linear;
+  margin-right: 35px;
+  //margin-top: -15px;
 }
 
 /*
@@ -85,6 +122,11 @@ widget
     *   Dashboard styling
     *
  */
+
+#dashboard {
+  min-height: 400px;
+}
+
 #wpsi-dashboard {
   padding-right:15px;
 
