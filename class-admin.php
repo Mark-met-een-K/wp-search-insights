@@ -874,19 +874,19 @@ esc_html(get_option('wpsi_filter_textarea') );
         <?php
      }
 
-     public function check_upgrade() {
-
-	     $prev_version = get_option('wpsi_current_version');
-
-	     if (!$prev_version) {
-	         update_option('wpsi_current_version', '1.0.0');
-	     }
-
-	     // Set a default dashboard capability role (since 1.0.1)
-	     if ($prev_version && version_compare($prev_version, '1.0.1', '<')) {
-	         update_option('wpsi_select_dashboard_capability', 'activate_plugins');
-	     }
-	     update_option('wpsi_current_version', wp_search_insights_version);
-     }
+//     public function check_upgrade() {
+//
+//	     $prev_version = get_option('wpsi_current_version');
+//
+//	     if (!$prev_version) {
+//	         update_option('wpsi_current_version', '1.0.0');
+//	     }
+//
+//	     // Set a default dashboard capability role (since 1.0.1)
+//	     if ($prev_version && version_compare($prev_version, '1.0.1', '<')) {
+//	         update_option('wpsi_select_dashboard_capability', 'activate_plugins');
+//	     }
+//	     update_option('wpsi_current_version', wp_search_insights_version);
+//     }
  }
 }//Class closure
