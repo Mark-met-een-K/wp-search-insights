@@ -94,7 +94,7 @@ class WP_SEARCH_INSIGHTS {
 			require_once( wp_search_insights_path . 'class-admin.php' );
             require_once( wp_search_insights_path . 'class-help.php' );
             require_once( wp_search_insights_path . 'class-review.php' );
-			require_once( wp_search_insights_path . 'class-tour.php' );
+			require_once( wp_search_insights_path . 'shepherd/tour.php' );
         }
 
 		require_once( wp_search_insights_path . 'class-search.php' );
