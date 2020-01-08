@@ -39,7 +39,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     public function init()
     {
 
-	    $this->capability = 'manage_options';//get_option('wpsi_select_dashboard_capability');
+        $capability = get_option('wpsi_select_dashboard_capability');
+
+        if (!$capability) {
+            $this->capability = 'activate_plugins';
+            update_option('wpsi_select_dashboard_capability', 'activate_plugins');
+        } else {
+	        $this->capability = get_option( 'wpsi_select_dashboard_capability' );
+        }
 
 	    if (!current_user_can($this->capability)) {
             return;
@@ -865,6 +872,21 @@ esc_html(get_option('wpsi_filter_textarea') );
              </tbody>
          </table>
         <?php
+     }
+
+     public function check_upgrade() {
+
+	     $prev_version = get_option('wpsi_current_version');
+
+	     if (!$prev_version) {
+	         update_option('wpsi_current_version', '1.0.0');
+	     }
+
+	     // Set a default dashboard capability role (since 1.0.1)
+	     if ($prev_version && version_compare($prev_version, '1.0.1', '<')) {
+	         update_option('wpsi_select_dashboard_capability', 'activate_plugins');
+	     }
+	     update_option('wpsi_current_version', wp_search_insights_version);
      }
  }
 }//Class closure
