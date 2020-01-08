@@ -111,7 +111,20 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		        return;
 	        }
 
-            // Return if the query comes from an administrator and the exclude admin searches option is been enabled
+	        $filtered_terms = get_option('wpsi_filter_textarea');
+
+	        // Remove commas from option
+	        $filtered_terms = str_replace( ',' , '', $filtered_terms);
+	        $filtered_terms = explode(" ", $filtered_terms);
+
+	        // Check if search term should be filtered
+	        foreach ($filtered_terms as $term) {
+				if ($term === $search_term) {
+					return;
+				}
+	        }
+
+	        // Return if the query comes from an administrator and the exclude admin searches option is been enabled
             if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
                 return;
             }
