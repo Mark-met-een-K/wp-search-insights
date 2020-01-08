@@ -26,6 +26,9 @@ Plugins overview tour
 .shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons {
   font-weight: 700;
 }
+.shepherd-title {
+  font-size: 16px;
+}
 .shepherd-content {
   width: 450px;
 }
