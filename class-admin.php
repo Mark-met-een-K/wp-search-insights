@@ -442,7 +442,7 @@ esc_html(get_option('wpsi_filter_textarea') );
 ?>
         </textarea>
         <?php
-
+	    WP_Search_insights()->wpsi_help->get_help_tip( __( "Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights" ) );
     }
 
     /**
