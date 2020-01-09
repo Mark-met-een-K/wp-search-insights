@@ -1,7 +1,7 @@
 === WP Search Insights ===
 Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, search term, record search term, search queries
+Tags: search, search term, recording searches, search queries, searches, search form, search analytics, search filter
 Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
