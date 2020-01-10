@@ -8,6 +8,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     private static $_this;
 
     public $capability;
+    public $filtered_terms = array();
 
     function __construct()
     {
@@ -38,7 +39,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     public function init()
     {
 
-	    $this->capability = 'manage_options';//get_option('wpsi_select_dashboard_capability');
+        $capability = get_option('wpsi_select_dashboard_capability');
+
+        if (!$capability) {
+            $this->capability = 'activate_plugins';
+            update_option('wpsi_select_dashboard_capability', 'activate_plugins');
+        } else {
+	        $this->capability = get_option( 'wpsi_select_dashboard_capability' );
+        }
 
 	    if (!current_user_can($this->capability)) {
             return;
@@ -60,6 +68,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	        add_action( 'update_option_wpsi_min_term_length', array( $this, 'redirect_to_settings_tab' ) );
 	        add_action( 'update_option_wpsi_max_term_length', array( $this, 'redirect_to_settings_tab' ) );
 	        add_action( 'update_option_wpsi_select_dashboard_capability', array( $this, 'redirect_to_settings_tab' ) );
+	        add_action( 'update_option_wpsi_filter_textarea', array( $this, 'redirect_to_settings_tab' ) );
 
 	        add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
         }
@@ -216,6 +225,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	    );
 
         add_settings_field(
+            'wpsi_filter_textarea',
+            __("Search term filter", 'wp-search-insights'),
+            array($this, 'option_textarea_filter'),
+            'wpsi-settings',
+            'wpsi-settings-tab'
+        );
+
+        add_settings_field(
             'clear_database',
             __("Clear database", 'wp-search-insights'),
             array($this, 'option_wpsi_clear_database'),
@@ -238,6 +255,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
         register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
+	    register_setting('wpsi-settings-tab', 'wpsi_filter_textarea');
 
     }
 
@@ -438,6 +456,19 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
         ?>
         <?php
+    }
+
+    public function option_textarea_filter()
+    {
+	    ?>
+        <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">
+<?php
+echo
+esc_html(get_option('wpsi_filter_textarea') );
+?>
+        </textarea>
+        <?php
+	    WP_Search_insights()->wpsi_help->get_help_tip( __( "Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights" ) );
     }
 
     /**
@@ -842,5 +873,20 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
          </table>
         <?php
      }
+
+//     public function check_upgrade() {
+//
+//	     $prev_version = get_option('wpsi_current_version');
+//
+//	     if (!$prev_version) {
+//	         update_option('wpsi_current_version', '1.0.0');
+//	     }
+//
+//	     // Set a default dashboard capability role (since 1.0.1)
+//	     if ($prev_version && version_compare($prev_version, '1.0.1', '<')) {
+//	         update_option('wpsi_select_dashboard_capability', 'activate_plugins');
+//	     }
+//	     update_option('wpsi_current_version', wp_search_insights_version);
+//     }
  }
 }//Class closure

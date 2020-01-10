@@ -160,7 +160,8 @@
 .shepherd-element.shepherd-theme-arrows .shepherd-content {
   padding: 0; }
   .shepherd-element.shepherd-theme-arrows .shepherd-content * {
-    font-size: inherit; }
+    /*font-size: inherit;*/
+  }
   .shepherd-element.shepherd-theme-arrows .shepherd-content header {
     *zoom: 1;
     border-radius: 5px 5px 0 0; }
@@ -205,23 +206,24 @@
         padding: 0;
         margin: 0; }
         .shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons li .shepherd-button {
-          display: inline-block;
-          vertical-align: middle;
-          *vertical-align: auto;
-          *zoom: 1;
-          *display: inline;
-          border-radius: 3px;
-          cursor: pointer;
-          border: 0;
+          /*display: inline-block;*/
+          /*vertical-align: middle;*/
+          /**vertical-align: auto;*/
+          /**zoom: 1;*/
+          /**display: inline;*/
+          /*border-radius: 3px;*/
+          /*cursor: pointer;*/
+          /*border: 0;*/
           margin: 0 .5em 0 0;
-          font-family: inherit;
-          text-transform: uppercase;
-          letter-spacing: .1em;
-          font-size: .8em;
-          line-height: 1em;
-          padding: .75em 2em;
-          background: #3288e6;
-          color: #fff; }
+          /*font-family: inherit;*/
+          /*text-transform: uppercase;*/
+          /*letter-spacing: .1em;*/
+          /*font-size: .8em;*/
+          /*line-height: 1em;*/
+          /*padding: .75em 2em;*/
+          /*background: #3288e6;*/
+          /*color: #fff; */
+        }
           .shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons li .shepherd-button.shepherd-button-secondary {
             background: #eee;
             color: #888; }
