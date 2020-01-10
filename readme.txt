@@ -58,6 +58,7 @@ To install this plugin:
 * Updated tour structure and added native WP buttons
 * Added suggested privacy statement text
 * Updating some strings
+* Fix: when same string is search, the time is now updated as well
 
 = 1.0.0 =
 * Initial release
