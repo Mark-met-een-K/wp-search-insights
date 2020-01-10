@@ -246,7 +246,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			//Have to use query on INT because $wpdb->update assumes string.
 			$result_count = intval($result_count);
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET frequency = frequency +1, result_count=$result_count WHERE term = %s", sanitize_text_field($search_term) ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_archive SET frequency = frequency +1, result_count=%s, time=%s WHERE term = %s", $result_count, $this->current_time(), sanitize_text_field($search_term)) );
 		}
 
 		/**
