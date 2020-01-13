@@ -490,6 +490,7 @@ esc_html(get_option('wpsi_filter_textarea') );
         if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
             $this->clear_database_tables();
 	        delete_transient('wpsi_popular_searches');
+	        delete_transient('wpsi_top_searches');
         }
         wp_redirect(admin_url('tools.php?page=wpsi-settings-page'));exit;
     }
