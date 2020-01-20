@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
     "use strict";
 
     // Initialize Datatables
-    $('#search-insights-recent-table').DataTable( {
+    $('#wpsi-recent-table').DataTable( {
         conditionalPaging: true,
         //https://datatables.net/reference/option/dom
         "dom": 'rt<"table-footer"iBp><"clear">',
@@ -19,18 +19,14 @@ jQuery(document).ready(function ($) {
         "order": [[ 1, "desc" ]]
     });
 
-    $('#search-insights-most-popular-table').DataTable( {
+
+    $('#wpsi-popular-table').DataTable( {
         conditionalPaging: true,
         //https://datatables.net/reference/option/dom
         "dom": 'rt<"table-footer"iBp><"clear">',
         buttons: [
             'csv', 'excel'
         ],
-        // "columns": [
-        //     { "width": "20%" },
-        //     { "width": "10%" },
-        //     { "width": "10%" },
-        // ],
         fixedHeader: {
             footer: true
         },
@@ -43,6 +39,9 @@ jQuery(document).ready(function ($) {
         },
         "order": [[ 1, "desc" ]]
     });
+
+
+
 
     //Get the window hash for redirect to #settings after settings save
     var hash = "#" + window.location.hash.substr(1);
@@ -66,28 +65,51 @@ jQuery(document).ready(function ($) {
     // },15);
 
 
-    $(document).on('click', '.wpsi-delete-term', function(){
-        var row = $(this).closest('tr');
-        var term_id= $(this).data('term_id');
-        row.css('background-color', 'red');
 
+
+    $('#wpsi-popular-table tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('wpsi-selected') ) {
+            $(this).removeClass('wpsi-selected');
+        } else {
+            $(this).addClass('wpsi-selected');
+        }
+    } );
+
+    $('#button').click( function () {
+        var table = $(this).closest('.dataTable');
+
+        table.row('.wpsi-selected').remove().draw( false );
+    } );
+
+    $(document).on('click', '#wpsi-delete-selected', function(){
+        var table = $(this).closest('.search-insights-table').find('.dataTable');
+        //get all selected rows
+        var termIDs=[];
+        table.find('.wpsi-selected').each(function(){
+            var row = $(this);
+            termIDs.push($(this).find('.wpsi-term').data('term_id'));
+            row.css('background-color', 'red');
+        });
+        console.log(termIDs);
         $.ajax({
             type: "POST",
             url: wpsi.ajaxurl,
             dataType: 'json',
             data: ({
-                action: 'wpsi_delete_term',
-                term_id: term_id,
+                action: 'wpsi_delete_terms',
+                term_ids: JSON.stringify(termIDs),
                 token: wpsi.token
             }),
             success: function (response) {
-                row.remove();
                 //get all occurrences on this page for this term id
-                $('td[data-term_id="'+term_id+'"]').closest('tr').each(function(){
-                    $(this).remove();
+                table.find('.wpsi-selected').each(function(){
+                    var row = $(this);
+                    row.remove();
                 });
             }
         });
+
+
     });
 
 

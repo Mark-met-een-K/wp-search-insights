@@ -155,6 +155,9 @@ widget
   table-layout: fixed;
   justify-content: normal;
 }
+#wpsi-dashboard .search-insights-table table.dataTable .wpsi-selected {
+  background-color: #B0BED9;
+}
 #wpsi-dashboard .search-insights-table table caption {
   font-size: 1.5em;
   margin: 0.5em 0 0.75em;
@@ -246,18 +249,18 @@ widget
   #wpsi-dashboard .search-insights-table table td:last-child {
     border-bottom: 0;
   }
-  #wpsi-dashboard #search-insights-most-popular-table {
+  #wpsi-dashboard #wpsi-popular-table {
     margin-left: 15px;
   }
   #wpsi-dashboard .dataTables_info {
     display: none;
   }
 }
-#wpsi-dashboard #search-insights-recent-table {
+#wpsi-dashboard #wpsi-recent-table {
   margin-right: 15px;
 }
-#wpsi-dashboard #search-insights-recent-table,
-#wpsi-dashboard #search-insights-most-popular-table {
+#wpsi-dashboard #wpsi-recent-table,
+#wpsi-dashboard #wpsi-popular-table {
   width: 100%;
 }
 #wpsi-dashboard .hit-icon {

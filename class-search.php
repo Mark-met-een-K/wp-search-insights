@@ -26,7 +26,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			add_action( 'wp_ajax_wpsi_process_search', array( $this, 'get_ajax_search') );
 
 
-			add_action('wp_ajax_wpsi_delete_term', array($this, 'ajax_delete_term'));
+			add_action('wp_ajax_wpsi_delete_terms', array($this, 'ajax_delete_terms'));
 
 		}
 
@@ -34,7 +34,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			return self::$_this;
 		}
 
-		public function ajax_delete_term()
+		public function ajax_delete_terms()
 		{
 			$error = false;
 
@@ -43,7 +43,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				$error = true;
 			}
 
-			if (!isset($_POST['term_id'])){
+			if (!isset($_POST['term_ids'])){
 				$error = true;
 			}
 
@@ -56,9 +56,10 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			}
 
 			if (!$error){
-
-				$term_id = intval($_POST['term_id']);
-				$this->delete_term($term_id);
+				$term_ids = json_decode($_POST['term_ids']);
+				foreach($term_ids as $term_id){
+					$this->delete_term(intval($term_id));
+				}
 			}
 
 			$data = array(

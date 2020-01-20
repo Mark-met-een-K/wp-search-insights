@@ -136,6 +136,7 @@ widget
 */
 
 
+
   .dataTables_wrapper {
     max-width: 800px;
     display: flex;
@@ -156,7 +157,11 @@ widget
       table-layout: fixed;
       justify-content: normal;
     }
-
+    table.dataTable {
+      .wpsi-selected {
+        background-color:#B0BED9;
+      }
+    }
     table caption {
       font-size: 1.5em;
       margin: .5em 0 .75em;
@@ -270,7 +275,7 @@ widget
       border-bottom: 0;
     }
 
-    #search-insights-most-popular-table {
+    #wpsi-popular-table {
       margin-left: 15px;
     }
 
@@ -284,12 +289,12 @@ widget
       Individual table styling
    */
 
-  #search-insights-recent-table {
+  #wpsi-recent-table {
 
     margin-right: 15px;
   }
 
-  #search-insights-recent-table, #search-insights-most-popular-table {
+  #wpsi-recent-table, #wpsi-popular-table {
     width:100%;
 
   }

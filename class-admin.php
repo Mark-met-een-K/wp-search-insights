@@ -707,7 +707,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
          $recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
 
          ?>
-         <table id="search-insights-recent-table">
+         <table id="wpsi-recent-table">
          <?php if (!$dashboard_widget) { ?>
          <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
          </caption>
@@ -803,9 +803,10 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	     );
 	     $popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
          ?>
-
-         <table id="search-insights-most-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
+         <button class="button button-default" id="wpsi-delete-selected"><?php _e("delete", "wp-search-insights")?></button>
+         <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
              <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
+
              <thead>
              <tr class="wpsi-thead-th">
                  <?php
@@ -814,7 +815,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                  echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
                      . "</th>";
                   echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
-                  echo '<th scope="col" style="width: 10%;" class=""></th>';
 
                  ?>
              </tr>
@@ -831,10 +831,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		             $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
 	             }
 
-                 echo "<tr>" . "<td data-label='Term'>". $this->get_term_link($search->term)
+                 echo "<tr>" . '<td class="wpsi-term" data-label="Term" data-term_id="'.$search->id.'">'. $this->get_term_link($search->term)
                      . "</td>" . "<td data-label='Count'>" . $search->frequency
                      . "<td>$results</td>"
-                     . '<td><a href="#" class="wpsi-delete-term" data-term_id="'.$search->id.'">'.__("delete","wp-search-insights").'</a></td>'
                      . "</td>" . "</tr>";
              }
 

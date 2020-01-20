@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
 
         main_tour.addStep('popular-searches', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            attachTo: '#search-insights-most-popular-table_info right',
+            attachTo: '#wpsi-popular-table_info right',
             title: dashboard_title,
             text: dashboard_text,
             buttons: [
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: recent_searches_title,
             text: recent_searches_text,
-            attachTo: '#search-insights-recent-table_info right',
+            attachTo: '#wpsi-recent-table_info right',
             buttons: [
                 {
                     text: search_insights_tour_ajax.backBtnText,
