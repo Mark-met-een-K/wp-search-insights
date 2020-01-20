@@ -1,55 +1,34 @@
 <?php
-defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
+defined('ABSPATH') or die("you do not have acces to this page!");
 
-if ( ! class_exists( 'WPSI_GRID' ) ) {
-	class WPSI_GRID {
+if (!class_exists("WPSI_GRID")) {
+	class WPSI_GRID
+	{
+		public $id = false;
+		public $banner_version = 0;
+		public $title;
+		public $default = false;
+		public $archived = false;
+		public $statistics;
 
-		private static $_this;
-
-		public $capability = 'activate_plugins';
-
-		function __construct()
+		function __construct($id = false)
 		{
-			if (isset(self::$_this)) {
-				wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.',
-					'wp-search-insights'), get_class($this)));
-			}
 
-			self::$_this = $this;
-			add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+			$this->id = $id;
 
-		}
-
-		static function this()
-		{
-			return self::$_this;
-		}
-
-
-		public function enqueue_assets($hook)
-		{
-			global $search_insights_settings_page;
-			// Enqueue assest when on index.php (WP dashboard) or plugins settings page
-
-			if ($hook == $search_insights_settings_page) {
-
-				wp_register_style('wpsi-muuri',
-					trailingslashit(wp_search_insights_url) . "grid/css/muuri.css", "",
-					wp_search_insights_version);
-				wp_enqueue_style('wpsi-muuri');
-
-				wp_register_script('wpsi-muuri',
-					trailingslashit(wp_search_insights_url)
-					. 'grid/js/muuri.min.js', array("jquery"), wp_search_insights_version);
-				wp_enqueue_script('wpsi-muuri');
-
-			wp_register_script('wpsi-grid',
-				trailingslashit(wp_search_insights_url)
-				. 'grid/js/grid.js', array("jquery", "wpsi-muuri"), wp_search_insights_version);
-			wp_enqueue_script('wpsi-grid');
-
+			if ($this->id!==FALSE) {
+				//initialize the cookiebanner settings with this id.
+				$this->get();
 			}
 		}
+
+		private function get() {
+
+
+
+
+		}
+
 	}
-}//Class closure
+}
 

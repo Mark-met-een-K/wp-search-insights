@@ -456,24 +456,29 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 							<?php echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
                         </ul>
                     </div>
+
                     <div class="wp-search-insights-main">
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
+                            <?php
+                            //get html of block
 
+
+                            ?>
                             <div class="wpsi-grid">
                                 <div class="wpsi-item grid-active" data-id="1">
                                     <div class="item-container">
-                                        <div class="item-content"><?php $this->generate_popular_table(); ?></div>
+                                        <div class="item-content search-insights-table"><?php $this->generate_popular_table(); ?></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item small" data-id="2">
                                     <div class="item-container">
-	                                    <div class="item-content"><?php $this->generate_dashboard_widget(); ?></div>
+	                                    <div class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
                                     </div>
                                 </div>
                                 <div class="wpsi-item" data-id="3">
                                     <div class="item-container">
-										<div class="item-content"><?php $this->generate_recent_table(); ?></div>
+										<div class="item-content search-insights-table"><?php $this->generate_recent_table(); ?></div>
                                     </div>
                                 </div>
                             </div>

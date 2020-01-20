@@ -60,7 +60,6 @@ class WP_SEARCH_INSIGHTS {
 				self::$instance->review = new wpsi_review();
 				self::$instance->WP_Search_Insights_Admin = new WP_Search_Insights_Admin();
 				self::$instance->tour = new wpsi_tour();
-				self::$instance->grid = new WPSI_GRID();
 			}
 
             if ( is_admin() ) {
@@ -95,6 +94,7 @@ class WP_SEARCH_INSIGHTS {
             require_once( wp_search_insights_path . 'class-help.php' );
             require_once( wp_search_insights_path . 'class-review.php' );
 			require_once( wp_search_insights_path . 'class-tour.php' );
+			require_once( wp_search_insights_path . 'grid/grid-enqueue.php' );
 			require_once( wp_search_insights_path . 'grid/grid.php' );
         }
 
