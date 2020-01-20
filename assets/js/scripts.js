@@ -56,29 +56,34 @@ jQuery(document).ready(function ($) {
         $("#" + tab_id).addClass('current');
     });
 
-    // setTimeout(function() {
     var href = $('.tab-settings').attr('href');
     if (href === hash) {
         $('.tab-settings')[0].click();
         window.location.href = href; //causes the browser to refresh and load the requested url
     }
-    // },15);
 
 
+    /**
+     * select and delete functions
+     */
 
+    //set button to disabled
+    $('#wpsi-delete-selected').attr('disabled', true);
 
     $('#wpsi-popular-table tbody').on( 'click', 'tr', function () {
+        $('#wpsi-delete-selected').attr('disabled', true);
         if ( $(this).hasClass('wpsi-selected') ) {
             $(this).removeClass('wpsi-selected');
         } else {
             $(this).addClass('wpsi-selected');
         }
-    } );
 
-    $('#button').click( function () {
-        var table = $(this).closest('.dataTable');
+        //if at least one row is selected, enable the delete button
+        var table = $(this).closest('.search-insights-table').find('.dataTable');
+        table.find('.wpsi-selected').each(function(){
+            $('#wpsi-delete-selected').attr('disabled', false);
+        });
 
-        table.row('.wpsi-selected').remove().draw( false );
     } );
 
     $(document).on('click', '#wpsi-delete-selected', function(){
@@ -90,7 +95,6 @@ jQuery(document).ready(function ($) {
             termIDs.push($(this).find('.wpsi-term').data('term_id'));
             row.css('background-color', 'red');
         });
-        console.log(termIDs);
         $.ajax({
             type: "POST",
             url: wpsi.ajaxurl,
