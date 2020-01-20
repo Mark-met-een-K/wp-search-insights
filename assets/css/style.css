@@ -267,7 +267,7 @@ widget
   font-size: 1.6em;
 }
 #wpsi-dashboard .icon-cancel {
-  color: #d7263d;
+  color: rgba(255, 0, 0, 0.8);
 }
 #wpsi-dashboard .icon-ok {
   color: #61ce70;

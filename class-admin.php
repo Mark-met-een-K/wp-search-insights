@@ -54,6 +54,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
 
         add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+        add_action('admin_head', array($this, 'inline_styles'));
 
         if (current_user_can('manage_options')) {
 	        add_action( 'update_option_wpsi_exclude_admin', array( $this, 'redirect_to_settings_tab' ) );
@@ -66,6 +67,50 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 	    add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
+    }
+
+    public function inline_styles(){
+        ?>
+        <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
+        <style>
+            div#TB_window {
+                height: 260px;
+                width: 450px;
+            }
+
+            div#TB_ajaxWindowTitle {
+                line-height: 50px;
+            }
+
+            div#TB_ajaxContent {
+                font-size: 1.1em;
+            }
+
+            div#TB_title {
+                font-size: 1.2em;
+                font-weight: 900;
+                height: 50px;
+                background-color: #d7263d;
+                color: #f2f2f2;
+            }
+
+            span.tb-close-icon {
+                visibility: hidden;
+            }
+
+            span.tb-close-icon::before {
+                font-family: dashicons;
+                font-size: 2.3em;
+                line-height: 50px;
+                margin-left: -25px;
+                color: #f2f2f2;
+                visibility: visible;
+                display: inline-block;
+                content: "\f335";
+                opacity: 0.7;
+            }
+        </style>
+        <?php
     }
 
     public function enqueue_assets($hook)
@@ -364,85 +409,64 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
     }
 
     public function option_wpsi_clear_database() {
-        add_thickbox();
+
+        $args = array(
+                'action_label' =>  __( "Clear database", "wp-search-insights" ),
+                'title' => __( "Are you sure?", "wp-search-insights" ),
+                'description' => __( "Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables.", "wp-search-insights" ),
+                'action' => 'clear_database',
+        );
+        $this->add_thickbox_button($args);
+        WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
         ?>
-        <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
-        <style>
-            div#TB_window {
-                height: 260px;
-                width: 450px;
-            }
+        <?php
+    }
 
-            div#TB_ajaxWindowTitle {
-                line-height: 50px;
-            }
+	    /**
+         * Create button with popup using WP core thickbox
+	     * @param $args
+	     */
 
-            div#TB_ajaxContent {
-                font-size: 1.1em;
-            }
+    public function add_thickbox_button($args){
+	    add_thickbox();
 
-            div#TB_title {
-                font-size: 1.2em;
-                font-weight: 900;
-                height: 50px;
-                background-color: #d7263d;
-                color: #f2f2f2;
-            }
+	    $default_args = array(
+                "title" => '',
+                "action_label" => '',
+                "action" => '',
+                "description" => '',
+        );
+        $args = wp_parse_args($args, $default_args);
+	    $token      = wp_create_nonce( 'wpsi_thickbox_nonce' );
+	    $action_url = add_query_arg(array('page'=>'wpsi-settings-page', 'action'=>$args['action'], 'token'=> $token), admin_url( "tools.php"));
 
-            span.tb-close-icon {
-                visibility: hidden;
-            }
+	    ?>
+            <div>
+                <input class="thickbox button"
+                       title="<?php _e( "You're about to clear your database!", "wp-search-insights" ); ?>"
+                       type="button" style="display: block;" alt="#TB_inline?height=260&width=450&inlineId=wpsi_<?php echo esc_attr($args['action'])?>"
+                       value="<?php echo __( 'Clear database', 'wp-search-insights' ); ?>"/>
+            </div>
+            <div id="wpsi_<?php echo esc_attr($args['action'])?>" style="display: none;">
 
-            span.tb-close-icon::before {
-                font-family: dashicons;
-                font-size: 2.3em;
-                line-height: 50px;
-                margin-left: -25px;
-                color: #f2f2f2;
-                visibility: visible;
-                display: inline-block;
-                content: "\f335";
-                opacity: 0.7;
-            }
-        </style>
-
-        <div>
-            <input class="thickbox button"
-                   title="<?php _e( "You're about to clear your database!", "wp-search-insights" ); ?>"
-                   type="button" style="display: block;" alt="#TB_inline?
-         height=260&width=450&inlineId=wpsi_clear_database"
-                   value="<?php echo __( 'Clear database', 'wp-search-insights' ); ?>"/>
-        </div>
-        <div id="wpsi_clear_database" style="display: none;">
-
-            <h1 style="padding-top: 5px;"><?php _e( "Are you sure?", "wp-search-insights" ) ?></h1>
-            <p><?php _e( "Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables.", "wp-search-insights" ); ?></p>
-
-            <?php
-            $token         = wp_create_nonce( 'wpsi_clear_database' );
-            $clear_db_link = admin_url( "tools.php?page=wpsi-settings-page&action=clear_database&token=" . $token );
-
-            ?>
-
+            <h1 style="padding-top: 5px;"><?php echo $args["title"]?></h1>
+                <p><?php echo $args['description']?></p>
             <script>
                 jQuery(document).ready(function ($) {
-                    $('#wpsi_cancel_database_clearing').click(tb_remove);
+                    $('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
                 });
             </script>
             <a class="button button-primary"
                style="width: 130px; height: 25px; line-height: 25px; margin-right:20px; text-align: center; font-weight: 700;"
-               href="<?php echo $clear_db_link ?>">
-                <?php _e( "Clear database", "wp-search-insights" ) ?>
+               href="<?php echo $action_url ?>">
+                <?php echo $args['action_label'] ?>
             </a>
 
-            <a class="button" style="height: 25px; line-height: 25px;" href="#" id="wpsi_cancel_database_clearing">
+            <a class="button" style="height: 25px; line-height: 25px;" href="#" id="wpsi_cancel_<?php echo esc_attr($args['action'])?>">
                 <?php _e( "Cancel", "wp-search-insights" ) ?>
             </a>
 
         </div>
-        <?php
-        WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
-        ?>
         <?php
     }
 
@@ -460,7 +484,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
         // Capability is checked before adding action for this function
 
         //check nonce
-        if (!isset($_GET['token']) || (!wp_verify_nonce($_GET['token'], 'wpsi_clear_database'))) return;
+        if (!isset($_GET['token']) || (!wp_verify_nonce($_GET['token'], 'wpsi_thickbox_nonce'))) return;
         //check for action
         if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
             $this->clear_database_tables();
@@ -803,7 +827,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 	     );
 	     $popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
          ?>
-         <button class="button button-default" id="wpsi-delete-selected"><?php _e("Delete", "wp-search-insights")?></button>
+         <button class="button" id="wpsi-delete-selected"><?php _e("Delete", "wp-search-insights")?></button>
          <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
              <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 
