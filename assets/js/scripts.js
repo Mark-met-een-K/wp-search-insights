@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
         table.find('.wpsi-selected').each(function(){
             var row = $(this);
             termIDs.push($(this).find('.wpsi-term').data('term_id'));
-            row.css('background-color', 'red');
+            row.css('background-color', '#d7263d2e');
         });
         $.ajax({
             type: "POST",
