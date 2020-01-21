@@ -754,7 +754,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 	            //Add &searchinsights to 'see results' link to prevent it from counting as search;
 	            $link = $this->get_term_link($search->term);
-	            $search_term_td = '<td data-label="Term" data-term_id="'.$search->id.'">'.$link.'</td>';
+	            $search_term_td = '<td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$link.'</td>';
                 $referrer_td = "<td>$search->referrer</td>";
 
                 //Generate the row with or without hits and referer, depending on where the table is generated

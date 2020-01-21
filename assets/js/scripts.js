@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
     //set button to disabled
     $('#wpsi-delete-selected').attr('disabled', true);
 
-    $('#wpsi-popular-table tbody').on( 'click', 'tr', function () {
+    $('.dataTable tbody').on( 'click', 'tr', function () {
         $('#wpsi-delete-selected').attr('disabled', true);
         if ( $(this).hasClass('wpsi-selected') ) {
             $(this).removeClass('wpsi-selected');
@@ -87,14 +87,19 @@ jQuery(document).ready(function ($) {
     } );
 
     $(document).on('click', '#wpsi-delete-selected', function(){
-        var table = $(this).closest('.search-insights-table').find('.dataTable');
-        //get all selected rows
         var termIDs=[];
-        table.find('.wpsi-selected').each(function(){
-            var row = $(this);
-            termIDs.push($(this).find('.wpsi-term').data('term_id'));
-            row.css('background-color', '#d7263d2e');
+
+        $('.dataTable').each(function(){
+            var table = $(this);
+            //get all selected rows
+            table.find('.wpsi-selected').each(function(){
+                var row = $(this);
+                termIDs.push($(this).find('.wpsi-term').data('term_id'));
+                row.css('background-color', '#d7263d2e');
+            });
+
         });
+        console.log(termIDs);
         $.ajax({
             type: "POST",
             url: wpsi.ajaxurl,
@@ -106,10 +111,16 @@ jQuery(document).ready(function ($) {
             }),
             success: function (response) {
                 //get all occurrences on this page for this term id
-                table.find('.wpsi-selected').each(function(){
-                    var row = $(this);
-                    row.remove();
+                $('.dataTable').each(function(){
+                    var table = $(this);
+                    table.find('.wpsi-selected').each(function(){
+                        var row = $(this);
+                        row.remove();
+                    });
+
                 });
+                $('#wpsi-delete-selected').attr('disabled', true);
+
             }
         });
 
