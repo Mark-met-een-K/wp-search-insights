@@ -15,9 +15,11 @@ if (!class_exists("wpsi_review")) {
 
 			self::$_this = $this;
 
-			register_activation_hook(__FILE__, array($this, 'set_activation_time_stamp'));
 			//show review notice, only to free users
 			if (!defined("wpsi_premium") && !is_multisite()) {
+			    if (!get_option('wpsi_activation_time')){
+				    update_option('wpsi_activation_time', time());
+			    }
 				$this->searchcount = get_transient('wpsi_total_searchcount');
 				if (!$this->searchcount){
 					$items = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches_single();
@@ -34,16 +36,6 @@ if (!class_exists("wpsi_review")) {
 
 			}
 
-		}
-
-
-		/**
-         * Set activation time of plugin
-		 * @param $networkwide
-		 */
-		public function set_activation_time_stamp($networkwide)
-		{
-			update_option('wpsi_activation_time', time());
 		}
 
 
