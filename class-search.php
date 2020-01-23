@@ -24,11 +24,80 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 			add_action( 'wp_ajax_nopriv_wpsi_process_search', array( $this, 'get_ajax_search') );
 			add_action( 'wp_ajax_wpsi_process_search', array( $this, 'get_ajax_search') );
+
+
+			add_action('wp_ajax_wpsi_delete_terms', array($this, 'ajax_delete_terms'));
+
 		}
 
 		static function this() {
 			return self::$_this;
 		}
+
+		public function ajax_delete_terms()
+		{
+			$error = false;
+
+			if (!current_user_can('manage_options')) {
+
+				$error = true;
+			}
+
+			if (!isset($_POST['term_ids'])){
+				$error = true;
+			}
+
+			if (!isset($_POST['token'])){
+				$error = true;
+			}
+
+			if (!$error && !wp_verify_nonce(sanitize_title($_POST['token']), 'search_insights_nonce')){
+				$error = true;
+			}
+
+			if (!$error){
+				$term_ids = json_decode($_POST['term_ids']);
+				foreach($term_ids as $term_id){
+					$this->delete_term(intval($term_id));
+				}
+			}
+
+			$data = array(
+				'success' => !$error,
+			);
+
+			$response = json_encode($data);
+			header("Content-Type: application/json");
+			echo $response;
+			exit;
+		}
+
+
+		/**
+		 * Delete term by id
+		 * @param $term_id
+		 */
+		public function delete_term($term_id){
+
+			if (!current_user_can('manage_options')) return;
+
+			global $wpdb;
+			//get the term, so we can also remove it from the single table
+			$term = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_archive where id=%s", intval($term_id)));
+			$wpdb->delete(
+				$wpdb->prefix . 'searchinsights_archive',
+				array('id' => intval($term_id))
+			);
+
+			if ($term){
+				$wpdb->delete(
+					$wpdb->prefix . 'searchinsights_single',
+					array('term' => sanitize_text_field($term))
+				);
+			}
+
+		}
+
 
 		public function enqueue_assets() {
 			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
@@ -263,7 +332,6 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		public function replace_term( $search_term, $new_term, $result_count) {
 
 			global $wpdb;
-
 			$new_term = sanitize_text_field($new_term);
 			$search_term = sanitize_text_field($search_term);
 

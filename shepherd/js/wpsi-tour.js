@@ -60,9 +60,9 @@ jQuery(document).ready(function($) {
         });
         main_tour.addStep('wpsi-step-3', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            attachTo: '#search-insights-most-popular-table_info right',
-            title: steps[3]['title'],
-            text: wpsi_tour.html.replace('{content}', steps[3]['text']),
+            attachTo: '#wpsi-popular-table_info right',
+            title: dashboard_title,
+            text: dashboard_text,
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,
@@ -81,9 +81,9 @@ jQuery(document).ready(function($) {
 
         main_tour.addStep('wpsi-step-4', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: steps[4]['title'],
-            text: wpsi_tour.html.replace('{content}', steps[4]['text']),
-            attachTo: '#search-insights-recent-table_info right',
+            title: recent_searches_title,
+            text: recent_searches_text,
+            attachTo: '#wpsi-recent-table_info right',
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,

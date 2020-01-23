@@ -2,6 +2,7 @@
 @color-success: #61ce70;
 @color-error: #d7263d;
 
+
 /**
 widget
  */
@@ -42,7 +43,7 @@ widget
       color:#666;
     }
     .dashicons-arrow-up-alt{
-            color:@color-success;
+      color:@color-success;
     }
     .dashicons-arrow-down-alt{
       color:@color-error;
@@ -136,6 +137,7 @@ widget
 */
 
 
+
   .dataTables_wrapper {
     max-width: 800px;
     display: flex;
@@ -156,7 +158,11 @@ widget
       table-layout: fixed;
       justify-content: normal;
     }
-
+    table.dataTable {
+      .wpsi-selected {
+        background-color:rgba(41, 182, 246, 0.35);
+      }
+    }
     table caption {
       font-size: 1.5em;
       margin: .5em 0 .75em;
@@ -270,7 +276,7 @@ widget
       border-bottom: 0;
     }
 
-    #search-insights-most-popular-table {
+    #wpsi-popular-table {
       margin-left: 15px;
     }
 
@@ -284,12 +290,12 @@ widget
       Individual table styling
    */
 
-  #search-insights-recent-table {
+  #wpsi-recent-table {
 
     margin-right: 15px;
   }
 
-  #search-insights-recent-table, #search-insights-most-popular-table {
+  #wpsi-recent-table, #wpsi-popular-table {
     width:100%;
 
   }
@@ -299,11 +305,11 @@ widget
   }
 
   .icon-cancel {
-    color: #d7263d;
+    color: @color-error;
   }
 
   .icon-ok {
-    color: #61ce70;
+    color: @color-success;
   }
 
   #term-link {
