@@ -872,6 +872,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			);
 			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches( $args );
 			?>
+            <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
 
             <table id="search-insights-most-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <caption><?php _e( 'Popular searches', 'wp-search-insights' ); ?></caption>
