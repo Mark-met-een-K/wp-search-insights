@@ -865,25 +865,25 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 		public function generate_popular_table() {
 
-			$args             = array(
+			$args = array(
 				'orderby' => 'frequency',
-				'order'   => 'DESC',
-				'number'  => 1000,
+				'order' => 'DESC',
+				'number' =>1000,
 			);
-			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches( $args );
+			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
 			?>
             <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
+            <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
+                <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 
-            <table id="search-insights-most-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
-                <caption><?php _e( 'Popular searches', 'wp-search-insights' ); ?></caption>
                 <thead>
                 <tr class="wpsi-thead-th">
 					<?php
-					echo "<th scope='col' style='width: 20%;'>" . __( "Term", "wp-search-insights" )
+					echo "<th scope='col' style='width: 20%;'>" . __("Term", "wp-search-insights")
 					     . "</th>";
-					echo "<th scope='col' style='width: 10%;'>" . __( "Count", "wp-search-insights" )
+					echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
 					     . "</th>";
-					echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' . __( "Results", "wp-search-insights" ) . '</th>';
+					echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
 
 					?>
                 </tr>
@@ -891,8 +891,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <tbody>
 				<?php
 
-				foreach ( $popular_searches as $search ) {
-					if ( $search->result_count == 0 ) {
+				foreach ($popular_searches as $search) {
+					if ($search->result_count == 0) {
 						// No hits, show an error icon
 						$results = "<i class='hit-icon icon-cancel'></i>";
 					} else {
