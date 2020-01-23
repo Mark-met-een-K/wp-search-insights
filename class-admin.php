@@ -768,40 +768,39 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		 *
 		 */
 
-		public function generate_recent_table( $dashboard_widget = false ) {
+		public function generate_recent_table($dashboard_widget = false)
+		{
 
 			global $wpdb;
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
-			$recent_searches   = $wpdb->get_results( "SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000" );
+			$recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
 
 			?>
-            <table id="search-insights-recent-table">
-				<?php if ( ! $dashboard_widget ) { ?>
-                <caption><?php _e( "Recent Searches", "wp-search-insights" );
-					} ?>
+            <table id="wpsi-recent-table">
+				<?php if (!$dashboard_widget) { ?>
+                <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
                 </caption>
                 <thead>
                 <tr class="wpsi-thead-th">
-                    <th scope='col' style="width: 25%;"><?php _e( "Search term", "wp-search-insights" ); ?> </th>
-                    <th scope='col' style="width: 15%;"><?php _e( "When", "wp-search-insights" ); ?> </th>
-					<?php if ( ! $dashboard_widget ) { ?>
-                        <th scope='col' style="width: 20%;"
-                            class="dashboard-tooltip-from"><?php _e( "From post/page", "wp-search-insights" ) ?> </th>
+                    <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
+                    <th scope='col' style="width: 15%;"><?php _e("When", "wp-search-insights");?> </th>
+					<?php if (!$dashboard_widget) { ?>
+                        <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
 					<?php } ?>
                 </tr>
                 </thead>
                 <tbody>
 				<?php
 				// Start generating rows
-				foreach ( $recent_searches as $search ) {
+				foreach ($recent_searches as $search) {
 
 					// Show the full time on dashboard, shorten the time on the dashboard widget.
-					$search_time_td = "<td data-label='When'>" . $this->get_date( $search->time ) . "</td>";
+					$search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
 
 					//Add &searchinsights to 'see results' link to prevent it from counting as search;
-					$link           = $this->get_term_link( $search->term );
+					$link = $this->get_term_link($search->term);
 					$search_term_td = '<td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$link.'</td>';
-					$referrer_td    = "<td>$search->referrer</td>";
+					$referrer_td = "<td>$search->referrer</td>";
 
 					//Generate the row with or without hits and referer, depending on where the table is generated
 					echo "<tr>" . $search_term_td . $search_time_td . $referrer_td . "</tr>";
