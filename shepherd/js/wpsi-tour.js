@@ -61,8 +61,8 @@ jQuery(document).ready(function($) {
         main_tour.addStep('wpsi-step-3', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             attachTo: '#wpsi-popular-table_info right',
-            title: dashboard_title,
-            text: dashboard_text,
+            title: steps[3]['title'],
+            text: wpsi_tour.html.replace('{content}', steps[3]['text']),
             buttons: [
                 {
                     text: wpsi_tour.backBtnText,
@@ -81,8 +81,8 @@ jQuery(document).ready(function($) {
 
         main_tour.addStep('wpsi-step-4', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: recent_searches_title,
-            text: recent_searches_text,
+            title: steps[4]['title'],
+            text: wpsi_tour.html.replace('{content}', steps[4]['text']),
             attachTo: '#wpsi-recent-table_info right',
             buttons: [
                 {

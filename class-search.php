@@ -96,6 +96,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 				);
 			}
 
+            WP_Search_insights()->admin->clear_cache();
 		}
 
 
@@ -564,7 +565,7 @@ if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
 		 */
 
 		public function get_referer() {
-			$referrer = wp_get_referer();
+            $referrer = esc_url_raw("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
 			$uri_parts = explode('?', $referrer, 2);
 			if ($uri_parts && isset($uri_parts[0])) $referrer = $uri_parts[0];

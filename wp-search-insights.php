@@ -37,7 +37,7 @@ class WP_SEARCH_INSIGHTS {
 	private static $instance;
 
 	public $WP_Search_Insights_Search;
-	public $WP_Search_Insights_Admin;
+    public $admin;
 	public $tour;
 	public $review;
 
@@ -58,7 +58,7 @@ class WP_SEARCH_INSIGHTS {
 
 			if ( is_admin() ) {
 				self::$instance->review = new wpsi_review();
-				self::$instance->WP_Search_Insights_Admin = new WP_Search_Insights_Admin();
+                self::$instance->admin = new WPSI_Admin();
 				self::$instance->tour = new wpsi_tour();
 			}
 
@@ -105,7 +105,7 @@ class WP_SEARCH_INSIGHTS {
 			array( $this, 'search_insights_update_db_check' ) );
 
         if ( is_admin() ) {
-            add_action( 'plugins_loaded', array( self::$instance->WP_Search_Insights_Admin, 'init' ), 10 );
+            add_action( 'plugins_loaded', array( self::$instance->admin, 'init' ), 10 );
             add_action( 'plugins_loaded', array( self::$instance->tour, 'init' ), 10 );
         }
 	}

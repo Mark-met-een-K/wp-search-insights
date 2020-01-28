@@ -1,8 +1,8 @@
 <?php
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
-	class WP_Search_Insights_Admin {
+if ( ! class_exists( 'WPSI_Admin' ) ) {
+    class WPSI_Admin {
 
 		private static $_this;
 
@@ -513,13 +513,20 @@ error_log("Adding settings page");
 			//check for action
 			if ( isset( $_GET["action"] ) && $_GET["action"] == 'clear_database' ) {
 				$this->clear_database_tables();
-				delete_transient( 'wpsi_popular_searches' );
-				delete_transient( 'wpsi_top_searches' );
+                $this->clear_cache();
 			}
 			wp_redirect( admin_url( 'tools.php?page=wpsi-settings-page' ) );
 			exit;
 		}
 
+        /**
+         * Clear the transient caches
+         */
+
+        public function clear_cache(){
+            delete_transient( 'wpsi_popular_searches' );
+            delete_transient( 'wpsi_top_searches' );
+        }
 
 		/**
 		 *
