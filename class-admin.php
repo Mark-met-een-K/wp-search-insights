@@ -1,5 +1,4 @@
 <?php
-
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
 if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
@@ -7,7 +6,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 		private static $_this;
 
-		public $capability = 'activate_plugins';
+        public $capability = 'activate_plugins';
 
 		function __construct() {
 			if ( isset( self::$_this ) ) {
@@ -15,76 +14,150 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 					'wp-search-insights' ), get_class( $this ) ) );
 			}
 
-
 			self::$_this = $this;
-			if ( ! current_user_can( $this->capability ) ) {
-				return;
-			}
-
-			add_action( 'admin_init', array( $this, 'wpsi_settings_section_and_fields' ) );
-			add_action( 'admin_menu', array( $this, 'add_settings_page' ), 40 );
-
-			$plugin = wp_search_insights_plugin;
-
-			add_filter( "plugin_action_links_$plugin", array( $this, 'plugin_settings_link' ) );
-
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-
-			add_action( 'admin_init', array( $this, 'listen_for_clear_database' ), 40 );
-
-			add_action( 'update_option_wpsi_exclude_admin', array( $this, 'redirect_to_settings_tab' ) );
-			add_action( 'update_option_wpsi_min_term_length', array( $this, 'redirect_to_settings_tab' ) );
-			add_action( 'update_option_wpsi_max_term_length', array( $this, 'redirect_to_settings_tab' ) );
-
-			add_action( 'wp_dashboard_setup', array( $this, 'add_wpsi_dashboard_widget' ) );
 
 		}
 
 		static function this() {
 			return self::$_this;
+		}
+
+		/**
+		 * Initializes the admin class
+		 *
+		 * @since  1.0
+		 *
+		 * @access public
+		 *
+		 */
+
+		public function init()
+		{
+            error_log("int");
+			$this->capability = get_option('wpsi_select_dashboard_capability');
+			error_log($this->capability);
+
+			error_log("init");
+
+			if (!current_user_can($this->capability)) {
+			    error_log("Capa");
+				return;
+			}
+
+			add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+			add_action('admin_menu', array($this, 'add_settings_page'), 40);
+
+			add_action('admin_init', array($this, 'add_privacy_info'));
+
+			$plugin = wp_search_insights_plugin;
+
+			add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
+
+			add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+			add_action('admin_head', array($this, 'inline_styles'));
+
+			if (current_user_can('manage_options')) {
+				add_action( 'update_option_wpsi_exclude_admin', array( $this, 'redirect_to_settings_tab' ) );
+				add_action( 'update_option_wpsi_min_term_length', array( $this, 'redirect_to_settings_tab' ) );
+				add_action( 'update_option_wpsi_max_term_length', array( $this, 'redirect_to_settings_tab' ) );
+				add_action( 'update_option_wpsi_select_dashboard_capability', array( $this, 'redirect_to_settings_tab' ) );
+
+				add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
+			}
+
+			add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget') );
 
 		}
 
+		public function inline_styles(){
+			?>
+            <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
+            <style>
+                div#TB_window {
+                    height: 260px;
+                    width: 450px;
+                }
 
-		public function enqueue_assets( $hook ) {
+                div#TB_ajaxWindowTitle {
+                    line-height: 50px;
+                }
+
+                div#TB_ajaxContent {
+                    font-size: 1.1em;
+                }
+
+                div#TB_title {
+                    font-size: 1.2em;
+                    font-weight: 900;
+                    height: 50px;
+                    background-color: #d7263d;
+                    color: #f2f2f2;
+                }
+
+                span.tb-close-icon {
+                    visibility: hidden;
+                }
+
+                span.tb-close-icon::before {
+                    font-family: dashicons;
+                    font-size: 2.3em;
+                    line-height: 50px;
+                    margin-left: -25px;
+                    color: #f2f2f2;
+                    visibility: visible;
+                    display: inline-block;
+                    content: "\f335";
+                    opacity: 0.7;
+                }
+            </style>
+			<?php
+		}
+
+		public function enqueue_assets($hook)
+		{
 			global $search_insights_settings_page;
 			// Enqueue assest when on index.php (WP dashboard) or plugins settings page
 
-			if ( $hook == 'index.php' || $hook == $search_insights_settings_page ) {
+			if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
-				wp_register_style( 'search-insights',
-					trailingslashit( wp_search_insights_url ) . "assets/css/style.min.css", "",
-					wp_search_insights_version );
-				wp_enqueue_style( 'search-insights' );
+				wp_register_style('search-insights',
+					trailingslashit(wp_search_insights_url) . "assets/css/style.min.css", "",
+					wp_search_insights_version);
+				wp_enqueue_style('search-insights');
 
-				wp_register_script( 'search-insights',
-					trailingslashit( wp_search_insights_url )
-					. 'assets/js/scripts.js', array( "jquery" ), wp_search_insights_version );
-				wp_enqueue_script( 'search-insights' );
+				wp_register_script('search-insights',
+					trailingslashit(wp_search_insights_url)
+					. 'assets/js/scripts.js', array("jquery"), wp_search_insights_version);
+				wp_enqueue_script('search-insights');
+				wp_localize_script( 'search-insights', 'wpsi',
+					array(
+						'ajaxurl' => admin_url( 'admin-ajax.php' ),
+						'token'   => wp_create_nonce( 'search_insights_nonce'),
+					)
+				);
 
 				//Datatables javascript for interactive tables
-				wp_register_script( 'datatables',
-					trailingslashit( wp_search_insights_url )
-					. 'assets/js/datatables.min.js', array( "jquery" ), wp_search_insights_version );
-				wp_enqueue_script( 'datatables' );
+				wp_register_script('datatables',
+					trailingslashit(wp_search_insights_url)
+					. 'assets/js/datatables.min.js',  array("jquery"), wp_search_insights_version);
+				wp_enqueue_script('datatables');
 
 				// The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
-				if ( $hook == 'index.php' ) {
-					return;
-				}
+				if ($hook == 'index.php') return;
 
-				wp_register_style( 'fontello',
-					trailingslashit( wp_search_insights_url ) . 'assets/font-icons/css/fontello.css', "",
-					wp_search_insights_version );
-				wp_enqueue_style( 'fontello' );
+				wp_register_style('fontello',
+					trailingslashit(wp_search_insights_url) . 'assets/font-icons/css/fontello.css', "",
+					wp_search_insights_version);
+				wp_enqueue_style('fontello');
 
 				//Datatables plugin to hide pagination when it isn't needed
-				wp_register_script( 'datatables-pagination',
-					trailingslashit( wp_search_insights_url )
-					. 'assets/js/dataTables.conditionalPaging.js', array( "jquery" ), wp_search_insights_version );
-				wp_enqueue_script( 'datatables-pagination' );
+				wp_register_script('datatables-pagination',
+					trailingslashit(wp_search_insights_url)
+					. 'assets/js/dataTables.conditionalPaging.js',  array("jquery"), wp_search_insights_version);
+				wp_enqueue_script('datatables-pagination');
 			}
 		}
+
 
 		/**
 		 * @param $links
@@ -122,8 +195,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		 */
 
 		public function add_settings_page() {
-
+error_log("Adding settings page");
 			if ( ! current_user_can( $this->capability ) ) {
+			    error_log("User cannot!");
 				return;
 			}
 
@@ -131,8 +205,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 			$search_insights_settings_page = add_submenu_page(
 				'tools.php',
-				"WP Search Insights", //page title
-				"WP Search Insights", //submenu title
+				"WP Search Insights",
+				"Search Insights",
 				$this->capability, //capability
 				'wpsi-settings-page', //url
 				array( $this, 'settings_page' ) ); //function
@@ -147,7 +221,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		 */
 
 		public function wpsi_settings_section_and_fields() {
-			if ( ! current_user_can( $this->capability ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
 
@@ -169,6 +243,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 				'wpsi-settings-tab'
 			);
 
+
 			add_settings_field(
 				'min_search_length',
 				__( "Exclude searches shorter than characters", 'wp-search-insights' ),
@@ -181,6 +256,22 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 				'max_search_length',
 				__( "Exclude searches longer than characters", 'wp-search-insights' ),
 				array( $this, 'option_max_term_length' ),
+				'wpsi-settings',
+				'wpsi-settings-tab'
+			);
+
+			add_settings_field(
+				'wpsi_select_dashboard_capability',
+				__( "Who can view the dashboard", 'wp-search-insights' ),
+				array( $this, 'option_wpsi_select_dashboard_capability' ),
+				'wpsi-settings',
+				'wpsi-settings-tab'
+			);
+
+			add_settings_field(
+				'wpsi_filter_textarea',
+				__( "Search term filter", 'wp-search-insights' ),
+				array( $this, 'option_textarea_filter' ),
 				'wpsi-settings',
 				'wpsi-settings-tab'
 			);
@@ -207,7 +298,25 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			register_setting( 'wpsi-settings-tab', 'wpsi_cleardatabase' );
 			register_setting( 'wpsi-settings-tab', 'wpsi_min_term_length' );
 			register_setting( 'wpsi-settings-tab', 'wpsi_max_term_length' );
+			register_setting( 'wpsi-settings-tab', 'wpsi_select_dashboard_capability' );
+			register_setting( 'wpsi-settings-tab', 'wpsi_filter_textarea' );
 
+		}
+
+		public function add_privacy_info() {
+			if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
+				return;
+			}
+
+			$content = sprintf(
+				__( 'WP Search Insights does not process any personal identifiable information, so the GDPR does not apply to these plugins or usage of these plugins on your website. You can find our privacy policy <a href="%s" target="_blank">here</a>.', 'wp-search-insights' ),
+				'https://wpsearchinsights.com/privacy-statement/'
+			);
+
+			wp_add_privacy_policy_content(
+				'WP Search Insights',
+				wp_kses_post( wpautop( $content, false ) )
+			);
 		}
 
 
@@ -243,6 +352,24 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 				WP_Search_insights()->wpsi_help->get_help_tip( __( "With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights" ) );
 				?>
             </div>
+			<?php
+		}
+
+		public function option_wpsi_select_dashboard_capability() {
+			?>
+            <label class="wpsi-select-capability">
+                <select name="wpsi_select_dashboard_capability" id="wpsi_select_dashboard_capability">
+                    <option value="activate_plugins" <?php if ( get_option( 'wpsi_select_dashboard_capability' ) == 'activate_plugins' ) {
+						echo 'selected="selected"';
+					} ?>><?php _e( 'Administrators', 'wp-search-insights' ); ?></option>
+                    <option value="read" <?php if ( get_option( 'wpsi_select_dashboard_capability' ) == 'read' ) {
+						echo 'selected="selected"';
+					} ?>><?php _e( 'All Users', 'wp-search-insights' ); ?></option>
+                </select>
+            </label>
+			<?php
+			WP_Search_insights()->wpsi_help->get_help_tip( __( "Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights" ) );
+			?>
 			<?php
 		}
 
@@ -291,88 +418,80 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			<?php
 		}
 
-
 		public function option_wpsi_clear_database() {
-			add_thickbox();
+
+			$args = array(
+				'action_label' =>  __( "Clear database", "wp-search-insights" ),
+				'title' => __( "Are you sure?", "wp-search-insights" ),
+				'description' => __( "Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables.", "wp-search-insights" ),
+				'action' => 'clear_database',
+			);
+			$this->add_thickbox_button($args);
+			WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
 			?>
-            <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
-            <style>
-                div#TB_window {
-                    height: 260px;
-                    width: 450px;
-                }
+			<?php
+		}
 
-                div#TB_ajaxWindowTitle {
-                    line-height: 50px;
-                }
 
-                div#TB_ajaxContent {
-                    font-size: 1.1em;
-                }
+		/**
+		 * Create button with popup using WP core thickbox
+		 * @param $args
+		 */
 
-                div#TB_title {
-                    font-size: 1.2em;
-                    font-weight: 900;
-                    height: 50px;
-                    background-color: #d7263d;
-                    color: #f2f2f2;
-                }
+		public function add_thickbox_button($args){
+			add_thickbox();
 
-                span.tb-close-icon {
-                    visibility: hidden;
-                }
+			$default_args = array(
+				"title" => '',
+				"action_label" => '',
+				"action" => '',
+				"description" => '',
+			);
+			$args = wp_parse_args($args, $default_args);
+			$token      = wp_create_nonce( 'wpsi_thickbox_nonce' );
+			$action_url = add_query_arg(array('page'=>'wpsi-settings-page', 'action'=>$args['action'], 'token'=> $token), admin_url( "tools.php"));
 
-                span.tb-close-icon::before {
-                    font-family: dashicons;
-                    font-size: 2.3em;
-                    line-height: 50px;
-                    margin-left: -25px;
-                    color: #f2f2f2;
-                    visibility: visible;
-                    display: inline-block;
-                    content: "\f335";
-                    opacity: 0.7;
-                }
-            </style>
-
+			?>
             <div>
                 <input class="thickbox button"
                        title="<?php _e( "You're about to clear your database!", "wp-search-insights" ); ?>"
-                       type="button" style="display: block;" alt="#TB_inline?
-         height=260&width=450&inlineId=wpsi_clear_database"
+                       type="button" style="display: block;" alt="#TB_inline?height=260&width=450&inlineId=wpsi_<?php echo esc_attr($args['action'])?>"
                        value="<?php echo __( 'Clear database', 'wp-search-insights' ); ?>"/>
             </div>
-            <div id="wpsi_clear_database" style="display: none;">
+            <div id="wpsi_<?php echo esc_attr($args['action'])?>" style="display: none;">
 
-                <h1 style="padding-top: 5px;"><?php _e( "Are you sure?", "wp-search-insights" ) ?></h1>
-                <p><?php _e( "Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables.", "wp-search-insights" ); ?></p>
-
-				<?php
-				$token         = wp_create_nonce( 'wpsi_clear_database' );
-				$clear_db_link = admin_url( "tools.php?page=wpsi-settings-page&action=clear_database&token=" . $token );
-
-				?>
-
+                <h1 style="padding-top: 5px;"><?php echo $args["title"]?></h1>
+                <p><?php echo $args['description']?></p>
                 <script>
                     jQuery(document).ready(function ($) {
-                        $('#wpsi_cancel_database_clearing').click(tb_remove);
+                        $('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
                     });
                 </script>
                 <a class="button button-primary"
                    style="width: 130px; height: 25px; line-height: 25px; margin-right:20px; text-align: center; font-weight: 700;"
-                   href="<?php echo $clear_db_link ?>">
-					<?php _e( "Clear database", "wp-search-insights" ) ?>
+                   href="<?php echo $action_url ?>">
+					<?php echo $args['action_label'] ?>
                 </a>
 
-                <a class="button" style="height: 25px; line-height: 25px;" href="#" id="wpsi_cancel_database_clearing">
+                <a class="button" style="height: 25px; line-height: 25px;" href="#" id="wpsi_cancel_<?php echo esc_attr($args['action'])?>">
 					<?php _e( "Cancel", "wp-search-insights" ) ?>
                 </a>
 
             </div>
 			<?php
-			WP_Search_insights()->wpsi_help->get_help_tip( __( "Pressing this button will delete all recorded searches from your database", "wp-search-insights" ) );
+		}
+
+
+		public function option_textarea_filter() {
 			?>
+            <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">
+            <?php
+            echo
+            esc_html( get_option( 'wpsi_filter_textarea' ) );
+            ?>
+        </textarea>
 			<?php
+			WP_Search_insights()->wpsi_help->get_help_tip( __( "Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights" ) );
 		}
 
 		/**
@@ -385,9 +504,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 		public function listen_for_clear_database() {
 
-			if ( ! current_user_can( $this->capability ) ) {
-				return;
-			}
+			// Capability is checked before adding action for this function
 
 			//check nonce
 			if ( ! isset( $_GET['token'] ) || ( ! wp_verify_nonce( $_GET['token'], 'wpsi_clear_database' ) ) ) {
@@ -397,6 +514,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			if ( isset( $_GET["action"] ) && $_GET["action"] == 'clear_database' ) {
 				$this->clear_database_tables();
 				delete_transient( 'wpsi_popular_searches' );
+				delete_transient( 'wpsi_top_searches' );
 			}
 			wp_redirect( admin_url( 'tools.php?page=wpsi-settings-page' ) );
 			exit;
@@ -418,7 +536,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			}
 
 			?>
-
             <div class="wrap">
                 <div id="wpsi-toggle-wrap">
                 <div id="wpsi-toggle-dashboard">
@@ -446,45 +563,45 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                         </div>
                     </div>
                 </div>
-                <div id="wpsi-dashboard">
-                    <!--    Navigation-->
-                    <div class="wp-search-insights-container">
-                        <ul class="tabs">
-                            <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top">Dashboard</a>
-                            </li>
-                            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
-							<?php echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
-                        </ul>
-                    </div>
-
-                    <div class="wp-search-insights-main">
-                        <!--    Dashboard tab   -->
-                        <div id="dashboard" class="tab-content current">
-                            <?php
-                            //get html of block
-
-
-                            ?>
-                            <div class="wpsi-grid">
-                                <div class="wpsi-item grid-active" data-id="1">
-                                    <div class="item-container">
-                                        <div class="item-content search-insights-table"><?php $this->generate_popular_table(); ?></div>
-                                    </div>
-                                </div>
-                                <div class="wpsi-item small" data-id="2">
-                                    <div class="item-container">
-	                                    <div class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
-                                    </div>
-                                </div>
-                                <div class="wpsi-item" data-id="3">
-                                    <div class="item-container">
-										<div class="item-content search-insights-table"><?php $this->generate_recent_table(); ?></div>
-                                    </div>
+            <div id="wpsi-dashboard">
+                <!--    Navigation-->
+                <div class="wp-search-insights-container">
+                    <ul class="tabs">
+                        <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard"
+                                                                             href="#dashboard#top">Dashboard</a></li>
+						<?php if ( current_user_can( 'manage_options' ) ) { ?>
+                            <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings"
+                                                                        href="#settings#top">Settings</a></li>
+						<?php } ?>
+						<?php echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+                    </ul>
+                </div>
+                <div class="wp-search-insights-main">
+                    <!--    Dashboard tab   -->
+                    <div id="dashboard" class="tab-content current">
+                        <?php
+                        //get html of block
+                        ?>
+                        <div class="wpsi-grid">
+                            <div class="wpsi-item grid-active" data-id="1">
+                                <div class="item-container">
+                                    <div class="item-content search-insights-table"><?php $this->generate_popular_table(); ?></div>
                                 </div>
                             </div>
-
+                            <div class="wpsi-item small" data-id="2">
+                                <div class="item-container">
+                                    <div class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
+                                </div>
+                            </div>
+                            <div class="wpsi-item" data-id="3">
+                                <div class="item-container">
+                                    <div class="item-content search-insights-table"><?php $this->generate_recent_table(); ?></div>
+                                </div>
+                            </div>
                         </div>
-                        <!--    Settings tab    -->
+                    </div>
+                    <!--    Settings tab    -->
+					<?php if ( current_user_can( 'manage_options' ) ) { ?>
                         <div id="settings" class="tab-content">
                             <div>
                                 <form action="options.php" method="post">
@@ -500,10 +617,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                                 </form>
                             </div>
                         </div>
-                    </div>
+					<?php } ?>
                 </div>
-
-
+            </div>
             </div>
 			<?php
 		}
@@ -692,41 +808,39 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		 *
 		 */
 
-		public function generate_recent_table( $dashboard_widget = false ) {
+		public function generate_recent_table($dashboard_widget = false)
+		{
 
 			global $wpdb;
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
-			$recent_searches   = $wpdb->get_results( "SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 1000" );
+			$recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
 
 			?>
-            <table id="search-insights-recent-table">
-				<?php if ( ! $dashboard_widget ) { ?>
-                <caption><?php _e( "Recent Searches", "wp-search-insights" );
-					} ?>
+            <table id="wpsi-recent-table">
+				<?php if (!$dashboard_widget) { ?>
+                <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
                 </caption>
                 <thead>
                 <tr class="wpsi-thead-th">
-                    <th scope='col' style="width: 25%;"><?php _e( "Search term", "wp-search-insights" ); ?> </th>
-                    <th scope='col' style="width: 15%;"><?php _e( "When", "wp-search-insights" ); ?> </th>
-					<?php if ( ! $dashboard_widget ) { ?>
-                        <th scope='col' style="width: 20%;"
-                            class="dashboard-tooltip-from"><?php _e( "From post/page", "wp-search-insights" ) ?> </th>
+                    <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
+                    <th scope='col' style="width: 15%;"><?php _e("When", "wp-search-insights");?> </th>
+					<?php if (!$dashboard_widget) { ?>
+                        <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
 					<?php } ?>
                 </tr>
                 </thead>
                 <tbody>
 				<?php
 				// Start generating rows
-				foreach ( $recent_searches as $search ) {
+				foreach ($recent_searches as $search) {
 
 					// Show the full time on dashboard, shorten the time on the dashboard widget.
-					$search_time_td = "<td data-label='When'>" . $this->get_date( $search->time ) . "</td>";
-
+					$search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
 
 					//Add &searchinsights to 'see results' link to prevent it from counting as search;
-					$link           = $this->get_term_link( $search->term );
-					$search_term_td = "<td data-label='Term'>$link</td>";
-					$referrer_td    = "<td>$search->referrer</td>";
+					$link = $this->get_term_link($search->term);
+					$search_term_td = '<td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$link.'</td>';
+					$referrer_td = "<td>$search->referrer</td>";
 
 					//Generate the row with or without hits and referer, depending on where the table is generated
 					echo "<tr>" . $search_term_td . $search_time_td . $referrer_td . "</tr>";
@@ -748,7 +862,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 		public function get_term_link( $term ) {
 			$search_url = home_url() . "?s=" . $term . "&searchinsights";
-
 			return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
 		}
 
@@ -756,7 +869,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		public function get_date( $unix ) {
 
 			$date = date( get_option( 'date_format' ), $unix );
-			$date = date( 'd-m', $unix );
 			$date = $this->localize_date( $date );
 			$time = date( get_option( 'time_format' ), $unix );
 			$date = sprintf( __( "%s at %s", 'complianz-gdpr' ), $date, $time );
@@ -792,24 +904,25 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 		public function generate_popular_table() {
 
-			$args             = array(
+			$args = array(
 				'orderby' => 'frequency',
-				'order'   => 'DESC',
-				'number'  => 1000,
+				'order' => 'DESC',
+				'number' =>1000,
 			);
-			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches( $args );
+			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
 			?>
+            <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
+            <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
+                <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 
-            <table id="search-insights-most-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
-                <caption><?php _e( 'Popular searches', 'wp-search-insights' ); ?></caption>
                 <thead>
                 <tr class="wpsi-thead-th">
 					<?php
-					echo "<th scope='col' style='width: 20%;'>" . __( "Term", "wp-search-insights" )
+					echo "<th scope='col' style='width: 20%;'>" . __("Term", "wp-search-insights")
 					     . "</th>";
-					echo "<th scope='col' style='width: 10%;'>" . __( "Count", "wp-search-insights" )
+					echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
 					     . "</th>";
-					echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' . __( "Results", "wp-search-insights" ) . '</th>';
+					echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
 
 					?>
                 </tr>
@@ -817,8 +930,8 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <tbody>
 				<?php
 
-				foreach ( $popular_searches as $search ) {
-					if ( $search->result_count == 0 ) {
+				foreach ($popular_searches as $search) {
+					if ($search->result_count == 0) {
 						// No hits, show an error icon
 						$results = "<i class='hit-icon icon-cancel'></i>";
 					} else {
@@ -826,7 +939,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 						$results = "<i class='hit-icon icon-ok'></i>$search->result_count";
 					}
 
-					echo "<tr>" . "<td data-label='Term'>" . $this->get_term_link( $search->term )
+					echo "<tr>" . '<td class="wpsi-term" data-label="Term" data-term_id="'.$search->id.'">'. $this->get_term_link($search->term)
 					     . "</td>" . "<td data-label='Count'>" . $search->frequency
 					     . "<td>$results</td>"
 					     . "</td>" . "</tr>";
@@ -838,4 +951,4 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			<?php
 		}
 	}
-}//Class closure
+}

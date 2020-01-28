@@ -3,7 +3,7 @@
  * Plugin Name: WP Search Insights
  * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
  * Description: WP Search Insights shows you what your users are looking for on your site, and which searches don't have results
- * Version: 1.0.0
+ * Version: 1.1
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters, Rogier Lankhorst
@@ -87,27 +87,27 @@ class WP_SEARCH_INSIGHTS {
 		define( 'wp_search_insights_version', $plugin_data['Version'].$debug );
 	}
 
-	private function includes() {
-
-		if ( is_admin() ) {
-			require_once( wp_search_insights_path . 'class-admin.php' );
-            require_once( wp_search_insights_path . 'class-help.php' );
-            require_once( wp_search_insights_path . 'class-review.php' );
-			require_once( wp_search_insights_path . 'class-tour.php' );
-			require_once( wp_search_insights_path . 'grid/grid-enqueue.php' );
-			require_once( wp_search_insights_path . 'grid/grid.php' );
-        }
-
-		require_once( wp_search_insights_path . 'class-search.php' );
-
-	}
+	private function includes()
+    {
+         if (is_admin()) {
+                require_once(wp_search_insights_path . 'class-admin.php');
+                require_once(wp_search_insights_path . 'class-help.php');
+                require_once(wp_search_insights_path . 'class-review.php');
+                require_once(wp_search_insights_path . 'shepherd/tour.php');
+                require_once(wp_search_insights_path . 'grid/grid-enqueue.php');
+         }
+            require_once(wp_search_insights_path . 'class-search.php');
+    }
 
 	private function hooks() {
 
 		add_action( 'plugins_loaded',
 			array( $this, 'search_insights_update_db_check' ) );
 
-
+        if ( is_admin() ) {
+            add_action( 'plugins_loaded', array( self::$instance->WP_Search_Insights_Admin, 'init' ), 10 );
+            add_action( 'plugins_loaded', array( self::$instance->tour, 'init' ), 10 );
+        }
 	}
 
 	/**
@@ -157,4 +157,5 @@ if (!function_exists('wp_search_insights')) {
 function search_insights_activation_hook() {
     update_option('wpsi_min_term_length', 0);
     update_option('wpsi_max_term_length', 50);
+    update_option('wpsi_select_dashboard_capability' , 'activate_plugins');
 }

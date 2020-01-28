@@ -5,26 +5,6 @@ jQuery(document).ready(function($) {
         var widget_tour = new Shepherd.Tour();
         var main_tour = new Shepherd.Tour();
 
-        // Localized variables
-        var startTourtext = search_insights_tour_ajax.startTourtext;
-        var nextBtnText = search_insights_tour_ajax.nextBtnText;
-        var backBtnText = search_insights_tour_ajax.backBtnText;
-
-        var plugins_overview_title = search_insights_tour_ajax.po_title;
-        var plugins_overview_text = search_insights_tour_ajax.po_text;
-        var widget_title = search_insights_tour_ajax.widget_title;
-        var widget_text = search_insights_tour_ajax.widget_text;
-        var dashboard_title = search_insights_tour_ajax.dashboard_title;
-        var dashboard_text = search_insights_tour_ajax.dashboard_text;
-
-        var recent_searches_title = search_insights_tour_ajax.recent_searches_title;
-        var recent_searches_text = search_insights_tour_ajax.recent_searches_text;
-        var settings_title = search_insights_tour_ajax.settings_title;
-        var settings_text = search_insights_tour_ajax.settings_text;
-        var finish_title = search_insights_tour_ajax.finish_title;
-        var finish_text = search_insights_tour_ajax.finish_text;
-
-
         plugins_overview_tour.options.defaults = widget_tour.options.defaults = main_tour.options.defaults = {
             classes: 'shepherd-theme-arrows',
             scrollTo: true,
@@ -44,108 +24,107 @@ jQuery(document).ready(function($) {
                 ]
             }
         };
+        var steps = wpsi_tour.steps;
 
-        // Plugins overview tour
-
-        plugins_overview_tour.addStep('intro', {
+    plugins_overview_tour.addStep('wpsi-step-1', {
             classes: 'shepherd-theme-arrows wpsi-plugins-overview-tour-container shepherd-has-cancel-link',
             attachTo: '.wpsi-settings-link right',
-            title: plugins_overview_title,
-            text: plugins_overview_text,
+            title: steps[1]['title'],
+            text: wpsi_tour.html.replace('{content}', steps[1]['text']),
             buttons: [
                 {
-                    text: startTourtext,
+                    text: wpsi_tour.startTour,
+                    classes: 'button button-primary',
                     action: function() {
-                        window.location = search_insights_tour_ajax.linkToDashboard;
+                        window.location = steps[1]['link'];
                     }
                 },
 
             ],
         });
-
-        //widget
-
-
-        widget_tour.addStep('widget', {
+        widget_tour.addStep('wpsi-step-2', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             attachTo: '.wpsi-widget-logo right',
-            title: widget_title,
-            text: widget_text,
+            title: steps[2]['title'],
+            text: wpsi_tour.html.replace('{content}', steps[2]['text']),
             buttons: [
                 {
-                    text: nextBtnText,
+                    text: wpsi_tour.nextBtnText,
+                    classes: 'button button-primary',
                     action: function() {
-                        window.location = search_insights_tour_ajax.linkToSettings;
+                        window.location = steps[2]['link'];
                     }
                 },
 
             ],
         });
-
-        // Main tour
-
-        main_tour.addStep('popular-searches', {
+        main_tour.addStep('wpsi-step-3', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            attachTo: '#search-insights-most-popular-table_info right',
+            attachTo: '#wpsi-popular-table_info right',
             title: dashboard_title,
             text: dashboard_text,
             buttons: [
                 {
-                    text: backBtnText,
+                    text: wpsi_tour.backBtnText,
+                    classes: 'button button-primary',
                     action: function() {
-                        window.location = search_insights_tour_ajax.linkToDashboard;
+                        window.location = steps[1]['link'];
                     }
                 },
                 {
-                    text: nextBtnText,
-                    action: main_tour.next
+                    text: wpsi_tour.nextBtnText,
+                    action: main_tour.next,
+                    classes: 'button button-primary',
                 },
             ],
         });
 
-        main_tour.addStep('recent-searches', {
+        main_tour.addStep('wpsi-step-4', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
             title: recent_searches_title,
             text: recent_searches_text,
-            attachTo: '#search-insights-recent-table_info right',
+            attachTo: '#wpsi-recent-table_info right',
             buttons: [
                 {
-                    text: search_insights_tour_ajax.backBtnText,
-                    action: main_tour.back
+                    text: wpsi_tour.backBtnText,
+                    action: main_tour.back,
+                    classes: 'button button-primary',
                 },
                 {
-                    text: nextBtnText,
+                    text: wpsi_tour.nextBtnText,
                     action: function() {
                         $('.tab-settings').click();
                         main_tour.next();
                     },
+                    classes: 'button button-primary',
+
 
 
                 }
             ],
         });
 
-        main_tour.addStep('settings', {
+        main_tour.addStep('wpsi-step-5', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: settings_title,
-            text: settings_text,
+            title: steps[5]['title'],
+            text: wpsi_tour.html.replace('{content}', steps[5]['text']),
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {
-                    text: search_insights_tour_ajax.backBtnText,
+                    text: wpsi_tour.backBtnText,
                     action: function() {
                         $('.tab-dashboard').click();
                         main_tour.back();
                     },
+                    classes: 'button button-primary',
+
                 },
                 {
-                    text: search_insights_tour_ajax.nextBtnText,
-                    action: main_tour.next
+                    text: wpsi_tour.nextBtnText,
+                    action: main_tour.next,
+                    classes: 'button button-primary',
+
                 }
-                // {
-                //     text: nextBtnText,
-                //     action: main_tour.next
-                // }
             ],
             tetherOptions: {
                 constraints: [
@@ -159,24 +138,24 @@ jQuery(document).ready(function($) {
             },
         });
 
-        main_tour.addStep('settings', {
+        main_tour.addStep('wpsi-step-6', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            title: finish_title,
-            text: finish_text,
+            title: steps[6]['title'],
+            text: wpsi_tour.html.replace('{content}', steps[6]['text']),
             attachTo: '#wpsi-dashboard .tab-settings [bottom right]',
             buttons: [
                 {
-                    text: search_insights_tour_ajax.backBtnText,
-                    action: main_tour.back
+                    text: wpsi_tour.backBtnText,
+                    action: main_tour.back,
+                    classes: 'button button-primary',
+
                 },
                 {
-                    text: search_insights_tour_ajax.endTour,
-                    action: main_tour.cancel
+                    text: wpsi_tour.endTour,
+                    action: main_tour.cancel,
+                    classes: 'button button-primary',
+
                 }
-                // {
-                //     text: nextBtnText,
-                //     action: main_tour.next
-                // }
             ],
             tetherOptions: {
                 constraints: [
@@ -209,11 +188,11 @@ jQuery(document).ready(function($) {
 
             $.ajax({
                 type: "POST",
-                url: search_insights_tour_ajax.ajaxurl,
+                url: wpsi_tour.ajaxurl,
                 dataType: 'json',
                 data: ({
                     wpsi_cancel_tour: 'wpsi_cancel_tour',
-                    token: search_insights_tour_ajax.token,
+                    token: wpsi_tour.token,
                 })
             });
         };

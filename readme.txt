@@ -1,12 +1,12 @@
 === WP Search Insights ===
 Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, search term, record search term, search queries
+Tags: search, search term, recording searches, search queries, searches, search form, search analytics, search filter
 Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 1.0.0
+Stable tag: 1.1
 
 What are your visitors searching for? Keep track of on-site search activity with WP Search Insights. See terms, hits, results, and more!
 
@@ -25,8 +25,7 @@ Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-sea
 Hopefully, this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
 
 Check out other plugins developed by Really Simple Plugins as well: 
-[Complianz](https://wordpress.org/plugins/complianz-gdpr/), 
-[Really Simple SSL](https://wordpress.org/plugins/really-simple-ssl/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
+[Complianz](https://wordpress.org/plugins/complianz-gdpr/), [Really Simple SSL](https://wordpress.org/plugins/really-simple-ssl/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
 
 [Contact](https://wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
 
@@ -53,6 +52,14 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.1 =
+* Added text filter area to exclude terms from results
+* Added option to select which user roles can view the dashboard
+* Updated tour structure and added native WP buttons
+* Added suggested privacy statement text
+* Updating some strings
+* Fix: when same string is search, the time is now updated as well
+
 = 1.0.0 =
 * Initial release
 

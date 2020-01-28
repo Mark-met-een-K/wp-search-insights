@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
      */
 
     // Initialize Datatables
-    $('#search-insights-recent-table').DataTable( {
+    $('#wpsi-recent-table').DataTable( {
         conditionalPaging: true,
         //https://datatables.net/reference/option/dom
         "dom": 'rt<"table-footer"iBp><"clear">',
@@ -23,18 +23,14 @@ jQuery(document).ready(function ($) {
         "order": [[ 1, "desc" ]]
     });
 
-    $('#search-insights-most-popular-table').DataTable( {
+
+    $('#wpsi-popular-table').DataTable( {
         conditionalPaging: true,
         //https://datatables.net/reference/option/dom
         "dom": 'rt<"table-footer"iBp><"clear">',
         buttons: [
             'csv', 'excel'
         ],
-        // "columns": [
-        //     { "width": "20%" },
-        //     { "width": "10%" },
-        //     { "width": "10%" },
-        // ],
         fixedHeader: {
             footer: true
         },
@@ -52,7 +48,6 @@ jQuery(document).ready(function ($) {
      * Show/hide dashboard items
      */
 
-
     //Get the window hash for redirect to #settings after settings save
     var hash = "#" + window.location.hash.substr(1);
 
@@ -66,7 +61,6 @@ jQuery(document).ready(function ($) {
         $("#" + tab_id).addClass('current');
     });
 
-    // setTimeout(function() {
     var href = $('.tab-settings').attr('href');
     if (href === hash) {
         $('.tab-settings')[0].click();
@@ -122,6 +116,68 @@ jQuery(document).ready(function ($) {
             $("#wpsi-toggle-dashboard").show();
             $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-up');
         }
+    });
+
+    /**
+     * select and delete functions
+     */
+
+    //set button to disabled
+    $('#wpsi-delete-selected').attr('disabled', true);
+
+    $('.dataTable tbody').on( 'click', 'tr', function () {
+        $('#wpsi-delete-selected').attr('disabled', true);
+        if ( $(this).hasClass('wpsi-selected') ) {
+            $(this).removeClass('wpsi-selected');
+        } else {
+            $(this).addClass('wpsi-selected');
+        }
+
+        //if at least one row is selected, enable the delete button
+        var table = $(this).closest('.search-insights-table').find('.dataTable');
+        table.find('.wpsi-selected').each(function(){
+            $('#wpsi-delete-selected').attr('disabled', false);
+        });
+
+    } );
+
+    $(document).on('click', '#wpsi-delete-selected', function(){
+        var termIDs=[];
+
+        $('.dataTable').each(function(){
+            var table = $(this);
+            //get all selected rows
+            table.find('.wpsi-selected').each(function(){
+                var row = $(this);
+                termIDs.push($(this).find('.wpsi-term').data('term_id'));
+                row.css('background-color', '#d7263d2e');
+            });
+
+        });
+        console.log(termIDs);
+        $.ajax({
+            type: "POST",
+            url: wpsi.ajaxurl,
+            dataType: 'json',
+            data: ({
+                action: 'wpsi_delete_terms',
+                term_ids: JSON.stringify(termIDs),
+                token: wpsi.token
+            }),
+            success: function (response) {
+                //get all occurrences on this page for this term id
+                $('.dataTable').each(function(){
+                    var table = $(this);
+                    table.find('.wpsi-selected').each(function(){
+                        var row = $(this);
+                        row.remove();
+                    });
+
+                });
+                $('#wpsi-delete-selected').attr('disabled', true);
+
+            }
+        });
     });
 });
 
