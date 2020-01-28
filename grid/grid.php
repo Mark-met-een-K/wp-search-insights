@@ -24,9 +24,6 @@ if (!class_exists("WPSI_GRID")) {
 
 		private function get() {
 
-
-
-
 		}
 
 	}

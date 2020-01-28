@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+
     initGrid();
 
     function initGrid() {
@@ -68,28 +69,41 @@ jQuery(document).ready(function($) {
     function loadLayout(grid, serializedLayout) {
         var layout = JSON.parse(serializedLayout);
         var currentItems = grid.getItems();
-
         // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
         var a = document.querySelector('div[data-id="1"]');
         var b = document.querySelector('div[data-id="2"]');
         var c = document.querySelector('div[data-id="3"]');
 
-        if (!document.getElementById("toggle_data_id_1").checked ) {
-            a.classList.remove("muuri-active");
-        } else {
+        // Set default checkbox values for screen options
+        if (localStorage.getItem("toggle_data_id_1") === null) {
+            window.localStorage.setItem('toggle_data_id_1', 'checked');
+        }
+
+        if (localStorage.getItem("toggle_data_id_2") === null) {
+            window.localStorage.setItem('toggle_data_id_2', 'checked');
+        }
+
+        if (localStorage.getItem("toggle_data_id_3") === null) {
+            window.localStorage.setItem('toggle_data_id_3', 'checked');
+        }
+
+        // Add or remove the active class when the checkbox is checked/unchecked
+        if (window.localStorage.getItem('toggle_data_id_1') == 'checked') {
             a.classList.add("muuri-active");
+        } else {
+            a.classList.remove("muuri-active");
         }
 
-        if (!document.getElementById("toggle_data_id_2").checked ) {
-            b.classList.remove("muuri-active");
-        } else {
+        if (window.localStorage.getItem('toggle_data_id_2') == 'checked' ) {
             b.classList.add("muuri-active");
+        } else {
+            b.classList.remove("muuri-active");
         }
 
-        if (!document.getElementById("toggle_data_id_3").checked ) {
-            c.classList.remove("muuri-active");
-        } else {
+        if (window.localStorage.getItem('toggle_data_id_3') == 'checked' ) {
             c.classList.add("muuri-active");
+        } else {
+            c.classList.remove("muuri-active");
         }
 
         var currentItemIds = currentItems.map(function (item) {
@@ -112,16 +126,34 @@ jQuery(document).ready(function($) {
         grid.filter('.muuri-active');
     }
 
+    // Set defaults for localstorage checkboxes
+
+
     // Reload the grid when checkbox value changes
     $('#toggle_data_id_1').change(function() {
+        if (document.getElementById("toggle_data_id_1").checked ) {
+            window.localStorage.setItem('toggle_data_id_1', 'checked');
+        } else {
+            window.localStorage.setItem('toggle_data_id_1', 'unchecked');
+        }
         initGrid();
      });
 
     $('#toggle_data_id_2').change(function() {
+        if (document.getElementById("toggle_data_id_2").checked ) {
+            window.localStorage.setItem('toggle_data_id_2', 'checked');
+        } else {
+            window.localStorage.setItem('toggle_data_id_2', 'unchecked');
+        }
         initGrid();
     });
 
     $('#toggle_data_id_3').change(function() {
+        if (document.getElementById("toggle_data_id_3").checked ) {
+            window.localStorage.setItem('toggle_data_id_3', 'checked');
+        } else {
+            window.localStorage.setItem('toggle_data_id_3', 'unchecked');
+        }
         initGrid();
     });
 });

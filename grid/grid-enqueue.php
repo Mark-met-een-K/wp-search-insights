@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-
 		add_action('admin_enqueue_scripts',  'wpsi_enqueue_assets');
 		function wpsi_enqueue_assets($hook)
 		{
