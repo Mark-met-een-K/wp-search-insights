@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
         });
         widget_tour.addStep('wpsi-step-2', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            attachTo: '.wpsi-widget-logo right',
+            attachTo: '#dashboard-widgets-wrap .wpsi-widget-logo right',
             title: steps[2]['title'],
             text: wpsi_tour.html.replace('{content}', steps[2]['text']),
             buttons: [
