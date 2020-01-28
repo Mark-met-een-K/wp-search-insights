@@ -77,14 +77,17 @@ jQuery(document).ready(function($) {
         // Set default checkbox values for screen options
         if (localStorage.getItem("toggle_data_id_1") === null) {
             window.localStorage.setItem('toggle_data_id_1', 'checked');
+            a.prop("checked", true);
         }
 
         if (localStorage.getItem("toggle_data_id_2") === null) {
             window.localStorage.setItem('toggle_data_id_2', 'checked');
+            b.prop("checked", true);
         }
 
         if (localStorage.getItem("toggle_data_id_3") === null) {
             window.localStorage.setItem('toggle_data_id_3', 'checked');
+            c.prop("checked", true);
         }
 
         // Add or remove the active class when the checkbox is checked/unchecked
