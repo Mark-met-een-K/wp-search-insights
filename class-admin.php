@@ -1,16 +1,14 @@
 <?php
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
-	class WP_Search_Insights_Admin {
+if ( ! class_exists( 'WPSI_Admin' ) ) {
+    class WPSI_Admin {
 
 		private static $_this;
 
-		public $capability;
-		public $filtered_terms = array();
+        public $capability = 'activate_plugins';
 
 		function __construct() {
-
 			if ( isset( self::$_this ) ) {
 				wp_die( sprintf( __( '%s is a singleton class and you cannot create a second instance.',
 					'wp-search-insights' ), get_class( $this ) ) );
@@ -35,10 +33,14 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 
 		public function init()
 		{
+            error_log("int");
+			$this->capability = get_option('wpsi_select_dashboard_capability');
+			error_log($this->capability);
 
-			$this->capability = 'manage_options';//get_option('wpsi_select_dashboard_capability');
+			error_log("init");
 
 			if (!current_user_can($this->capability)) {
+			    error_log("Capa");
 				return;
 			}
 
@@ -193,8 +195,9 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 		 */
 
 		public function add_settings_page() {
-
+error_log("Adding settings page");
 			if ( ! current_user_can( $this->capability ) ) {
+			    error_log("User cannot!");
 				return;
 			}
 
@@ -510,13 +513,20 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			//check for action
 			if ( isset( $_GET["action"] ) && $_GET["action"] == 'clear_database' ) {
 				$this->clear_database_tables();
-				delete_transient( 'wpsi_popular_searches' );
-				delete_transient( 'wpsi_top_searches' );
+                $this->clear_cache();
 			}
 			wp_redirect( admin_url( 'tools.php?page=wpsi-settings-page' ) );
 			exit;
 		}
 
+        /**
+         * Clear the transient caches
+         */
+
+        public function clear_cache(){
+            delete_transient( 'wpsi_popular_searches' );
+            delete_transient( 'wpsi_top_searches' );
+        }
 
 		/**
 		 *
@@ -533,7 +543,35 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			}
 
 			?>
+            <div class="wrap">
+                <div id="wpsi-toggle-wrap">
+                <div id="wpsi-toggle-dashboard">
+                    <div id="wpsi-toggle-dashboard-text">
+                        <?php _e("Select which dashboard items should be displayed", "wp-search-insights") ?>
+                    </div>
+                    <div id="wpsi-checkboxes">
+                    <label for="wpsi-hide-panel-1">
+                        <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1">
+			            <?php _e("Popular Searches" , "wp-search-insights") ?>
+                    </label>
+                    <label for="wpsi-hide-panel-2">
+                        <input class="wpsi-toggle-items" name="toggle_data_id_2" type="checkbox" id="toggle_data_id_2" value="data_id_2">
+			            <?php _e("Popular Searches without results" , "wp-search-insights") ?>
+                    </label>
+                    <label for="wpsi-hide-panel-3">
+                        <input class="wpsi-toggle-items" name="toggle_data_id_3" type="checkbox" id="toggle_data_id_3" value="data_id_3">
+			            <?php _e("Recent Searches" , "wp-search-insights") ?>
+                    </label>
+                    </div>
+                </div>
+                    <div id="wpsi-toggle-options">
+                        <div id="wpsi-toggle-link-wrap">
+                            <button type="button" id="wpsi-show-toggles" class="button show-settings" aria-controls="screen-options-wrap"><?php _e("Screen options" , "wp-search-insights"); ?><span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
+                        </div>
+                    </div>
+                </div>
             <div id="wpsi-dashboard">
+
                 <!--    Navigation-->
                 <div class="wp-search-insights-container">
                     <ul class="tabs">
@@ -549,15 +587,26 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                 <div class="wp-search-insights-main">
                     <!--    Dashboard tab   -->
                     <div id="dashboard" class="tab-content current">
-                        <div class="search-insights-dashboard">
-                            <div class="search-insights-most-popular-searches search-insights-table">
-                                <div class="search-insights-most-popular search-insights-table">
-									<?php $this->generate_popular_table(); ?>
+                        <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
+
+                        <?php
+                        //get html of block
+                        ?>
+                        <div class="wpsi-grid">
+                            <div class="wpsi-item grid-active" data-id="1">
+                                <div class="item-container">
+                                    <div class="item-content search-insights-table"><?php $this->generate_popular_table(); ?></div>
                                 </div>
                             </div>
-
-                            <div class="search-insights-recent-searches search-insights-table">
-								<?php $this->generate_recent_table(); ?>
+                            <div class="wpsi-item small" data-id="2">
+                                <div class="item-container">
+                                    <div  class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
+                                </div>
+                            </div>
+                            <div class="wpsi-item" data-id="3">
+                                <div class="item-container">
+                                    <div class="item-content search-insights-table"><?php $this->generate_recent_table(); ?></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -580,6 +629,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
                         </div>
 					<?php } ?>
                 </div>
+            </div>
             </div>
 			<?php
 		}
@@ -776,6 +826,7 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			$recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
 
 			?>
+
             <table id="wpsi-recent-table">
 				<?php if (!$dashboard_widget) { ?>
                 <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
@@ -871,7 +922,6 @@ if ( ! class_exists( 'WP_Search_Insights_Admin' ) ) {
 			);
 			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
 			?>
-            <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
             <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 
