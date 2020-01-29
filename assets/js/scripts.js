@@ -7,6 +7,7 @@ jQuery(document).ready(function ($) {
 
     // Initialize Datatables
     $('#wpsi-recent-table').DataTable( {
+        "pageLength": 5,
         conditionalPaging: true,
         //https://datatables.net/reference/option/dom
         "dom": 'rt<"table-footer"iBp><"clear">',
@@ -25,6 +26,7 @@ jQuery(document).ready(function ($) {
 
 
     $('#wpsi-popular-table').DataTable( {
+        "pageLength": 5,
         conditionalPaging: true,
         //https://datatables.net/reference/option/dom
         "dom": 'rt<"table-footer"iBp><"clear">',
@@ -154,7 +156,7 @@ jQuery(document).ready(function ($) {
             });
 
         });
-        console.log(termIDs);
+
         $.ajax({
             type: "POST",
             url: wpsi.ajaxurl,

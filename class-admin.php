@@ -571,6 +571,7 @@ error_log("Adding settings page");
                     </div>
                 </div>
             <div id="wpsi-dashboard">
+
                 <!--    Navigation-->
                 <div class="wp-search-insights-container">
                     <ul class="tabs">
@@ -586,6 +587,8 @@ error_log("Adding settings page");
                 <div class="wp-search-insights-main">
                     <!--    Dashboard tab   -->
                     <div id="dashboard" class="tab-content current">
+                        <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
+
                         <?php
                         //get html of block
                         ?>
@@ -597,7 +600,7 @@ error_log("Adding settings page");
                             </div>
                             <div class="wpsi-item small" data-id="2">
                                 <div class="item-container">
-                                    <div class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
+                                    <div  class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
                                 </div>
                             </div>
                             <div class="wpsi-item" data-id="3">
@@ -823,6 +826,7 @@ error_log("Adding settings page");
 			$recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
 
 			?>
+
             <table id="wpsi-recent-table">
 				<?php if (!$dashboard_widget) { ?>
                 <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
@@ -918,7 +922,6 @@ error_log("Adding settings page");
 			);
 			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
 			?>
-            <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
             <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 

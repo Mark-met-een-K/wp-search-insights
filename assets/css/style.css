@@ -1,46 +1,60 @@
+.update-nag {
+  display: none;
+}
 /**
 widget
  */
-#dashboard_widget_wpsi .inside {
+#dashboard_widget_wpsi .inside,
+#wpsi-dashboard .inside {
   padding: 0;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget h3 {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget h3,
+#wpsi-dashboard .inside #wpsi-dashboard-widget h3 {
   font-weight: 600;
   margin-top: 10px;
   margin-left: 20px;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .wpsi-widget-logo {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .wpsi-widget-logo,
+#wpsi-dashboard .inside #wpsi-dashboard-widget .wpsi-widget-logo {
   margin-left: 20px;
   display: flex;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .wpsi-widget-logo span {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .wpsi-widget-logo span,
+#wpsi-dashboard .inside #wpsi-dashboard-widget .wpsi-widget-logo span {
   padding: 10px;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget ul {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget ul,
+#wpsi-dashboard .inside #wpsi-dashboard-widget ul {
   background-color: #fafafa;
   margin: 0;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li,
+#wpsi-dashboard .inside #wpsi-dashboard-widget li {
   border-top: 1px solid #eee;
   margin: 0;
   padding: 8px 12px;
   color: #32373c;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-frequency {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-frequency,
+#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-frequency {
   float: right;
   color: #666;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-time {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-time,
+#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-time {
   margin-left: 25px;
   color: #666;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .dashicons-arrow-up-alt {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .dashicons-arrow-up-alt,
+#wpsi-dashboard .inside #wpsi-dashboard-widget .dashicons-arrow-up-alt {
   color: #61ce70;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .dashicons-arrow-down-alt {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget .dashicons-arrow-down-alt,
+#wpsi-dashboard .inside #wpsi-dashboard-widget .dashicons-arrow-down-alt {
   color: #d7263d;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget #wpsi-dashboard-widget-footer {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget #wpsi-dashboard-widget-footer,
+#wpsi-dashboard .inside #wpsi-dashboard-widget #wpsi-dashboard-widget-footer {
   margin-top: 0;
   margin-bottom: 0;
   padding: 12px;
@@ -121,13 +135,16 @@ widget
   background: #ededed;
   padding: 15px;
 }
-#wpsi-dashboard .tab-content > div {
+#wpsi-dashboard .tab-content > div,
+#wpsi-dashboard .tab-content #wpsi-delete-selected {
   margin-left: 50px;
+}
+#wpsi-dashboard #wpsi-delete-selected {
+  margin-bottom: 10px;
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;
   background-color: #fff;
-  height: 100vh;
 }
 #wpsi-dashboard .tab-text {
   color: #444444;

@@ -1,12 +1,14 @@
 @brand-primary: #29b6f6;
 @color-success: #61ce70;
 @color-error: #d7263d;
-
+.update-nag{
+  display:none;
+}
 
 /**
 widget
  */
-#dashboard_widget_wpsi {
+#dashboard_widget_wpsi, #wpsi-dashboard {
   .inside {
     padding:0;
 
@@ -112,15 +114,18 @@ widget
     display: none;
     background: #ededed;
     padding: 15px;
-    >div {
+    >div, #wpsi-delete-selected {
       margin-left:50px;
     }
+  }
+
+  #wpsi-delete-selected {
+    margin-bottom:10px;
   }
 
   .tab-content.current {
     display: inherit;
     background-color:#fff;
-    height: 100vh;
   }
 
   .tab-text {

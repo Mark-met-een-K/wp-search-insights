@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 ?>
+<div class="inside">
 <div id="wpsi-dashboard-widget">
     <div>
         <div class="wpsi-widget-logo"><img width=35px" height="35px" src="<?php echo wp_search_insights_url?>/assets/images/noname_logo.png" alt="review-logo">
@@ -23,4 +24,4 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 	    $help_url = "https://wpsearchinsights.com";
 	    echo sprintf(__("%sHelp%s ", "wp-search-insights"), "<a target='_blank' href='$help_url'>", '<div class="dashicons dashicons-external"></div></a>'); ?>
     </div>
-</div>
+</div></div>
