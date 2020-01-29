@@ -828,7 +828,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 			?>
 
-            <table id="wpsi-recent-table">
+            <table id="wpsi-recent-table" class="wpsi-table">
 				<?php if (!$dashboard_widget) { ?>
                 <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
                 </caption>
@@ -926,7 +926,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			);
 			$popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
 			?>
-            <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
+            <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 
                 <thead>
