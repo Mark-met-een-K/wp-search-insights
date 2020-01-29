@@ -4,47 +4,26 @@ jQuery(document).ready(function ($) {
     /**
      * Datatables
      */
-
-    // Initialize Datatables
-    $('#wpsi-recent-table').DataTable( {
-        "pageLength": 5,
-        conditionalPaging: true,
-        //https://datatables.net/reference/option/dom
-        "dom": 'rt<"table-footer"iBp><"clear">',
-        buttons: [
-        'csv', 'excel'
-        ],
-        "language": {
-            "paginate": {
-                "previous": "<i class='icon-left-open'></i>",
-                "next": "<i class='icon-right-open'></i>"
+    $('.wpsi-table').each(function(){
+        $(this).DataTable( {
+            "pageLength": 5,
+            conditionalPaging: true,
+            //https://datatables.net/reference/option/dom
+            // "dom": 'rt<"table-footer"iBp><"clear">',
+            buttons: [
+                'csv', 'excel'
+            ],
+            "language": {
+                "paginate": {
+                    "previous": "<i class='icon-left-open'></i>",
+                    "next": "<i class='icon-right-open'></i>"
+                },
+                "emptyTable" : "No searches recorded yet!"
             },
-            "emptyTable" : "No searches recorded yet!"
-        },
-        "order": [[ 1, "desc" ]]
+            "order": [[ 1, "desc" ]]
+        });
     });
 
-
-    $('#wpsi-popular-table').DataTable( {
-        "pageLength": 5,
-        conditionalPaging: true,
-        //https://datatables.net/reference/option/dom
-        "dom": 'rt<"table-footer"iBp><"clear">',
-        buttons: [
-            'csv', 'excel'
-        ],
-        fixedHeader: {
-            footer: true
-        },
-        "language": {
-            "paginate": {
-                "previous":"<i class='icon-left-open'></i>",
-                "next": "<i class='icon-right-open'></i>"
-            },
-            "emptyTable" : "No searches recorded yet!"
-        },
-        "order": [[ 1, "desc" ]]
-    });
 
     /**
      * Show/hide dashboard items
@@ -95,9 +74,9 @@ jQuery(document).ready(function ($) {
     });
 
     function updateStorage(){
-    $checkboxes.each(function(){
-        formValues[this.id] = this.checked;
-    });
+        $checkboxes.each(function(){
+            formValues[this.id] = this.checked;
+        });
         localStorage.setItem("formValues", JSON.stringify(formValues));
     }
 

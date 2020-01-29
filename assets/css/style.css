@@ -104,6 +104,12 @@ widget
   /* Move directional arrows down a bit for left/right wpsi-tooltips */
   /* Vertically center wpsi-tooltip content for left/right wpsi-tooltips */
 }
+#wpsi-dashboard .dataTables_length {
+  display: none;
+}
+#wpsi-dashboard .dataTables_filter {
+  text-align: right;
+}
 #wpsi-dashboard .search-insights-dashboard {
   display: flex;
   flex-flow: row wrap;
