@@ -15,6 +15,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			}
 
 			self::$_this = $this;
+			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
+			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
 
 			$this->grid_items = array(
 				1 => array(
@@ -43,14 +45,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 		public function init()
 		{
-            error_log("int");
 			$this->capability = get_option('wpsi_select_dashboard_capability');
-			error_log($this->capability);
-
-			error_log("init");
 
 			if (!current_user_can($this->capability)) {
-			    error_log("Capa");
 				return;
 			}
 
@@ -129,7 +126,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			// Enqueue assest when on index.php (WP dashboard) or plugins settings page
 
 			if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
-
+                do_action('wpsi_on_settings_page');
 				wp_register_style('search-insights',
 					trailingslashit(wp_search_insights_url) . "assets/css/style.min.css", "",
 					wp_search_insights_version);
@@ -196,6 +193,43 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			return $links;
 		}
 
+
+		public function reset_plus_one_ten_searches(){
+		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
+
+			$items        = WP_SEARCH_INSIGHTS()->Search->get_searches_single();
+			$search_count = count( $items );
+
+			if ($search_count>10) {
+				delete_transient('wpsi_plus_ones');
+				update_option( 'wpsi_ten_searches_viewed_settings_page', true );
+			}
+        }
+
+	    /**
+         * Get number of plus ones
+	     * @return int
+	     */
+
+		public function count_plusones(){
+            $plus_ones = get_transient('wpsi_plus_ones');
+            if (!$plus_ones){
+	            $plus_ones = 0;
+
+	            if (!get_option('wpsi_ten_searches_viewed_settings_page')) {
+		            $items        = WP_SEARCH_INSIGHTS()->Search->get_searches_single();
+		            $search_count = count( $items );
+		            if ( $search_count > 10 ) {
+			            $plus_ones ++;
+		            }
+	            }
+
+	            set_transient('wpsi_plus_ones',$plus_ones, DAY_IN_SECONDS);
+            }
+
+		    return $plus_ones;
+        }
+
 		/**
 		 *
 		 * Add a settings page
@@ -211,14 +245,87 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 			global $search_insights_settings_page;
 
+			$count = $this->count_plusones();
+			$update_count = $count > 0 ? "<span class='update-plugins wpsi-update-count'><span class='update-count'>$count</span></span>":"";
+
 			$search_insights_settings_page = add_submenu_page(
 				'tools.php',
 				"WP Search Insights",
-				"Search Insights",
+				"WP Search Insights".$update_count,
 				$this->capability, //capability
 				'wpsi-settings-page', //url
 				array( $this, 'settings_page' ) ); //function
 		}
+
+	    /**
+	     *
+	     * @since 3.1.6
+	     *
+	     * Add an update count to the WordPress admin Settings menu item
+	     * Doesn't work when the Admin Menu Editor plugin is active
+	     *
+	     */
+
+	    public function maybe_add_plus_one()
+	    {
+		    if (!current_user_can($this->capability)) return;
+
+		    global $menu;
+
+		    $count = $this->count_plusones();
+		    $menu_slug = 'tools.php';
+		    $menu_title = __('Tools');
+
+		    foreach($menu as $index => $menu_item){
+			    if (!isset($menu_item[2]) || !isset($menu_item[0])) continue;
+			    if ($menu_item[2]===$menu_slug){
+				    if (strpos($menu_item[0], "-count") != false) {
+					    $pattern = '/<span.*>([1-9])<\/span><\/span>/i';
+					    if (preg_match($pattern, $menu_item[0], $matches)){
+					        error_log(print_r($matches,true));
+						    if (isset($matches[1])) $count = intval($count) + intval($matches[1]);
+					    }
+				    }
+
+                    $update_count = $count > 0 ? "<span class='update-plugins rsssl-update-count'><span class='update-count'>$count</span></span>":'';
+				    $menu[$index][0] = $menu_title . $update_count;
+                }
+
+		    }
+
+	    }
+
+	    /**
+	     * @return int
+	     *
+	     * @since 3.1.6
+	     *
+	     * Check if there is an existing update count after the Settings menu item
+	     *
+	     */
+
+	    public function get_existing_tools_plusones($menu_slug)
+	    {
+		    global $menu;
+
+		    $existing_count = "0";
+
+            foreach($menu as $index => $menu_item){
+                if (!isset($menu_item[2]) || !isset($menu_item[0])) continue;
+
+                if ($menu_item[2]!==$menu_slug) continue;
+	            $str = $menu_item[0];
+                if (strpos($str, "plugin-count") != false) {
+                    $pattern = '/(?<=[\'|\"]plugin-count[\'|\"]>)(.*?)(?=\<)/i';
+
+	                if (preg_match($pattern, $str, $matches)){
+		                $existing_count = $matches[1];
+	                }
+                }
+            }
+
+		    return intval($existing_count);
+	    }
 
 		/**
 		 *
@@ -534,6 +641,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         public function clear_cache(){
             delete_transient( 'wpsi_popular_searches' );
             delete_transient( 'wpsi_top_searches' );
+	        delete_transient('wpsi_plus_ones');
+	        delete_option( 'wpsi_ten_searches_viewed_settings_page' );
         }
 
 		/**
