@@ -2,8 +2,8 @@
 
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-if ( ! class_exists( 'WP_Search_Insights_Search' ) ) {
-	class WP_Search_Insights_Search {
+if ( ! class_exists( 'Search' ) ) {
+	class Search {
 
 		private static $_this;
 		public $filtered_terms = array(

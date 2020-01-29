@@ -36,7 +36,7 @@ class WP_SEARCH_INSIGHTS {
 
 	private static $instance;
 
-	public $WP_Search_Insights_Search;
+	public $Search;
     public $admin;
 	public $tour;
 	public $review;
@@ -54,7 +54,7 @@ class WP_SEARCH_INSIGHTS {
 			self::$instance->setup_constants();
 			self::$instance->includes();
 
-			self::$instance->WP_Search_Insights_Search = new WP_Search_Insights_Search();
+			self::$instance->Search = new Search();
 
 			if ( is_admin() ) {
 				self::$instance->review = new wpsi_review();
