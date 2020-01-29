@@ -5,7 +5,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
     class WPSI_Admin {
 
 		private static $_this;
-
+		public $grid_items;
         public $capability = 'activate_plugins';
 
 		function __construct() {
@@ -16,6 +16,16 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 			self::$_this = $this;
 
+			$this->grid_items = array(
+				1 => array(
+					'title' => __("Popular Searches" , "wp-search-insights"),
+					'content' => $this->generate_popular_table(),
+				),
+				2 => array(
+					'title' => __("Recent Searches" , "wp-search-insights"),
+					'content' => $this->generate_recent_table(),
+				),
+			);
 		}
 
 		static function this() {
@@ -195,9 +205,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		 */
 
 		public function add_settings_page() {
-error_log("Adding settings page");
 			if ( ! current_user_can( $this->capability ) ) {
-			    error_log("User cannot!");
 				return;
 			}
 
@@ -550,18 +558,17 @@ error_log("Adding settings page");
                         <?php _e("Select which dashboard items should be displayed", "wp-search-insights") ?>
                     </div>
                     <div id="wpsi-checkboxes">
-                    <label for="wpsi-hide-panel-1">
-                        <input class="wpsi-toggle-items" name="toggle_data_id_1" type="checkbox" id="toggle_data_id_1" value="data_id_1">
-			            <?php _e("Popular Searches" , "wp-search-insights") ?>
-                    </label>
-                    <label for="wpsi-hide-panel-2">
-                        <input class="wpsi-toggle-items" name="toggle_data_id_2" type="checkbox" id="toggle_data_id_2" value="data_id_2">
-			            <?php _e("Popular Searches without results" , "wp-search-insights") ?>
-                    </label>
-                    <label for="wpsi-hide-panel-3">
-                        <input class="wpsi-toggle-items" name="toggle_data_id_3" type="checkbox" id="toggle_data_id_3" value="data_id_3">
-			            <?php _e("Recent Searches" , "wp-search-insights") ?>
-                    </label>
+	                    <?php
+	                    $grid_items = $this->grid_items;
+	                    foreach ($grid_items as $index => $grid_item){
+	                    	?>
+		                    <label for="wpsi-hide-panel-<?=$index?>">
+			                    <input class="wpsi-toggle-items" name="toggle_data_id_<?=$index?>" type="checkbox" id="toggle_data_id_<?=$index?>" value="data_id_<?=$index?>">
+			                    <?=$grid_item['title']?>
+		                    </label>
+		                    <?php
+	                    }
+	                    ?>
                     </div>
                 </div>
                     <div id="wpsi-toggle-options">
@@ -591,24 +598,17 @@ error_log("Adding settings page");
 
                         <?php
                         //get html of block
+                        $grid_items = $this->grid_items;
+                        $container = $this->get_template('grid-container.php', wp_search_insights_path.'/grid');
+                        $element = $this->get_template('grid-element.php', wp_search_insights_path.'/grid');
+                        $output='';
+                        foreach($grid_items as $index => $grid_item){
+                            $output .= str_replace(array('{content}','{index}'), array($grid_item['content'],$index), $element);
+                        }
+                        echo str_replace('{content}', $output, $container);
+
                         ?>
-                        <div class="wpsi-grid">
-                            <div class="wpsi-item grid-active" data-id="1">
-                                <div class="item-container">
-                                    <div class="item-content search-insights-table"><?php $this->generate_popular_table(); ?></div>
-                                </div>
-                            </div>
-                            <div class="wpsi-item small" data-id="2">
-                                <div class="item-container">
-                                    <div  class="item-content search-insights-table"><?php $this->generate_dashboard_widget(); ?></div>
-                                </div>
-                            </div>
-                            <div class="wpsi-item" data-id="3">
-                                <div class="item-container">
-                                    <div class="item-content search-insights-table"><?php $this->generate_recent_table(); ?></div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <!--    Settings tab    -->
 					<?php if ( current_user_can( 'manage_options' ) ) { ?>
@@ -693,9 +693,9 @@ error_log("Adding settings page");
 		}
 
 
-		public function get_template( $file ) {
+		public function get_template( $file , $path = wp_search_insights_path) {
 
-			$file       = trailingslashit( wp_search_insights_path ) . 'templates/' . $file;
+			$file       = trailingslashit( $path ) . 'templates/' . $file;
 			$theme_file = trailingslashit( get_stylesheet_directory() ) . dirname( wp_search_insights_path ) . $file;
 
 			if ( file_exists( $theme_file ) ) {
@@ -732,7 +732,7 @@ error_log("Adding settings page");
 					'number'       => 5,
 
 				);
-				$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches( $args, $trend = true, 'MONTH' );
+				$popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches( $args, $trend = true, 'MONTH' );
 				set_transient( 'wpsi_popular_searches', $popular_searches, HOUR_IN_SECONDS );
 			}
 			$tmpl = $this->get_template( 'dashboard-row.html' );
@@ -774,7 +774,7 @@ error_log("Adding settings page");
 					'order'   => 'DESC',
 					'number'  => 5,
 				);
-				$top_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches( $args, $trend = true, 'MONTH' );
+				$top_searches = WP_SEARCH_INSIGHTS()->Search->get_searches( $args, $trend = true, 'MONTH' );
 				set_transient( 'wpsi_top_searches', $top_searches, HOUR_IN_SECONDS );
 			}
 			if ( count( $top_searches ) == 0 ) {
@@ -815,11 +815,12 @@ error_log("Adding settings page");
 		 * Generate the recent searches table in dashboard
 		 *
 		 * @since 1.0
-		 *
+		 * @return string
 		 */
 
 		public function generate_recent_table($dashboard_widget = false)
 		{
+			ob_start();
 
 			global $wpdb;
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
@@ -861,6 +862,8 @@ error_log("Adding settings page");
                 </tbody>
             </table>
 			<?php
+			$contents = ob_get_clean();
+			return $contents;
 		}
 
 		/**
@@ -910,17 +913,18 @@ error_log("Adding settings page");
 		 * Generate the popular searches table in
 		 *
 		 * @since 1.0
-		 *
+		 * @return string
 		 */
 
 		public function generate_popular_table() {
+            ob_start();
 
 			$args = array(
 				'orderby' => 'frequency',
 				'order' => 'DESC',
 				'number' =>1000,
 			);
-			$popular_searches = WP_SEARCH_INSIGHTS()->WP_Search_Insights_Search->get_searches($args);
+			$popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
 			?>
             <table id="wpsi-popular-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
@@ -959,6 +963,9 @@ error_log("Adding settings page");
                 </tbody>
             </table>
 			<?php
+
+			$contents = ob_get_clean();
+			return $contents;
 		}
 	}
 }
