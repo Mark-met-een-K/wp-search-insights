@@ -279,13 +279,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		    foreach($menu as $index => $menu_item){
 			    if (!isset($menu_item[2]) || !isset($menu_item[0])) continue;
 			    if ($menu_item[2]===$menu_slug){
-				    if (strpos($menu_item[0], "-count") != false) {
-					    $pattern = '/<span.*>([1-9])<\/span><\/span>/i';
-					    if (preg_match($pattern, $menu_item[0], $matches)){
-					        error_log(print_r($matches,true));
-						    if (isset($matches[1])) $count = intval($count) + intval($matches[1]);
-					    }
-				    }
+                    $pattern = '/<span.*>([1-9])<\/span><\/span>/i';
+                    if (preg_match($pattern, $menu_item[0], $matches)){
+                        if (isset($matches[1])) $count = intval($count) + intval($matches[1]);
+                    }
 
                     $update_count = $count > 0 ? "<span class='update-plugins rsssl-update-count'><span class='update-count'>$count</span></span>":'';
 				    $menu[$index][0] = $menu_title . $update_count;
