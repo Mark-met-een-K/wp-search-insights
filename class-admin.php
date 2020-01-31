@@ -17,14 +17,22 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			self::$_this = $this;
 
 			$this->grid_items = array(
-				1 => array(
-					'title' => __("Popular Searches" , "wp-search-insights"),
-					'content' => $this->generate_popular_table(),
-				),
-				2 => array(
-					'title' => __("Recent Searches" , "wp-search-insights"),
-					'content' => $this->generate_recent_table(),
-				),
+                1 => array(
+                    'title' => __("All Searches" , "wp-search-insights"),
+                    'content' => $this->generate_recent_table(),
+                    'class' => '',
+                ),
+                2 => array(
+                    'title' => __("No Results" , "wp-search-insights"),
+//                    'content' => $this->generate_dashboard_widget(),
+                    'class' => 'small',
+                ),
+                3 => array(
+                    'title' => __("Most Popular Searches" , "wp-search-insights"),
+                    'content' => $this->generate_popular_table(),
+                    'class' => 'small',
+                ),
+
 			);
 		}
 
@@ -588,12 +596,16 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings"
                                                                         href="#settings#top">Settings</a></li>
 						<?php } ?>
-						<?php echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+<!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
                     </ul>
                 </div>
                 <div class="wp-search-insights-main">
                     <!--    Dashboard tab   -->
                     <div id="dashboard" class="tab-content current">
+                        <div class="wpsi-settings-intro">
+                            <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?></img></span>
+                            <span class="wpsi-settings-intro-text"><?php _e( 'WP Search Insights', 'wp-search-insights' ); ?></span>
+                        </div>
                         <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
 
                         <?php
@@ -603,7 +615,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         $element = $this->get_template('grid-element.php', wp_search_insights_path.'/grid');
                         $output='';
                         foreach($grid_items as $index => $grid_item){
-                            $output .= str_replace(array('{content}','{index}'), array($grid_item['content'],$index), $element);
+                            $output .= str_replace(array('{class}', '{content}','{index}'), array($grid_item['class'], $grid_item['content'],$index), $element);
                         }
                         echo str_replace('{content}', $output, $container);
 
@@ -830,12 +842,13 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
             <table id="wpsi-recent-table" class="wpsi-table">
 				<?php if (!$dashboard_widget) { ?>
-                <caption><?php _e("Recent Searches", "wp-search-insights"); } ?>
+                <caption><?php _e("All Searches", "wp-search-insights"); } ?>
                 </caption>
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
-                    <th scope='col' style="width: 15%;"><?php _e("When", "wp-search-insights");?> </th>
+                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("Results", "wp-search-insights"); ?> </th>;
+<!--                    <th scope='col' style="width: 15%;">--><?php //_e("When", "wp-search-insights");?><!-- </th>-->
 					<?php if (!$dashboard_widget) { ?>
                         <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
 					<?php } ?>
@@ -845,13 +858,20 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 				<?php
 				// Start generating rows
 				foreach ($recent_searches as $search) {
-
+//                    if ($search->result_count == 0) {
+//                        // No hits, show an error icon
+//                        $results = "<i class='hit-icon icon-cancel'></i>";
+//                    } else {
+//                        // There are hits, show an checkmark icon. Also make the term clickable to show results
+//                        $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
+//                    }
 					// Show the full time on dashboard, shorten the time on the dashboard widget.
 					$search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
 
 					//Add &searchinsights to 'see results' link to prevent it from counting as search;
 					$link = $this->get_term_link($search->term);
 					$search_term_td = '<td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$link.'</td>';
+//					$result_td = "<td>$results</td>";
 					$referrer_td = "<td>$search->referrer</td>";
 
 					//Generate the row with or without hits and referer, depending on where the table is generated
@@ -908,6 +928,18 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			return $date;
 		}
 
+        /**
+         *
+         * Generate the no results overview in dashboard
+         *
+         * @since 1.2
+         * @return string
+         */
+
+        public function generate_no_results_overview() {
+
+        }
+
 		/**
 		 *
 		 * Generate the popular searches table in
@@ -936,8 +968,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 					     . "</th>";
 					echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
 					     . "</th>";
-					echo '<th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">'. __("Results", "wp-search-insights").'</th>';
-
 					?>
                 </tr>
                 </thead>
@@ -945,17 +975,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 				<?php
 
 				foreach ($popular_searches as $search) {
-					if ($search->result_count == 0) {
-						// No hits, show an error icon
-						$results = "<i class='hit-icon icon-cancel'></i>";
-					} else {
-						// There are hits, show an checkmark icon. Also make the term clickable to show results
-						$results = "<i class='hit-icon icon-ok'></i>$search->result_count";
-					}
-
 					echo "<tr>" . '<td class="wpsi-term" data-label="Term" data-term_id="'.$search->id.'">'. $this->get_term_link($search->term)
 					     . "</td>" . "<td data-label='Count'>" . $search->frequency
-					     . "<td>$results</td>"
 					     . "</td>" . "</tr>";
 				}
 

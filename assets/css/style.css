@@ -104,11 +104,25 @@ widget
   /* Move directional arrows down a bit for left/right wpsi-tooltips */
   /* Vertically center wpsi-tooltip content for left/right wpsi-tooltips */
 }
+#wpsi-dashboard .wpsi-settings-intro {
+  margin-left: 0 !important;
+}
+#wpsi-dashboard .wpsi-settings-intro-text {
+  font-weight: 600;
+}
+#wpsi-dashboard .wpsi-image {
+  display: inline-block;
+  vertical-align: middle;
+  height: 50px;
+  width: 50px;
+}
 #wpsi-dashboard .dataTables_length {
   display: none;
 }
 #wpsi-dashboard .dataTables_filter {
-  text-align: right;
+  margin-top: 5px;
+  position: absolute;
+  right: 0;
 }
 #wpsi-dashboard .search-insights-dashboard {
   display: flex;
@@ -168,7 +182,8 @@ widget
 #wpsi-dashboard .search-insights-table {
   flex: 1;
   margin: 0 auto;
-  margin-right: 25px;
+  position: relative;
+  width: 95%;
 }
 #wpsi-dashboard .search-insights-table table {
   border: 1px solid #ccc;
@@ -182,6 +197,8 @@ widget
   background-color: rgba(41, 182, 246, 0.35);
 }
 #wpsi-dashboard .search-insights-table table caption {
+  font-weight: 600;
+  width: 50%;
   font-size: 1.5em;
   margin: 0.5em 0 0.75em;
   text-align: left;
@@ -217,13 +234,14 @@ widget
   letter-spacing: 0.1em;
 }
 #wpsi-dashboard .search-insights-table thead tr:first-of-type {
-  background-color: #FFFFFF;
+  background-color: #F5F6FA;
+  color: #A3A6B4;
 }
 #wpsi-dashboard .search-insights-table tr:nth-child(even) {
   background-color: #FFFFFF;
 }
 #wpsi-dashboard .search-insights-table tr:nth-child(odd) {
-  background-color: #F6F6F6;
+  background-color: #FFFFFF;
 }
 #wpsi-dashboard .search-insights-table tr:first-child {
   border-top-left-radius: 0.55rem;
@@ -348,18 +366,19 @@ widget
 }
 #wpsi-dashboard .dataTables_paginate {
   flex: 1;
-  text-align: right;
+  margin-top: 20px;
   cursor: pointer;
 }
 #wpsi-dashboard .dataTables_paginate .paginate_button {
   color: black;
   padding: 0.5em 0.8em;
   box-sizing: border-box;
+  border: 1px solid lightgrey;
+  box-shadow: 0px 1px 1px lightgrey;
 }
 #wpsi-dashboard .dataTables_paginate .current {
+  background-color: orange;
   border: 1px solid #979797;
-  border-radius: 0.3em;
-  background: linear-gradient(to bottom, #fff 0%, #F6F6F6 100%);
   font-weight: 600;
 }
 #wpsi-dashboard .wpsi-settings-intro {

@@ -69,12 +69,29 @@ widget
 #wpsi-dashboard {
   padding-right:15px;
 
+  .wpsi-settings-intro {
+    margin-left: 0 !important;
+  }
+
+  .wpsi-settings-intro-text {
+    font-weight: 600;
+  }
+
+  .wpsi-image {
+    display: inline-block;
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+  }
+
   //hide the "25 entries" dropdown
   .dataTables_length{
     display:none;
   }
   .dataTables_filter {
-    text-align:right;
+    margin-top: 5px;
+    position: absolute;
+    right: 0;
   }
 
   .search-insights-dashboard {
@@ -148,8 +165,6 @@ widget
   General table styling
 */
 
-
-
   .dataTables_wrapper {
     max-width: 800px;
     display: flex;
@@ -160,12 +175,14 @@ widget
   .search-insights-table {
     flex: 1;
     margin: 0 auto;
-    margin-right:25px;
+    position: relative;
+    width: 95%;
 
     table {
       border: 1px solid #ccc;
       border-collapse: collapse;
       margin: 0;
+      padding: 0;
       padding: 0;
       table-layout: fixed;
       justify-content: normal;
@@ -176,6 +193,8 @@ widget
       }
     }
     table caption {
+      font-weight: 600;
+      width: 50%;
       font-size: 1.5em;
       margin: .5em 0 .75em;
       text-align: left;
@@ -219,15 +238,15 @@ widget
     }
 
     thead tr:first-of-type {
-      background-color: #FFFFFF;
-    }
+      background-color: #F5F6FA;
+      color: #A3A6B4;    }
 
     tr:nth-child(even) {
       background-color: #FFFFFF;
     }
 
     tr:nth-child(odd) {
-      background-color: #F6F6F6;
+      background-color: #FFFFFF;
     }
 
     tr:first-child {
@@ -386,9 +405,10 @@ widget
     margin-right: 5px;
   }
 
-  .dataTables_paginate {
+  .dataTables_paginate {;
     flex: 1;
-    text-align: right;
+    margin-top: 20px;
+    //text-align: left;
     cursor: pointer;
   }
 
@@ -396,13 +416,14 @@ widget
     color: black;
     padding: 0.5em 0.8em;
     box-sizing: border-box;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 1px 1px lightgrey;
   }
 
   .dataTables_paginate .current {
-    //background-color: #fff;
+    background-color: orange;
     border: 1px solid #979797;
-    border-radius: 0.3em;
-    background: linear-gradient(to bottom, #fff 0%, #F6F6F6 100%);
+    //background: linear-gradient(to bottom, #fff 0%, #F6F6F6 100%);
     font-weight: 600;
   }
 

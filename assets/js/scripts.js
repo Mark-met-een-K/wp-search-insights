@@ -9,14 +9,14 @@ jQuery(document).ready(function ($) {
             "pageLength": 5,
             conditionalPaging: true,
             //https://datatables.net/reference/option/dom
-            // "dom": 'rt<"table-footer"iBp><"clear">',
+             "dom": 'frt<"table-footer"p><"clear">',
             buttons: [
                 'csv', 'excel'
             ],
             "language": {
                 "paginate": {
-                    "previous": "<i class='icon-left-open'></i>",
-                    "next": "<i class='icon-right-open'></i>"
+                    "previous": "First",
+                    "next": "Last"
                 },
                 "emptyTable" : "No searches recorded yet!"
             },
