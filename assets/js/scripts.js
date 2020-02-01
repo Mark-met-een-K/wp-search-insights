@@ -34,6 +34,10 @@ jQuery(document).ready(function ($) {
     var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").detach();
     $(".wpsi-nr-footer").append(export_buttons);
 
+    var export_buttons2 =  $("#wpsi-recent-table_wrapper > div.wpsi-date-btn:nth-child(1)").detach();
+    $(".wpsi-nr-footer").append(export_buttons2);
+
+
     /**
      * Show/hide dashboard items
      */

@@ -849,11 +849,14 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </caption>
             <?php }
                 ?>
-                <label class="wpsi-select-date-range-all-searches">
-                    <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
-                        <option value="activate_plugins"><?php _e("Placeholder" , "wp-search-insights") ?></option>
-                    </select>
-                </label>
+                <div class="wpsi-date-btn date-btn-all-searches">
+                    <label class="wpsi-select-date-range-all-searches">
+                        <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
+                            <option value="activate_plugins"><?php _e("Placeholder" , "wp-search-insights") ?></option>
+                        </select>
+                    </label>
+                </div>
+                </div>
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights");?> </th>
@@ -958,13 +961,13 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 <div class="wpsi-nr-header-items">
                     <div class="wpsi-no-results">
                         <span class="wpsi-nr-title"><?php _e("No Results" , "wp-search-insights"); ?></span>
-                        <span class="wpsi-date-btn wpsi-header-right">
+                        <div class="wpsi-date-btn wpsi-btn-no-results wpsi-header-right">
                             <label class="wpsi-select-date-range-all-searches">
                                 <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
                                     <option value="activate_plugins"><?php _e("Placeholder" , "wp-search-insights") ?></option>
                                 </select>
                             </label>
-                        </span>
+                        </div>
                     </div>
                     <div class="wpsi-total-searches">
                         <span class="wpsi-nr-title"><?php _e("Total Searches" , "wp-search-insights"); ?></span>
