@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
             "pageLength": 5,
             conditionalPaging: true,
             //https://datatables.net/reference/option/dom
-             "dom": 'frt<"table-footer"p><"clear">',
+            "dom": 'frt<"table-footer"p><"clear">',
             buttons: [
                 'csv', 'excel'
             ],

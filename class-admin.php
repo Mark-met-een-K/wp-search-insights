@@ -25,12 +25,18 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 2 => array(
                     'title' => __("No Results" , "wp-search-insights"),
 //                    'content' => $this->generate_dashboard_widget(),
+                        'content' => 'xy',
                     'class' => 'small',
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches" , "wp-search-insights"),
                     'content' => $this->generate_popular_table(),
                     'class' => 'small',
+                ),
+                4 => array(
+                    'title' => __("Tips & Tricks" , "wp-search-insights"),
+                    'content' => 'zz',
+                    'class' => '',
                 ),
 
 			);
@@ -604,7 +610,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <div id="dashboard" class="tab-content current">
                         <div class="wpsi-settings-intro">
                             <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?></img></span>
-                            <span class="wpsi-settings-intro-text"><?php _e( 'WP Search Insights', 'wp-search-insights' ); ?></span>
+                            <span class="wpsi-settings-intro-text"><?php _e( 'WP Search Insights', 'wp-search-insights' ) ?></span>
                         </div>
                         <button class="button" id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights")?></button>
 
@@ -613,12 +619,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         $grid_items = $this->grid_items;
                         $container = $this->get_template('grid-container.php', wp_search_insights_path.'/grid');
                         $element = $this->get_template('grid-element.php', wp_search_insights_path.'/grid');
-                        $output='';
+                        $output = '';
                         foreach($grid_items as $index => $grid_item){
-                            $output .= str_replace(array('{class}', '{content}','{index}'), array($grid_item['class'], $grid_item['content'],$index), $element);
+                            error_log(print_r($grid_item['content'], true));
+                            $output .= str_replace(array('{class}', '{content}','{index}'), array($grid_item['class'], $grid_item['content'] ,$index), $element);
                         }
                         echo str_replace('{content}', $output, $container);
-
                         ?>
 
                     </div>
@@ -837,18 +843,16 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			global $wpdb;
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
 			$recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
-
 			?>
-
             <table id="wpsi-recent-table" class="wpsi-table">
 				<?php if (!$dashboard_widget) { ?>
-                <caption><?php _e("All Searches", "wp-search-insights"); } ?>
+                <caption><?php _e("All Searches", "wp-search-insights"); ?>
                 </caption>
+            <?php } ?>
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
-                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("Results", "wp-search-insights"); ?> </th>;
-<!--                    <th scope='col' style="width: 15%;">--><?php //_e("When", "wp-search-insights");?><!-- </th>-->
+                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("Results", "wp-search-insights"); ?> </th>
 					<?php if (!$dashboard_widget) { ?>
                         <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
 					<?php } ?>
@@ -936,9 +940,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          * @return string
          */
 
-        public function generate_no_results_overview() {
-
-        }
+//        public function generate_no_results_overview() {
+//
+//        }
 
 		/**
 		 *
@@ -958,7 +962,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			);
 			$popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
 			?>
-            <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
+        <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
 
                 <thead>
