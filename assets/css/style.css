@@ -183,6 +183,7 @@ widget
   flex-direction: column;
 }
 #wpsi-dashboard .search-insights-table {
+  padding-top: 15px;
   flex: 1;
   margin: 0 auto;
   position: relative;
@@ -304,9 +305,6 @@ widget
     display: none;
   }
 }
-#wpsi-dashboard #wpsi-recent-table {
-  margin-right: 15px;
-}
 #wpsi-dashboard #wpsi-recent-table,
 #wpsi-dashboard #wpsi-popular-table {
   width: 100%;
@@ -374,20 +372,28 @@ widget
 #wpsi-dashboard .wpsi-nr-header {
   display: flex;
   flex-direction: column;
-  height: 100px;
+  height: 80px;
   border-bottom: 1px solid lightgrey;
 }
 #wpsi-dashboard .wpsi-nr-header-items {
-  margin-top: 20px;
+  padding-top: 10px;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+#wpsi-dashboard .wpsi-no-results {
+  padding-bottom: 5px;
 }
 #wpsi-dashboard .wpsi-total-searches {
   padding-top: 15px;
+}
+#wpsi-dashboard .wpsi-search-count {
+  font-weight: 600;
 }
 #wpsi-dashboard .wpsi-header-right {
   float: right;
 }
 #wpsi-dashboard .wpsi-nr-content {
-  height: 250px;
+  height: 270px;
   border-bottom: 1px solid lightgrey;
 }
 #wpsi-dashboard .wpsi-nr-footer {

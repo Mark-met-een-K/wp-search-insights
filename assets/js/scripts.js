@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
                     "previous": "First",
                     "next": "Last"
                 },
-                searchPlaceholder: "Search",
+                searchPlaceholder: "Filter",
                 "search" : "",
                 "emptyTable" : "No searches recorded yet!"
             },

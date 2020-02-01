@@ -173,6 +173,7 @@ widget
   }
 
   .search-insights-table {
+    padding-top: 15px;
     flex: 1;
     margin: 0 auto;
     position: relative;
@@ -324,11 +325,6 @@ widget
       Individual table styling
    */
 
-  #wpsi-recent-table {
-
-    margin-right: 15px;
-  }
-
   #wpsi-recent-table, #wpsi-popular-table {
     width:100%;
 
@@ -424,16 +420,26 @@ widget
   .wpsi-nr-header {
     display: flex;
     flex-direction: column;
-    height: 100px;
+    height: 80px;
     border-bottom: 1px solid lightgrey;
   }
 
   .wpsi-nr-header-items {
-    margin-top: 20px;
+    padding-top: 10px;
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+
+  .wpsi-no-results {
+    padding-bottom: 5px;
   }
 
   .wpsi-total-searches {
     padding-top: 15px;
+  }
+
+  .wpsi-search-count {
+    font-weight: 600;
   }
 
   .wpsi-header-right {
@@ -441,7 +447,7 @@ widget
   }
 
   .wpsi-nr-content {
-    height: 250px;
+    height: 270px;
     border-bottom: 1px solid lightgrey;
   }
 

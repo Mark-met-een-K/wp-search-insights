@@ -34,7 +34,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 ),
                 4 => array(
                     'title' => __("Tips & Tricks" , "wp-search-insights"),
-                    'content' => 'zz',
+                    'content' => $this->generate_tips_and_tricks(),
                     'class' => 'half-height',
                 ),
 
@@ -56,14 +56,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 		public function init()
 		{
-            error_log("int");
 			$this->capability = get_option('wpsi_select_dashboard_capability');
-			error_log($this->capability);
-
-			error_log("init");
 
 			if (!current_user_can($this->capability)) {
-			    error_log("Capa");
 				return;
 			}
 
@@ -620,7 +615,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         $element = $this->get_template('grid-element.php', wp_search_insights_path.'/grid');
                         $output = '';
                         foreach($grid_items as $index => $grid_item){
-                            error_log(print_r($grid_item['content'], true));
                             $output .= str_replace(array('{class}', '{content}','{index}'), array($grid_item['class'], $grid_item['content'] ,$index), $element);
                         }
                         echo str_replace('{content}', $output, $container);
@@ -738,8 +732,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		public function generate_dashboard_widget() {
 			$widget = $this->get_template( 'dashboard-widget.php' );
 
-			error_log(print_r($widget, true));
-
 			$html = "";
 
 			$popular_searches = get_transient( 'wpsi_popular_searches' );
@@ -843,7 +835,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 			global $wpdb;
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
-			$recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
+            $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+            $recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
 			?>
             <table id="wpsi-recent-table" class="wpsi-table">
 				<?php if (!$dashboard_widget) { ?>
@@ -852,7 +845,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             <?php } ?>
                 <thead>
                 <tr class="wpsi-thead-th">
-                    <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
+                    <th scope='col' style="width: 20%;"><?php _e("Search term", "wp-search-insights");?> </th>
+                    <th scope='col' style="width: 10%;"><?php _e("Results", "wp-search-insights");?> </th>
                     <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("When", "wp-search-insights"); ?> </th>
 					<?php if (!$dashboard_widget) { ?>
                         <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights")?> </th>
@@ -863,24 +857,28 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 				<?php
 				// Start generating rows
 				foreach ($recent_searches as $search) {
-//                    if ($search->result_count == 0) {
-//                        // No hits, show an error icon
+				    $result_count = $wpdb->get_var("SELECT result_count FROM $table_name_archive WHERE term = '$search->term'");
+                    if ($search->result_count == 0) {
+                        error_log("Count 0");
+                        // No hits, show an error icon
 //                        $results = "<i class='hit-icon icon-cancel'></i>";
-//                    } else {
-//                        // There are hits, show an checkmark icon. Also make the term clickable to show results
-//                        $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
-//                    }
+                        $results = "0";
+                    } else {
+                        error_log("Count not 0");
+                        // There are hits, show an checkmark icon. Also make the term clickable to show results
+                        $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
+                    }
 					// Show the full time on dashboard, shorten the time on the dashboard widget.
 					$search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
 
 					//Add &searchinsights to 'see results' link to prevent it from counting as search;
 					$link = $this->get_term_link($search->term);
 					$search_term_td = '<td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$link.'</td>';
-//					$result_td = "<td>$results</td>";
-					$referrer_td = "<td>$search->referrer</td>";
+                    $result_td = "<td>$results</td>";
+                    $referrer_td = "<td>$search->referrer</td>";
 
 					//Generate the row with or without hits and referer, depending on where the table is generated
-					echo "<tr>" . $search_term_td . $search_time_td . $referrer_td . "</tr>";
+					echo "<tr>" . $search_term_td . $result_td . $search_time_td . $referrer_td . "</tr>";
 
 				}
 				?>
@@ -1025,5 +1023,16 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			$contents = ob_get_clean();
 			return $contents;
 		}
+
+		public function generate_tips_and_tricks() {
+            ob_start();
+            ?>
+            <div class="wpsi-tips-tricks">
+                Tips 'n Tricks
+            </div>
+            <?php
+            $contents = ob_get_clean();
+            return $contents;
+        }
 	}
 }
