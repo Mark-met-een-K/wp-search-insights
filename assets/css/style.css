@@ -208,7 +208,7 @@ widget
   font-weight: 600;
   width: 50%;
   font-size: 1.5em;
-  margin: 0.5em 0 0.75em;
+  margin: 0.5em 0 1.5em;
   text-align: left;
 }
 #wpsi-dashboard .search-insights-table table.dataTable thead .sorting {
@@ -330,6 +330,8 @@ widget
   align-items: center;
   justify-content: center;
   padding-top: 10px;
+  position: absolute;
+  bottom: 50px;
 }
 #wpsi-dashboard .dataTables_info {
   text-align: left;
@@ -395,6 +397,11 @@ widget
 }
 #wpsi-dashboard .wpsi-header-right {
   float: right;
+}
+#wpsi-dashboard .date-btn-all-searches {
+  position: absolute;
+  right: 180px;
+  margin-top: 5px;
 }
 #wpsi-dashboard .wpsi-nr-content {
   height: 270px;
