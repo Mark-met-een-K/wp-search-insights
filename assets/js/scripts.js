@@ -5,25 +5,34 @@ jQuery(document).ready(function ($) {
      * Datatables
      */
     $('.wpsi-table').each(function(){
+        console.log(this);
         $(this).DataTable( {
             "pageLength": 5,
             conditionalPaging: true,
             //https://datatables.net/reference/option/dom
-            "dom": 'frt<"table-footer"p><"clear">',
+            "dom": 'frt<"table-footer"p><"clear">B',
+            // buttons: [
+            //     'csv', 'excel'
+            // ],
             buttons: [
-                'csv', 'excel'
+                { extend: 'csv', text: 'Download CSV' }
             ],
             "language": {
                 "paginate": {
                     "previous": "First",
                     "next": "Last"
                 },
+                searchPlaceholder: "Search",
+                "search" : "",
                 "emptyTable" : "No searches recorded yet!"
             },
-            "order": [[ 1, "desc" ]]
+            "order": [[ 1, "desc" ]],
         });
     });
 
+    // Move export buttons to no results div
+    var detached =  $("#wpsi-recent-table_wrapper > div.dt-buttons").detach();
+    $(".wpsi-nr-footer").append(detached);
 
     /**
      * Show/hide dashboard items

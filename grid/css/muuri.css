@@ -2,13 +2,13 @@
   position: relative;
 }
 .wpsi-grid .wpsi-item {
-  width: 750px;
+  width: 800px;
   position: absolute;
   height: 475px;
   z-index: 1;
 }
 .wpsi-grid .wpsi-item.small {
-  width: 425px;
+  width: 400px;
 }
 .wpsi-grid .wpsi-item.muuri-item-hidden {
   z-index: 0;
@@ -23,14 +23,17 @@
   position: relative;
   cursor: pointer;
   border: 1px solid #cecece;
-  width: 730px;
+  width: 780px;
   height: 455px;
 }
 .wpsi-grid .wpsi-item .item-container .item-content {
   margin: 15px;
 }
+.wpsi-grid .wpsi-item.half-height .item-container {
+  height: 237.5px;
+}
 .wpsi-grid .wpsi-item.small .item-container {
-  width: 405px;
+  width: 380px;
 }
 .wpsi-grid .wpsi-item.muuri-item-placeholder .item-container {
   border-style: dashed;

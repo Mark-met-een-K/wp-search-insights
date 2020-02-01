@@ -1,6 +1,6 @@
 @gridblock_height: 475px;
-@gridblock_width: 750px;
-@gridblock_width_small:425px;
+@gridblock_width: 800px;
+@gridblock_width_small:400px;
 @grid_margin:10px;
 @grey-light:#cecece;
 
@@ -34,7 +34,12 @@
             .item-content {
                 margin:15px;
             }
-            
+
+        }
+        &.half-height {
+            .item-container {
+                height: @gridblock_height / 2;
+            }
         }
         &.small {
             .item-container {

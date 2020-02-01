@@ -24,8 +24,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 ),
                 2 => array(
                     'title' => __("No Results" , "wp-search-insights"),
-//                    'content' => $this->generate_dashboard_widget(),
-                        'content' => 'xy',
+                    'content' => $this->generate_no_results_overview(),
                     'class' => 'small',
                 ),
                 3 => array(
@@ -36,7 +35,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 4 => array(
                     'title' => __("Tips & Tricks" , "wp-search-insights"),
                     'content' => 'zz',
-                    'class' => '',
+                    'class' => 'half-height',
                 ),
 
 			);
@@ -739,6 +738,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		public function generate_dashboard_widget() {
 			$widget = $this->get_template( 'dashboard-widget.php' );
 
+			error_log(print_r($widget, true));
+
 			$html = "";
 
 			$popular_searches = get_transient( 'wpsi_popular_searches' );
@@ -852,9 +853,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 25%;"><?php _e("Search term", "wp-search-insights");?> </th>
-                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("Results", "wp-search-insights"); ?> </th>
+                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("When", "wp-search-insights"); ?> </th>
 					<?php if (!$dashboard_widget) { ?>
-                        <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From post/page", "wp-search-insights")?> </th>
+                        <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights")?> </th>
 					<?php } ?>
                 </tr>
                 </thead>
@@ -940,9 +941,41 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          * @return string
          */
 
-//        public function generate_no_results_overview() {
-//
-//        }
+        public function generate_no_results_overview() {
+            ob_start();
+            ?>
+            <div class="wpsi-nr-overview">
+            <div class="wpsi-nr-header">
+                <div class="wpsi-nr-header-items">
+                    <div class="wpsi-no-results">
+                        <span class="wpsi-nr-title"><?php _e("No Results" , "wp-search-insights"); ?></span>
+                        <span class="wpsi-date-btn wpsi-header-right"><button class="button">Placeholder</button></span>
+                    </div>
+                    <div class="wpsi-total-searches">
+                        <span class="wpsi-nr-title"><?php _e("Total Searches" , "wp-search-insights"); ?></span>
+                        <span class="wpsi-search-count wpsi-header-right">5000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="wpsi-nr-content">
+                <div class="wpsi-nr-progress">
+
+                </div>
+                <div class="wpsi-nr-has-result">
+
+                </div>
+                <div class="wpsi-nr-no-result">
+
+                </div>
+            </div>
+            <div class="wpsi-nr-footer">
+                <span class="wpsi-export-searches"></span>
+            </div>
+            </div>
+            <?php
+            $contents = ob_get_clean();
+            return $contents;
+        }
 
 		/**
 		 *
