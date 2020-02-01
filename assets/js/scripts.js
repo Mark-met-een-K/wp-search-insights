@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
             "language": {
                 "paginate": {
                     "previous": "First",
-                    "next": "Last"
+                    "next": "Next",
                 },
                 searchPlaceholder: "Filter",
                 "search" : "",
@@ -31,8 +31,8 @@ jQuery(document).ready(function ($) {
     });
 
     // Move export buttons to no results div
-    var detached =  $("#wpsi-recent-table_wrapper > div.dt-buttons").detach();
-    $(".wpsi-nr-footer").append(detached);
+    var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").detach();
+    $(".wpsi-nr-footer").append(export_buttons);
 
     /**
      * Show/hide dashboard items

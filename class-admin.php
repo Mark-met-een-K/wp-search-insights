@@ -847,7 +847,13 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 				<?php if (!$dashboard_widget) { ?>
                 <caption><?php _e("All Searches", "wp-search-insights"); ?>
                 </caption>
-            <?php } ?>
+            <?php }
+                ?>
+                <label class="wpsi-select-date-range-all-searches">
+                    <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
+                        <option value="activate_plugins"><?php _e("Placeholder" , "wp-search-insights") ?></option>
+                    </select>
+                </label>
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights");?> </th>
@@ -953,8 +959,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <div class="wpsi-no-results">
                         <span class="wpsi-nr-title"><?php _e("No Results" , "wp-search-insights"); ?></span>
                         <span class="wpsi-date-btn wpsi-header-right">
-                            <label class="wpsi-select-capability">
-                                <select name="wpsi_select_dashboard_capability" id="wpsi_select_dashboard_capability">
+                            <label class="wpsi-select-date-range-all-searches">
+                                <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
                                     <option value="activate_plugins"><?php _e("Placeholder" , "wp-search-insights") ?></option>
                                 </select>
                             </label>
@@ -986,6 +992,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             return $contents;
         }
 
+//        public function select_date_range() {
+//        }
+
 		/**
 		 *
 		 * Generate the popular searches table in
@@ -1005,7 +1014,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			$popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
 			?>
         <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
-                <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
+            <div class="wpsi-caption"><caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption></div>
 
                 <thead>
                 <tr class="wpsi-thead-th">
