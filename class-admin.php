@@ -37,6 +37,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'content' => $this->generate_tips_and_tricks(),
                     'class' => 'half-height',
                 ),
+                5 => array(
+                    'title' => 'Other',
+                    'content' => $this->generate_other_plugins(),
+                    'class' => 'half-height no-border',
+                ),
 
 			);
 		}
@@ -845,11 +850,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             <?php } ?>
                 <thead>
                 <tr class="wpsi-thead-th">
-                    <th scope='col' style="width: 20%;"><?php _e("Search term", "wp-search-insights");?> </th>
+                    <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights");?> </th>
                     <th scope='col' style="width: 10%;"><?php _e("Results", "wp-search-insights");?> </th>
-                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">' <?php _e("When", "wp-search-insights"); ?> </th>
+                    <th scope="col" style="width: 13%;" class="dashboard-tooltip-hits">' <?php _e("When", "wp-search-insights"); ?> </th>
 					<?php if (!$dashboard_widget) { ?>
-                        <th scope='col' style="width: 20%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights")?> </th>
+                        <th scope='col' style="width: 10%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights")?> </th>
 					<?php } ?>
                 </tr>
                 </thead>
@@ -947,7 +952,13 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 <div class="wpsi-nr-header-items">
                     <div class="wpsi-no-results">
                         <span class="wpsi-nr-title"><?php _e("No Results" , "wp-search-insights"); ?></span>
-                        <span class="wpsi-date-btn wpsi-header-right"><button class="button">Placeholder</button></span>
+                        <span class="wpsi-date-btn wpsi-header-right">
+                            <label class="wpsi-select-capability">
+                                <select name="wpsi_select_dashboard_capability" id="wpsi_select_dashboard_capability">
+                                    <option value="activate_plugins"><?php _e("Placeholder" , "wp-search-insights") ?></option>
+                                </select>
+                            </label>
+                        </span>
                     </div>
                     <div class="wpsi-total-searches">
                         <span class="wpsi-nr-title"><?php _e("Total Searches" , "wp-search-insights"); ?></span>
@@ -1027,8 +1038,39 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		public function generate_tips_and_tricks() {
             ob_start();
             ?>
-            <div class="wpsi-tips-tricks">
-                Tips 'n Tricks
+            <div class="wpsi-tips-tricks-container">
+                <span class="wpsi-tricks-tips">Hoi!</span>
+            </div>
+            <?php
+            $contents = ob_get_clean();
+            return $contents;
+        }
+
+        public function generate_other_plugins(){
+            ob_start();
+            ?>
+            <div class="wpsi-other-plugins-container">
+                <div class="wpsi-upsell wpsi-rsssl">
+                    <div class="wpsi-upsell-title">
+                        <span class="wpsi-top-title"><?php echo "Really Simple SSL"; ?></span>
+                        <span class="wpsi-sub-title">
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                        </span>
+                    </div>
+                    <div class="wpsi-upsell-content">
+                        <?php _e("Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ", "wp-search-insights"); ?>
+                    </div>
+                    <div class="wpsi-upsell-button">
+                        <button class="button button-upsell"><?php _e("Install" , "wp-search-insights"); ?></button>
+                    </div>
+                </div>
+                <div class="wpsi-upsell wpsi-cmplz">
+
+                </div>
             </div>
             <?php
             $contents = ob_get_clean();

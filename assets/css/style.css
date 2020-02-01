@@ -84,6 +84,9 @@ widget
       No Results grid item
    */
   /*
+    Other plugins
+   */
+  /*
       *
       *   Settings page styling
       *
@@ -183,6 +186,7 @@ widget
   flex-direction: column;
 }
 #wpsi-dashboard .search-insights-table {
+  height: 100%;
   padding-top: 15px;
   flex: 1;
   margin: 0 auto;
@@ -362,9 +366,9 @@ widget
   box-shadow: 0px 1px 1px lightgrey;
 }
 #wpsi-dashboard .dataTables_paginate .current {
+  color: white;
   background-color: #FF3B3B;
   border: 1px solid #979797;
-  font-weight: 600;
 }
 #wpsi-dashboard .wpsi-nr-title {
   padding: 15px;
@@ -404,6 +408,41 @@ widget
 }
 #wpsi-dashboard .wpsi-nr-footer .dt-buttons {
   margin: 0 auto;
+}
+#wpsi-dashboard .wpsi-other-plugins-container {
+  display: flex;
+  height: 100%;
+}
+#wpsi-dashboard .wpsi-upsell {
+  margin-right: 25px;
+  height: 88%;
+  width: 25%;
+}
+#wpsi-dashboard .wpsi-upsell-title {
+  height: 33.33%;
+  display: flex;
+  flex-direction: column;
+}
+#wpsi-dashboard .wpsi-upsell span.dashicons {
+  margin-top: 10px;
+  color: #FFB900;
+}
+#wpsi-dashboard .wpsi-top-title {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+#wpsi-dashboard .wpsi-upsell-content {
+  height: 33.33%;
+}
+#wpsi-dashboard .wpsi-upsell-button {
+  height: 33.33%;
+  display: flex;
+  align-items: center;
+}
+#wpsi-dashboard .button-upsell {
+  width: 80%;
+  background-color: #3B86FF;
+  color: white;
 }
 #wpsi-dashboard #wpsi-popular-table_wrapper > div.dt-buttons {
   display: none;

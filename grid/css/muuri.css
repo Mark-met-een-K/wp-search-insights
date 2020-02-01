@@ -35,6 +35,9 @@
 .wpsi-grid .wpsi-item.small .item-container {
   width: 380px;
 }
+.wpsi-grid .wpsi-item.no-border .item-container {
+  border: none;
+}
 .wpsi-grid .wpsi-item.muuri-item-placeholder .item-container {
   border-style: dashed;
   padding: 0;
