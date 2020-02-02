@@ -161,12 +161,9 @@ widget
   background: #ededed;
   padding: 15px;
 }
-#wpsi-dashboard .tab-content > div,
-#wpsi-dashboard .tab-content #wpsi-delete-selected {
-  margin-left: 50px;
-}
 #wpsi-dashboard #wpsi-delete-selected {
-  margin-bottom: 10px;
+  vertical-align: middle;
+  margin-left: 25px;
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;

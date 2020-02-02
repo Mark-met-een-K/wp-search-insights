@@ -1,5 +1,6 @@
 .wpsi-grid {
   position: relative;
+  margin-left: 50px;
 }
 .wpsi-grid .wpsi-item {
   width: 800px;
