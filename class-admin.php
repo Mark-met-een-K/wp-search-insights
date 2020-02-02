@@ -1102,7 +1102,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             ob_start();
             ?>
             <div class="wpsi-tips-tricks-container">
-                <span class="wpsi-tricks-tips">Hoi!</span>
+                <span class="wpsi-tricks-tips"><h1>Tips 'n Tricks!</h1></span>
             </div>
             <?php
             $contents = ob_get_clean();

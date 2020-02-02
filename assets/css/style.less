@@ -187,10 +187,8 @@ widget
     width: 95%;
 
     table {
-      border: 1px solid #ccc;
       border-collapse: collapse;
       margin: 0;
-      padding: 0;
       padding: 0;
       table-layout: fixed;
       justify-content: normal;
@@ -208,30 +206,33 @@ widget
       text-align: left;
     }
 
-    table.dataTable thead .sorting {
-      background-image: url("../images/sort_both.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-    }
-
-    table.dataTable thead .sorting_asc {
-      background-image: url("../images/sort_asc.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-    }
-
-    table.dataTable thead .sorting_desc {
-      background-image: url("../images/sort_desc.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-    }
+    //table.dataTable thead .sorting {
+    //  background-image: url("../images/sort_both.png");
+    //  background-repeat: no-repeat;
+    //  background-position: center right;
+    //}
+    //
+    //table.dataTable thead .sorting_asc {
+    //  background-image: url("../images/sort_asc.png");
+    //  background-repeat: no-repeat;
+    //  background-position: center right;
+    //}
+    //
+    //table.dataTable thead .sorting_desc {
+    //  background-image: url("../images/sort_desc.png");
+    //  background-repeat: no-repeat;
+    //  background-position: center right;
+    //}
 
 
     table tr {
       height: 40px;
       background-color: #f8f8f8;
-      border: 1px solid #ddd;
       padding: .35em;
+    }
+
+    table tbody tr {
+      border-bottom: .1em solid #ddd;
     }
 
     table th,
