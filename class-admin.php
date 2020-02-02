@@ -873,16 +873,15 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 				<?php
 				// Start generating rows
 				foreach ($recent_searches as $search) {
-				    $result_count = $wpdb->get_var("SELECT result_count FROM $table_name_archive WHERE term = '$search->term'");
-                    if ($search->result_count == 0) {
-                        error_log("Count 0");
-                        // No hits, show an error icon
-//                        $results = "<i class='hit-icon icon-cancel'></i>";
+
+                    $result_count = $wpdb->get_var("SELECT result_count FROM $table_name_archive WHERE term = '$search->term'");
+                    $frequency = $wpdb->get_var("SELECT frequency FROM $table_name_archive WHERE term = '$search->term'");
+                    if ($result_count == 0) {
+//                       $results = "<i class='hit-icon icon-cancel'></i>";
                         $results = "0";
                     } else {
-                        error_log("Count not 0");
                         // There are hits, show an checkmark icon. Also make the term clickable to show results
-                        $results = "<i class='hit-icon icon-ok'></i>$search->result_count";
+                        $results = $frequency;
                     }
 					// Show the full time on dashboard, shorten the time on the dashboard widget.
 					$search_time_td = "<td data-label='When'>".$this->get_date($search->time)."</td>";
@@ -973,7 +972,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     </div>
                     <div class="wpsi-total-searches">
                         <span class="wpsi-nr-title"><?php _e("Total Searches" , "wp-search-insights"); ?></span>
-                        <span class="wpsi-search-count wpsi-header-right">5000</span>
+                        <span class="wpsi-search-count wpsi-header-right">
+                            <?php
+                            echo count(WP_SEARCH_INSIGHTS()->Search->get_searches_single() );
+                            ?>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -982,10 +985,20 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
                 </div>
                 <div class="wpsi-nr-has-result">
-
+                    <div class="has-result-title">
+                        <?php _e("Have results", "wp-search-insights"); ?>
+                    </div>
+                    <div class="wpsi-result-count">
+                        <?php echo $this->get_result_count()."%";?>
+                    </div>
                 </div>
                 <div class="wpsi-nr-no-result">
-
+                    <div class="no-result-title">
+                        <?php _e("No results", "wp-search-insights"); ?>
+                    </div>
+                    <div class="wpsi-result-count">
+                        <?php echo $this->get_result_count($without_results=true)."%"; ?>
+                    </div>
                 </div>
             </div>
             <div class="wpsi-nr-footer">
@@ -997,8 +1010,44 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             return $contents;
         }
 
-//        public function select_date_range() {
-//        }
+        /**
+         * @param bool $without_results
+         * @return float|int
+         *
+         * Get the result count for a period
+         */
+
+    public function get_result_count($without_results=false) {
+
+        // Get the count of all searches made in period
+        $nr_of_terms = count(WP_SEARCH_INSIGHTS()->Search->get_searches_single() );
+
+        // Set args for query
+        $args = array(
+            'compare' => '>',
+            'from' => 'result_count',
+            'result_count' => 0,
+        );
+
+        // Get terms with more than one result
+        //
+//        $result_count = $wpdb->get_results("SELECT frequency FROM $table_name_archive WHERE result_count >= 1");
+
+        $frequency = WP_SEARCH_INSIGHTS()->Search->get_searches();
+//        SELECT * from wp_searchinsights_archive WHERE 1=1 AND result_count >=1 AND frequency >=1
+        $term_more_than_1_result = count(WP_SEARCH_INSIGHTS()->Search->get_searches($args) );
+        error_log(print_r($frequency, true));
+
+        $percentage_results = $term_more_than_1_result / $nr_of_terms * 100;
+        $percentage_no_results = 100 - $percentage_results;
+//
+        if ($without_results) {
+            return $percentage_no_results;
+        } else {
+            return $percentage_results;
+        }
+    }
+
 
 		/**
 		 *
