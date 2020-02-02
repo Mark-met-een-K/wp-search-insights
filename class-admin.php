@@ -1120,7 +1120,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 ),
             );
 
-            echo
             $container = $this->get_template( 'upsell-container.php' );
             $element = $this->get_template( 'upsell-element.php' );
             $output = '';
