@@ -1109,7 +1109,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
         public function generate_other_plugins(){
 
-            ob_start();
             $items = array(
                 1 => array(
                     'title' => __("Really Simple SSL" , "wp-search-insights"),
@@ -1121,20 +1120,38 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 ),
             );
 
-            $contents = $this->get_template( 'upsell.php' );
+            echo
+            $container = $this->get_template( 'upsell-container.php' );
+            $element = $this->get_template( 'upsell.php' );
+            $output = '';
             foreach($items as $item){
-                error_log(print_r($item, true));
-                $contents = str_replace( array(
+//                ob_start();
+                $output .= str_replace( array(
                     '{title}',
                     '{content}'
                 ), array(
                     $item['title'],
                     $item['content'],
-                ), $contents);
+                ), $element);
+//                ob_get_clean();
+                echo str_replace('{content}', $output, $container);
             }
 
-            ob_get_clean();
-            return $contents;
+
+//            $contents = $this->get_template( 'upsell.php' );
+//            foreach($items as $item){
+//                error_log(print_r($item, true));
+//                $contents = str_replace( array(
+//                    '{title}',
+//                    '{content}'
+//                ), array(
+//                    $item['title'],
+//                    $item['content'],
+//                ), $contents);
+//            }
+
+//            ob_get_clean();
+//            return $contents;
         }
 	}
 }

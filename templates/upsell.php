@@ -1,4 +1,3 @@
-<div class="wpsi-other-plugins-container">
     <div class="wpsi-upsell wpsi-rsssl">
         <div class="wpsi-upsell-title">
             <span class="wpsi-top-title">{title}
@@ -18,4 +17,3 @@
             <button class="button button-upsell"><?php _e("Install" , "wp-search-insights"); ?></button>
         </div>
     </div>
-</div>
