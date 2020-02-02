@@ -43,7 +43,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'content' => $this->generate_other_plugins(),
                     'class' => 'half-height no-border',
                 ),
-
 			);
 		}
 
@@ -1036,7 +1035,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         $frequency = WP_SEARCH_INSIGHTS()->Search->get_searches();
 //        SELECT * from wp_searchinsights_archive WHERE 1=1 AND result_count >=1 AND frequency >=1
         $term_more_than_1_result = count(WP_SEARCH_INSIGHTS()->Search->get_searches($args) );
-        error_log(print_r($frequency, true));
 
         $percentage_results = $term_more_than_1_result / $nr_of_terms * 100;
         $percentage_no_results = 100 - $percentage_results;
@@ -1110,33 +1108,32 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         }
 
         public function generate_other_plugins(){
-            ob_start();
-            ?>
-            <div class="wpsi-other-plugins-container">
-                <div class="wpsi-upsell wpsi-rsssl">
-                    <div class="wpsi-upsell-title">
-                        <span class="wpsi-top-title"><?php echo "Really Simple SSL"; ?></span>
-                        <span class="wpsi-sub-title">
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                        </span>
-                    </div>
-                    <div class="wpsi-upsell-content">
-                        <?php _e("Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ", "wp-search-insights"); ?>
-                    </div>
-                    <div class="wpsi-upsell-button">
-                        <button class="button button-upsell"><?php _e("Install" , "wp-search-insights"); ?></button>
-                    </div>
-                </div>
-                <div class="wpsi-upsell wpsi-cmplz">
 
-                </div>
-            </div>
-            <?php
-            $contents = ob_get_clean();
+            ob_start();
+            $items = array(
+                1 => array(
+                    'title' => __("Really Simple SSL" , "wp-search-insights"),
+                    'content' => __("Get Really Simple SSL Now" , "wp-search-insights"),
+                ),
+                2 => array(
+                    'title' => __("CMPLZ" , "wp-search-insights"),
+                    'content' => __("Get Really Simple SSL Now" , "wp-search-insights"),
+                ),
+            );
+
+            $contents = $this->get_template( 'upsell.php' );
+            foreach($items as $item){
+                error_log(print_r($item, true));
+                $contents = str_replace( array(
+                    '{title}',
+                    '{content}'
+                ), array(
+                    $item['title'],
+                    $item['content'],
+                ), $contents);
+            }
+
+            ob_get_clean();
             return $contents;
         }
 	}
