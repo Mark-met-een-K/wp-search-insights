@@ -429,6 +429,9 @@ widget
   display: flex;
   align-items: center;
 }
+#wpsi-dashboard .wpsi-upsell-button > a {
+  width: 80%;
+}
 #wpsi-dashboard .button-upsell {
   width: 80%;
   background-color: #3B86FF;
