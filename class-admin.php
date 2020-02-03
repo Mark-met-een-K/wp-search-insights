@@ -796,7 +796,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 $popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
                 set_transient('wpsi_popular_searches', $popular_searches, HOUR_IN_SECONDS);
             }
-            $tmpl = $this->get_template('dashboard-row.html');
+            $tmpl = $this->get_template('dashboard-row.php');
 
             if (count($popular_searches) == 0) {
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
