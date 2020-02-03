@@ -21,28 +21,36 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'title' => __("All Searches" , "wp-search-insights"),
                     'content' => $this->generate_recent_table(),
                     'class' => '',
+                    'can_hide' => true,
+
                 ),
                 2 => array(
                     'title' => __("No Results" , "wp-search-insights"),
                     'content' => $this->generate_no_results_overview(),
                     'class' => 'small',
+                    'can_hide' => true,
+
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches" , "wp-search-insights"),
-                    'content' => $this->generate_popular_table(),
-//                    'content' => $this->generate_dashboard_widget(),
+                    'content' => $this->generate_dashboard_widget(false),
                     'class' => 'small',
+                    'can_hide' => true,
+
                 ),
                 4 => array(
                     'title' => __("Tips & Tricks" , "wp-search-insights"),
                     'content' => $this->generate_tips_and_tricks(),
                     'class' => 'half-height',
+                    'can_hide' => true,
+
                 ),
-//                5 => array(
-//                    'title' => 'Other',
-//                    'content' => $this->generate_other_plugins(),
-//                    'class' => 'half-height no-border',
-//                ),
+                5 => array(
+                    'title' => 'Other',
+                    'content' => $this->generate_other_plugins(),
+                    'class' => 'half-height no-border',
+                    'can_hide' => false,
+                ),
 			);
 		}
 
@@ -574,6 +582,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	                    <?php
 	                    $grid_items = $this->grid_items;
 	                    foreach ($grid_items as $index => $grid_item){
+	                        if (!$grid_item['can_hide']) {
+
+                            }
 	                    	?>
 		                    <label for="wpsi-hide-panel-<?=$index?>">
 			                    <input class="wpsi-toggle-items" name="toggle_data_id_<?=$index?>" type="checkbox" id="toggle_data_id_<?=$index?>" value="data_id_<?=$index?>">
@@ -734,7 +745,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 		}
 
-		public function generate_dashboard_widget() {
+		public function generate_dashboard_widget($echo=true) {
             ob_start();
             $widget = $this->get_template( 'dashboard-widget.php' );
 
@@ -782,7 +793,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 			$widget = str_replace( '{popular_searches}', $html, $widget );
 
-
 			$html         = "";
 			$top_searches = get_transient( 'wpsi_top_searches' );
 			if ( ! $top_searches ) {
@@ -823,7 +833,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
 			ob_get_clean();
             $widget = str_replace( '{top_searches}', $html, $widget );
-            echo $widget;
+            if ($echo) {
+                echo $widget;
+            } else {
+                return $widget;
+            }
 		}
 
 		/**
