@@ -9,7 +9,6 @@ jQuery(document).ready(function ($) {
             "pageLength": 5,
             conditionalPaging: true,
             //https://datatables.net/reference/option/dom
-            // "dom": 'rt<"table-footer"iBp><"clear">',
             buttons: [
                 'csv', 'excel'
             ],
@@ -24,6 +23,34 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    /**
+     * Add dropdown for data filtering
+     */
+    $('.dataTables_filter').each(function(){
+        $(this).append(wpsi.dateFilter)
+    });
+
+    $(document).on('change', '.wpsi-date-filter', function(){
+        var container = $(this).closest('.item-content');
+        var type = 'recent';
+        var range = 'year';
+        $.ajax({
+            type: "GET",
+            url: wpsi.ajaxurl,
+            dataType: 'json',
+            data: ({
+                action: 'wpsi_datatable',
+                type:type,
+                range:range,
+                token: wpsi.token
+            }),
+            success: function (response) {
+                //get all occurrences on this page for this term id
+                container.html(response.html);
+
+            }
+        });
+    });
 
     /**
      * Show/hide dashboard items

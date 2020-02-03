@@ -143,6 +143,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 					array(
 						'ajaxurl' => admin_url( 'admin-ajax.php' ),
 						'token'   => wp_create_nonce( 'search_insights_nonce'),
+						'dateFilter'   => '<select class="wpsi-date-filter"><option>All time</option><option>1 year</option>/select>',
 					)
 				);
 
