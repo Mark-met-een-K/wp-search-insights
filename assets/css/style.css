@@ -67,6 +67,9 @@ widget
   border-bottom: 1px solid #eee;
   background-color: #fff;
 }
+.wpsi-dashboard-widget-grid ul {
+  border-top: 1px solid #eee;
+}
 .wpsi-widget-grid-wrapper {
   padding-top: 5px;
 }
@@ -99,7 +102,10 @@ widget
       Table footer
    */
   /*
-      No Results grid item
+        No Results grid item
+     */
+  /*
+    Top Searches grid widget
    */
   /*
     Other plugins
@@ -363,7 +369,7 @@ widget
 }
 #wpsi-dashboard .dataTables_paginate .paginate_button {
   color: black;
-  padding: 0.5em 0.8em;
+  padding: 0.5em 1em;
   box-sizing: border-box;
   border: 1px solid lightgrey;
   box-shadow: 0px 1px 1px lightgrey;
@@ -372,6 +378,12 @@ widget
   color: white;
   background-color: #FF3B3B;
   border: 1px solid #979797;
+}
+#wpsi-dashboard #wpsi-recent-table_previous {
+  padding: 0.5em 1.8em;
+}
+#wpsi-dashboard #wpsi-recent-table_next {
+  padding: 0.5em 1.8em;
 }
 #wpsi-dashboard .wpsi-nr-title {
   padding: 15px;
@@ -416,6 +428,9 @@ widget
 }
 #wpsi-dashboard .wpsi-nr-footer .dt-buttons {
   margin: 0 auto;
+}
+#wpsi-dashboard .wpsi-top-searches-btn {
+  margin-top: -8px;
 }
 #wpsi-dashboard .wpsi-other-plugins-container {
   display: flex;

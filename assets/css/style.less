@@ -70,6 +70,10 @@ widget
   //border-bottom: 2px solid red;
 }
 
+.wpsi-dashboard-widget-grid ul {
+  border-top: 1px solid #eee;
+}
+
 .wpsi-widget-grid-wrapper {
   padding-top: 5px;
 }
@@ -421,7 +425,7 @@ widget
 
   .dataTables_paginate .paginate_button {
     color: black;
-    padding: 0.5em 0.8em;
+    padding: 0.5em 1em;
     box-sizing: border-box;
     border: 1px solid lightgrey;
     box-shadow: 0px 1px 1px lightgrey;
@@ -433,9 +437,17 @@ widget
     border: 1px solid #979797;
   }
 
-  /*
-      No Results grid item
-   */
+  #wpsi-recent-table_previous {
+    padding: 0.5em 1.8em;
+  }
+
+  #wpsi-recent-table_next {
+    padding: 0.5em 1.8em;
+  }
+
+    /*
+        No Results grid item
+     */
 
   .wpsi-nr-overview {
 
@@ -471,11 +483,6 @@ widget
   }
 
   .wpsi-header-right {
-    //float: right;
-  }
-
-
-  .wpsi-header-right {
     float: right;
   }
   .date-btn-all-searches{
@@ -500,6 +507,14 @@ widget
     .dt-buttons {
       margin: 0 auto;
     }
+  }
+
+  /*
+    Top Searches grid widget
+   */
+
+  .wpsi-top-searches-btn {
+    margin-top: -8px;
   }
 
   /*

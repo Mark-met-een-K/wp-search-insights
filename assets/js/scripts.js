@@ -19,7 +19,7 @@ jQuery(document).ready(function ($) {
             ],
             "language": {
                 "paginate": {
-                    "previous": "First",
+                    "previous": "Previous",
                     "next": "Next",
                 },
                 searchPlaceholder: "Filter",
