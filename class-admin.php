@@ -34,7 +34,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
-                    'content' => $this->generate_dashboard_widget($echo=false),
+                    'content' => $this->generate_dashboard_widget($echo=false, $on_grid=true),
                     'class' => 'small',
                     'can_hide' => true,
 
@@ -749,8 +749,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             ));
         }
 
+        /**
+         * Wrapper function for dashboard widget so params can be sent along
+         */
+
         public function generate_dashboard_widget_wrapper() {
-            $this->generate_dashboard_widget($echo = true);
+            $this->generate_dashboard_widget($echo = true, $on_grid = false);
         }
 
 
@@ -780,10 +784,24 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
         }
 
-        public function generate_dashboard_widget($echo = true)
+        /**
+         *
+         * Generate the dashboard widget
+         * Also generated the Top Searches grid item
+         *
+         * @param bool $echo true if on wp dashboard
+         * @param bool $on_grid true if on grid
+         * @return false|mixed|string
+         */
+        public function generate_dashboard_widget($echo = true, $on_grid = false)
         {
             ob_start();
-            $widget = $this->get_template('dashboard-widget.php');
+
+            if (!$on_grid) {
+                $widget = $this->get_template('dashboard-widget.php');
+            } else {
+                $widget = $this->get_template('grid-dashboard-widget.php');
+            }
 
             $html = "";
 
@@ -800,7 +818,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 $popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
                 set_transient('wpsi_popular_searches', $popular_searches, HOUR_IN_SECONDS);
             }
-            $tmpl = $this->get_template('dashboard-row.php');
+            if (!$on_grid) {
+                $tmpl = $this->get_template('dashboard-row.php');
+            } else {
+                $tmpl = $this->get_template('grid-dashboard-row.php');
+            }
 
             if (count($popular_searches) == 0) {
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
