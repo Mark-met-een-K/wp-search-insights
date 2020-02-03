@@ -161,15 +161,12 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 //get all occurrences on this page for this term id
                 $('.dataTable').each(function(){
-                    var table = $(this);
-                    table.find('.wpsi-selected').each(function(){
-                        var row = $(this);
-                        row.remove();
-                    });
-
+                    var table = $(this).DataTable();
+                    while ($('.wpsi-selected').length) {
+                        table.row('.wpsi-selected').remove().draw(false);
+                    }
                 });
                 $('#wpsi-delete-selected').attr('disabled', true);
-
             }
         });
     });

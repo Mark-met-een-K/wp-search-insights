@@ -582,11 +582,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	                    <?php
 	                    $grid_items = $this->grid_items;
 	                    foreach ($grid_items as $index => $grid_item){
+		                    $style="";
 	                        if (!$grid_item['can_hide']) {
-
+                                $style = 'style="display:none"';
                             }
 	                    	?>
-		                    <label for="wpsi-hide-panel-<?=$index?>">
+		                    <label for="wpsi-hide-panel-<?=$index?>" <?php echo $style?>>
 			                    <input class="wpsi-toggle-items" name="toggle_data_id_<?=$index?>" type="checkbox" id="toggle_data_id_<?=$index?>" value="data_id_<?=$index?>">
 			                    <?=$grid_item['title']?>
 		                    </label>

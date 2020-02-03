@@ -105,12 +105,14 @@ jQuery(document).ready(function($) {
         grid.filter('.muuri-active');
     }
 
-    // Set defaults for localstorage checkboxes
-
 
     // Reload the grid when checkbox value changes
     $('.wpsi-item').each(function(){
         var toggle_id = $(this).data('id');
+        // Set defaults for localstorage checkboxes
+        if (!window.localStorage.getItem('toggle_data_id_'+toggle_id)) {
+            window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+        }
         $('#toggle_data_id_'+toggle_id).change(function() {
             if (document.getElementById("toggle_data_id_"+toggle_id).checked ) {
                 window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
