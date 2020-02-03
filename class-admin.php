@@ -34,7 +34,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
-                    'content' => $this->generate_popular_table(),
+                    'content' => $this->generate_dashboard_widget($echo=false),
                     'class' => 'small',
                     'can_hide' => true,
 
@@ -745,8 +745,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         {
             wp_add_dashboard_widget('dashboard_widget_wpsi', 'WP Search Insights', array(
                 $this,
-                'generate_dashboard_widget'
+                'generate_dashboard_widget_wrapper'
             ));
+        }
+
+        public function generate_dashboard_widget_wrapper() {
+            $this->generate_dashboard_widget($echo = true);
         }
 
 
