@@ -38,11 +38,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'content' => $this->generate_tips_and_tricks(),
                     'class' => 'half-height',
                 ),
-                5 => array(
-                    'title' => 'Other',
-                    'content' => $this->generate_other_plugins(),
-                    'class' => 'half-height no-border',
-                ),
+//                5 => array(
+//                    'title' => 'Other',
+//                    'content' => $this->generate_other_plugins(),
+//                    'class' => 'half-height no-border',
+//                ),
 			);
 		}
 
@@ -709,7 +709,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		}
 
 
-		public function get_template( $file , $path = wp_search_insights_path) {
+		public function get_template( $file , $path = wp_search_insights_path, $args=array()) {
 
 			$file       = trailingslashit( $path ) . 'templates/' . $file;
 			$theme_file = trailingslashit( get_stylesheet_directory() ) . dirname( wp_search_insights_path ) . $file;
@@ -1124,7 +1124,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             $element = $this->get_template( 'upsell-element.php' );
             $output = '';
             foreach($items as $item){
-//                ob_start();
                 $output .= str_replace( array(
                     '{title}',
                     '{content}'
@@ -1132,25 +1131,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     $item['title'],
                     $item['content'],
                 ), $element);
-//                ob_get_clean();
-                echo str_replace('{content}', $output, $container);
+
             }
 
+	        return  str_replace('{content}', $output, $container);
 
-//            $contents = $this->get_template( 'upsell.php' );
-//            foreach($items as $item){
-//                error_log(print_r($item, true));
-//                $contents = str_replace( array(
-//                    '{title}',
-//                    '{content}'
-//                ), array(
-//                    $item['title'],
-//                    $item['content'],
-//                ), $contents);
-//            }
-
-//            ob_get_clean();
-//            return $contents;
         }
 	}
 }
