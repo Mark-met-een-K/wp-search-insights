@@ -5,23 +5,26 @@ jQuery(document).ready(function ($) {
      * Datatables
      */
     $('.wpsi-table').each(function(){
+        console.log(this);
         $(this).DataTable( {
             "pageLength": 5,
             conditionalPaging: true,
-            //https://datatables.net/reference/option/dom
             buttons: [
-                'csv', 'excel'
+                { extend: 'csv', text: 'Download CSV' }
             ],
             "language": {
                 "paginate": {
-                    "previous": "<i class='icon-left-open'></i>",
-                    "next": "<i class='icon-right-open'></i>"
+                    "previous": "Previous",
+                    "next": "Next",
                 },
+                searchPlaceholder: "Filter",
+                "search" : "",
                 "emptyTable" : "No searches recorded yet!"
             },
-            "order": [[ 1, "desc" ]]
+            "order": [[ 1, "desc" ]],
         });
     });
+
 
     /**
      * Add dropdown for data filtering
@@ -51,6 +54,14 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+    // Move export buttons to no results div
+    var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").detach();
+    $(".wpsi-nr-footer").append(export_buttons);
+
+    var export_buttons2 =  $("#wpsi-recent-table_wrapper > div.wpsi-date-btn:nth-child(1)").detach();
+    $(".wpsi-nr-footer").append(export_buttons2);
+
 
     /**
      * Show/hide dashboard items
@@ -175,15 +186,12 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 //get all occurrences on this page for this term id
                 $('.dataTable').each(function(){
-                    var table = $(this);
-                    table.find('.wpsi-selected').each(function(){
-                        var row = $(this);
-                        row.remove();
-                    });
-
+                    var table = $(this).DataTable();
+                    while ($('.wpsi-selected').length) {
+                        table.row('.wpsi-selected').remove().draw(false);
+                    }
                 });
                 $('#wpsi-delete-selected').attr('disabled', true);
-
             }
         });
     });
