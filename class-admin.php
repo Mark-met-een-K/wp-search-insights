@@ -17,10 +17,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
             self::$_this = $this;
 
-            $this->grid_items = array(
+	        $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
-                    'content' => $this->generate_recent_table(),
+                    'content' => $this->recent_table(),
                     'class' => '',
                     'can_hide' => true,
 
@@ -76,6 +76,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             if (!current_user_can($this->capability)) {
                 return;
             }
+	        add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
 
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
@@ -171,7 +172,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     array(
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
-		                'dateFilter'   => '<select class="wpsi-date-filter"><option>All time</option><option>1 year</option>/select>',
+		                'dateFilter'   => '<select class="wpsi-date-filter">
+                    <option value="all">All time</option>
+                    <option value="year">year</option>
+                    <option value="week">week</option>
+                    <option value="day">day</option>
+                    </select>',
 	                )
                 );
 
@@ -899,6 +905,42 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             }
         }
 
+
+	    public function ajax_get_datatable()
+	    {
+		    $error = false;
+		    $html  = __("No data found", "wp-search-insights");
+		    if (!current_user_can('manage_options')) {
+			    $error = true;
+		    }
+
+		    if (!isset($_GET['range'])){
+			    $error = true;
+		    }
+
+		    if (!isset($_GET['token'])){
+			    $error = true;
+		    }
+
+		    if (!$error && !wp_verify_nonce(sanitize_title($_GET['token']), 'search_insights_nonce')){
+			    $error = true;
+		    }
+		    if (!$error){
+			    $range = sanitize_title($_GET['range']);
+			    $html = $this->recent_table($range);
+		    }
+
+		    $data = array(
+			    'success' => !$error,
+			    'html' => $html,
+		    );
+
+		    $response = json_encode($data);
+		    header("Content-Type: application/json");
+		    echo $response;
+		    exit;
+	    }
+
         /**
          * @param bool $dashboard_widget
          *
@@ -908,74 +950,54 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          * @since 1.0
          */
 
-        public function generate_recent_table($dashboard_widget = false)
+        public function recent_table($range = 'all')
         {
             ob_start();
 
-            global $wpdb;
-            $table_name_single = $wpdb->prefix . 'searchinsights_single';
-            $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-            $recent_searches = $wpdb->get_results("SELECT * FROM $table_name_single ORDER BY time DESC LIMIT 2000");
+            $args = array(
+                    'number' => 2000,
+                    'range' => $range,
+            );
+            error_log("get searches list ");
+            $recent_searches = WP_SEARCH_INSIGHTS()->Search->get_searches_single($args);
+            error_log("have esarches");
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
-                <?php if (!$dashboard_widget) { ?>
-                    <caption><?php _e("All Searches", "wp-search-insights"); ?>
-                    </caption>
-                <?php }
-                ?>
-                <div class="wpsi-date-btn date-btn-all-searches">
-                    <label class="wpsi-select-date-range-all-searches">
-                        <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
-                            <option value="activate_plugins"><?php _e("Placeholder", "wp-search-insights") ?></option>
-                        </select>
-                    </label>
-                </div>
-                </div>
+                <caption><?php _e("All Searches", "wp-search-insights"); ?></caption>
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
                     <th scope='col' style="width: 10%;"><?php _e("Results", "wp-search-insights"); ?> </th>
                     <th scope="col" style="width: 13%;" class="dashboard-tooltip-hits">
                         ' <?php _e("When", "wp-search-insights"); ?> </th>
-                    <?php if (!$dashboard_widget) { ?>
-                        <th scope='col' style="width: 10%;"
-                            class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
-                    <?php } ?>
+                        <th scope='col' style="width: 10%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
                 // Start generating rows
                 foreach ($recent_searches as $search) {
-
-                    $result_count = $wpdb->get_var("SELECT result_count FROM $table_name_archive WHERE term = '$search->term'");
-                    $frequency = $wpdb->get_var("SELECT frequency FROM $table_name_archive WHERE term = '$search->term'");
-                    if ($result_count == 0) {
-//                       $results = "<i class='hit-icon icon-cancel'></i>";
-                        $results = "0";
-                    } else {
-                        // There are hits, show an checkmark icon. Also make the term clickable to show results
-                        $results = $frequency;
-                    }
-                    // Show the full time on dashboard, shorten the time on the dashboard widget.
-                    $search_time_td = "<td data-label='When'>" . $this->get_date($search->time) . "</td>";
-
-                    //Add &searchinsights to 'see results' link to prevent it from counting as search;
-                    $link = $this->get_term_link($search->term);
-                    $search_term_td = '<td data-label="Term" class="wpsi-term" data-term_id="' . $search->id . '">' . $link . '</td>';
-                    $result_td = "<td>$results</td>";
-                    $referrer_td = "<td>$search->referrer</td>";
-
-                    //Generate the row with or without hits and referer, depending on where the table is generated
-                    echo "<tr>" . $search_term_td . $result_td . $search_time_td . $referrer_td . "</tr>";
-
+	                $args = array(
+		                'term'  => $search->term,
+	                );
+	                $result = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
+	                if ($result) {
+		                ?>
+                        <tr>
+                            <td data-label="Term" class="wpsi-term"
+                                data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
+                            <td><?php echo $result->result_count ?></td>
+                            <td data-label='When'><?php $this->get_date( $search->time ) ?></td>
+                            <td><?php echo $search->referrer ?></td>
+                        </tr>
+		                <?php
+	                }
                 }
                 ?>
                 </tbody>
             </table>
             <?php
-            $contents = ob_get_clean();
-            return $contents;
+            return  ob_get_clean();
         }
 
         /**
@@ -1040,13 +1062,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <div class="wpsi-nr-header-items">
                         <div class="wpsi-no-results">
                             <span class="wpsi-nr-title"><?php _e("No Results", "wp-search-insights"); ?></span>
-                            <div class="wpsi-date-btn wpsi-btn-no-results wpsi-header-right">
-                                <label class="wpsi-select-date-range-all-searches">
-                                    <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
-                                        <option value="activate_plugins"><?php _e("Placeholder", "wp-search-insights") ?></option>
-                                    </select>
-                                </label>
-                            </div>
                         </div>
                         <div class="wpsi-total-searches">
                             <span class="wpsi-nr-title"><?php _e("Total Searches", "wp-search-insights"); ?></span>

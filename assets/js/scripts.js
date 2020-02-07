@@ -4,52 +4,58 @@ jQuery(document).ready(function ($) {
     /**
      * Datatables
      */
-    $('.wpsi-table').each(function(){
-        console.log(this);
-        $(this).DataTable( {
-            "pageLength": 5,
-            conditionalPaging: true,
-            buttons: [
-                { extend: 'csv', text: 'Download CSV' }
-            ],
-            "language": {
-                "paginate": {
-                    "previous": "Previous",
-                    "next": "Next",
+    init_datatables();
+    function init_datatables() {
+        $('.wpsi-table').each(function () {
+            $(this).DataTable({
+                "pageLength": 5,
+                conditionalPaging: true,
+                buttons: [
+                    {extend: 'csv', text: 'Download CSV'}
+                ],
+                "language": {
+                    "paginate": {
+                        "previous": "Previous",
+                        "next": "Next",
+                    },
+                    searchPlaceholder: "Filter",
+                    "search": "",
+                    "emptyTable": "No searches recorded yet!"
                 },
-                searchPlaceholder: "Filter",
-                "search" : "",
-                "emptyTable" : "No searches recorded yet!"
-            },
-            "order": [[ 1, "desc" ]],
+                "order": [[1, "desc"]],
+            });
         });
-    });
+
+        /**
+         * Add dropdown for data filtering
+         */
+        $('.dataTables_filter').each(function(){
+            $(this).append(wpsi.dateFilter)
+        });
 
 
-    /**
-     * Add dropdown for data filtering
-     */
-    $('.dataTables_filter').each(function(){
-        $(this).append(wpsi.dateFilter)
-    });
+    }
+
+
 
     $(document).on('change', '.wpsi-date-filter', function(){
         var container = $(this).closest('.item-content');
-        var type = 'recent';
-        var range = 'year';
+        var range = $('.wpsi-date-filter').val();
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
             dataType: 'json',
             data: ({
-                action: 'wpsi_datatable',
-                type:type,
+                action: 'wpsi_get_datatable',
                 range:range,
                 token: wpsi.token
             }),
             success: function (response) {
+                console.log(response);
                 //get all occurrences on this page for this term id
                 container.html(response.html);
+                init_datatables();
+                $('.wpsi-date-filter').val(range);
 
             }
         });

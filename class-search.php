@@ -73,6 +73,9 @@ if ( ! class_exists( 'Search' ) ) {
 		}
 
 
+
+
+
 		/**
 		 * Delete term by id
 		 * @param $term_id
@@ -388,9 +391,26 @@ if ( ! class_exists( 'Search' ) ) {
 				'time' => false,
 				'compare' => ">",
                 'from' => "*",
+				'range' => false,
 			);
-
             $args = wp_parse_args( $args,$defaults);
+
+            if ($args['range'] && $args['range']!=='all'){
+	            switch ($args['range']){
+		            case 'DAY':
+			            $range = time() - DAY_IN_SECONDS;
+			            break;
+		            case 'WEEK':
+			            $range = time() - WEEK_IN_SECONDS;
+			            break;
+		            default:
+			            $range = time() - MONTH_IN_SECONDS;
+	            }
+				unset($args['range']);
+	            $args['time'] = $range;
+            	$args['compare'] = '>';
+            }
+
 			global $wpdb;
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
 			$limit = '';
@@ -424,7 +444,6 @@ if ( ! class_exists( 'Search' ) ) {
 			$search_sql = "SELECT ".$args['from']." from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
 
 			if ($trend){
-			    error_log("trend");
 				switch ($trendperiod) {
 					case 'YEAR':
 						$period = 'years';
@@ -445,6 +464,15 @@ if ( ! class_exists( 'Search' ) ) {
 
             $searches =$wpdb->get_results( $search_sql );
 
+			//if we searched for a term, there is only one result
+			if ($args['term']){
+				if (isset($searches[0])){
+					$searches = $searches[0];
+				} else{
+					$searches = false;
+				}
+			}
+
 			return $searches;
 		}
 
@@ -463,8 +491,33 @@ if ( ! class_exists( 'Search' ) ) {
 				'term'=> false,
 				'time' => false,
 				'compare' => ">",
+				'range' => false,
 			);
-			$args = wp_parse_args( $args,$defaults);
+			$args = wp_parse_args( $args, $defaults);
+error_log(print_r($args,true));
+			if ($args['range'] && $args['range']!=='all'){
+				switch ($args['range']){
+					case 'day':
+						error_log('day');
+
+						$range = time() - DAY_IN_SECONDS;
+						break;
+					case 'week':
+						error_log('week');
+
+						$range = time() - WEEK_IN_SECONDS;
+						break;
+					default:
+						error_log('month');
+						$range = time() - MONTH_IN_SECONDS;
+						break;
+				}
+				unset($args['range']);
+				$args['time'] = $range;
+				$args['compare'] = '>';
+			}
+			error_log(print_r($args,true));
+
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'searchinsights_single';
 			$limit = '';
@@ -476,13 +529,15 @@ if ( ! class_exists( 'Search' ) ) {
 			$orderby = sanitize_title($args['orderby']);
 			$where = '';
 			if ($args['term']){
-				$where .= $wpdb->prepare(' AND term = %s ',sanitize_text_field($args['term']));
+				$where .= $wpdb->prepare(' AND term = %s ', sanitize_text_field($args['term']));
 			}
+
 			if ($args['time']){
 				$compare = $args['compare']=='>' ? '>' : '<';
 				$time = intval($args['time']);
 				$where .=" AND time $compare $time ";
 			}
+			error_log("SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 			$searches =$wpdb->get_results( "SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 
             if ($trend){
