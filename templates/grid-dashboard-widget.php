@@ -2,12 +2,7 @@
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 ?>
 <div class="inside">
-    <div class="wpsi-date-btn wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn">
-        <label class="wpsi-select-date-range-all-searches">
-            <select name="wpsi_select_date_range_all_searches" class="wpsi_select_date_range">
-                <option value="activate_plugins"><?php _e("Placeholder", "wp-search-insights") ?></option>
-            </select>
-        </label>
+    <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn">
     </div>
     <div id="wpsi-dashboard-widget" class="wpsi-dashboard-widget-grid">
         <div>

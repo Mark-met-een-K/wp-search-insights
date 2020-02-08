@@ -32,15 +32,16 @@ jQuery(document).ready(function ($) {
         $('.dataTables_filter').each(function(){
             $(this).append(wpsi.dateFilter)
         });
-
-
     }
 
-
+    $(".wpsi-date-container").html(wpsi.dateFilter);
 
     $(document).on('change', '.wpsi-date-filter', function(){
         var container = $(this).closest('.item-content');
+        var isDataTable = (container.find('.dataTable').length);
         var range = $('.wpsi-date-filter').val();
+        var type = $(this).closest('.wpsi-item').data('table_type');
+        console.log(type);
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
@@ -48,13 +49,13 @@ jQuery(document).ready(function ($) {
             data: ({
                 action: 'wpsi_get_datatable',
                 range:range,
+                type:type,
                 token: wpsi.token
             }),
             success: function (response) {
-                console.log(response);
                 //get all occurrences on this page for this term id
                 container.html(response.html);
-                init_datatables();
+                if (isDataTable) init_datatables();
                 $('.wpsi-date-filter').val(range);
 
             }

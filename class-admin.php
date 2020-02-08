@@ -22,6 +22,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'title' => __("All Searches", "wp-search-insights"),
                     'content' => $this->recent_table(),
                     'class' => '',
+                    'type' => 'all',
                     'can_hide' => true,
 
                 ),
@@ -29,19 +30,22 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'title' => __("No Results", "wp-search-insights"),
                     'content' => $this->generate_no_results_overview(),
                     'class' => 'small',
+                    'type' => 'no-results',
                     'can_hide' => true,
 
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
-                    'content' => $this->generate_dashboard_widget($echo=false, $on_grid=true),
+                    'content' => $this->generate_dashboard_widget($on_grid=true),
                     'class' => 'small',
+                    'type' => 'popular',
                     'can_hide' => true,
 
                 ),
                 4 => array(
                     'title' => __("Tips & Tricks", "wp-search-insights"),
                     'content' => $this->generate_tips_tricks(),
+                    'type' => 'tasks',
                     'class' => 'half-height',
                     'can_hide' => true,
 
@@ -50,6 +54,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'title' => 'Other',
                     'content' => $this->generate_other_plugins(),
                     'class' => 'half-height no-border',
+                    'type' => 'plugins',
                     'can_hide' => false,
                 ),
             );
@@ -173,11 +178,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
-                    <option value="all">All time</option>
-                    <option value="year">year</option>
-                    <option value="week">week</option>
-                    <option value="day">day</option>
-                    </select>',
+                                                <option value="all">'.__("All time", "wp-search-insights").'</option>
+                                                <option value="year">'.__("Year", "wp-search-insights").'</option>
+                                                <option value="week">'.__("Week", "wp-search-insights").'</option>
+                                                <option value="day">'.__("Day", "wp-search-insights").'</option>
+                                            </select>',
 	                )
                 );
 
@@ -664,7 +669,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             $element = $this->get_template('grid-element.php', wp_search_insights_path . '/grid');
                             $output = '';
                             foreach ($grid_items as $index => $grid_item) {
-                                $output .= str_replace(array('{class}', '{content}', '{index}'), array($grid_item['class'], $grid_item['content'], $index), $element);
+                                $output .= str_replace(array('{class}', '{content}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $index, $grid_item['type']), $element);
                             }
                             echo str_replace('{content}', $output, $container);
                             ?>
@@ -760,7 +765,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          */
 
         public function generate_dashboard_widget_wrapper() {
-            $this->generate_dashboard_widget($echo = true, $on_grid = false);
+            echo $this->generate_dashboard_widget($on_grid = false);
         }
 
 
@@ -797,9 +802,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          *
          * @param bool $echo true if on wp dashboard
          * @param bool $on_grid true if on grid
-         * @return false|mixed|string
+         * @param string $range date range to view
+         * @return false|string
          */
-        public function generate_dashboard_widget($echo = true, $on_grid = false)
+        public function generate_dashboard_widget($on_grid = false, $range = 'all')
         {
             ob_start();
 
@@ -818,7 +824,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'order' => 'DESC',
                     'result_count' => 0,
                     'number' => 5,
-
+                    'range' => $range,
                 );
 
                 $popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
@@ -865,6 +871,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'orderby' => 'frequency',
                     'order' => 'DESC',
                     'number' => 5,
+                    'range' => $range,
                 );
                 $top_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
                 set_transient('wpsi_top_searches', $top_searches, HOUR_IN_SECONDS);
@@ -918,6 +925,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 			    $error = true;
 		    }
 
+		    if (!isset($_GET['type'])){
+			    $error = true;
+		    }
+
 		    if (!isset($_GET['token'])){
 			    $error = true;
 		    }
@@ -925,9 +936,22 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		    if (!$error && !wp_verify_nonce(sanitize_title($_GET['token']), 'search_insights_nonce')){
 			    $error = true;
 		    }
+
 		    if (!$error){
 			    $range = sanitize_title($_GET['range']);
-			    $html = $this->recent_table($range);
+			    $type = sanitize_title($_GET['type']);
+			    switch ($type){
+                    case 'all':
+	                    $html = $this->recent_table($range);
+	                    break;
+                    case 'popular':
+	                    $html = $this->generate_dashboard_widget(true, $range);
+	                    break;
+                    default:
+                        $html = __('Invalid command','wp-search-insights');
+                        break;
+			    }
+
 		    }
 
 		    $data = array(
