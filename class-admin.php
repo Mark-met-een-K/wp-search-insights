@@ -69,12 +69,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         }
 
 
-        static function this()
-        {
-            return self::$_this;
-        }
-
-
         /**
          * Initializes the admin class
          *
@@ -373,31 +367,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             array_unshift($links, $faq_link);
 
             return $links;
-        }
-
-        /**
-         *
-         * Add a settings page
-         *
-         * @since 1.0
-         *
-         */
-
-        public function add_settings_page()
-        {
-            if (!current_user_can($this->capability)) {
-                return;
-            }
-
-            global $search_insights_settings_page;
-
-            $search_insights_settings_page = add_submenu_page(
-                'tools.php',
-                "WP Search Insights",
-                "Search Insights",
-                $this->capability, //capability
-                'wpsi-settings-page', //url
-                array($this, 'settings_page')); //function
         }
 
         /**
