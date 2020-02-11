@@ -510,7 +510,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </label>
 
                 <?php
-                WP_Search_insights()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
+                WPSI()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
                 ?>
             </div>
             <?php
@@ -530,7 +530,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </select>
             </label>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights"));
+	        WPSI()->wpsi_help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights"));
             ?>
             <?php
         }
@@ -549,7 +549,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </label>
 
                 <?php
-                WP_Search_insights()->wpsi_help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
+                WPSI()->wpsi_help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
                 ?>
             </div>
             <?php
@@ -562,7 +562,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                    max="24" value="<?php echo intval(get_option('wpsi_min_term_length')) ?>"
                    type="number" <?php checked(1, intval(get_option('wpsi_min_term_length'), true)) ?> </input>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
+	        WPSI()->wpsi_help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
             ?>
             <?php
         }
@@ -578,7 +578,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                    max="255" value="<?php echo intval(get_option('wpsi_max_term_length')) ?>"
                    type="number" <?php checked(1, intval(get_option('wpsi_max_term_length'), true)) ?> </input>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
+            WPSI()->wpsi_help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
             ?>
             <?php
         }
@@ -593,7 +593,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'action' => 'clear_database',
             );
             $this->add_thickbox_button($args);
-            WP_Search_insights()->wpsi_help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
+	        WPSI()->wpsi_help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
             ?>
             <?php
         }
@@ -661,7 +661,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             ?>
         </textarea>
             <?php
-            WP_Search_insights()->wpsi_help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
+	        WPSI()->wpsi_help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
         }
 
         /**

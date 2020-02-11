@@ -99,7 +99,7 @@ if ( ! class_exists( 'Search' ) ) {
 				);
 			}
 
-            WP_Search_insights()->admin->clear_cache();
+            WPSI()->admin->clear_cache();
 		}
 
 
