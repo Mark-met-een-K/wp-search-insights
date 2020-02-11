@@ -27,10 +27,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
                 ),
                 2 => array(
-                    'title' => __("No Results", "wp-search-insights"),
-                    'content' => $this->generate_no_results_overview(),
+                    'title' => __("Results", "wp-search-insights"),
+                    'content' => $this->results_table(),
                     'class' => 'small',
-                    'type' => 'no-results',
+                    'type' => 'results',
                     'can_hide' => true,
 
                 ),
@@ -828,7 +828,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'number' => 5,
                     'range' => $range,
                 );
-                $popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
+                $popular_searches = WPSI()->Search->get_searches($args, $trend = true, 'MONTH');
                 set_transient("wpsi_popular_searches_$range", $popular_searches, HOUR_IN_SECONDS);
             }
 
@@ -876,7 +876,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'number' => 5,
                     'range' => $range,
                 );
-                $top_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
+                $top_searches = WPSI()->Search->get_searches($args, $trend = true, 'MONTH');
                 set_transient("wpsi_top_searches_$range", $top_searches, HOUR_IN_SECONDS);
             }
             if (count($top_searches) == 0) {
@@ -947,6 +947,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     case 'popular':
 	                    $html = $this->generate_dashboard_widget(true, $range);
 	                    break;
+				    case 'results':
+					    $html = $this->results_table($range);
+					    break;
                     default:
                         $html = __('Invalid command','wp-search-insights');
                         break;
@@ -981,7 +984,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'number' => 2000,
                 'range' => $range,
             );
-            $recent_searches = WP_SEARCH_INSIGHTS()->Search->get_searches_single($args);
+            $recent_searches = WPSI()->Search->get_searches_single($args);
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
                 <caption><?php _e("All Searches", "wp-search-insights"); ?></caption>
@@ -1002,14 +1005,14 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	                $args = array(
 		                'term'  => $search->term,
 	                );
-	                $result = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
+	                $result = WPSI()->Search->get_searches($args);
 	                if ($result) {
 		                ?>
                         <tr>
                             <td data-label="Term" class="wpsi-term"
                                 data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
                             <td><?php echo $result->result_count ?></td>
-                            <td data-label='When'><?php $this->get_date( $search->time ) ?></td>
+                            <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
                             <td><?php echo $search->referrer ?></td>
                         </tr>
 		                <?php
@@ -1075,13 +1078,16 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          * @since 1.2
          */
 
-        public function generate_no_results_overview()
+        public function results_table($range='all')
         {
             ob_start();
+	        $results = $this->get_results($range)
             ?>
             <div class="wpsi-nr-overview">
                 <div class="wpsi-nr-header">
                     <div class="wpsi-nr-header-items">
+                        <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn">
+                        </div>
                         <div class="wpsi-no-results">
                             <span class="wpsi-nr-title"><?php _e("No Results", "wp-search-insights"); ?></span>
                         </div>
@@ -1089,7 +1095,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             <span class="wpsi-nr-title"><?php _e("Total Searches", "wp-search-insights"); ?></span>
                             <span class="wpsi-search-count wpsi-header-right">
                             <?php
-                            echo count(WP_SEARCH_INSIGHTS()->Search->get_searches_single());
+                            $args = array(
+                                'range'=>$range
+                            );
+                            echo count(WPSI()->Search->get_searches_single($args));
                             ?>
                         </span>
                         </div>
@@ -1101,10 +1110,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     </div>
                     <div class="wpsi-nr-has-result">
                         <div class="has-result-title">
-                            <?php _e("Have results", "wp-search-insights"); ?>
+                            <?php _e("Has results", "wp-search-insights"); ?>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo $this->get_result_count() . "%"; ?>
+                            <?php echo  $results['results']['percentage']. "%"; ?>
+                            <?php echo  $results['results']['count']; ?>
                         </div>
                     </div>
                     <div class="wpsi-nr-no-result">
@@ -1112,7 +1122,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             <?php _e("No results", "wp-search-insights"); ?>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo $this->get_result_count($without_results = true) . "%"; ?>
+                            <?php echo $results['no-results']['percentage'] . "%"; ?>
+                            <?php echo $results['no-results']['count']; ?>
                         </div>
                     </div>
                 </div>
@@ -1126,41 +1137,48 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         }
 
         /**
+         * @param string $range
          * @param bool $without_results
-         * @return float|int
+         * @return array
          *
          * Get the result count for a period
          */
 
-        public function get_result_count($without_results = false)
+        public function get_results($range)
         {
 
             // Get the count of all searches made in period
-            $nr_of_terms = count(WP_SEARCH_INSIGHTS()->Search->get_searches_single());
+	        $args = array(
+		        'range' => $range,
+	        );
+            $nr_of_terms = count(WPSI()->Search->get_searches_single($args));
 
             // Set args for query
             $args = array(
-                'compare' => '>',
+	            'range' => $range,
+	            'compare' => '>',
                 'from' => 'result_count',
                 'result_count' => 0,
             );
 
             // Get terms with more than one result
-            //
-//        $result_count = $wpdb->get_results("SELECT frequency FROM $table_name_archive WHERE result_count >= 1");
-
-            $frequency = WP_SEARCH_INSIGHTS()->Search->get_searches();
-//        SELECT * from wp_searchinsights_archive WHERE 1=1 AND result_count >=1 AND frequency >=1
-            $term_more_than_1_result = count(WP_SEARCH_INSIGHTS()->Search->get_searches($args));
-
-            $percentage_results = $term_more_than_1_result / $nr_of_terms * 100;
+            $have_results = count(WPSI()->Search->get_searches($args));
+            $no_results = $nr_of_terms - $have_results;
+            $percentage_results = $have_results / $nr_of_terms * 100;
             $percentage_no_results = 100 - $percentage_results;
-//
-            if ($without_results) {
-                return $percentage_no_results;
-            } else {
-                return $percentage_results;
-            }
+
+            $results = array(
+                    'results' => array(
+                            'percentage' => round($percentage_results,0),
+                            'count' => $have_results,
+                    ),
+                    'no-results' => array(
+	                    'percentage' => round($percentage_no_results,0),
+	                    'count' => $no_results,
+                    ),
+                    'total' => $nr_of_terms
+            );
+            return $results;
         }
 
 
@@ -1181,7 +1199,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'order' => 'DESC',
                 'number' => 1000,
             );
-            $popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args);
+            $popular_searches = WPSI()->Search->get_searches($args);
             ?>
             <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <div class="wpsi-caption">

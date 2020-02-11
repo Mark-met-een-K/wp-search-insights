@@ -402,12 +402,17 @@ if ( ! class_exists( 'Search' ) ) {
 		            case 'week':
 			            $range = time() - WEEK_IN_SECONDS;
 			            break;
+		            case 'year':
+		                $range = time() - YEAR_IN_SECONDS;
+			            break;
+		            case 'month':
+		                $range = time() - MONTH_IN_SECONDS;
+			            break;
 		            default:
 			            $range = time() - MONTH_IN_SECONDS;
 	            }
 				unset($args['range']);
 	            $args['time'] = $range;
-            	$args['compare'] = '>';
             }
 
 			global $wpdb;
@@ -434,7 +439,7 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['time']){
 				$compare = $args['compare']=='>' ? '>' : '<';
 				$time = intval($args['time']);
-				$where .=" AND time $compare $time ";
+				$where .=" AND time > $time ";
 			}
 
 			/**
@@ -500,13 +505,17 @@ if ( ! class_exists( 'Search' ) ) {
 					case 'week':
 						$range = time() - WEEK_IN_SECONDS;
 						break;
-					default:
+					case 'year':
+						$range = time() - YEAR_IN_SECONDS;
+						break;
+					case 'month':
 						$range = time() - MONTH_IN_SECONDS;
 						break;
+					default:
+						$range = time() - MONTH_IN_SECONDS;
 				}
 				unset($args['range']);
 				$args['time'] = $range;
-				$args['compare'] = '>';
 			}
 
 			global $wpdb;
@@ -526,7 +535,7 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['time']){
 				$compare = $args['compare']=='>' ? '>' : '<';
 				$time = intval($args['time']);
-				$where .=" AND time $compare $time ";
+				$where .=" AND time > $time ";
 			}
 			$searches =$wpdb->get_results( "SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 

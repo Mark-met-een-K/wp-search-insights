@@ -23,23 +23,23 @@ jQuery(document).ready(function($) {
             layoutOnInit: true
         })
         // .on('dragStart', function (item) {
-            //     ++dragCounter;
-            //     docElem.classList.add('dragging');
-            //     item.getElement().style.width = item.getWidth() + 'px';
-            //     item.getElement().style.height = item.getHeight() + 'px';
-            // })
-            // .on('dragEnd', function (item) {
-            //     if (--dragCounter < 1) {
-            //         docElem.classList.remove('dragging');
-            //     }
-            // })
-            // .on('dragReleaseEnd', function (item) {
-            //     item.getElement().style.width = '';
-            //     item.getElement().style.height = '';
-            //     columnGrids.forEach(function (muuri) {
-            //         muuri.refreshItems();
-            //     });
-            // })
+        //         ++dragCounter;
+        //         docElem.classList.add('dragging');
+        //         item.getElement().style.width = item.getWidth() + 'px';
+        //         item.getElement().style.height = item.getHeight() + 'px';
+        //     })
+        //     .on('dragEnd', function (item) {
+        //         if (--dragCounter < 1) {
+        //             docElem.classList.remove('dragging');
+        //         }
+        //     })
+        //     .on('dragReleaseEnd', function (item) {
+        //         item.getElement().style.width = '';
+        //         item.getElement().style.height = '';
+        //         columnGrids.forEach(function (muuri) {
+        //             muuri.refreshItems();
+        //         });
+        //     })
         .on('move', function () {
             saveLayout(grid);
         });
