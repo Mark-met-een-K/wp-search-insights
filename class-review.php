@@ -22,7 +22,7 @@ if (!class_exists("wpsi_review")) {
 			    }
 				$this->searchcount = get_transient('wpsi_total_searchcount');
 				if (!$this->searchcount){
-					$items = WP_SEARCH_INSIGHTS()->Search->get_searches_single();
+					$items = WPSI()->Search->get_searches_single();
 					$this->searchcount = count($items);
 					set_transient('wpsi_total_searchcount', $this->searchcount, 'DAY_IN_SECONDS');
 				}

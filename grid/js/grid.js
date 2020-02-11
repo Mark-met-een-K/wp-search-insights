@@ -23,23 +23,23 @@ jQuery(document).ready(function($) {
             layoutOnInit: true
         })
         // .on('dragStart', function (item) {
-            //     ++dragCounter;
-            //     docElem.classList.add('dragging');
-            //     item.getElement().style.width = item.getWidth() + 'px';
-            //     item.getElement().style.height = item.getHeight() + 'px';
-            // })
-            // .on('dragEnd', function (item) {
-            //     if (--dragCounter < 1) {
-            //         docElem.classList.remove('dragging');
-            //     }
-            // })
-            // .on('dragReleaseEnd', function (item) {
-            //     item.getElement().style.width = '';
-            //     item.getElement().style.height = '';
-            //     columnGrids.forEach(function (muuri) {
-            //         muuri.refreshItems();
-            //     });
-            // })
+        //         ++dragCounter;
+        //         docElem.classList.add('dragging');
+        //         item.getElement().style.width = item.getWidth() + 'px';
+        //         item.getElement().style.height = item.getHeight() + 'px';
+        //     })
+        //     .on('dragEnd', function (item) {
+        //         if (--dragCounter < 1) {
+        //             docElem.classList.remove('dragging');
+        //         }
+        //     })
+        //     .on('dragReleaseEnd', function (item) {
+        //         item.getElement().style.width = '';
+        //         item.getElement().style.height = '';
+        //         columnGrids.forEach(function (muuri) {
+        //             muuri.refreshItems();
+        //         });
+        //     })
         .on('move', function () {
             saveLayout(grid);
         });
@@ -72,13 +72,11 @@ jQuery(document).ready(function($) {
         // // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
         $('.wpsi-item').each(function(){
             var toggle_id = $(this).data('id');
-            console.log(toggle_id);
             if (localStorage.getItem("toggle_data_id_"+toggle_id) === null) {
                 window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
-                //a.prop("checked", true);
             }
 
-            // Add or remove the active class when the checkbox is checked/unchecked
+            // // Add or remove the active class when the checkbox is checked/unchecked
             if (window.localStorage.getItem('toggle_data_id_'+toggle_id) == 'checked') {
                 $(this).addClass("muuri-active");
             } else {
@@ -98,7 +96,7 @@ jQuery(document).ready(function($) {
             itemId = layout[i];
             itemIndex = currentItemIds.indexOf(itemId);
             if (itemIndex > -1) {
-                    newItems.push(currentItems[itemIndex])
+                newItems.push(currentItems[itemIndex])
             }
         }
 
@@ -107,12 +105,14 @@ jQuery(document).ready(function($) {
         grid.filter('.muuri-active');
     }
 
-    // Set defaults for localstorage checkboxes
-
 
     // Reload the grid when checkbox value changes
     $('.wpsi-item').each(function(){
         var toggle_id = $(this).data('id');
+        // Set defaults for localstorage checkboxes
+        if (!window.localStorage.getItem('toggle_data_id_'+toggle_id)) {
+            window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+        }
         $('#toggle_data_id_'+toggle_id).change(function() {
             if (document.getElementById("toggle_data_id_"+toggle_id).checked ) {
                 window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');

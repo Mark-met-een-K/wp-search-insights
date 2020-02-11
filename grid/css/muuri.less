@@ -1,11 +1,12 @@
-@gridblock_height: 450px;
-@gridblock_width: 600px;
-@gridblock_width_small:300px;
+@gridblock_height: 475px;
+@gridblock_width: 800px;
+@gridblock_width_small:400px;
 @grid_margin:10px;
 @grey-light:#cecece;
 
 .wpsi-grid {
     position: relative;
+    margin-left: 50px;
     .wpsi-item {
         width: @gridblock_width;
         &.small {
@@ -36,9 +37,19 @@
             }
 
         }
+        &.half-height {
+            .item-container {
+                height: @gridblock_height / 2;
+            }
+        }
         &.small {
             .item-container {
                 width: @gridblock_width_small - 2* @grid_margin;
+            }
+        }
+        &.no-border {
+            .item-container {
+                border: none;
             }
         }
         &.muuri-item-dragging .item-content {

@@ -61,6 +61,31 @@ widget
   }
   }
 }
+
+.wpsi-dashboard-widget-grid li{
+  height: 50px;
+  border-top: 0 !important;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  //border-bottom: 2px solid red;
+}
+
+.wpsi-dashboard-widget-grid ul {
+  border-top: 1px solid #eee;
+}
+
+.wpsi-widget-grid-wrapper {
+  padding-top: 5px;
+}
+&.dashicons {
+  margin-top: 10px;
+}
+&.wpsi-frequency{
+  padding-top: 10px;
+ }
+&.wpsi-time {
+  margin-top: -10px
+}
 /*
     *
     *   Dashboard styling
@@ -69,12 +94,35 @@ widget
 #wpsi-dashboard {
   padding-right:15px;
 
+  .wpsi-settings-intro {
+    margin-left: 0 !important;
+  }
+
+  .wpsi-settings-intro-text {
+    font-weight: 600;
+  }
+
+  .wpsi-image {
+    display: inline-block;
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+  }
+
+  //.wpsi-select-date-range {
+  //  float: right;
+  //  margin-right: 180px;
+  //  margin-top: 5px;
+  //}
+
   //hide the "25 entries" dropdown
   .dataTables_length{
     display:none;
   }
   .dataTables_filter {
-    text-align:right;
+    margin-top: 5px;
+    position: absolute;
+    right: 0;
   }
 
   .search-insights-dashboard {
@@ -121,13 +169,11 @@ widget
     display: none;
     background: #ededed;
     padding: 15px;
-    >div, #wpsi-delete-selected {
-      margin-left:50px;
-    }
   }
 
   #wpsi-delete-selected {
-    margin-bottom:10px;
+    vertical-align: middle;
+    margin-left: 25px;
   }
 
   .tab-content.current {
@@ -148,8 +194,6 @@ widget
   General table styling
 */
 
-
-
   .dataTables_wrapper {
     max-width: 800px;
     display: flex;
@@ -158,12 +202,14 @@ widget
   }
 
   .search-insights-table {
+    height: 100%;
+    padding-top: 15px;
     flex: 1;
     margin: 0 auto;
-    margin-right:25px;
+    position: relative;
+    width: 95%;
 
     table {
-      border: 1px solid #ccc;
       border-collapse: collapse;
       margin: 0;
       padding: 0;
@@ -176,35 +222,40 @@ widget
       }
     }
     table caption {
+      font-weight: 600;
+      width: 50%;
       font-size: 1.5em;
-      margin: .5em 0 .75em;
+      margin: .5em 0 1.5em;
       text-align: left;
     }
 
-    table.dataTable thead .sorting {
-      background-image: url("../images/sort_both.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-    }
-
-    table.dataTable thead .sorting_asc {
-      background-image: url("../images/sort_asc.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-    }
-
-    table.dataTable thead .sorting_desc {
-      background-image: url("../images/sort_desc.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-    }
+    //table.dataTable thead .sorting {
+    //  background-image: url("../images/sort_both.png");
+    //  background-repeat: no-repeat;
+    //  background-position: center right;
+    //}
+    //
+    //table.dataTable thead .sorting_asc {
+    //  background-image: url("../images/sort_asc.png");
+    //  background-repeat: no-repeat;
+    //  background-position: center right;
+    //}
+    //
+    //table.dataTable thead .sorting_desc {
+    //  background-image: url("../images/sort_desc.png");
+    //  background-repeat: no-repeat;
+    //  background-position: center right;
+    //}
 
 
     table tr {
       height: 40px;
       background-color: #f8f8f8;
-      border: 1px solid #ddd;
       padding: .35em;
+    }
+
+    table tbody tr {
+      border-bottom: .1em solid #ddd;
     }
 
     table th,
@@ -219,15 +270,15 @@ widget
     }
 
     thead tr:first-of-type {
-      background-color: #FFFFFF;
-    }
+      background-color: #F5F6FA;
+      color: #A3A6B4;    }
 
     tr:nth-child(even) {
       background-color: #FFFFFF;
     }
 
     tr:nth-child(odd) {
-      background-color: #F6F6F6;
+      background-color: #FFFFFF;
     }
 
     tr:first-child {
@@ -242,7 +293,10 @@ widget
     }
   }
 
-
+  .wpsi-term a {
+    text-decoration: none;
+    color: black;
+  }
   @media screen and (max-width: 800px) {
     .search-insights-table table {
       border: 0;
@@ -302,11 +356,6 @@ widget
       Individual table styling
    */
 
-  #wpsi-recent-table {
-
-    margin-right: 15px;
-  }
-
   #wpsi-recent-table, #wpsi-popular-table {
     width:100%;
 
@@ -337,6 +386,8 @@ widget
     align-items: center;
     justify-content: center;
     padding-top: 10px;
+    position: absolute;
+    bottom: 50px;
   }
 
   .dataTables_info {
@@ -353,57 +404,172 @@ widget
   .dt-button {
     position: relative;
     display: inline-block;
-    box-sizing: border-box;
-    margin-right: 0.333em;
-    margin-bottom: 0.333em;
-    padding: 0.5em 1em;
-    border: 1px solid #999;
-    border-radius: 2px;
-    font-size: 0.88em;
-    line-height: 1.6em;
-    color: black;
-    white-space: nowrap;
-    overflow: hidden;
-    background-color: #e9e9e9;
-    background-image: -webkit-linear-gradient(top, #fff 0%, #e9e9e9 100%);
-    background-image: -moz-linear-gradient(top, #fff 0%, #e9e9e9 100%);
-    background-image: -ms-linear-gradient(top, #fff 0%, #e9e9e9 100%);
-    background-image: -o-linear-gradient(top, #fff 0%, #e9e9e9 100%);
-    background-image: linear-gradient(to bottom, #fff 0%, #e9e9e9 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='white', EndColorStr='#e9e9e9');
-    user-select: none;
-    text-decoration: none;
-    outline: none;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #069;
+    cursor: pointer;
+    color: #FF3B3B;
   }
 
   .dt-button:hover {
     opacity: 0.75;
   }
 
-  .dt-button:before {
-    font-family: fontello;
-    content: "\e800";
-    margin-right: 5px;
-  }
-
-  .dataTables_paginate {
+  .dataTables_paginate {;
     flex: 1;
-    text-align: right;
+    margin-top: 20px;
+    //text-align: left;
     cursor: pointer;
   }
 
   .dataTables_paginate .paginate_button {
     color: black;
-    padding: 0.5em 0.8em;
+    padding: 0.5em 1em;
     box-sizing: border-box;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 1px 1px lightgrey;
   }
 
   .dataTables_paginate .current {
-    //background-color: #fff;
+    color: white;
+    background-color: #FF3B3B;
     border: 1px solid #979797;
-    border-radius: 0.3em;
-    background: linear-gradient(to bottom, #fff 0%, #F6F6F6 100%);
+  }
+
+  #wpsi-recent-table_previous {
+    padding: 0.5em 1.8em;
+  }
+
+  #wpsi-recent-table_next {
+    padding: 0.5em 1.8em;
+  }
+
+    /*
+        No Results grid item
+     */
+
+  .wpsi-nr-overview {
+
+  }
+
+  .wpsi-nr-title {
+    padding: 15px;
+  }
+
+  .wpsi-nr-header {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .wpsi-nr-header-items {
+    padding-top: 10px;
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+
+  .wpsi-no-results {
+    padding-bottom: 5px;
+  }
+
+  .wpsi-total-searches {
+    padding-top: 15px;
+  }
+
+  .wpsi-search-count {
     font-weight: 600;
+  }
+
+  .wpsi-header-right {
+    float: right;
+  }
+  .date-btn-all-searches{
+    position: absolute;
+    right: 180px;
+    margin-top: 5px;
+  }
+
+  .wpsi-btn-no-results {
+  }
+
+  .wpsi-nr-content {
+    height: 270px;
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .wpsi-nr-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    .dt-buttons {
+      margin: 0 auto;
+    }
+  }
+
+  /*
+    Top Searches grid widget
+   */
+
+  .wpsi-top-searches-btn {
+    margin-top: -8px;
+  }
+
+  /*
+    Other plugins
+   */
+
+  .wpsi-other-plugins-container {
+    display: flex;
+    height: 100%;
+  }
+  .wpsi-upsell {
+    margin-right: 25px;
+    height: 88%;
+    width: 25%;
+  }
+
+  .wpsi-upsell-title {
+    height: 33.33%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wpsi-upsell span.dashicons {
+    margin-top: 10px;
+     color: #FFB900;
+   }
+
+  .wpsi-top-title {
+    font-size: 1.2em;
+    font-weight: 700;
+  }
+
+  .wpsi-upsell-content {
+    height: 33.33%;
+  }
+
+  .wpsi-upsell-button {
+    height: 33.33%;
+    display: flex;
+    align-items: center;
+  }
+
+  .wpsi-upsell-button > a {
+    width: 80%;
+  }
+
+  .button-upsell {
+    width: 80%;
+    background-color: #3B86FF;
+    color: white;
+  }
+
+  // hide the export buttons on popular searches tables
+  #wpsi-popular-table_wrapper > div.dt-buttons {
+    display: none;
   }
 
   /*

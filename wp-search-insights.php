@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 //Call register activation hook outside of class.
 register_activation_hook(__FILE__, 'search_insights_activation_hook' );
 
-class WP_SEARCH_INSIGHTS {
+class WPSI {
 
 	private static $instance;
 
@@ -47,10 +47,10 @@ class WP_SEARCH_INSIGHTS {
 	public static function instance() {
 
 		if ( ! isset( self::$instance )
-		     && ! ( self::$instance instanceof WP_SEARCH_INSIGHTS )
+		     && ! ( self::$instance instanceof WPSI )
 		) {
 
-			self::$instance = new WP_SEARCH_INSIGHTS;
+			self::$instance = new WPSI;
 			self::$instance->setup_constants();
 			self::$instance->includes();
 
@@ -145,13 +145,13 @@ class WP_SEARCH_INSIGHTS {
 	}
 
 }//Class closure
-if (!function_exists('wp_search_insights')) {
+if (!function_exists('WPSI')) {
 
-	function wp_search_insights() {
-		return WP_SEARCH_INSIGHTS::instance();
+	function WPSI() {
+		return WPSI::instance();
 	}
 
-	add_action( 'plugins_loaded', 'wp_search_insights', 9 );
+	add_action( 'plugins_loaded', 'WPSI', 9 );
 }
 
 function search_insights_activation_hook() {
