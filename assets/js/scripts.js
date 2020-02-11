@@ -39,9 +39,8 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '.wpsi-date-filter', function(){
         var container = $(this).closest('.item-content');
         var isDataTable = (container.find('.dataTable').length);
-        var range = $('.wpsi-date-filter').val();
+        var range = container.find('.wpsi-date-filter').val();
         var type = $(this).closest('.wpsi-item').data('table_type');
-        console.log(type);
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
@@ -55,8 +54,12 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 //get all occurrences on this page for this term id
                 container.html(response.html);
-                if (isDataTable) init_datatables();
-                $('.wpsi-date-filter').val(range);
+                if (isDataTable) {
+                    init_datatables();
+                } else {
+                    container.find(".wpsi-date-container").html(wpsi.dateFilter);
+                }
+                container.find('.wpsi-date-filter').val(range);
 
             }
         });

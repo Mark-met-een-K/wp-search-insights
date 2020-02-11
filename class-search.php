@@ -394,13 +394,12 @@ if ( ! class_exists( 'Search' ) ) {
 				'range' => false,
 			);
             $args = wp_parse_args( $args,$defaults);
-
             if ($args['range'] && $args['range']!=='all'){
 	            switch ($args['range']){
-		            case 'DAY':
+		            case 'day':
 			            $range = time() - DAY_IN_SECONDS;
 			            break;
-		            case 'WEEK':
+		            case 'week':
 			            $range = time() - WEEK_IN_SECONDS;
 			            break;
 		            default:
@@ -461,9 +460,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
 			}
-
             $searches =$wpdb->get_results( $search_sql );
-
 			//if we searched for a term, there is only one result
 			if ($args['term']){
 				if (isset($searches[0])){
@@ -494,21 +491,16 @@ if ( ! class_exists( 'Search' ) ) {
 				'range' => false,
 			);
 			$args = wp_parse_args( $args, $defaults);
-error_log(print_r($args,true));
+
 			if ($args['range'] && $args['range']!=='all'){
 				switch ($args['range']){
 					case 'day':
-						error_log('day');
-
 						$range = time() - DAY_IN_SECONDS;
 						break;
 					case 'week':
-						error_log('week');
-
 						$range = time() - WEEK_IN_SECONDS;
 						break;
 					default:
-						error_log('month');
 						$range = time() - MONTH_IN_SECONDS;
 						break;
 				}
@@ -516,7 +508,6 @@ error_log(print_r($args,true));
 				$args['time'] = $range;
 				$args['compare'] = '>';
 			}
-			error_log(print_r($args,true));
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'searchinsights_single';
@@ -537,7 +528,6 @@ error_log(print_r($args,true));
 				$time = intval($args['time']);
 				$where .=" AND time $compare $time ";
 			}
-			error_log("SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 			$searches =$wpdb->get_results( "SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
 
             if ($trend){
@@ -645,8 +635,7 @@ error_log(print_r($args,true));
 		 */
 
 		public function get_referer() {
-            $referrer = esc_url_raw("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-
+            $referrer = wp_get_referer();//esc_url_raw("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			$uri_parts = explode('?', $referrer, 2);
 			if ($uri_parts && isset($uri_parts[0])) $referrer = $uri_parts[0];
 			$post_id = url_to_postid($referrer);

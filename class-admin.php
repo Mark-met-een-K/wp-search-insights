@@ -817,7 +817,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
             $html = "";
 
-            $popular_searches = get_transient('wpsi_popular_searches');
+            //only use cached data on dash
+            $popular_searches = get_transient("wpsi_popular_searches_$range");
+            if ($on_grid) $popular_searches = false;
             if (!$popular_searches) {
                 $args = array(
                     'orderby' => 'frequency',
@@ -826,16 +828,15 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'number' => 5,
                     'range' => $range,
                 );
-
                 $popular_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
-                set_transient('wpsi_popular_searches', $popular_searches, HOUR_IN_SECONDS);
+                set_transient("wpsi_popular_searches_$range", $popular_searches, HOUR_IN_SECONDS);
             }
+
             if (!$on_grid) {
                 $tmpl = $this->get_template('dashboard-row.php');
             } else {
                 $tmpl = $this->get_template('grid-dashboard-row.php');
             }
-
             if (count($popular_searches) == 0) {
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
                     'dashicons-no-alt',
@@ -865,8 +866,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             $widget = str_replace('{popular_searches}', $html, $widget);
 
             $html = "";
-            $top_searches = get_transient('wpsi_top_searches');
-            if (!$top_searches) {
+            $top_searches = get_transient("wpsi_top_searches_$range");
+	        if ($on_grid) $top_searches = false;
+
+	        if (!$top_searches) {
                 $args = array(
                     'orderby' => 'frequency',
                     'order' => 'DESC',
@@ -874,7 +877,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'range' => $range,
                 );
                 $top_searches = WP_SEARCH_INSIGHTS()->Search->get_searches($args, $trend = true, 'MONTH');
-                set_transient('wpsi_top_searches', $top_searches, HOUR_IN_SECONDS);
+                set_transient("wpsi_top_searches_$range", $top_searches, HOUR_IN_SECONDS);
             }
             if (count($top_searches) == 0) {
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
@@ -905,11 +908,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
             ob_get_clean();
             $widget = str_replace('{top_searches}', $html, $widget);
-            if ($echo) {
-                echo $widget;
-            } else {
-                return $widget;
-            }
+            return $widget;
+
         }
 
 
@@ -951,7 +951,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         $html = __('Invalid command','wp-search-insights');
                         break;
 			    }
-
 		    }
 
 		    $data = array(
@@ -979,12 +978,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             ob_start();
 
             $args = array(
-                    'number' => 2000,
-                    'range' => $range,
+                'number' => 2000,
+                'range' => $range,
             );
-            error_log("get searches list ");
             $recent_searches = WP_SEARCH_INSIGHTS()->Search->get_searches_single($args);
-            error_log("have esarches");
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
                 <caption><?php _e("All Searches", "wp-search-insights"); ?></caption>
@@ -997,6 +994,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <th scope='col' style="width: 10%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <?php
                 // Start generating rows
