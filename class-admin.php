@@ -759,19 +759,21 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
                                  <div class="header-links">
                                     <div class="tab-links">
-                                    <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top">Dashboard</a>
+                                    <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top"><?php _e("General", "wp-search-insights");?></a>
                                     </li>
                                     <?php if (current_user_can('manage_options')) { ?>
-                                    <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
+                                    <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top"><?php _e("Settings" , "wp-search-insights");?></a></li>
                                     <?php } ?>
                                     <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
                                     </div>
                                     <div class="documentation-pro">
                                         <div class="documentation">
-                                            <a href="https://wpsearchinsights.com/docs"><?php _e("Documentation", "wp-search-insights");?></a>
+                                            <a href="https://wpsearchinsights.com/faq"><?php _e("Documentation", "wp-search-insights");?></a>
                                         </div>
                                         <div class="header-upsell">
-                                        <button class="button button-upsell"><?php _e("Donate", "wp-search-insights");?></button>
+                                        <a href="https://paypal.me/wpsearchinsights" target="_blank">
+                                            <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
+                                        </a>
                                         </div>
                                     </div>
                                 </div>
@@ -1464,16 +1466,20 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
         public function generate_other_plugins()
         {
+
+            $plugin_url = trailingslashit(wp_search_insights_url);
             $items = array(
                 1 => array(
                     'title' => __("Really Simple SSL", "wp-search-insights"),
-                    'content' => __("Get Really Simple SSL Now", "wp-search-insights"),
-                    'link' => admin_url() . "plugin-install.php?s=really+simple+ssl&tab=search&type=term"
+                    'content' => __("Really Simple SSL automatically detects your settings and configures your website to run over HTTPS! Migrate your website to SSL with just one-click", "wp-search-insights"),
+                    'link' => admin_url() . "plugin-install.php?s=really+simple+ssl&tab=search&type=term",
+                    'logo' => "$plugin_url"."assets/images/rsssl-logo.png",
                 ),
                 2 => array(
-                    'title' => __("CMPLZ", "wp-search-insights"),
-                    'content' => __("get Complianz now", "wp-search-insights"),
-                    'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term"
+                    'title' => __("Complianz Privacy Suite", "wp-search-insights"),
+                    'content' => __("Get compliant today in the European Union and/or in the United States,  Canada, and United Kingdom with the only Privacy Suite that offers a fully-featured plugin for GDPR, DSGVO,  PIPEDA, CCPA, COPPA and more!", "wp-search-insights"),
+                    'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term",
+                    'logo' => "$plugin_url"."assets/images/complianz-logo.png",
                 ),
             );
 
@@ -1483,10 +1489,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             foreach ($items as $item) {
                 $output .= str_replace(array(
                     '{title}',
+                    '{logo}',
                     '{content}',
                     '{link}',
                 ), array(
                     $item['title'],
+                    $item['logo'],
                     $item['content'],
                     $item['link'],
                 ), $element);
@@ -1505,20 +1513,24 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 2 => array(
                     'content' => __("Exporting and using Excel files", "wp-search-insights"),
                 ),
+                3 => array(
+                    'content' => __("Writing content for Google", "wp-search-insights"),
+                ),
             );
+            $button_link = "https://wpsearchinsights.com/tipsandtricks";
             $container = $this->get_template('tipstricks-container.php');
             $element = $this->get_template('tipstricks-element.php');
             $output = '';
             foreach ($items as $item) {
                 $output .= str_replace(array(
                     '{title}',
-                    '{content}'
+                    '{content}',
                 ), array(
                     $item['title'],
                     $item['content'],
                 ), $element);
             }
-            return str_replace('{content}', $output, $container);
+            return str_replace(array('{content}' , '{button_link}'), array($output, $button_link), $container);
         }
     }
 }

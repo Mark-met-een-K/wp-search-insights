@@ -29,6 +29,7 @@
     align-items: center;
     .header-upsell {
       width: 100px;
+      margin-right: 15px;
     }
     .button {
       color: white !important;
@@ -45,10 +46,15 @@
     align-items: center;
     margin-right: 25px;
   }
+
   .header-links {
     width: 90%;
     display: flex;
     justify-content: space-between;
+  }
+  .tab-links {
+    margin-left: 100px;
+    color: @light-text-color;
   }
   .documentation {
     margin-right: 15px;
@@ -269,7 +275,8 @@ widget
 }
 
   .current .tab-text {
-    border-bottom: 1px solid @color-error;
+    padding-bottom: 21px;
+    border-bottom: 2px solid @color-error;
   }
 
 
@@ -728,21 +735,30 @@ widget
   .wpsi-upsell {
     margin-right: 25px;
     height: 88%;
-    width: 25%;
+    width: 50%;
   }
 
   .wpsi-upsell-title {
-    height: 33.33%;
+    height: 20%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 10px;
   }
+
 
   .wpsi-upsell span.dashicons {
     margin-top: 10px;
      color: #FFB900;
    }
 
+  .upsell-img {
+    height: 25px;
+    width: 25px;
+  }
+
   .wpsi-top-title {
+    padding-bottom: 15px;
+    border-bottom: 1px solid @border-color;
     font-size: 1.2em;
     font-weight: 700;
   }
@@ -762,7 +778,7 @@ widget
   }
 
   .button-upsell {
-    width: 80%;
+    width: 100px;
     color: #0071a1;
   }
 
@@ -905,8 +921,17 @@ widget
    */
 
   .wpsi-tips-tricks-content {
+    font-size: 1.1em;
+    color: @light-text-color;
+    padding-bottom: 10px;
     list-style: decimal;
     list-style-position: inside;
+  }
+
+  .tips-tricks-content {
+    height: 100px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid @border-color;
   }
 
   .wpsi-tips-tricks-container-title {

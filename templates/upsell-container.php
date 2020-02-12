@@ -1,1 +1,2 @@
-<div class="wpsi-other-plugins-container">{content}</div>
+<div class="wpsi-other-plugins-container">{content}
+</div>

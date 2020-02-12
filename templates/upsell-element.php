@@ -2,6 +2,10 @@
         <div class="wpsi-upsell-title">
             <span class="wpsi-top-title">{title}
             </span>
+            <span class="upsell-logo">
+                <img src="{logo}" class="upsell-img"/>
+            </span>
+        </div>
             <span class="wpsi-sub-title">
                 <span class="dashicons dashicons-star-filled"></span>
                 <span class="dashicons dashicons-star-filled"></span>
@@ -9,7 +13,6 @@
                 <span class="dashicons dashicons-star-filled"></span>
                 <span class="dashicons dashicons-star-filled"></span>
             </span>
-        </div>
         <div class="wpsi-upsell-content">
             {content}
         </div>
