@@ -61,7 +61,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 5 => array(
                     'title' => 'Other',
                     'content' => $this->generate_other_plugins(),
-                    'class' => 'half-height no-border no-background',
+                    'class' => 'half-height no-border no-background upsell-grid-container',
                     'type' => 'plugins',
                     'can_hide' => false,
                 ),

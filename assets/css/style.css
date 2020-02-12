@@ -586,14 +586,24 @@ widget
 #wpsi-dashboard .wpsi-top-searches-btn {
   margin-top: -7px;
 }
+#wpsi-dashboard .upsell-grid-container {
+  display: flex;
+  justify-content: space-between;
+  width: 800px;
+}
+#wpsi-dashboard .upsell-grid-container .item-content {
+  width: 100% !important;
+}
 #wpsi-dashboard .wpsi-other-plugins-container {
   display: flex;
+  justify-content: space-between;
   height: 100%;
+  width: 800px;
 }
 #wpsi-dashboard .wpsi-upsell {
-  margin-right: 25px;
-  height: 88%;
-  width: 50%;
+  width: 450px;
+  margin-right: 20px;
+  margin-left: 10px;
 }
 #wpsi-dashboard .wpsi-upsell-title {
   height: 20%;
