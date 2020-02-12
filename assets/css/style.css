@@ -12,6 +12,13 @@
   align-content: center;
   align-items: center;
 }
+.wp-search-insights-container .tabs .header-upsell {
+  width: 100px;
+}
+.wp-search-insights-container .tabs .button {
+  color: white !important;
+  background-color: #007BBC !important;
+}
 .wp-search-insights-container .tabs-content {
   display: flex;
   width: 100%;
@@ -29,13 +36,6 @@
 }
 .wp-search-insights-container .documentation {
   margin-right: 15px;
-}
-.wp-search-insights-container .header-upsell {
-  width: 100px;
-}
-.wp-search-insights-container .button {
-  color: white !important;
-  background-color: #007BBC !important;
 }
 .wp-search-insights-container .button:hover {
   background-color: #007BBC !important;
@@ -650,24 +650,21 @@ widget
 #wpsi-dashboard #settings {
   position: relative;
 }
+#wpsi-dashboard .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
+  display: none;
+}
 #wpsi-dashboard #settings-section {
+  padding-left: 25px;
   background-color: #fff;
-  margin: 25px;
   border: 1px solid #DEDEDE;
   width: 800px;
 }
-#wpsi-dashboard #settings-section .button {
-  margin-bottom: 25px;
-  margin-left: 25px;
-}
 #wpsi-dashboard #wpsi-filter {
-  margin: 25px;
   background-color: #fff;
-  height: 325px;
+  height: 250px;
   width: 800px;
 }
 #wpsi-dashboard .settings-title {
-  margin: 25px;
   display: flex;
   flex-direction: column;
 }
@@ -676,13 +673,16 @@ widget
   align-items: center;
 }
 #wpsi-dashboard #wpsi-filter tr {
-  margin: 25px;
   display: flex;
   flex-direction: column;
 }
 #wpsi-dashboard #wpsi-filter th {
   display: flex;
   justify-content: flex-start;
+}
+#wpsi-dashboard .wpsi-save-button {
+  margin-bottom: 25px;
+  width: 75px;
 }
 #wpsi-dashboard #filter-inner {
   margin: 25px;
@@ -691,6 +691,9 @@ widget
   width: 700px;
   height: 100px;
   border: 1px solid #DEDEDE;
+}
+#wpsi-dashboard .filter-save {
+  margin-left: 25px;
 }
 #wpsi-dashboard #settings td {
   display: flex;
@@ -701,6 +704,14 @@ widget
 #wpsi-dashboard .wpsi_term_length {
   width: 60px;
   text-align: center;
+}
+#wpsi-dashboard .thickbox {
+  background-color: #d7263d;
+  margin-left: -10px;
+  color: white;
+  border: none;
+  height: 30px;
+  width: 150px;
 }
 #wpsi-dashboard .wpsi-tips-tricks-content {
   list-style: decimal;

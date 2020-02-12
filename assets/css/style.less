@@ -27,6 +27,13 @@
     width: 100%;
     align-content: center;
     align-items: center;
+    .header-upsell {
+      width: 100px;
+    }
+    .button {
+      color: white !important;
+      background-color: #007BBC !important;
+    }
   }
   .tabs-content {
     display: flex;
@@ -45,13 +52,6 @@
   }
   .documentation {
     margin-right: 15px;
-  }
-  .header-upsell {
-    width: 100px;
-  }
-  .button {
-    color: white !important;
-    background-color: #007BBC !important;
   }
   .button:hover {
     background-color: #007BBC !important;
@@ -802,8 +802,6 @@ widget
     margin-bottom: -12px;
   }
 
-
-
   .form-table {
     padding-left: 50px;
   }
@@ -812,27 +810,29 @@ widget
     position: relative;
   }
 
+  .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
+    display: none;
+  }
+
   #settings-section {
+    padding-left: 25px;
     background-color: #fff;
-    margin: 25px;
     border: 1px solid @border-color;
     width: 800px;
   }
 
-  #settings-section .button {
-    margin-bottom: 25px;
-    margin-left: 25px;
-  }
+  //#settings-section .button {
+  //  margin-bottom: 25px;
+  //  margin-left: 25px;
+  //}
 
   #wpsi-filter {
-    margin: 25px;
     background-color: #fff;
-    height: 325px;
+    height: 250px;
     width: 800px;
   }
 
   .settings-title {
-    margin: 25px;
     display: flex;
     flex-direction: column;
   }
@@ -843,7 +843,6 @@ widget
   }
 
   #wpsi-filter tr {
-    margin: 25px;
     display: flex;
     flex-direction: column;
   }
@@ -853,6 +852,15 @@ widget
     justify-content: flex-start;
   }
 
+  .wpsi-save-button {
+    margin-bottom: 25px;
+    width: 75px;
+  }
+
+  //#settings button {
+  //  margin: 25px;
+  //}
+
   #filter-inner {
     margin: 25px;
   }
@@ -861,6 +869,10 @@ widget
     width: 700px;
     height: 100px;
     border: 1px solid @border-color;
+  }
+
+  .filter-save {
+    margin-left: 25px;
   }
 
   #settings td {
@@ -874,6 +886,16 @@ widget
   .wpsi_term_length {
     width: 60px;
     text-align: center;
+  }
+
+  .thickbox {
+    background-color: @color-error;
+    margin-left: -10px;
+    color: white;
+    border: none;
+    height: 30px;
+    width: 150px;
+    //border-bottom: 1px solid @border-color;
   }
 
   /*

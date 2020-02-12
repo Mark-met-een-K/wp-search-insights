@@ -444,7 +444,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
             add_settings_field(
                 'wpsi_filter_textarea',
-                __("Search term filter", 'wp-search-insights'),
+                "",
                 array($this, 'option_textarea_filter'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -593,7 +593,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'action' => 'clear_database',
             );
             $this->add_thickbox_button($args);
-	        WPSI()->wpsi_help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
+//	        WPSI()->wpsi_help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
             ?>
             <?php
         }
@@ -624,7 +624,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                        title="<?php _e("You're about to clear your database!", "wp-search-insights"); ?>"
                        type="button" style="display: block;"
                        alt="#TB_inline?height=260&width=450&inlineId=wpsi_<?php echo esc_attr($args['action']) ?>"
-                       value="<?php echo __('Clear database', 'wp-search-insights'); ?>"/>
+                       value="<?php echo __('Clear all searches', 'wp-search-insights'); ?>"/>
             </div>
             <div id="wpsi_<?php echo esc_attr($args['action']) ?>" style="display: none;">
 
@@ -839,7 +839,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
         private function save_button() {
             ?>
-            <input class="button button-primary wpsi-save-button" name="Submit"
+            <input class="button wpsi-save-button" name="Submit"
                    type="submit"
                    value="<?php echo __("Save",
                        "wp-search-insights"); ?>"/>
