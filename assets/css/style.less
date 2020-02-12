@@ -5,9 +5,24 @@
   display:none;
 }
 
+//#wpcontent {
+//  padding: 0;
+//}
+//
+//.wrap {
+//  margin: 0;
+//}
+
 .wp-search-insights-container {
   .tabs {
     background: #fff;
+    display: flex;
+    width: 100%;
+    align-content: center;
+    align-items: center;
+  }
+  .tabs-content {
+    margin-left: 20px;
   }
 
 }
@@ -74,13 +89,39 @@ widget
   border-top: 0 !important;
   border-bottom: 1px solid #eee;
   background-color: #fff;
-  //border-bottom: 2px solid red;
 }
 
 .wpsi-dashboard-widget-grid ul {
   border-top: 1px solid #eee;
 }
 
+.search-info-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.term-frequency-container {
+  padding-left: 25px;
+  padding-top: 10px;
+}
+
+.term-frequency-container a {
+  text-decoration: none;
+  color: black;
+}
+
+.widget-row {
+  display: flex;
+}
+
+.widget-row .dashicons {
+  font-size: 15px;
+  padding-top: 5px;
+}
+&.wpsi-time {
+  margin: 0 !important;
+}
 .wpsi-widget-grid-wrapper {
   padding-top: 5px;
 }
@@ -99,7 +140,7 @@ widget
     *
  */
 #wpsi-dashboard {
-  padding-right:15px;
+  //padding-right:15px;
 
   .wpsi-settings-intro {
     margin-left: 0 !important;
@@ -156,7 +197,7 @@ widget
     margin-top: 15px;
     padding: 0px;
     list-style: none;
-    //background-color: red;
+    height: 70px;
   }
 
   ul.tabs li {
@@ -583,6 +624,7 @@ widget
   }
 
   .wpsi-result-count {
+    color: #666;
     padding-top: 10px;
     padding-left: 20px;
   }
@@ -739,6 +781,14 @@ widget
   .wpsi_term_length {
     width: 60px;
     text-align: center;
+  }
+
+  /*
+    Tips and Tricks
+   */
+
+  .wpsi-tips-tricks-content {
+    list-style: decimal;
   }
 
   /*Tooltips on dashboard/settings page*/

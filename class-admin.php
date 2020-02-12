@@ -756,6 +756,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <!--    Navigation-->
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
+                            <div class="tabs-content">
+                            <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
                             <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard"
                                                                                  href="#dashboard#top">Dashboard</a>
                             </li>
@@ -764,6 +766,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                                                             href="#settings#top">Settings</a></li>
                             <?php } ?>
                             <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+                            </div>
                         </ul>
                     </div>
                     <div class="wp-search-insights-main">
