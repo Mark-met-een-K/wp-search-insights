@@ -149,15 +149,14 @@ widget
 .widget-row .dashicons {
   font-size: 15px;
   padding-top: 5px;
+  margin-top: 10px;
+
 }
 &.wpsi-time {
   margin: 0 !important;
 }
 .wpsi-widget-grid-wrapper {
   padding-top: 5px;
-}
-&.dashicons {
-  margin-top: 10px;
 }
 &.wpsi-frequency{
   padding-top: 10px;
@@ -807,6 +806,61 @@ widget
 
   .form-table {
     padding-left: 50px;
+  }
+
+  #settings {
+    position: relative;
+  }
+
+  #settings-section {
+    background-color: #fff;
+    margin: 25px;
+    border: 1px solid @border-color;
+    width: 800px;
+  }
+
+  #settings-section .button {
+    margin-bottom: 25px;
+    margin-left: 25px;
+  }
+
+  #wpsi-filter {
+    margin: 25px;
+    background-color: #fff;
+    height: 325px;
+    width: 800px;
+  }
+
+  .settings-title {
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filter-title {
+    flex-direction: unset;
+    align-items: center;
+  }
+
+  #wpsi-filter tr {
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #wpsi-filter th {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  #filter-inner {
+    margin: 25px;
+  }
+
+  #wpsi_filter_textarea {
+    width: 700px;
+    height: 100px;
+    border: 1px solid @border-color;
   }
 
   #settings td {

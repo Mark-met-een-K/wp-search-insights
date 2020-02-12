@@ -427,9 +427,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             );
 
             add_settings_field(
-                'wpsi_filter_textarea',
-                __("Search term filter", 'wp-search-insights'),
-                array($this, 'option_textarea_filter'),
+                'wpsi_cleardatabase',
+                __("Clear data on plugin uninstall", 'wp-search-insights'),
+                array($this, 'option_clear_database_on_uninstall'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
             );
@@ -443,9 +443,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             );
 
             add_settings_field(
-                'wpsi_cleardatabase',
-                __("Clear data on plugin uninstall", 'wp-search-insights'),
-                array($this, 'option_clear_database_on_uninstall'),
+                'wpsi_filter_textarea',
+                __("Search term filter", 'wp-search-insights'),
+                array($this, 'option_textarea_filter'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
             );
@@ -490,10 +490,10 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         public function wpsi_settings_tab_intro()
         {
             ?>
-            <div class="wpsi-settings-intro">
-                <span class="wpsi-settings-logo"><i class="icon-cog-alt"></i></span>
-                <span class="wpsi-settings-intro-text"><?php _e('WP Search Insights settings', 'wp-search-insights'); ?></span>
-            </div>
+<!--            <div class="wpsi-settings-intro">-->
+<!--                <span class="wpsi-settings-logo"><i class="icon-cog-alt"></i></span>-->
+<!--                <span class="wpsi-settings-intro-text">--><?php //_e('WP Search Insights settings', 'wp-search-insights'); ?><!--</span>-->
+<!--            </div>-->
             <?php
         }
 
@@ -659,9 +659,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             echo
             esc_html(get_option('wpsi_filter_textarea'));
             ?>
-        </textarea>
+            </textarea>
             <?php
-	        WPSI()->wpsi_help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
         }
 
         /**
@@ -806,24 +805,44 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <!--    Settings tab    -->
                         <?php if (current_user_can('manage_options')) { ?>
                             <div id="settings" class="tab-content">
+                                <div id="settings-section">
+                                    <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3>
                                 <div>
                                     <form action="options.php" method="post">
                                         <?php
                                         settings_fields('wpsi-settings-tab');
                                         do_settings_sections('wpsi-settings');
+                                        $this->save_button();
                                         ?>
-
-                                        <input class="button button-primary wpsi-save-button" name="Submit"
-                                               type="submit"
-                                               value="<?php echo __("Save",
-                                                   "wp-search-insights"); ?>"/>
                                     </form>
                                 </div>
                             </div>
-                        <?php } ?>
+                                <div id="wpsi-filter">
+                                    <div id="filter-inner">
+                                        <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
+                                            <?php
+                                            WPSI()->wpsi_help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
+                                            ?>
+                                         </span>
+                                    </div>
+                                    <div class="filter-save">
+                                        <?php $this->save_button(); ?>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                            </div>
                     </div>
                 </div>
             </div>
+            <?php
+        }
+
+        private function save_button() {
+            ?>
+            <input class="button button-primary wpsi-save-button" name="Submit"
+                   type="submit"
+                   value="<?php echo __("Save",
+                       "wp-search-insights"); ?>"/>
             <?php
         }
 

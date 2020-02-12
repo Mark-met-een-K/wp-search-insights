@@ -128,15 +128,13 @@ widget
 .widget-row .dashicons {
   font-size: 15px;
   padding-top: 5px;
+  margin-top: 10px;
 }
 .wpsi-time {
   margin: 0 !important;
 }
 .wpsi-widget-grid-wrapper {
   padding-top: 5px;
-}
-.dashicons {
-  margin-top: 10px;
 }
 .wpsi-frequency {
   padding-top: 10px;
@@ -648,6 +646,51 @@ widget
 }
 #wpsi-dashboard .form-table {
   padding-left: 50px;
+}
+#wpsi-dashboard #settings {
+  position: relative;
+}
+#wpsi-dashboard #settings-section {
+  background-color: #fff;
+  margin: 25px;
+  border: 1px solid #DEDEDE;
+  width: 800px;
+}
+#wpsi-dashboard #settings-section .button {
+  margin-bottom: 25px;
+  margin-left: 25px;
+}
+#wpsi-dashboard #wpsi-filter {
+  margin: 25px;
+  background-color: #fff;
+  height: 325px;
+  width: 800px;
+}
+#wpsi-dashboard .settings-title {
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+}
+#wpsi-dashboard .filter-title {
+  flex-direction: unset;
+  align-items: center;
+}
+#wpsi-dashboard #wpsi-filter tr {
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+}
+#wpsi-dashboard #wpsi-filter th {
+  display: flex;
+  justify-content: flex-start;
+}
+#wpsi-dashboard #filter-inner {
+  margin: 25px;
+}
+#wpsi-dashboard #wpsi_filter_textarea {
+  width: 700px;
+  height: 100px;
+  border: 1px solid #DEDEDE;
 }
 #wpsi-dashboard #settings td {
   display: flex;
