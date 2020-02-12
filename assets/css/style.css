@@ -1,6 +1,9 @@
 .update-nag {
   display: none;
 }
+#wpsi-toggle-arrows {
+  margin-top: 5px;
+}
 .wp-search-insights-container .tabs {
   background: #fff;
   display: flex;
@@ -911,10 +914,13 @@ widget
   float: right;
   margin-top: -1px;
 }
-#wpsi-show-toggles {
+#wpsi-toggle-link-wrap {
   position: relative;
   right: 15px;
-  top: 50px;
+  top: 40px;
+  height: 20px;
+}
+#wpsi-show-toggles {
   height: 20px;
 }
 /*# sourceMappingURL=style.css.map */
