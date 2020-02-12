@@ -218,7 +218,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		public function reset_plus_one_ten_searches(){
 		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
 
-			$items        = WP_SEARCH_INSIGHTS()->Search->get_searches_single();
+			$items        = WPSI()->Search->get_searches_single();
 			$search_count = count( $items );
 
 			if ($search_count>10) {
@@ -238,7 +238,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	            $plus_ones = 0;
 
 	            if (!get_option('wpsi_ten_searches_viewed_settings_page')) {
-		            $items        = WP_SEARCH_INSIGHTS()->Search->get_searches_single();
+		            $items        = WPSI()->Search->get_searches_single();
 		            $search_count = count( $items );
 		            if ( $search_count > 10 ) {
 			            $plus_ones ++;
