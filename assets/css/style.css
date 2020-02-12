@@ -52,6 +52,7 @@ widget
   font-weight: 600;
   margin-top: 10px;
   margin-left: 20px;
+  padding-bottom: 5px;
 }
 #dashboard_widget_wpsi .inside #wpsi-dashboard-widget .wpsi-widget-logo,
 #wpsi-dashboard .inside #wpsi-dashboard-widget .wpsi-widget-logo {
@@ -298,11 +299,10 @@ widget
   background-color: rgba(41, 182, 246, 0.35);
 }
 #wpsi-dashboard .search-insights-table table caption {
-  font-weight: 600;
-  width: 50%;
-  font-size: 1.5em;
-  margin: 0.5em 0 1.5em;
+  height: 50px;
   text-align: left;
+  margin-top: -10px;
+  padding-bottom: 10px;
 }
 #wpsi-dashboard .search-insights-table table tr {
   height: 40px;
@@ -487,7 +487,6 @@ widget
 }
 #wpsi-dashboard .wpsi-nr-header-items {
   padding-top: 10px;
-  font-size: 1.2em;
   font-weight: 500;
 }
 #wpsi-dashboard .nr-widget-results-container {
@@ -551,7 +550,7 @@ widget
   padding-left: 20px;
 }
 #wpsi-dashboard .wpsi-no-results {
-  padding-bottom: 15px;
+  margin-top: -17px;
 }
 #wpsi-dashboard .wpsi-total-searches {
   padding-top: 25px;

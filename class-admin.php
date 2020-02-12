@@ -826,7 +826,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                          </span>
                                     </div>
                                     <div class="filter-save">
-                                        <?php $this->save_button(); ?>
+                                        <form action="options.php" method="post">
+                                        <?php
+                                        settings_fields('wpsi-settings-tab');
+                                        $this->save_button(); ?>
+                                        </form>
                                     </div>
                                 </div>
                                 <?php } ?>
@@ -837,7 +841,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             <?php
         }
 
-        private function save_button() {
+        public function save_button() {
             ?>
             <input class="button wpsi-save-button" name="Submit"
                    type="submit"
@@ -1134,7 +1138,9 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             $recent_searches = WPSI()->Search->get_searches_single($args);
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
-                <caption><?php _e("All Searches", "wp-search-insights"); ?></caption>
+                <caption>
+                    <h3><?php _e("All Searches", "wp-search-insights"); ?></h3>
+                </caption>
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
@@ -1238,7 +1244,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn">
                         </div>
                         <div class="wpsi-no-results">
-                            <span class="wpsi-nr-title"><?php _e("Results", "wp-search-insights"); ?></span>
+                            <h3><?php _e("Results", "wp-search-insights"); ?></h3>
                         </div>
                     </div>
                 </div>
