@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
         $('.wpsi-table').each(function () {
             $(this).DataTable({
                 "dom": 'frt<"table-footer"p><"clear">B',
-                "pageLength": 5,
+                "pageLength": 6,
                 conditionalPaging: true,
                 buttons: [
                     {extend: 'csv', text: 'Download CSV'}

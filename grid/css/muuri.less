@@ -7,6 +7,7 @@
 .wpsi-grid {
     position: relative;
     margin-left: 50px;
+
     .wpsi-item {
         width: @gridblock_width;
         &.small {
@@ -27,6 +28,7 @@
             z-index: 3;
         }
         .item-container {
+            background-color: #fff;
             position: relative;
             cursor: pointer;
             border:1px solid @grey-light;
@@ -50,6 +52,11 @@
         &.no-border {
             .item-container {
                 border: none;
+            }
+        }
+        &.no-background {
+            .item-container {
+                background-color: #F1F1F1;
             }
         }
         &.muuri-item-dragging .item-content {

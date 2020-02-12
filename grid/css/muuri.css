@@ -21,6 +21,7 @@
   z-index: 3;
 }
 .wpsi-grid .wpsi-item .item-container {
+  background-color: #fff;
   position: relative;
   cursor: pointer;
   border: 1px solid #cecece;
@@ -38,6 +39,9 @@
 }
 .wpsi-grid .wpsi-item.no-border .item-container {
   border: none;
+}
+.wpsi-grid .wpsi-item.no-background .item-container {
+  background-color: #F1F1F1;
 }
 .wpsi-grid .wpsi-item.muuri-item-placeholder .item-container {
   border-style: dashed;

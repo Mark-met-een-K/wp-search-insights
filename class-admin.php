@@ -61,7 +61,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 5 => array(
                     'title' => 'Other',
                     'content' => $this->generate_other_plugins(),
-                    'class' => 'half-height no-border',
+                    'class' => 'half-height no-border no-background',
                     'type' => 'plugins',
                     'can_hide' => false,
                 ),
@@ -769,12 +769,13 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <div class="wp-search-insights-main">
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
-                            <div class="wpsi-settings-intro">
-                                <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?></img></span>
-                                <span class="wpsi-settings-intro-text"><?php _e('WP Search Insights', 'wp-search-insights') ?></span>
-                            </div>
-                            <button class="button"
-                                    id="wpsi-delete-selected"><?php _e("Delete selected terms", "wp-search-insights") ?></button>
+<!--                            <div class="wpsi-settings-intro">-->
+<!--                                <img class="wpsi-settings-logo">--><?php //echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?><!--</img></span>-->
+<!--                                <span class="wpsi-settings-intro-text">--><?php //_e('WP Search Insights', 'wp-search-insights') ?><!--</span>-->
+<!--                            </div>-->
+<!--                            <button class="button" id="wpsi-delete-selected">-->
+<!--                                --><?php //_e("Delete selected terms", "wp-search-insights") ?>
+<!--                            </button>-->
 
                             <?php
                             //get html of block
@@ -1107,7 +1108,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
                     <th scope='col' style="width: 10%;"><?php _e("Results", "wp-search-insights"); ?> </th>
                     <th scope="col" style="width: 13%;" class="dashboard-tooltip-hits">
-                        ' <?php _e("When", "wp-search-insights"); ?> </th>
+                        <?php _e("When", "wp-search-insights"); ?> </th>
                         <th scope='col' style="width: 10%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
                 </thead>
@@ -1218,7 +1219,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
                     </div>
                     <div class="wpsi-total-searches">
-                        <span class="wpsi-nr-title"><?php _e("Total Searches", "wp-search-insights"); ?></span>
+                        <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
                         <span class="wpsi-search-count wpsi-header-right">
                             <?php
                             $args = array(
@@ -1253,7 +1254,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             </div>
                             <div class="wpsi-result-count">
                                 <?php echo  $results['no-results']['count'] . " ". __("searches", "wp-search-insights"); ?>
-
                             </div>
                         </div>
                     </div>
@@ -1273,7 +1273,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                 <?php
                                 $args = array(
                                     'range' => $range,
-                                    'result_count' => true,
                                     'orderby' => 'frequency',
                                     'order' => 'DESC',
                                     'number' => 1,
@@ -1285,7 +1284,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo  $top_search[0]->term . " ". __("searches", "wp-search-insights"); ?>
+                            <?php echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights"); ?>
                         </div>
                     </div>
                     <div class="wpsi-nr-no-result">
@@ -1294,11 +1293,23 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                 <span class="dot dot-error"></span>
                             </div>
                             <div class="result-title">
-                                <?php _e("No results", "wp-search-insights"); ?>
+                                <?php
+                                $args = array(
+                                    'range' => $range,
+                                    'result_count' => true,
+                                    'compare' => "< 1",
+                                    'orderby' => 'frequency',
+                                    'order' => 'DESC',
+                                    'number' => 1,
+                                );
+
+                                $top_search_no_result = WPSI()->Search->get_searches($args);
+                                echo $top_search_no_result[0]->term;
+                                ?>
                             </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo  $results['no-results']['count'] . " ". __("searches", "wp-search-insights"); ?>
+                            <?php echo  $top_search_no_result[0]->frequency . " ". __("searches", "wp-search-insights"); ?>
 
                         </div>
                     </div>
