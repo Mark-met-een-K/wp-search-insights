@@ -149,6 +149,7 @@ widget
     margin-top: 15px;
     padding: 0px;
     list-style: none;
+    //background-color: red;
   }
 
   ul.tabs li {
@@ -450,18 +451,18 @@ widget
      */
 
   .wpsi-nr-overview {
-
+    margin: 0 auto;
+    width: 95%;
   }
 
   .wpsi-nr-title {
-    padding: 15px;
+    font-size: 1.1em;
   }
 
   .wpsi-nr-header {
     display: flex;
     flex-direction: column;
-    height: 80px;
-    border-bottom: 1px solid lightgrey;
+    height: 60px;
   }
 
   .wpsi-nr-header-items {
@@ -470,16 +471,101 @@ widget
     font-weight: 500;
   }
 
-  .wpsi-no-results {
-    padding-bottom: 5px;
+  .nr-widget-results-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid lightgrey;
   }
 
-  .wpsi-total-searches {
+  .popular-terms-title {
     padding-top: 15px;
   }
 
-  .wpsi-search-count {
+  /*
+    Progress bar
+   */
+
+  .progress-bar-container {
+    //width: 95%;
+    margin: 0 auto;
+
+  }
+
+  .progress {
+    overflow: hidden;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+  }
+
+  .progress .bar {
+    height: 100%;
+    background-color: @color-success;
+
+  }
+
+  // End progess bar
+
+  .progress-text {
+    display: flex;
+    padding-top: 20px;
+  }
+
+  .percentage {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .percentage-text {
+    padding-left: 10px;
+  }
+
+  // End progress section
+
+  .dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-and-text {
+    display: flex;
+  }
+
+  .result-title {
     font-weight: 600;
+    padding-left: 10px;
+  }
+
+  .dot-success {
+    background-color: @color-success;
+  }
+
+  .dot-error {
+    background-color: @color-error;
+  }
+
+  .wpsi-result-count {
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+
+  .wpsi-no-results {
+  padding-bottom: 15px;
+  border-bottom: 1px solid lightgrey;
+  }
+
+  .wpsi-total-searches {
+    padding-top: 20px;
+  }
+
+  .wpsi-search-count {
+    font-size: 1.1em;
+    font-weight: 700;
   }
 
   .wpsi-header-right {

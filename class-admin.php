@@ -1203,11 +1203,23 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn">
                         </div>
                         <div class="wpsi-no-results">
-                            <span class="wpsi-nr-title"><?php _e("No Results", "wp-search-insights"); ?></span>
+                            <span class="wpsi-nr-title"><?php _e("Results", "wp-search-insights"); ?></span>
                         </div>
-                        <div class="wpsi-total-searches">
-                            <span class="wpsi-nr-title"><?php _e("Total Searches", "wp-search-insights"); ?></span>
-                            <span class="wpsi-search-count wpsi-header-right">
+                    </div>
+                </div>
+                <div class="wpsi-nr-content">
+                    <div class="progress-bar-container">
+                        <div class="progress">
+                            <div class="bar" style="width:<?php echo $results['results']['percentage']?>%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-text">
+                        <span class="percentage"><?php echo $results['results']['percentage'] . "% " ?></span>
+                        <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
+                    </div>
+                    <div class="wpsi-total-searches">
+                        <span class="wpsi-nr-title"><?php _e("Total Searches", "wp-search-insights"); ?></span>
+                        <span class="wpsi-search-count wpsi-header-right">
                             <?php
                             $args = array(
                                 'range'=>$range
@@ -1215,32 +1227,83 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             echo count(WPSI()->Search->get_searches_single($args));
                             ?>
                         </span>
+                    </div>
+                    <div class="nr-widget-results-container">
+                        <div class="wpsi-nr-has-result">
+                            <div class="dot-and-text">
+                                <div class="has-result-dot">
+                                    <span class="dot dot-success"></span>
+                                </div>
+                                <div class="result-title">
+                                    <?php _e("Have results", "wp-search-insights"); ?>
+                                </div>
+                            </div>
+                            <div class="wpsi-result-count">
+                                <?php echo  $results['results']['count'] . " ". __("searches", "wp-search-insights"); ?>
+                            </div>
+                        </div>
+                        <div class="wpsi-nr-no-result">
+                            <div class="dot-and-text">
+                                <div class="has-result-dot">
+                                    <span class="dot dot-error"></span>
+                                </div>
+                                <div class="result-title">
+                                    <?php _e("No results", "wp-search-insights"); ?>
+                                </div>
+                            </div>
+                            <div class="wpsi-result-count">
+                                <?php echo  $results['no-results']['count'] . " ". __("searches", "wp-search-insights"); ?>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="wpsi-nr-content">
-                    <div class="wpsi-nr-progress">
 
-                    </div>
+
+                <div class="popular-terms-title">
+                    <?php _e("Most popular search term", "wp-search-insights"); ?>
+                </div>
+
+                <div class="nr-widget-results-container">
                     <div class="wpsi-nr-has-result">
-                        <div class="has-result-title">
-                            <?php _e("Has results", "wp-search-insights"); ?>
+                        <div class="dot-and-text">
+                            <div class="has-result-dot">
+                                <span class="dot dot-success"></span>
+                            </div>
+                            <div class="result-title">
+                                <?php
+                                $args = array(
+                                    'range' => $range,
+                                    'result_count' => true,
+                                    'orderby' => 'frequency',
+                                    'order' => 'DESC',
+                                    'number' => 1,
+                                    );
+
+                                $top_search = WPSI()->Search->get_searches($args);
+                                echo $top_search[0]->term;
+                                ?>
+                            </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo  $results['results']['percentage']. "%"; ?>
-                            <?php echo  $results['results']['count']; ?>
+                            <?php echo  $top_search[0]->term . " ". __("searches", "wp-search-insights"); ?>
                         </div>
                     </div>
                     <div class="wpsi-nr-no-result">
-                        <div class="no-result-title">
-                            <?php _e("No results", "wp-search-insights"); ?>
+                        <div class="dot-and-text">
+                            <div class="has-result-dot">
+                                <span class="dot dot-error"></span>
+                            </div>
+                            <div class="result-title">
+                                <?php _e("No results", "wp-search-insights"); ?>
+                            </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo $results['no-results']['percentage'] . "%"; ?>
-                            <?php echo $results['no-results']['count']; ?>
+                            <?php echo  $results['no-results']['count'] . " ". __("searches", "wp-search-insights"); ?>
+
                         </div>
                     </div>
                 </div>
+            </div>
                 <div class="wpsi-nr-footer">
                     <span class="wpsi-export-searches"></span>
                 </div>

@@ -19,7 +19,7 @@ jQuery(document).ready(function ($) {
                         "previous": "Previous",
                         "next": "Next",
                     },
-                    searchPlaceholder: "Filter",
+                    searchPlaceholder: "Search",
                     "search": "",
                     "emptyTable": "No searches recorded yet!"
                 },
