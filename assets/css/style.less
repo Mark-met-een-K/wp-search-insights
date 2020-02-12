@@ -17,14 +17,32 @@
   .tabs {
     background: #fff;
     display: flex;
+    justify-content: space-between;
     width: 100%;
     align-content: center;
     align-items: center;
   }
   .tabs-content {
+    display: flex;
+    width: 100%;
     margin-left: 20px;
   }
-
+  .documentation-pro {
+    display: flex;
+    align-items: center;
+    margin-right: 25px;
+  }
+  .header-links {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .documentation {
+    margin-right: 15px;
+  }
+  .header-upsell {
+    width: 100px;
+  }
 }
 
 /**
@@ -236,6 +254,10 @@ widget
     outline: 0;
     box-shadow: 0 0 0 0;
 }
+
+  .current .tab-text {
+    border-bottom: 1px solid @color-error;
+  }
 
 
 /*
@@ -1151,20 +1173,26 @@ widget
 
 #wpsi-show-toggles {
   position: relative;
-  border: 1px solid #ccd0d4;
-  border-top-color: rgb(204, 208, 212);
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top: 0;
-  height: auto;
-  margin-bottom: 0;
-  padding: 3px 6px 3px 16px;
-  background: #fff;
-  border-radius: 0 0 4px 4px;
-  color: #72777c;
-  line-height: 1.7;
-  box-shadow: 0 0 0 transparent;
-  transition: box-shadow .1s linear;
-  margin-right: 35px;
+
+  right: 15px;
+
+  top: 50px;
+
+  height: 20px;
+  //border: 0;
+  //border-top-color: rgb(204, 208, 212);
+  //border-top-style: solid;
+  //border-top-width: 1px;
+  //border-top: 0;
+  //height: auto;
+  //margin-bottom: 0;
+  //padding: 3px 6px 3px 16px;
+  //background: #fff;
+  //border-radius: 0 0 4px 4px;
+  //color: #72777c;
+  //line-height: 1.7;
+  //box-shadow: 0 0 0 transparent;
+  //transition: box-shadow .1s linear;
+  //margin-right: 35px;
   //margin-top: -15px;
 }

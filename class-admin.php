@@ -745,7 +745,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     </div>
                     <div id="wpsi-toggle-options">
                         <div id="wpsi-toggle-link-wrap">
-                            <button type="button" id="wpsi-show-toggles" class="button show-settings"
+                            <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
                                     aria-controls="screen-options-wrap"><?php _e("Screen options", "wp-search-insights"); ?>
                                 <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
                         </div>
@@ -758,14 +758,24 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <ul class="tabs">
                             <div class="tabs-content">
                             <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
-                            <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard"
-                                                                                 href="#dashboard#top">Dashboard</a>
-                            </li>
-                            <?php if (current_user_can('manage_options')) { ?>
-                                <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings"
-                                                                            href="#settings#top">Settings</a></li>
-                            <?php } ?>
-                            <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+                                 <div class="header-links">
+                                    <div class="tab-links">
+                                    <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top">Dashboard</a>
+                                    </li>
+                                    <?php if (current_user_can('manage_options')) { ?>
+                                    <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top">Settings</a></li>
+                                    <?php } ?>
+                                    <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+                                    </div>
+                                    <div class="documentation-pro">
+                                        <div class="documentation">
+                                            <a href="https://wpsearchinsights.com/docs"><?php _e("Documentation", "wp-search-insights");?></a>
+                                        </div>
+                                        <div class="header-upsell">
+                                        <button class="button button-upsell"><?php _e("Donate", "wp-search-insights");?></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </ul>
                     </div>
