@@ -1147,6 +1147,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	                }
                 }
                 ?>
+                <?php
+                ?>
                 </tbody>
             </table>
             <?php
@@ -1472,12 +1474,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         {
             $items = array(
                 1 => array(
-                    'title' => __("How to use wpsi", "wp-search-insights"),
-                    'content' => __("lorem", "wp-search-insights"),
+//                    'title' => __("How to use wpsi", "wp-search-insights"),
+                    'content' => __("WP Search Insights beginner guide", "wp-search-insights"),
                 ),
                 2 => array(
-                    'title' => __("From page", "wp-search-insights"),
-                    'content' => __("lorem", "wp-search-insights"),
+                    'content' => __("Exporting and using Excel files", "wp-search-insights"),
                 ),
             );
             $container = $this->get_template('tipstricks-container.php');

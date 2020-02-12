@@ -1,6 +1,8 @@
 @brand-primary: #29b6f6;
 @color-success: #61ce70;
 @color-error: #d7263d;
+@light-text-color: #3c3c3c;
+@border-color: #DEDEDE;
 .update-nag{
   display:none;
 }
@@ -47,6 +49,13 @@
   .header-upsell {
     width: 100px;
   }
+  .button {
+    color: white !important;
+    background-color: #007BBC !important;
+  }
+  .button:hover {
+    background-color: #007BBC !important;
+  }
 }
 
 /**
@@ -81,12 +90,12 @@ widget
     }
     li .wpsi-frequency {
       float:right;
-      color:#666;
+      color:@light-text-color;
 
     }
     li .wpsi-time{
       margin-left:25px;
-      color:#666;
+      color:@light-text-color;
     }
     .dashicons-arrow-up-alt{
       color:@color-success;
@@ -109,7 +118,7 @@ widget
 .wpsi-dashboard-widget-grid li{
   height: 50px;
   border-top: 0 !important;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid @border-color;
   background-color: #fff;
 }
 
@@ -335,7 +344,7 @@ widget
     }
 
     table tbody tr {
-      border-bottom: .1em solid #ddd;
+      border-bottom: .1em solid @border-color;
     }
 
     table th,
@@ -355,6 +364,10 @@ widget
     thead tr:first-of-type {
       //background-color: #F5F6FA;
       //color: #A3A6B4;
+    }
+    
+    tbody {
+      color: @light-text-color;
     }
 
     tr:nth-child(even) {
@@ -379,7 +392,7 @@ widget
 
   .wpsi-term a {
     text-decoration: none;
-    color: black;
+    color: @light-text-color;
   }
 
   .wpsi-date-filter {
@@ -408,13 +421,13 @@ widget
     }
 
     .search-insights-table table tr {
-      border-bottom: 3px solid #ddd;
+      border-bottom: 3px solid @border-color;
       display: block;
       margin-bottom: .625em;
     }
 
     .search-insights-table table td {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid @border-color;
       display: block;
       font-size: .8em;
       text-align: right;
@@ -562,7 +575,7 @@ widget
     display: flex;
     flex-direction: column;
     height: 50px;
-    border-bottom: 1px solid #DEDEDE;
+    border-bottom: 1px solid @border-color;
   }
 
   .wpsi-nr-header-items {
@@ -577,7 +590,7 @@ widget
     justify-content: space-between;
     padding-top: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #DEDEDE;
+    border-bottom: 1px solid @border-color;
   }
 
   .popular-terms-title {
@@ -650,7 +663,7 @@ widget
   }
 
   .wpsi-result-count {
-    color: #666;
+    color: @light-text-color;
     padding-top: 10px;
     padding-left: 20px;
   }
@@ -815,6 +828,11 @@ widget
 
   .wpsi-tips-tricks-content {
     list-style: decimal;
+    list-style-position: inside;
+  }
+
+  .wpsi-tips-tricks-container-title {
+    border-bottom: 1px solid @border-color;
   }
 
   /*Tooltips on dashboard/settings page*/
@@ -1140,7 +1158,7 @@ widget
  */
 
 #wpsi-toggle-wrap {
-  margin-top: -15px;
+  margin-top: -28px;
 }
 
 #wpsi-toggle-dashboard {

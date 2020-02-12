@@ -33,6 +33,13 @@
 .wp-search-insights-container .header-upsell {
   width: 100px;
 }
+.wp-search-insights-container .button {
+  color: white !important;
+  background-color: #007BBC !important;
+}
+.wp-search-insights-container .button:hover {
+  background-color: #007BBC !important;
+}
 /**
 widget
  */
@@ -70,12 +77,12 @@ widget
 #dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-frequency,
 #wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-frequency {
   float: right;
-  color: #666;
+  color: #3c3c3c;
 }
 #dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-time,
 #wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-time {
   margin-left: 25px;
-  color: #666;
+  color: #3c3c3c;
 }
 #dashboard_widget_wpsi .inside #wpsi-dashboard-widget .dashicons-arrow-up-alt,
 #wpsi-dashboard .inside #wpsi-dashboard-widget .dashicons-arrow-up-alt {
@@ -96,7 +103,7 @@ widget
 .wpsi-dashboard-widget-grid li {
   height: 50px;
   border-top: 0 !important;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #DEDEDE;
   background-color: #fff;
 }
 .wpsi-dashboard-widget-grid ul {
@@ -305,7 +312,7 @@ widget
   padding: 0.35em;
 }
 #wpsi-dashboard .search-insights-table table tbody tr {
-  border-bottom: 0.1em solid #ddd;
+  border-bottom: 0.1em solid #DEDEDE;
 }
 #wpsi-dashboard .search-insights-table table th,
 #wpsi-dashboard .search-insights-table table td {
@@ -317,6 +324,9 @@ widget
 }
 #wpsi-dashboard .search-insights-table thead {
   border-top: 1px solid #DEDEDE;
+}
+#wpsi-dashboard .search-insights-table tbody {
+  color: #3c3c3c;
 }
 #wpsi-dashboard .search-insights-table tr:nth-child(even) {
   background-color: #FFFFFF;
@@ -335,7 +345,7 @@ widget
 }
 #wpsi-dashboard .wpsi-term a {
   text-decoration: none;
-  color: black;
+  color: #3c3c3c;
 }
 #wpsi-dashboard .wpsi-date-filter {
   border: 1px solid #DEDEDE;
@@ -359,12 +369,12 @@ widget
     width: 1px;
   }
   #wpsi-dashboard .search-insights-table table tr {
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid #DEDEDE;
     display: block;
     margin-bottom: 0.625em;
   }
   #wpsi-dashboard .search-insights-table table td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #DEDEDE;
     display: block;
     font-size: 0.8em;
     text-align: right;
@@ -538,7 +548,7 @@ widget
   background-color: #d7263d;
 }
 #wpsi-dashboard .wpsi-result-count {
-  color: #666;
+  color: #3c3c3c;
   padding-top: 10px;
   padding-left: 20px;
 }
@@ -651,6 +661,10 @@ widget
 }
 #wpsi-dashboard .wpsi-tips-tricks-content {
   list-style: decimal;
+  list-style-position: inside;
+}
+#wpsi-dashboard .wpsi-tips-tricks-container-title {
+  border-bottom: 1px solid #DEDEDE;
 }
 #wpsi-dashboard #settings .wpsi-tooltip-right {
   float: right;
@@ -885,7 +899,7 @@ widget
     Toggle boxes styling
  */
 #wpsi-toggle-wrap {
-  margin-top: -15px;
+  margin-top: -28px;
 }
 #wpsi-toggle-dashboard {
   height: 90px;
