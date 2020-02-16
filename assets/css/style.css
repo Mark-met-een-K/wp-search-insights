@@ -1,6 +1,12 @@
 .update-nag {
   display: none;
 }
+.tools_page_wpsi-settings-page #wpcontent {
+  padding: 0;
+}
+.tools_page_wpsi-settings-page .wrap {
+  margin: 0 0 0 0;
+}
 #wpsi-toggle-arrows {
   margin-top: 5px;
 }
@@ -235,7 +241,6 @@ widget
 }
 #wpsi-dashboard ul.tabs {
   margin: 0px;
-  margin-top: 15px;
   padding: 0px;
   list-style: none;
   height: 70px;
@@ -353,51 +358,6 @@ widget
 }
 #wpsi-dashboard .wpsi-date-filter {
   border: 1px solid #DEDEDE;
-}
-@media screen and (max-width: 800px) {
-  #wpsi-dashboard .search-insights-table table {
-    border: 0;
-    width: 80%;
-  }
-  #wpsi-dashboard .search-insights-table table caption {
-    font-size: 1.3em;
-  }
-  #wpsi-dashboard .search-insights-table table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
-  #wpsi-dashboard .search-insights-table table tr {
-    border-bottom: 3px solid #DEDEDE;
-    display: block;
-    margin-bottom: 0.625em;
-  }
-  #wpsi-dashboard .search-insights-table table td {
-    border-bottom: 1px solid #DEDEDE;
-    display: block;
-    font-size: 0.8em;
-    text-align: right;
-  }
-  #wpsi-dashboard .search-insights-table table td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  #wpsi-dashboard .search-insights-table table td:last-child {
-    border-bottom: 0;
-  }
-  #wpsi-dashboard #wpsi-popular-table {
-    margin-left: 15px;
-  }
-  #wpsi-dashboard .dataTables_info {
-    display: none;
-  }
 }
 #wpsi-dashboard #wpsi-recent-table,
 #wpsi-dashboard #wpsi-popular-table {
@@ -982,10 +942,8 @@ widget
 /*
     Toggle boxes styling
  */
-#wpsi-toggle-wrap {
-  margin-top: -28px;
-}
 #wpsi-toggle-dashboard {
+  margin-bottom: 10px;
   height: 90px;
   display: none;
   position: relative;
@@ -1009,16 +967,9 @@ widget
   margin-left: 15px !important;
 }
 #wpsi-toggle-link-wrap {
-  float: right;
-  margin-top: -1px;
-}
-#wpsi-toggle-link-wrap {
-  position: relative;
-  right: 15px;
-  top: 40px;
-  height: 20px;
+  width: 150px;
 }
 #wpsi-show-toggles {
-  height: 20px;
+  width: 125px !important;
 }
 /*# sourceMappingURL=style.css.map */

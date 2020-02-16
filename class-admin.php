@@ -742,16 +742,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             ?>
                         </div>
                     </div>
-                    <div id="wpsi-toggle-options">
-                        <div id="wpsi-toggle-link-wrap">
-                            <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
-                                    aria-controls="screen-options-wrap"><?php _e("Screen options", "wp-search-insights"); ?>
-                                <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
-                        </div>
-                    </div>
-                </div>
                 <div id="wpsi-dashboard">
-
                     <!--    Navigation-->
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
@@ -775,11 +766,18 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                             <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
                                         </a>
                                         </div>
+                                        <div id="wpsi-toggle-options">
+                                            <div id="wpsi-toggle-link-wrap">
+                                                <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
+                                                        aria-controls="screen-options-wrap"><?php _e("Screen options", "wp-search-insights"); ?>
+                                                    <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
                         </ul>
-                    </div>
                     <div class="wp-search-insights-main">
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
@@ -816,7 +814,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                         do_settings_sections('wpsi-settings');
                                         $this->save_button();
                                         ?>
-                                    </form>
                                 </div>
                             </div>
                                 <div id="wpsi-filter">
@@ -828,9 +825,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                          </span>
                                     </div>
                                     <div class="filter-save">
-                                        <form action="options.php" method="post">
                                         <?php
-                                        settings_fields('wpsi-settings-tab');
                                         $this->save_button(); ?>
                                         </form>
                                     </div>
@@ -1257,6 +1252,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         </div>
                     </div>
                     <div class="progress-text">
+                    <?php if ($results['results']['count'] ==! 0) { ?>
                         <span class="percentage"><?php echo $results['results']['percentage'] . "% " ?></span>
                         <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
                     </div>
@@ -1269,6 +1265,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             );
                             echo count(WPSI()->Search->get_searches_single($args));
                             ?>
+                        <?php } else { ?>
+                            <span class="percentage-text">
+                                <?php _e("No searches in selected period", "wp-search-insights");
+                                ?>
+                            </span>
+                            <?php } ?>
                         </span>
                     </div>
                     <div class="nr-widget-results-container">
@@ -1321,12 +1323,22 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                     );
 
                                 $top_search = WPSI()->Search->get_searches($args);
+                                if (!empty($top_search)) {
                                 echo $top_search[0]->term;
+                                } else {
+                                    _e("No result", "wp-search-insights");
+                                }
                                 ?>
                             </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights"); ?>
+                        <?php
+                            if (!empty($top_search)) {
+                            echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights");
+                             } else {
+                                 echo "0".__("searches", "wp-search-insights");
+                             }
+                       ?>
                         </div>
                     </div>
                     <div class="wpsi-nr-no-result">
@@ -1346,12 +1358,22 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                 );
 
                                 $top_search_no_result = WPSI()->Search->get_searches($args);
-                                echo $top_search_no_result[0]->term;
+                                if (!empty($top_search_no_result)) {
+                                    echo $top_search_no_result[0]->term;
+                                } else {
+                                    _e("No result", "wp-search-insights");
+                                }
                                 ?>
                             </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php echo  $top_search_no_result[0]->frequency . " ". __("searches", "wp-search-insights"); ?>
+                            <?php
+                             if (!empty($top_search_no_result)) {
+                                echo  $top_search_no_result[0]->frequency . " ". __("searches", "wp-search-insights");
+                             } else {
+                                 echo "0".__("searches", "wp-search-insights");
+                             }
+                             ?>
 
                         </div>
                     </div>
@@ -1394,7 +1416,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             // Get terms with more than one result
             $have_results = count(WPSI()->Search->get_searches($args));
             $no_results = $nr_of_terms - $have_results;
+            if ($have_results == 0) {
+            $percentage_results = 0;
+            } else {
             $percentage_results = $have_results / $nr_of_terms * 100;
+            }
             $percentage_no_results = 100 - $percentage_results;
 
             $results = array(
@@ -1507,7 +1533,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         {
             $items = array(
                 1 => array(
-//                    'title' => __("How to use wpsi", "wp-search-insights"),
                     'content' => __("WP Search Insights beginner guide", "wp-search-insights"),
                 ),
                 2 => array(
@@ -1523,10 +1548,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             $output = '';
             foreach ($items as $item) {
                 $output .= str_replace(array(
-                    '{title}',
                     '{content}',
                 ), array(
-                    $item['title'],
                     $item['content'],
                 ), $element);
             }

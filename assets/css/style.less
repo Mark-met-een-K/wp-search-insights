@@ -7,13 +7,17 @@
   display:none;
 }
 
-//#wpcontent {
-//  padding: 0;
-//}
-//
-//.wrap {
-//  margin: 0;
-//}
+// Override default WP padding and margin on dashboard
+.tools_page_wpsi-settings-page {
+
+  #wpcontent {
+    padding: 0;
+  }
+
+  .wrap {
+    margin: 0 0 0 0;
+  }
+}
 
 #wpsi-toggle-arrows {
   margin-top: 5px;
@@ -231,7 +235,6 @@ widget
 
   ul.tabs {
     margin: 0px;
-    margin-top: 15px;
     padding: 0px;
     list-style: none;
     height: 70px;
@@ -408,60 +411,60 @@ widget
     border: 1px solid #DEDEDE;
   }
 
-  @media screen and (max-width: 800px) {
-    .search-insights-table table {
-      border: 0;
-      width: 80%;
-    }
-
-    .search-insights-table table caption {
-      font-size: 1.3em;
-    }
-
-    .search-insights-table table thead {
-      border: none;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-
-    .search-insights-table table tr {
-      border-bottom: 3px solid @border-color;
-      display: block;
-      margin-bottom: .625em;
-    }
-
-    .search-insights-table table td {
-      border-bottom: 1px solid @border-color;
-      display: block;
-      font-size: .8em;
-      text-align: right;
-    }
-
-    .search-insights-table table td::before {
-      content: attr(data-label);
-      float: left;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    .search-insights-table table td:last-child {
-      border-bottom: 0;
-    }
-
-    #wpsi-popular-table {
-      margin-left: 15px;
-    }
-
-    .dataTables_info {
-      display: none;
-    }
-
-  }
+  //@media screen and (max-width: 800px) {
+  //  .search-insights-table table {
+  //    border: 0;
+  //    width: 80%;
+  //  }
+  //
+  //  .search-insights-table table caption {
+  //    font-size: 1.3em;
+  //  }
+  //
+  //  .search-insights-table table thead {
+  //    border: none;
+  //    clip: rect(0 0 0 0);
+  //    height: 1px;
+  //    margin: -1px;
+  //    overflow: hidden;
+  //    padding: 0;
+  //    position: absolute;
+  //    width: 1px;
+  //  }
+  //
+  //  .search-insights-table table tr {
+  //    border-bottom: 3px solid @border-color;
+  //    display: block;
+  //    margin-bottom: .625em;
+  //  }
+  //
+  //  .search-insights-table table td {
+  //    border-bottom: 1px solid @border-color;
+  //    display: block;
+  //    font-size: .8em;
+  //    text-align: right;
+  //  }
+  //
+  //  .search-insights-table table td::before {
+  //    content: attr(data-label);
+  //    float: left;
+  //    font-weight: bold;
+  //    text-transform: uppercase;
+  //  }
+  //
+  //  .search-insights-table table td:last-child {
+  //    border-bottom: 0;
+  //  }
+  //
+  //  #wpsi-popular-table {
+  //    margin-left: 15px;
+  //  }
+  //
+  //  .dataTables_info {
+  //    display: none;
+  //  }
+  //
+  //}
 
   /*
       Individual table styling
@@ -1272,11 +1275,8 @@ widget
     Toggle boxes styling
  */
 
-#wpsi-toggle-wrap {
-  margin-top: -28px;
-}
-
 #wpsi-toggle-dashboard {
+  margin-bottom: 10px;
   height: 90px;
   display: none;
   position: relative;
@@ -1304,17 +1304,10 @@ widget
 }
 
 #wpsi-toggle-link-wrap {
-  float: right;
-  margin-top: -1px;
+  width: 150px;
 }
 
-#wpsi-toggle-link-wrap {
-  position: relative;
-  right: 15px;
-  top: 40px;
-  height: 20px;
-}
 
 #wpsi-show-toggles {
-  height: 20px;
+  width: 125px !important;
 }
