@@ -276,6 +276,9 @@ widget
   outline: 0;
   box-shadow: 0 0 0 0;
 }
+#wpsi-dashboard .tab-text:focus {
+  box-shadow: initial;
+}
 #wpsi-dashboard .current .tab-text {
   padding-bottom: 21px;
   border-bottom: 2px solid #d7263d;
