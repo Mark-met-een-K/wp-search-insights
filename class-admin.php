@@ -1177,9 +1177,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function get_date($unix)
         {
 
-            $date = date(get_option('date_format'), $unix);
+//            $date = date(get_option('date_format'), $unix);
+            $date = date('y-m-d', $unix);
             $date = $this->localize_date($date);
-            $time = date(get_option('time_format'), $unix);
+//            $time = date(get_option('time_format'), $unix);
+            $time = date('H:i', $unix);
             $date = sprintf(__("%s at %s", 'wp-search-insights'), $date, $time);
 
             return $date;
