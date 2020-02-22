@@ -104,7 +104,6 @@ jQuery(document).ready(function ($) {
         $('.tab-settings')[0].click();
         window.location.href = href; //causes the browser to refresh and load the requested url
     }
-    // },15);
 
     /**
      * Checkboxes

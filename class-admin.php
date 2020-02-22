@@ -197,7 +197,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
 
 		public function reset_plus_one_ten_searches(){
-			error_log("on settings page");
 		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
 
 			$items        = WPSI::$search->get_searches_single();
