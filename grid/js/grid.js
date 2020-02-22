@@ -20,7 +20,8 @@ jQuery(document).ready(function($) {
             },
             dragReleaseDuration: 400,
             dragReleseEasing: 'ease',
-            layoutOnInit: true
+            layoutOnInit: true,
+            // itemDraggingClass: 'muuri-item-dragging',
         })
         // .on('dragStart', function (item) {
         //         ++dragCounter;
