@@ -111,7 +111,6 @@ jQuery(document).ready(function ($) {
 
     // Get grid toggle checkbox values
     var formValues = JSON.parse(localStorage.getItem('formValues')) || {};
-
     var $checkboxes = $("#wpsi-toggle-dashboard :checkbox");
 
     // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
