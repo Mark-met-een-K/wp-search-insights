@@ -29,7 +29,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
-
             add_action('admin_init', array($this, 'add_privacy_info'));
 
             $plugin = wpsi_plugin;
@@ -198,6 +197,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
 
 		public function reset_plus_one_ten_searches(){
+			error_log("on settings page");
 		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
 
 			$items        = WPSI::$search->get_searches_single();
@@ -242,7 +242,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		 */
 
 		public function add_settings_page() {
-		    error_log("load settings page");
 			if ( ! current_user_can( $this->capability ) ) {
 				return;
 			}
@@ -698,7 +697,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if (!current_user_can($this->capability)) {
                 return;
             }
-
+            do_action('wpsi_on_settings_page' );
             ?>
             <div class="wrap">
                 <div id="wpsi-toggle-wrap">
@@ -1333,8 +1332,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 <?php
                                 $args = array(
                                     'range' => $range,
-                                    'result_count' => true,
-                                    'compare' => "< 1",
+                                    'result_count' => 0,
                                     'orderby' => 'frequency',
                                     'order' => 'DESC',
                                     'number' => 1,
@@ -1373,7 +1371,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         /**
          * @param string $range
-         * @param bool $without_results
          * @return array
          *
          * Get the result count for a period
