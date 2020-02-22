@@ -18,34 +18,15 @@ class wpsi_tour {
 
 		self::$_this = $this;
 
-		$this->url = wp_search_insights_url.'/shepherd';
+		$this->url = wpsi_url.'/shepherd';
 		$this->version = wp_search_insights_version;
 		add_action( 'init', array( $this, 'listen_for_cancel_tour') );
-
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}
 
 	static function this()
 	{
 		return self::$_this;
-	}
-
-	/**
-	 * Initializes the admin class
-	 *
-	 * @since  1.0
-	 *
-	 * @access public
-	 *
-	 */
-
-	public function init() {
-
-
-		if ( ! current_user_can( $this->capability ) ) {
-			return;
-		}
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-
 	}
 
 	public function enqueue_assets($hook) {
@@ -78,7 +59,7 @@ class wpsi_tour {
 					. '/js/wpsi-tour.js', array('jquery'), $this->version );
 				wp_enqueue_script( 'wpsi-shepherd-tour' );
 
-				$logo = '<span class="wpsi-tour-logo"><img class="wpsi-tour-logo" style="width: 70px; height: 70px;" src="' . wp_search_insights_url . 'assets/images/logo.png"></span>';
+				$logo = '<span class="wpsi-tour-logo"><img class="wpsi-tour-logo" style="width: 70px; height: 70px;" src="' . wpsi_url . 'assets/images/logo.png"></span>';
 				$html = '<div class="wpsi-tour-logo-text">'.$logo.'<span class="wpsi-tour-text">{content}</span></div>';
 
 				wp_localize_script( 'wpsi-shepherd-tour', 'wpsi_tour',

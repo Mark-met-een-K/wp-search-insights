@@ -1,8 +1,8 @@
 <?php
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-if ( ! class_exists( 'WPSI_Admin' ) ) {
-    class WPSI_Admin{
+if ( ! class_exists( 'WPSI_ADMIN' ) ) {
+    class WPSI_ADMIN{
 
         private static $_this;
         public $grid_items;
@@ -21,7 +21,34 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             }
 
             self::$_this = $this;
-          
+
+            $this->capability = get_option('wpsi_select_dashboard_capability');
+
+	        add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
+
+
+            add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+            add_action('admin_menu', array($this, 'add_settings_page'), 40);
+
+            add_action('admin_init', array($this, 'add_privacy_info'));
+
+            $plugin = wpsi_plugin;
+
+            add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
+
+            add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+            add_action('admin_head', array($this, 'inline_styles'));
+
+            if (current_user_can('manage_options')) {
+                add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
+                add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
+                add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
+                add_action('update_option_wpsi_select_dashboard_capability', array($this, 'redirect_to_settings_tab'));
+
+                add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
+            }
+
+            add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
           
@@ -66,51 +93,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'can_hide' => false,
                 ),
             );
-        }
-
-
-        /**
-         * Initializes the admin class
-         *
-         * @since  1.0
-         *
-         * @access public
-         *
-         */
-
-        public function init()
-        {
-            $this->capability = get_option('wpsi_select_dashboard_capability');
-
-            if (!current_user_can($this->capability)) {
-                return;
-            }
-	        add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
-
-
-            add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
-            add_action('admin_menu', array($this, 'add_settings_page'), 40);
-
-            add_action('admin_init', array($this, 'add_privacy_info'));
-
-            $plugin = wp_search_insights_plugin;
-
-            add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
-
-            add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
-            add_action('admin_head', array($this, 'inline_styles'));
-
-            if (current_user_can('manage_options')) {
-                add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
-                add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
-                add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
-                add_action('update_option_wpsi_select_dashboard_capability', array($this, 'redirect_to_settings_tab'));
-
-                add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
-            }
-
-            add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
-
         }
 
         public function inline_styles()
@@ -168,12 +150,12 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
                 wp_register_style('search-insights',
-                    trailingslashit(wp_search_insights_url) . "assets/css/style.min.css", "",
+                    trailingslashit(wpsi_url) . "assets/css/style.min.css", "",
                     wp_search_insights_version);
                 wp_enqueue_style('search-insights');
 
                 wp_register_script('search-insights',
-                    trailingslashit(wp_search_insights_url)
+                    trailingslashit(wpsi_url)
                     . 'assets/js/scripts.js', array("jquery"), wp_search_insights_version);
                 wp_enqueue_script('search-insights');
                 wp_localize_script('search-insights', 'wpsi',
@@ -191,7 +173,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 
                 //Datatables javascript for interactive tables
                 wp_register_script('datatables',
-                    trailingslashit(wp_search_insights_url)
+                    trailingslashit(wpsi_url)
                     . 'assets/js/datatables.min.js', array("jquery"), wp_search_insights_version);
                 wp_enqueue_script('datatables');
 
@@ -199,13 +181,13 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 if ($hook == 'index.php') return;
 
                 wp_register_style('fontello',
-                    trailingslashit(wp_search_insights_url) . 'assets/font-icons/css/fontello.css', "",
+                    trailingslashit(wpsi_url) . 'assets/font-icons/css/fontello.css', "",
                     wp_search_insights_version);
                 wp_enqueue_style('fontello');
 
                 //Datatables plugin to hide pagination when it isn't needed
                 wp_register_script('datatables-pagination',
-                    trailingslashit(wp_search_insights_url)
+                    trailingslashit(wpsi_url)
                     . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wp_search_insights_version);
                 wp_enqueue_script('datatables-pagination');
             }
@@ -218,7 +200,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		public function reset_plus_one_ten_searches(){
 		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
 
-			$items        = WPSI()->Search->get_searches_single();
+			$items        = WPSI::$search->get_searches_single();
 			$search_count = count( $items );
 
 			if ($search_count>10) {
@@ -238,7 +220,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	            $plus_ones = 0;
 
 	            if (!get_option('wpsi_ten_searches_viewed_settings_page')) {
-		            $items        = WPSI()->Search->get_searches_single();
+		            $items        = WPSI::$search->get_searches_single();
 		            $search_count = count( $items );
 		            if ( $search_count > 10 ) {
 			            $plus_ones ++;
@@ -260,6 +242,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 		 */
 
 		public function add_settings_page() {
+		    error_log("load settings page");
 			if ( ! current_user_can( $this->capability ) ) {
 				return;
 			}
@@ -510,7 +493,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </label>
 
                 <?php
-                WPSI()->wpsi_help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
+                WPSI::$help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
                 ?>
             </div>
             <?php
@@ -530,7 +513,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </select>
             </label>
             <?php
-	        WPSI()->wpsi_help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights"));
+	        WPSI::$help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights"));
             ?>
             <?php
         }
@@ -549,7 +532,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 </label>
 
                 <?php
-                WPSI()->wpsi_help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
+                WPSI::$help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
                 ?>
             </div>
             <?php
@@ -562,7 +545,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                    max="24" value="<?php echo intval(get_option('wpsi_min_term_length')) ?>"
                    type="number" <?php checked(1, intval(get_option('wpsi_min_term_length'), true)) ?> </input>
             <?php
-	        WPSI()->wpsi_help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
+	        WPSI::$help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
             ?>
             <?php
         }
@@ -578,7 +561,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                    max="255" value="<?php echo intval(get_option('wpsi_max_term_length')) ?>"
                    type="number" <?php checked(1, intval(get_option('wpsi_max_term_length'), true)) ?> </input>
             <?php
-            WPSI()->wpsi_help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
+            WPSI::$help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
             ?>
             <?php
         }
@@ -593,7 +576,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'action' => 'clear_database',
             );
             $this->add_thickbox_button($args);
-//	        WPSI()->wpsi_help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
+//	        WPSI::$help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
             ?>
             <?php
         }
@@ -747,7 +730,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
                             <div class="tabs-content">
-                            <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
+                            <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wpsi_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
                                  <div class="header-links">
                                     <div class="tab-links">
                                     <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top"><?php _e("General", "wp-search-insights");?></a>
@@ -755,7 +738,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                     <?php if (current_user_can('manage_options')) { ?>
                                     <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top"><?php _e("Settings" , "wp-search-insights");?></a></li>
                                     <?php } ?>
-                                    <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wp_search_insights_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+                                    <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wpsi_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
                                     </div>
                                     <div class="documentation-pro">
                                         <div class="documentation">
@@ -782,7 +765,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
 <!--                            <div class="wpsi-settings-intro">-->
-<!--                                <img class="wpsi-settings-logo">--><?php //echo "<img class='wpsi-image' src='" . trailingslashit(wp_search_insights_url) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?><!--</img></span>-->
+<!--                                <img class="wpsi-settings-logo">--><?php //echo "<img class='wpsi-image' src='" . trailingslashit(wpsi_url) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?><!--</img></span>-->
 <!--                                <span class="wpsi-settings-intro-text">--><?php //_e('WP Search Insights', 'wp-search-insights') ?><!--</span>-->
 <!--                            </div>-->
 <!--                            <button class="button" id="wpsi-delete-selected">-->
@@ -792,8 +775,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             <?php
                             //get html of block
                             $grid_items = $this->grid_items;
-                            $container = $this->get_template('grid-container.php', wp_search_insights_path . '/grid');
-                            $element = $this->get_template('grid-element.php', wp_search_insights_path . '/grid');
+                            $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
+                            $element = $this->get_template('grid-element.php', wpsi_path . '/grid');
                             $output = '';
                             foreach ($grid_items as $index => $grid_item) {
                                 $output .= str_replace(array('{class}', '{content}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $index, $grid_item['type']), $element);
@@ -820,7 +803,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                     <div id="filter-inner">
                                         <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
                                             <?php
-                                            WPSI()->wpsi_help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
+                                            WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
                                             ?>
                                          </span>
                                     </div>
@@ -917,11 +900,11 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         }
 
 
-        public function get_template($file, $path = wp_search_insights_path, $args = array())
+        public function get_template($file, $path = wpsi_path, $args = array())
         {
 
             $file = trailingslashit($path) . 'templates/' . $file;
-            $theme_file = trailingslashit(get_stylesheet_directory()) . dirname(wp_search_insights_path) . $file;
+            $theme_file = trailingslashit(get_stylesheet_directory()) . dirname(wpsi_path) . $file;
 
             if (file_exists($theme_file)) {
                 $file = $theme_file;
@@ -948,7 +931,6 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
          * Generate the dashboard widget
          * Also generated the Top Searches grid item
          *
-         * @param bool $echo true if on wp dashboard
          * @param bool $on_grid true if on grid
          * @param string $range date range to view
          * @return false|string
@@ -966,7 +948,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches = get_transient("wpsi_popular_searches_$range");
+            $popular_searches = false;//get_transient("wpsi_popular_searches_$range");
             if ($on_grid) $popular_searches = false;
             if (!$popular_searches) {
                 $args = array(
@@ -976,7 +958,8 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'number' => 5,
                     'range' => $range,
                 );
-                $popular_searches = WPSI()->Search->get_searches($args, $trend = true, 'MONTH');
+
+                $popular_searches = WPSI::$search->get_searches($args, $trend = true, 'MONTH');
                 set_transient("wpsi_popular_searches_$range", $popular_searches, HOUR_IN_SECONDS);
             }
 
@@ -1024,7 +1007,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                     'number' => 5,
                     'range' => $range,
                 );
-                $top_searches = WPSI()->Search->get_searches($args, $trend = true, 'MONTH');
+                $top_searches = WPSI::$search->get_searches($args, $trend = true, 'MONTH');
                 set_transient("wpsi_top_searches_$range", $top_searches, HOUR_IN_SECONDS);
             }
             if (count($top_searches) == 0) {
@@ -1132,7 +1115,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'number' => 2000,
                 'range' => $range,
             );
-            $recent_searches = WPSI()->Search->get_searches_single($args);
+            $recent_searches = WPSI::$search->get_searches_single($args);
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
                 <caption>
@@ -1155,7 +1138,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	                $args = array(
 		                'term'  => $search->term,
 	                );
-	                $result = WPSI()->Search->get_searches($args);
+	                $result = WPSI::$search->get_searches($args);
 	                if ($result) {
 		                ?>
                         <tr>
@@ -1263,7 +1246,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                             $args = array(
                                 'range'=>$range
                             );
-                            echo count(WPSI()->Search->get_searches_single($args));
+                            echo count(WPSI::$search->get_searches_single($args));
                             ?>
                         <?php } else { ?>
                             <span class="percentage-text">
@@ -1322,7 +1305,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                     'number' => 1,
                                     );
 
-                                $top_search = WPSI()->Search->get_searches($args);
+                                $top_search = WPSI::$search->get_searches($args);
                                 if (!empty($top_search)) {
                                 echo $top_search[0]->term;
                                 } else {
@@ -1357,7 +1340,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                                     'number' => 1,
                                 );
 
-                                $top_search_no_result = WPSI()->Search->get_searches($args);
+                                $top_search_no_result = WPSI::$search->get_searches($args);
                                 if (!empty($top_search_no_result)) {
                                     echo $top_search_no_result[0]->term;
                                 } else {
@@ -1403,7 +1386,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
 	        $args = array(
 		        'range' => $range,
 	        );
-            $nr_of_terms = count(WPSI()->Search->get_searches_single($args));
+            $nr_of_terms = count(WPSI::$search->get_searches_single($args));
 
             // Set args for query
             $args = array(
@@ -1414,7 +1397,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
             );
 
             // Get terms with more than one result
-            $have_results = count(WPSI()->Search->get_searches($args));
+            $have_results = count(WPSI::$search->get_searches($args));
             $no_results = $nr_of_terms - $have_results;
             if ($have_results == 0) {
             $percentage_results = 0;
@@ -1455,7 +1438,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
                 'order' => 'DESC',
                 'number' => 1000,
             );
-            $popular_searches = WPSI()->Search->get_searches($args);
+            $popular_searches = WPSI::$search->get_searches($args);
             ?>
             <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
                 <div class="wpsi-caption">
@@ -1493,7 +1476,7 @@ if ( ! class_exists( 'WPSI_Admin' ) ) {
         public function generate_other_plugins()
         {
 
-            $plugin_url = trailingslashit(wp_search_insights_url);
+            $plugin_url = trailingslashit(wpsi_url);
             $items = array(
                 1 => array(
                     'title' => __("Really Simple SSL", "wp-search-insights"),
