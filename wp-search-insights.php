@@ -29,133 +29,107 @@
 */
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
-//Call register activation hook outside of class.
-register_activation_hook(__FILE__, 'search_insights_activation_hook' );
+if ( ! class_exists( 'WPSI' ) ) {
+	class WPSI {
+		public static $instance;
+		public static $search;
+		public static $admin;
+		public static $tour;
+		public static $review;
+		public static $help;
 
-class WPSI {
+		private function __construct() {
+			self::setup_constants();
+			self::includes();
+			self::load_translation();
 
-	private static $instance;
-
-	public $Search;
-    public $admin;
-	public $tour;
-	public $review;
-
-	private function __construct() {
-	}
-
-	public static function instance() {
-
-		if ( ! isset( self::$instance )
-		     && ! ( self::$instance instanceof WPSI )
-		) {
-
-			self::$instance = new WPSI;
-			self::$instance->setup_constants();
-			self::$instance->includes();
-
-			self::$instance->Search = new Search();
+			self::$search = new search();
 
 			if ( is_admin() ) {
-				self::$instance->review = new wpsi_review();
-                self::$instance->admin = new WPSI_Admin();
-				self::$instance->tour = new wpsi_tour();
+				self::$review = new wpsi_review();
+				self::$admin  = new WPSI_ADMIN();
+				self::$tour   = new wpsi_tour();
+				self::$help   = new wpsi_help();
 			}
 
-            if ( is_admin() ) {
-                self::$instance->wpsi_help
-                    = new wpsi_help();
-            }
-
-			self::$instance->hooks();
-
+			self::hooks();
 		}
 
-		return self::$instance;
-	}
+		/**
+		 * Instantiate the class.
+		 *
+		 * @return WPSI
+		 * @since 1.0.0
+		 *
+		 */
+		public static function get_instance() {
+			if ( ! isset( self::$instance )
+			     && ! ( self::$instance instanceof WPSI )
+			) {
+				self::$instance = new self();
+			}
 
-	private function setup_constants() {
-		define( 'wp_search_insights_url', plugin_dir_url( __FILE__ ) );
-		define( 'wp_search_insights_path',
-			trailingslashit( plugin_dir_path( __FILE__ ) ) );
-		define( 'wp_search_insights_plugin', plugin_basename( __FILE__ ) );
-		define( 'wp_search_insights_plugin_file', __FILE__ );
+			return self::$instance;
+		}
 
-		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		$plugin_data = get_plugin_data( __FILE__ );
-		$debug = defined("WP_DEBUG") && WP_DEBUG ? time() : "";
-		define( 'wp_search_insights_version', $plugin_data['Version'].$debug );
-	}
+		private function setup_constants() {
+			define( 'wpsi_url', plugin_dir_url( __FILE__ ) );
+			define( 'wpsi_path',
+				trailingslashit( plugin_dir_path( __FILE__ ) ) );
+			define( 'wpsi_plugin', plugin_basename( __FILE__ ) );
+			define( 'wpsi_plugin_file', __FILE__ );
 
-	private function includes()
-    {
-         if (is_admin()) {
-                require_once(wp_search_insights_path . 'class-admin.php');
-                require_once(wp_search_insights_path . 'class-help.php');
-                require_once(wp_search_insights_path . 'class-review.php');
-                require_once(wp_search_insights_path . 'shepherd/tour.php');
-                require_once(wp_search_insights_path . 'grid/grid-enqueue.php');
-         }
-            require_once(wp_search_insights_path . 'class-search.php');
-    }
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			$plugin_data = get_plugin_data( __FILE__ );
+			$debug       = defined( "WP_DEBUG" ) && WP_DEBUG ? time() : "";
+			define( 'wp_search_insights_version',
+				$plugin_data['Version'] . $debug );
+		}
 
-	private function hooks() {
+		private function includes() {
+			if ( is_admin() ) {
+				require_once( wpsi_path . 'class-admin.php' );
+				require_once( wpsi_path . 'class-help.php' );
+				require_once( wpsi_path . 'class-review.php' );
+				require_once( wpsi_path . 'shepherd/tour.php' );
+				require_once( wpsi_path . 'grid/grid-enqueue.php' );
+			}
+			require_once( wpsi_path . 'class-search.php' );
+		}
 
-		add_action( 'plugins_loaded',
-			array( $this, 'search_insights_update_db_check' ) );
+		/**
+		 * Load plugin translations.
+		 *
+		 * @return void
+		 * @since 1.0.0
+		 *
+		 */
+		private function load_translation() {
+			load_plugin_textdomain( 'wp-search-insights', false,
+				wpsi_path . '/languages/' );
+		}
 
-        if ( is_admin() ) {
-            add_action( 'plugins_loaded', array( self::$instance->admin, 'init' ), 10 );
-            add_action( 'plugins_loaded', array( self::$instance->tour, 'init' ), 10 );
-        }
+		private function hooks() {
+
+		}
 	}
 
 	/**
-	 * Check if database is still up to date. If not, update
+	 * Load the plugins main class.
 	 */
-
-	public function search_insights_update_db_check() {
-		if ( get_option( 'search_insights_db_version' ) != wp_search_insights_version ) {
-			global $wpdb;
-			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-			$charset_collate = $wpdb->get_charset_collate();
-
-			$table_name_single  = $wpdb->prefix . 'searchinsights_single';
-			$sql = "CREATE TABLE $table_name_single (
-                      `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                      `time` INT(11) NOT NULL,
-                      `term` text NOT NULL,
-                      `referrer` text NOT NULL,
-                      PRIMARY KEY (id)
-                    ) $charset_collate;";
-			dbDelta( $sql );
-
-			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
-			$sql = "CREATE TABLE $table_name_archive (
-                        `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                        `time` INT(11) NOT NULL,
-                        `term` text NOT NULL,
-                        `frequency` INT(10) NOT NULL,
-                        `result_count` INT(10) NOT NULL,
-                        PRIMARY KEY  (id)
-                      ) $charset_collate;";
-			dbDelta( $sql );
-			update_option( 'search_insights_db_version' , wp_search_insights_version);
-		}
-	}
-
-}//Class closure
-if (!function_exists('WPSI')) {
-
-	function WPSI() {
-		return WPSI::instance();
-	}
-
-	add_action( 'plugins_loaded', 'WPSI', 9 );
+	add_action(
+		'plugins_loaded',
+		function () {
+			WPSI::get_instance();
+		},
+		9
+	);
 }
 
 function search_insights_activation_hook() {
-    update_option('wpsi_min_term_length', 0);
-    update_option('wpsi_max_term_length', 50);
-    update_option('wpsi_select_dashboard_capability' , 'activate_plugins');
+	update_option( 'wpsi_min_term_length', 0 );
+	update_option( 'wpsi_max_term_length', 50 );
+	update_option( 'wpsi_select_dashboard_capability', 'activate_plugins' );
 }
+//Call register activation hook outside of class.
+register_activation_hook( __FILE__, 'search_insights_activation_hook' );

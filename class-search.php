@@ -24,8 +24,7 @@ if ( ! class_exists( 'Search' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 			add_action( 'wp_ajax_nopriv_wpsi_process_search', array( $this, 'get_ajax_search') );
 			add_action( 'wp_ajax_wpsi_process_search', array( $this, 'get_ajax_search') );
-
-
+			add_action( 'plugins_loaded', array( $this, 'update_db' ) );
 			add_action('wp_ajax_wpsi_delete_terms', array($this, 'ajax_delete_terms'));
 
 		}
@@ -99,14 +98,14 @@ if ( ! class_exists( 'Search' ) ) {
 				);
 			}
 
-            WPSI()->admin->clear_cache();
+            WPSI::$admin->clear_cache();
 		}
 
 
 		public function enqueue_assets() {
 			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
             wp_register_script( 'search-insights-frontend-js',
-                trailingslashit( wp_search_insights_url )
+                trailingslashit( wpsi_url )
                 . "assets/js/frontend$minified.js", array('jquery'), wp_search_insights_version , true);
             wp_enqueue_script( 'search-insights-frontend-js' );
             wp_localize_script( 'search-insights-frontend-js', 'search_insights_ajax',
@@ -389,7 +388,7 @@ if ( ! class_exists( 'Search' ) ) {
 				'number' => -1,
 				'term'=> false,
 				'time' => false,
-				'compare' => ">",
+				'compare' => false,
                 'from' => "*",
 				'range' => false,
 			);
@@ -429,8 +428,10 @@ if ( ! class_exists( 'Search' ) ) {
                 $where .= " AND result_count ";
                 if ($args['compare']) {
                     $where .= $args['compare'];
+                } else {
+	                $where .= "=";
                 }
-                $where .= "=" .$args['result_count'];
+                $where .= $args['result_count'];
 			}
 			if ($args['term']){
 				$where .= $wpdb->prepare(' AND term = %s ',sanitize_text_field($args['term']));
@@ -474,7 +475,6 @@ if ( ! class_exists( 'Search' ) ) {
 					$searches = false;
 				}
 			}
-
 			return $searches;
 		}
 
@@ -657,6 +657,47 @@ if ( ! class_exists( 'Search' ) ) {
 			}
 		}
 
-	}//Class closure
-} //if class exists closure
+
+		/**
+		 * Check if database is still up to date. If not, update
+		 */
+
+		public function update_db() {
+			if ( get_option( 'search_insights_db_version' )
+			     != wp_search_insights_version
+			) {
+				global $wpdb;
+				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+				$charset_collate = $wpdb->get_charset_collate();
+
+				$table_name_single = $wpdb->prefix . 'searchinsights_single';
+				$sql               = "CREATE TABLE $table_name_single (
+                      `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                      `time` INT(11) NOT NULL,
+                      `term` text NOT NULL,
+                      `referrer` text NOT NULL,
+                      PRIMARY KEY (id)
+                    ) $charset_collate;";
+				dbDelta( $sql );
+
+				$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+				$sql                = "CREATE TABLE $table_name_archive (
+                        `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                        `time` INT(11) NOT NULL,
+                        `term` text NOT NULL,
+                        `frequency` INT(10) NOT NULL,
+                        `result_count` INT(10) NOT NULL,
+                        PRIMARY KEY  (id)
+                      ) $charset_collate;";
+				dbDelta( $sql );
+				update_option( 'search_insights_db_version',
+					wp_search_insights_version );
+			}
+		}
+
+	}
+}
+
+
+
 

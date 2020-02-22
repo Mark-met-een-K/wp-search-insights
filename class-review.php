@@ -22,7 +22,7 @@ if (!class_exists("wpsi_review")) {
 			    }
 				$this->searchcount = get_transient('wpsi_total_searchcount');
 				if (!$this->searchcount){
-					$items = WPSI()->Search->get_searches_single();
+					$items = WPSI::$search->get_searches_single();
 					$this->searchcount = count($items);
 					set_transient('wpsi_total_searchcount', $this->searchcount, 'DAY_IN_SECONDS');
 				}
@@ -75,7 +75,7 @@ if (!class_exists("wpsi_review")) {
             </style>
 			<div id="message" class="updated fade notice is-dismissible wpsi-review really-simple-plugins" style="border-left:4px solid #333">
                 <div class="wpsi-container">
-                    <div class="wpsi-review-image"><img width=80px" src="<?php echo wp_search_insights_url?>/assets/images/logo.png" alt="review-logo"></div>
+                    <div class="wpsi-review-image"><img width=80px" src="<?php echo wpsi_url?>/assets/images/logo.png" alt="review-logo"></div>
                 <div style="margin-left:30px">
                 <?php if ($this->searchcount>$this->minimum_count){?>
 				<p><?php printf(__('Hi, WP Search Insights has given you insights on over %s searches on your site already, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), $this->searchcount, '<a href="wpsearchinsights.com/contact" target="_blank">', '</a>'); ?></p>
