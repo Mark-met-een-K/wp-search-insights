@@ -1389,8 +1389,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             // Set args for query
             $args = array(
 	            'range' => $range,
-	            'compare' => '>',
-                'from' => 'result_count',
                 'result_count' => 0,
             );
 
