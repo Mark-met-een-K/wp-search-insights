@@ -343,7 +343,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             array_unshift($links, $settings_link);
 
             $faq_link
-                = '<a target="_blank" href=" https://wpsearchinsights.com/documentation/">'
+                = '<a href="https://wpsearchinsights.com/documentation/" target="_blank">'
                 . __('Docs', 'wp-search-insights') . '</a>';
             array_unshift($links, $faq_link);
 
@@ -739,19 +739,19 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                     </div>
                                     <div class="documentation-pro">
                                         <div class="documentation">
-                                            <a href="https://wpsearchinsights.com/faq"><?php _e("Documentation", "wp-search-insights");?></a>
+                                            <a href="https://wpsearchinsights.com/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
+                                        </div>
+                                        <div id="wpsi-toggle-options">
+                                            <div id="wpsi-toggle-link-wrap">
+                                                <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
+                                                        aria-controls="screen-options-wrap"><?php _e("Display options", "wp-search-insights"); ?>
+                                                    <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down-alt2"></span></button>
+                                            </div>
                                         </div>
                                         <div class="header-upsell">
                                         <a href="https://paypal.me/wpsearchinsights" target="_blank">
                                             <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
                                         </a>
-                                        </div>
-                                        <div id="wpsi-toggle-options">
-                                            <div id="wpsi-toggle-link-wrap">
-                                                <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
-                                                        aria-controls="screen-options-wrap"><?php _e("Screen options", "wp-search-insights"); ?>
-                                                    <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down"></span></button>
-                                            </div>
                                         </div>
                                     </div>
                                     </div>
@@ -785,10 +785,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                     <div id="settings-section">
                                         <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3>
                                     <div>
-
                                             <?php
                                             settings_fields('wpsi-settings-tab');
                                             do_settings_sections('wpsi-settings');
+                                            ?> <div id="clear-searches-btn-border"></div> <?php
                                             $this->save_button();
                                             ?>
                                     </div>

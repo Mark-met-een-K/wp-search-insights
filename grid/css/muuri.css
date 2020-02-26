@@ -24,7 +24,7 @@
   background-color: #fff;
   position: relative;
   cursor: pointer;
-  border: 1px solid #cecece;
+  box-shadow: 1px 1px #dedede;
   width: 780px;
   height: 455px;
 }
@@ -46,5 +46,8 @@
 .wpsi-grid .wpsi-item.muuri-item-placeholder .item-container {
   border-style: dashed;
   padding: 0;
+}
+.wpsi-grid .upsell-grid-container .item-container {
+  box-shadow: none;
 }
 /*# sourceMappingURL=muuri.css.map */
