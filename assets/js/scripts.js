@@ -159,6 +159,8 @@ jQuery(document).ready(function ($) {
      * select and delete functions
      */
     function wpsiInitDeleteCapability() {
+        //move button to location in table
+        $(".table-footer").append($('#wpsi-delete-selected'));
 
         //set button to disabled
         $('#wpsi-delete-selected').attr('disabled', true);

@@ -388,6 +388,10 @@ widget
   padding-top: 10px;
   position: absolute;
   bottom: 50px;
+  width: 100%;
+}
+#wpsi-dashboard .table-footer button {
+  float: right;
 }
 #wpsi-dashboard .dataTables_info {
   text-align: left;

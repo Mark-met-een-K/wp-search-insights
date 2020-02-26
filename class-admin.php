@@ -761,13 +761,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     <div class="wp-search-insights-main">
                         <!--    Dashboard tab   -->
                         <div id="dashboard" class="tab-content current">
-<!--                            <div class="wpsi-settings-intro">-->
-<!--                                <img class="wpsi-settings-logo">--><?php //echo "<img class='wpsi-image' src='" . trailingslashit(wpsi_url) . "assets/images/noname_logo.png' alt='WP Search Insights logo'>"; ?><!--</img></span>-->
-<!--                                <span class="wpsi-settings-intro-text">--><?php //_e('WP Search Insights', 'wp-search-insights') ?><!--</span>-->
-<!--                            </div>-->
-<!--                            <button class="button" id="wpsi-delete-selected">-->
-<!--                                --><?php //_e("Delete selected terms", "wp-search-insights") ?>
-<!--                            </button>-->
+                            <button class="button" id="wpsi-delete-selected">
+                                <?php _e("Delete selected terms", "wp-search-insights") ?>
+                            </button>
 
                             <?php
                             //get html of block
@@ -1173,7 +1169,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         }
 
         public function get_referrer_link($referrer){
-            if ($referrer === 'home') {
+            error_log($referrer);
+            //legacy title search
+            $post_id = $this->get_post_by_title($referrer);
+            if ($post_id){
+                $url = get_permalink($post_id);
+                $referrer = get_the_title($post_id);
+            } elseif ($referrer === 'home' || $referrer === '') {
                 $url = site_url();
                 $referrer = __('Home','wp-search-insights');
             } elseif (strpos($referrer, site_url()) === FALSE) {
@@ -1183,6 +1185,16 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             }
             return '<a target="_blank" href="' . $url . '" target="_blank">' . $referrer . '</a>';
         }
+
+        private function get_post_by_title($title){
+			global $wpdb;
+
+			$query = $wpdb->prepare(
+				'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+				sanitize_text_field($title)
+			);
+			return $wpdb->get_var( $query );
+		}
 
 
         public function get_date($unix)
@@ -1414,7 +1426,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             } else {
                 $percentage_results = $have_results / $nr_of_terms * 100;
             }
-            
+
             $percentage_no_results = 100 - $percentage_results;
 
             return array(
