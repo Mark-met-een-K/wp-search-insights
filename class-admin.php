@@ -654,11 +654,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function listen_for_clear_database()
         {
-
             // Capability is checked before adding action for this function
 
             //check nonce
-            if (!isset($_GET['token']) || (!wp_verify_nonce($_GET['token'], 'wpsi_clear_database'))) {
+            if (!isset($_GET['token']) || (!wp_verify_nonce($_GET['token'], 'wpsi_thickbox_nonce'))) {
                 return;
             }
             //check for action
@@ -1145,7 +1144,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
                             <td><?php echo $result->result_count ?></td>
                             <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
-                            <td><?php echo $search->referrer ?></td>
+                            <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
                         </tr>
 		                <?php
 	                }
@@ -1171,6 +1170,18 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             $search_url = home_url() . "?s=" . $term . "&searchinsights";
             return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
+        }
+
+        public function get_referrer_link($referrer){
+            if ($referrer === 'home') {
+                $url = site_url();
+                $referrer = __('Home','wp-search-insights');
+            } elseif (strpos($referrer, site_url()) === FALSE) {
+                $url = site_url($referrer);
+            } else {
+                $url = $referrer;
+            }
+            return '<a target="_blank" href="' . $url . '" target="_blank">' . $referrer . '</a>';
         }
 
 
@@ -1302,7 +1313,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 $args = array(
                                     'range' => $range,
                                     'orderby' => 'frequency',
-                                    'order' => 'DESC',
+                                    'result_count' => 0,
+                                    'compare' => '>',
                                     'number' => 1,
                                     );
 
@@ -1320,7 +1332,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             if (!empty($top_search)) {
                             echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights");
                              } else {
-                                 echo "0".__("searches", "wp-search-insights");
+                                 echo "0 ".__("searches", "wp-search-insights");
                              }
                        ?>
                         </div>

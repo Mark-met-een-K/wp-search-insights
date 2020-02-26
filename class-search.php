@@ -177,7 +177,6 @@ if ( ! class_exists( 'Search' ) ) {
          */
 
         public function process_search_term( $search_term , $result_count ) {
-
         	//Exclude empty search queries
 	        if (strlen( $search_term ) === 0) {
 		        return;
@@ -191,21 +190,20 @@ if ( ! class_exists( 'Search' ) ) {
 
 	        // Check if search term should be filtered
 	        foreach ($filtered_terms as $term) {
-				if ($term === $search_term) {
-					return;
+				if ($term === $search_term) {return;
 				}
 	        }
 
 	        // Return if the query comes from an administrator and the exclude admin searches option is been enabled
             if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
-                return;
+	            return;
             }
 
             // Get the query arg. Use esc_url_raw instead of esc_url because it doesn't decode &
             $current_url = esc_url_raw( home_url( add_query_arg( $_GET ) ) );
             // When clicking on 'see results' in dashboard, &searchinsights will be added to the url. If this is found current url, return.
             if ( strpos( $current_url, "&searchinsights" ) !== false ) {
-                return;
+	            return;
             }
 
             // Check if the term length is below minimum value option
@@ -236,10 +234,11 @@ if ( ! class_exists( 'Search' ) ) {
 		 */
 
 		public function write_terms_to_db( $search_term, $result_count ) {
+			error_log($search_term);
 
 			global $wpdb;
 			//check if this search was written with five seconds ago
-			$replace_search_term=false;
+			$replace_search = false;
 			$search_term = sanitize_text_field($search_term);
 			$old_search_term = $search_term;
 			$now = $this->current_time();
@@ -255,7 +254,7 @@ if ( ! class_exists( 'Search' ) ) {
 			}
 
 			//last search is part of new search, overwrite existing entries with new search term
-			if ($last_search && $last_search_is_recent && strpos($last_search->term, $search_term)!==FALSE ){
+			if ($last_search && $last_search_is_recent && strpos( $search_term, $last_search->term)!==FALSE ){
 				$replace_search = $last_search;
 				$old_search_term = $last_search->term;
 			}
@@ -446,11 +445,12 @@ if ( ! class_exists( 'Search' ) ) {
 				$where .=" AND time > $time ";
 			}
 
+
+
 			/**
 			 * If $trend=true, we need two searches, to check foreach search the number of hits the previous trend month. We join these searches in one query
 			 */
 			$search_sql = "SELECT ".$args['from']." from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-
 			if ($trend){
 				switch ($trendperiod) {
 					case 'YEAR':
@@ -652,9 +652,9 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($uri_parts && isset($uri_parts[0])) $referrer = $uri_parts[0];
 			$post_id = url_to_postid($referrer);
 			if ($post_id){
-				return get_the_title($post_id);
+				return get_permalink($post_id);
 			} elseif (trailingslashit($referrer)==trailingslashit(site_url())) {
-				return __('Home','wp-search-insights');
+				return 'home';
 			} else {
 				return str_replace(site_url(), '', $referrer);
 			}
