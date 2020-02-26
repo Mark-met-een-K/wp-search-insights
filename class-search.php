@@ -652,7 +652,7 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($uri_parts && isset($uri_parts[0])) $referrer = $uri_parts[0];
 			$post_id = url_to_postid($referrer);
 			if ($post_id){
-				return get_permalink($post_id);
+				return str_replace(site_url(), '', get_permalink($post_id));
 			} elseif (trailingslashit($referrer)==trailingslashit(site_url())) {
 				return 'home';
 			} else {
