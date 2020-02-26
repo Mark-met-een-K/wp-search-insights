@@ -52,6 +52,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('change', '.wpsi-date-filter', function(e){
         e.stopPropagation();
+
         var container = $(this).closest('.item-content');
         var isDataTable = (container.find('.dataTable').length);
         var range = container.find('.wpsi-date-filter').val();

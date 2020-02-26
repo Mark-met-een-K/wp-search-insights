@@ -334,6 +334,9 @@ widget
 #wpsi-dashboard .search-insights-table table th {
   letter-spacing: 0.1em;
 }
+#wpsi-dashboard .search-insights-table table th:focus {
+  outline: none;
+}
 #wpsi-dashboard .search-insights-table thead {
   border-top: 1px solid #DEDEDE;
 }
