@@ -785,34 +785,35 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         </div>
                         <!--    Settings tab    -->
                         <?php if (current_user_can('manage_options')) { ?>
-                            <div id="settings" class="tab-content">
-                                <div id="settings-section">
-                                    <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3>
-                                <div>
-                                    <form action="options.php" method="post">
-                                        <?php
-                                        settings_fields('wpsi-settings-tab');
-                                        do_settings_sections('wpsi-settings');
-                                        $this->save_button();
-                                        ?>
-                                </div>
-                            </div>
-                                <div id="wpsi-filter">
-                                    <div id="filter-inner">
-                                        <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
+                            <form action="options.php" method="post">
+                                <div id="settings" class="tab-content">
+                                    <div id="settings-section">
+                                        <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3>
+                                    <div>
+
                                             <?php
-                                            WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
+                                            settings_fields('wpsi-settings-tab');
+                                            do_settings_sections('wpsi-settings');
+                                            $this->save_button();
                                             ?>
-                                         </span>
-                                    </div>
-                                    <div class="filter-save">
-                                        <?php
-                                        $this->save_button(); ?>
-                                        </form>
                                     </div>
                                 </div>
-                                <?php } ?>
-                            </div>
+                                    <div id="wpsi-filter">
+                                        <div id="filter-inner">
+                                            <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
+                                                <?php
+                                                WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
+                                                ?>
+                                             </span>
+                                        </div>
+                                        <div class="filter-save">
+                                            <?php
+                                            $this->save_button(); ?>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </form>
                     </div>
                 </div>
             </div>
@@ -1177,7 +1178,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
 
 //            $date = date(get_option('date_format'), $unix);
-            $date = date('y-m-d', $unix);
+            $date = date('Y-m-d', $unix);
             $date = $this->localize_date($date);
 //            $time = date(get_option('time_format'), $unix);
             $time = date('H:i', $unix);

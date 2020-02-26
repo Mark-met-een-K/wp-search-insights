@@ -243,23 +243,26 @@ if ( ! class_exists( 'Search' ) ) {
 			$search_term = sanitize_text_field($search_term);
 			$old_search_term = $search_term;
 			$now = $this->current_time();
-			$five_seconds_ago = $now-10;
 			$last_search = $this->get_last_search_term();
 
-			//exact match, ignore.
-			if ($last_search && $last_search->time > $five_seconds_ago && $last_search->term===$search_term){
+			//check if the last search is a recent search
+			$ten_seconds_ago = $now-10;
+			$last_search_is_recent = $last_search->time > $ten_seconds_ago;
+
+			//this search is the same as the previous one, which is recent, ignore.
+			if ($last_search && $last_search_is_recent && $last_search->term===$search_term){
 				return;
 			}
 
-			//differs only one character, overwrite existing entries with new search term
-			if ($last_search && $last_search->time > $five_seconds_ago && strpos($search_term, $last_search->term)!==FALSE ){
-				$replace_search_term = $last_search;
+			//last search is part of new search, overwrite existing entries with new search term
+			if ($last_search && $last_search_is_recent && strpos($last_search->term, $search_term)!==FALSE ){
+				$replace_search = $last_search;
 				$old_search_term = $last_search->term;
 			}
 
 			// Write the search term to the single database which contains each query
-			// if it's only one char different, it will replace the previous one.
-            $this->write_search_term_to_single_table( $search_term , $replace_search_term);
+			// if replace_search is passed, this term will be updated
+            $this->write_search_term_to_single_table( $search_term , $replace_search);
 
             // Check if search term exists in the archive database, if it does update the term count. Create a new entry otherwise
             $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
@@ -563,7 +566,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 		/**
 		 * @param $search_term
-         * @param $replace_search_term
+         * @param $replace_search
 		 *
 		 * Write search term to single table. Any additional information such as time and referer is added here too
 		 *
@@ -571,11 +574,11 @@ if ( ! class_exists( 'Search' ) ) {
 		 *
 		 */
 
-		public function write_search_term_to_single_table( $search_term , $replace_search_term=false) {
+		public function write_search_term_to_single_table( $search_term , $replace_search=false) {
 			global $wpdb;
 
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
-			if (!$replace_search_term) {
+			if (!$replace_search) {
 				$wpdb->insert(
 					$table_name_single,
 					array(
@@ -593,7 +596,7 @@ if ( ! class_exists( 'Search' ) ) {
 						'time'     => $this->current_time(),
 					),
 					array(
-						'id' => intval($replace_search_term->id),
+						'id' => intval($replace_search->id),
 					)
 				);
 			}
