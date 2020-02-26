@@ -1256,7 +1256,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         <span class="wpsi-search-count wpsi-header-right">
                             <?php
                             $args = array(
-                                'range'=>$range
+                                'range'=>$range,
                             );
                             echo count(WPSI::$search->get_searches_single($args));
                             ?>
@@ -1403,19 +1403,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $args = array(
 	            'range' => $range,
                 'result_count' => 0,
+                'compare' => '>',
             );
 
             // Get terms with more than one result
             $have_results = count(WPSI::$search->get_searches($args));
             $no_results = $nr_of_terms - $have_results;
-            if ($have_results == 0) {
-            $percentage_results = 0;
+            if ( $have_results == 0 ) {
+                $percentage_results = 0;
             } else {
-            $percentage_results = $have_results / $nr_of_terms * 100;
+                $percentage_results = $have_results / $nr_of_terms * 100;
             }
+            
             $percentage_no_results = 100 - $percentage_results;
 
-            $results = array(
+            return array(
                     'results' => array(
                             'percentage' => round($percentage_results,0),
                             'count' => $have_results,
@@ -1426,7 +1428,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     ),
                     'total' => $nr_of_terms
             );
-            return $results;
         }
 
 
