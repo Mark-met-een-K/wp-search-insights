@@ -22,6 +22,7 @@ if (!class_exists("wpsi_review")) {
 			    }
 				$this->searchcount = get_transient('wpsi_total_searchcount');
 				if (!$this->searchcount){
+				    if (!get_option('wpsi_database_created') ) return;
 					$items = WPSI::$search->get_searches_single();
 					$this->searchcount = count($items);
 					set_transient('wpsi_total_searchcount', $this->searchcount, 'DAY_IN_SECONDS');
