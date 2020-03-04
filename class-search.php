@@ -696,7 +696,8 @@ if ( ! class_exists( 'Search' ) ) {
 				update_option( 'search_insights_db_version',
 					wp_search_insights_version );
 			}
-		}
+            update_option('wpsi_database_created', true);
+        }
 
 	}
 }
