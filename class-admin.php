@@ -1508,7 +1508,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 2 => array(
                     'title' => __("Complianz Privacy Suite", "wp-search-insights"),
-                    'content' => __("Get compliant today in the European Union and/or in the United States,  Canada, and United Kingdom with the only Privacy Suite that offers a fully-featured plugin for GDPR, DSGVO,  PIPEDA, CCPA, COPPA and more!", "wp-search-insights"),
+                    'content' => __("Get compliant today in the European Union and/or in the United States,  Canada, and United Kingdom with the only Privacy Suite that offers a fully-featured privacy plugin!", "wp-search-insights"),
                     'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term",
                     'logo' => "$plugin_url"."assets/images/complianz-logo.png",
                 ),
