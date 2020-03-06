@@ -1547,7 +1547,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => __("Writing content for Google", "wp-search-insights"),
                 ),
             );
-            $button_link = "https://wpsearchinsights.com/tipsandtricks";
+            $button_link = "https://wpsearchinsights.com/tips-tricks/";
             $container = $this->get_template('tipstricks-container.php');
             $element = $this->get_template('tipstricks-element.php');
             $output = '';
