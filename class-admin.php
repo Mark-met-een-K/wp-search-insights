@@ -635,12 +635,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function option_textarea_filter()
         {
             ?>
-            <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">
-            <?php
-            echo
-            esc_html(get_option('wpsi_filter_textarea'));
-            ?>
-            </textarea>
+            <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea"><?php
+                echo esc_html(get_option('wpsi_filter_textarea'));
+            ?></textarea>
             <?php
         }
 
@@ -797,7 +794,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                         <div id="filter-inner">
                                             <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
                                                 <?php
-                                                WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Seperate each search term with whitespace or a comma", "wp-search-insights"));
+                                                WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Separate each search term with whitespace or a comma", "wp-search-insights"));
                                                 ?>
                                              </span>
                                         </div>
