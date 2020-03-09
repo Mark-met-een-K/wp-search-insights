@@ -635,12 +635,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function option_textarea_filter()
         {
             ?>
-            <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea">
-            <?php
-            echo
-            esc_html(get_option('wpsi_filter_textarea'));
-            ?>
-            </textarea>
+            <textarea name="wpsi_filter_textarea" rows="3" cols="40" id="wpsi_filter_textarea"><?php
+                echo esc_html(get_option('wpsi_filter_textarea'));
+            ?></textarea>
             <?php
         }
 

@@ -81,17 +81,18 @@ jQuery(document).ready(function ($) {
         });
     });
 
-
-
     /**
      * Show/hide dashboard items
      */
 
-    //Get the window hash for redirect to #settings after settings save
-    var hash = "#" + window.location.hash.substr(1);
-
-        $('ul.tabs li').click(function () {
+    $('ul.tabs li').click(function () {
         var tab_id = $(this).attr('data-tab');
+        // Sort and filter the grid
+        if  (tab_id !== 'dashboard') {
+            $('#wpsi-toggle-link-wrap').hide();
+        } else {
+            $('#wpsi-toggle-link-wrap').show();
+        }
 
         $('ul.tabs li').removeClass('current');
         $('.tab-content').removeClass('current');
@@ -100,9 +101,12 @@ jQuery(document).ready(function ($) {
         $("#" + tab_id).addClass('current');
     });
 
-    var href = $('.tab-settings').attr('href');
+    //Get the window hash for redirect to #settings after settings save
+    var hash = "#" + window.location.hash.substr(1);
+    var tab = window.location.hash.substr(1).replace('#top','');
+    var href = $('.tab-'+tab).attr('href');
     if (href === hash) {
-        $('.tab-settings')[0].click();
+        $('.tab-'+tab)[0].click();
         window.location.href = href; //causes the browser to refresh and load the requested url
     }
 
@@ -147,10 +151,10 @@ jQuery(document).ready(function ($) {
     // Show/hide screen options on toggle click
     $('#wpsi-show-toggles').click(function(){
         if ($("#wpsi-toggle-dashboard").is(":visible") ){
-            $("#wpsi-toggle-dashboard").hide();
+            $("#wpsi-toggle-dashboard").slideUp();
             $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-down-alt2');
         } else {
-            $("#wpsi-toggle-dashboard").show();
+            $("#wpsi-toggle-dashboard").slideDown();
             $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-up-alt2');
         }
     });
