@@ -597,6 +597,9 @@ widget
 #wpsi-dashboard .wpsi-cmplz .upsell-img {
   padding-right: 0;
 }
+#wpsi-dashboard .wpsi-cmplz .wpsi-upsell-button {
+  margin-right: 25px;
+}
 #wpsi-dashboard .wpsi-cmplz .wpsi-upsell-content {
   padding-right: 0px;
 }
