@@ -23,10 +23,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             self::$_this = $this;
 
             $this->capability = get_option('wpsi_select_dashboard_capability');
-
+			add_action('admin_init', array($this, 'init_grid') );
 	        add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
-
-
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
             add_action('admin_init', array($this, 'add_privacy_info'));
@@ -34,7 +32,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $plugin = wpsi_plugin;
 
             add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
-
             add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
             add_action('admin_head', array($this, 'inline_styles'));
 
@@ -43,15 +40,16 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
                 add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
                 add_action('update_option_wpsi_select_dashboard_capability', array($this, 'redirect_to_settings_tab'));
-
                 add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
             }
 
             add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
-          
-	        $this->grid_items = array(
+        }
+
+        public function init_grid(){
+            $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
                     'content' => $this->recent_table(),
@@ -1166,7 +1164,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         }
 
         public function get_referrer_link($referrer){
-            error_log($referrer);
             //legacy title search
             $post_id = $this->get_post_by_title($referrer);
             if ($post_id){
@@ -1187,9 +1184,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			global $wpdb;
 
 			$query = $wpdb->prepare(
-				'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+				'SELECT ID FROM ' . $wpdb->posts . " WHERE post_title = '%s'",
 				sanitize_text_field($title)
 			);
+
 			return $wpdb->get_var( $query );
 		}
 
