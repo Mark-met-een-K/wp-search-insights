@@ -741,7 +741,7 @@ widget
 .upsell-grid-container {
   display: flex;
   justify-content: space-between;
-  width: 800px;
+  //width: 800px;
 }
 
 .upsell-grid-container .item-content {
@@ -756,9 +756,7 @@ widget
     width: 800px;
   }
   .wpsi-upsell {
-    width: 450px;
-    margin-right: 20px;
-    margin-left: 10px;
+    width: 475px;
   }
 
   .wpsi-upsell-title {
@@ -766,8 +764,8 @@ widget
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid @border-color;
-    margin-bottom: 20px;
-    //padding-bottom: 10px;
+    //margin-bottom: 20px;
+    padding-bottom: 15px;
   }
 
 
@@ -777,26 +775,41 @@ widget
    }
 
   .upsell-img {
+    padding-right: 30px;
+    padding-top: 10px;
     height: 25px;
     width: 25px;
   }
 
+  .wpsi-rsssl {
+    padding-left: 25px;
+  }
+  
   .wpsi-top-title {
+    //padding-left: 25px;
     padding-bottom: 15px;
-    font-size: 1.2em;
     font-weight: 700;
   }
 
   .wpsi-upsell-content {
-    height: 33.33%;
-    margin-top: 20px;
+    //padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 15px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid @border-color;
+
+    .wpsi-sub-title {
+      padding-top: 10px;
+      padding-bottom: 15px;
+    }
   }
 
   .wpsi-upsell-button {
     height: 50px;
     display: flex;
     align-items: center;
-    border-top: 1px solid @border-color;
   }
 
   .wpsi-upsell-button > a {
@@ -898,7 +911,6 @@ widget
   }
 
   .wpsi-save-button {
-    outline: 1px solid @border-color;
     margin-bottom: 25px;
     width: 75px;
   }

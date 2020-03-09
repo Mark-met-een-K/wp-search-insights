@@ -1500,12 +1500,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => __("Really Simple SSL automatically detects your settings and configures your website to run over HTTPS! Migrate your website to SSL with just one-click", "wp-search-insights"),
                     'link' => admin_url() . "plugin-install.php?s=really+simple+ssl&tab=search&type=term",
                     'logo' => "$plugin_url"."assets/images/rsssl-logo.png",
+                    'class' => 'rsssl',
                 ),
                 2 => array(
                     'title' => __("Complianz Privacy Suite", "wp-search-insights"),
                     'content' => __("Get compliant today in the European Union and/or in the United States,  Canada, and United Kingdom with the only Privacy Suite that offers a fully-featured privacy plugin!", "wp-search-insights"),
                     'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term",
                     'logo' => "$plugin_url"."assets/images/complianz-logo.png",
+                    'class' => 'cmplz',
                 ),
             );
 
@@ -1518,11 +1520,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     '{logo}',
                     '{content}',
                     '{link}',
+                    '{class}',
                 ), array(
                     $item['title'],
                     $item['logo'],
                     $item['content'],
                     $item['link'],
+                    $item['class'],
                 ), $element);
 
             }

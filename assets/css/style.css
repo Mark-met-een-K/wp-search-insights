@@ -559,7 +559,6 @@ widget
 #wpsi-dashboard .upsell-grid-container {
   display: flex;
   justify-content: space-between;
-  width: 800px;
 }
 #wpsi-dashboard .upsell-grid-container .item-content {
   width: 100% !important;
@@ -571,38 +570,47 @@ widget
   width: 800px;
 }
 #wpsi-dashboard .wpsi-upsell {
-  width: 450px;
-  margin-right: 20px;
-  margin-left: 10px;
+  width: 475px;
 }
 #wpsi-dashboard .wpsi-upsell-title {
   height: 15%;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #DEDEDE;
-  margin-bottom: 20px;
+  padding-bottom: 15px;
 }
 #wpsi-dashboard .wpsi-upsell span.dashicons {
   color: #FFB900;
 }
 #wpsi-dashboard .upsell-img {
+  padding-right: 30px;
+  padding-top: 10px;
   height: 25px;
   width: 25px;
 }
+#wpsi-dashboard .wpsi-rsssl {
+  padding-left: 25px;
+}
 #wpsi-dashboard .wpsi-top-title {
   padding-bottom: 15px;
-  font-size: 1.2em;
   font-weight: 700;
 }
 #wpsi-dashboard .wpsi-upsell-content {
-  height: 33.33%;
-  margin-top: 20px;
+  padding-right: 25px;
+  padding-bottom: 15px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #DEDEDE;
+}
+#wpsi-dashboard .wpsi-upsell-content .wpsi-sub-title {
+  padding-top: 10px;
+  padding-bottom: 15px;
 }
 #wpsi-dashboard .wpsi-upsell-button {
   height: 50px;
   display: flex;
   align-items: center;
-  border-top: 1px solid #DEDEDE;
 }
 #wpsi-dashboard .wpsi-upsell-button > a {
   width: 80%;
@@ -675,7 +683,6 @@ widget
   justify-content: flex-start;
 }
 #wpsi-dashboard .wpsi-save-button {
-  outline: 1px solid #DEDEDE;
   margin-bottom: 25px;
   width: 75px;
 }
