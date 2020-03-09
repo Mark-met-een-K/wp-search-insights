@@ -55,6 +55,7 @@ jQuery(document).ready(function($) {
         saveLayout(grid);
     }
 
+
     function serializeLayout(grid) {
         var itemIds = grid.getItems().map(function (item) {
             return item.getElement().getAttribute('data-id');

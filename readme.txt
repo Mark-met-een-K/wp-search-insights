@@ -6,7 +6,7 @@ Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 1.1
+Stable tag: 1.2
 
 What are your visitors searching for? Keep track of on-site search activity with WP Search Insights. See terms, hits, results, and more!
 
