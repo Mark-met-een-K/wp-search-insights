@@ -280,7 +280,7 @@ widget
   box-shadow: initial;
 }
 #wpsi-dashboard .current .tab-text {
-  padding-bottom: 24px;
+  padding-bottom: 21px;
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
@@ -724,11 +724,14 @@ widget
 #wpsi-dashboard .wpsi-tips-tricks-content {
   font-size: 0.9em;
   color: #3c3c3c;
-  padding-bottom: 10px;
+  padding-bottom: 7px;
   list-style: decimal;
   list-style-position: inside;
 }
 #wpsi-dashboard .tips-tricks-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   height: 100px;
   margin-bottom: 10px;
   border-bottom: 1px solid #DEDEDE;
