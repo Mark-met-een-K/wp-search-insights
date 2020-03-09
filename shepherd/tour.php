@@ -82,13 +82,13 @@ class wpsi_tour {
 								'text'  => __( 'Your dashboard widget will show you the top 5 searches without results and top 5 searches overall. You can quickly access your dashboard from here.', 'wp-search-insights' ),
 								'link'  => admin_url( "tools.php?page=wpsi-settings-page" ),
 							),
-							3 => array(
-								'title' => __( "Popular searches", "wp-search-insights" ),
-								'text'  => __('WP Search Insights is recording your searches. The most popular search terms will be displayed here.', 'wp-search-insights') ,
-							),
+                            3 => array(
+                                'title' => __( "Recent searches", "wp-search-insights" ),
+                                'text'  => __('The recent searches section shows all recorded searches. It also displays when the search was made and from which post or page it originated.' ,'wp-search-insights') ,
+                            ),
 							4 => array(
-								'title' => __( "Recent searches", "wp-search-insights" ),
-								'text'  => __('The recent searches section shows all recorded searches. It also displays when the search was made and from which post or page it originated.' ,'wp-search-insights') ,
+								'title' => __( "Popular searches", "wp-search-insights" ),
+								'text'  => __('The most popular search terms will be displayed here.', 'wp-search-insights') ,
 							),
 							5 => array(
 								'title' => __('Configure WP Search Insights','wp-search-insights'),

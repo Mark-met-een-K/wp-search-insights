@@ -264,6 +264,7 @@ widget
 #wpsi-dashboard #wpsi-delete-selected {
   vertical-align: middle;
   margin-left: 25px;
+  margin-top: 20px;
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;
@@ -279,7 +280,7 @@ widget
   box-shadow: initial;
 }
 #wpsi-dashboard .current .tab-text {
-  padding-bottom: 24px;
+  padding-bottom: 21px;
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
@@ -674,7 +675,6 @@ widget
   justify-content: flex-start;
 }
 #wpsi-dashboard .wpsi-save-button {
-  outline: 1px solid #DEDEDE;
   margin-bottom: 25px;
   width: 75px;
 }
@@ -714,7 +714,7 @@ widget
   width: 95%;
 }
 #wpsi-dashboard .wpsi-tips-tricks-content {
-  font-size: 1em;
+  font-size: 0.9em;
   color: #3c3c3c;
   padding-bottom: 10px;
   list-style: decimal;
