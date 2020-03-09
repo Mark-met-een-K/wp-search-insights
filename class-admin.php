@@ -1498,7 +1498,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 1 => array(
                     'title' => __("Really Simple SSL", "wp-search-insights"),
                     'content' => __("Really Simple SSL automatically detects your settings and configures your website to run over HTTPS! Migrate your website to SSL with just one-click", "wp-search-insights"),
-                    'link' => admin_url() . "plugin-install.php?s=really+simple+ssl&tab=search&type=term",
+                    'link' => admin_url() . "plugin-install.php?s=Really+Simple+SSL+Mark+Wolters&tab=search&type=term",
                     'logo' => "$plugin_url"."assets/images/rsssl-logo.png",
                     'class' => 'rsssl',
                 ),
