@@ -591,6 +591,15 @@ widget
 #wpsi-dashboard .wpsi-rsssl {
   padding-left: 25px;
 }
+#wpsi-dashboard .wpsi-cmplz .wpsi-upsell-title {
+  margin-right: 25px;
+}
+#wpsi-dashboard .wpsi-cmplz .upsell-img {
+  padding-right: 0;
+}
+#wpsi-dashboard .wpsi-cmplz .wpsi-upsell-content {
+  padding-right: 0px;
+}
 #wpsi-dashboard .wpsi-top-title {
   padding-bottom: 15px;
   font-weight: 700;
