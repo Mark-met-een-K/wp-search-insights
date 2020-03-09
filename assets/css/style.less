@@ -784,6 +784,18 @@ widget
   .wpsi-rsssl {
     padding-left: 25px;
   }
+
+  .wpsi-cmplz {
+    .wpsi-upsell-title {
+      margin-right: 25px;
+    }
+    .upsell-img {
+      padding-right: 0;
+    }
+    .wpsi-upsell-content {
+      padding-right: 0px;
+    }
+  }
   
   .wpsi-top-title {
     //padding-left: 25px;
@@ -970,12 +982,15 @@ widget
   .wpsi-tips-tricks-content {
     font-size: 0.9em;
     color: @light-text-color;
-    padding-bottom: 10px;
+    padding-bottom: 7px;
     list-style: decimal;
     list-style-position: inside;
   }
 
   .tips-tricks-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     height: 100px;
     margin-bottom: 10px;
     border-bottom: 1px solid @border-color;

@@ -2,5 +2,5 @@
 <!--{title}-->
 <!--</div>-->
 <li class="wpsi-tips-tricks-content">
-{content}
+    <a href="{link}">{content}</a>
 </li>

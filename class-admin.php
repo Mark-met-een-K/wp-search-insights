@@ -1537,14 +1537,30 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             $items = array(
                 1 => array(
-                    'content' => __("WP Search Insights beginner guide", "wp-search-insights"),
+                    'content' => __("Writing Content for Google", "wp-search-insights"),
+                    'link'    => 'https://wpsearchinsights.com/writing-content-for-google/',
                 ),
                 2 => array(
-                    'content' => __("Exporting and using Excel files", "wp-search-insights"),
+                    'content' => __("WP Search Insights Beginner's Guide", "wp-search-insights"),
+                    'link' => 'https://wpsearchinsights.com/wp-search-insights-beginners-guide/',
                 ),
                 3 => array(
-                    'content' => __("Writing content for Google", "wp-search-insights"),
+                    'content' => __("Using CSV/Excel Exports", "wp-search-insights"),
+                    'link' => 'https://wpsearchinsights.com/using-csv-excel-exports/',
                 ),
+                4 => array(
+                    'content' => __("Improving your Search Result Page", "wp-search-insights"),
+                    'link' => 'https://wpsearchinsights.com/improving-your-search-result-page/',
+                ),
+                5 => array(
+                    'content' => __("The Search Filter", "wp-search-insights"),
+                    'link' => 'https://wpsearchinsights.com/the-search-filter/',
+                ),
+                6 => array(
+                    'content' => __("Positioning your search form", "wp-search-insights"),
+                    'link' => 'https://wpsearchinsights.com/about-search-forms/',
+                ),
+
             );
             $button_link = "https://wpsearchinsights.com/tips-tricks/";
             $container = $this->get_template('tipstricks-container.php');
@@ -1552,8 +1568,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $output = '';
             foreach ($items as $item) {
                 $output .= str_replace(array(
+                    '{link}',
                     '{content}',
                 ), array(
+                    $item['link'],
                     $item['content'],
                 ), $element);
             }

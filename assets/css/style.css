@@ -280,7 +280,7 @@ widget
   box-shadow: initial;
 }
 #wpsi-dashboard .current .tab-text {
-  padding-bottom: 24px;
+  padding-bottom: 21px;
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
@@ -591,6 +591,15 @@ widget
 #wpsi-dashboard .wpsi-rsssl {
   padding-left: 25px;
 }
+#wpsi-dashboard .wpsi-cmplz .wpsi-upsell-title {
+  margin-right: 25px;
+}
+#wpsi-dashboard .wpsi-cmplz .upsell-img {
+  padding-right: 0;
+}
+#wpsi-dashboard .wpsi-cmplz .wpsi-upsell-content {
+  padding-right: 0px;
+}
 #wpsi-dashboard .wpsi-top-title {
   padding-bottom: 15px;
   font-weight: 700;
@@ -724,11 +733,14 @@ widget
 #wpsi-dashboard .wpsi-tips-tricks-content {
   font-size: 0.9em;
   color: #3c3c3c;
-  padding-bottom: 10px;
+  padding-bottom: 7px;
   list-style: decimal;
   list-style-position: inside;
 }
 #wpsi-dashboard .tips-tricks-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   height: 100px;
   margin-bottom: 10px;
   border-bottom: 1px solid #DEDEDE;
