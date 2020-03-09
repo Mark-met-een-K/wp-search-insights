@@ -1,11 +1,12 @@
-    <div class="wpsi-upsell wpsi-rsssl">
+    <div class="wpsi-upsell wpsi-{class}">
         <div class="wpsi-upsell-title">
-            <span class="wpsi-top-title">{title}
+            <span class="wpsi-top-title"><h3>{title}</h3>
             </span>
             <span class="upsell-logo">
                 <img src="{logo}" class="upsell-img"/>
             </span>
         </div>
+        <div class="wpsi-upsell-content">
             <span class="wpsi-sub-title">
                 <span class="dashicons dashicons-star-filled"></span>
                 <span class="dashicons dashicons-star-filled"></span>
@@ -13,7 +14,6 @@
                 <span class="dashicons dashicons-star-filled"></span>
                 <span class="dashicons dashicons-star-filled"></span>
             </span>
-        <div class="wpsi-upsell-content">
             {content}
         </div>
         <div class="wpsi-upsell-button">
