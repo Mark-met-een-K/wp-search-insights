@@ -119,12 +119,12 @@ jQuery(document).ready(function ($) {
     var checkboxes = $("#wpsi-toggle-dashboard :checkbox");
 
     // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
-    if (localStorage.getItem("wpsiDashboardDefaultsSet") === null) {
+    if (localStorage.getItem("wpsi_grid_initialized") === null) {
             checkboxes.each(function () {
                 wpsi_grid_configuration[this.id] = 'checked';
             });
             localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
-        localStorage.setItem('wpsiDashboardDefaultsSet', 'set');
+        localStorage.setItem('wpsi_grid_initialized', 'set');
     }
 
     // Update storage checkbox value when checkbox value changes
