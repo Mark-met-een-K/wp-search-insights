@@ -492,7 +492,7 @@ if ( ! class_exists( 'Search' ) ) {
 			$defaults = array(
 				'number' => -1,
 				'order' => 'DESC',
-				'orderby' => 'term',
+				'orderby' => 'time',
 				'term'=> false,
 				'time' => false,
 				'compare' => ">",
