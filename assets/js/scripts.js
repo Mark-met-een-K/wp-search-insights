@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
                     },
                     searchPlaceholder: "Search",
                     "search": "",
-                    "emptyTable": "No searches recorded yet!"
+                    "emptyTable": "No searches recorded in selected period!"
                 },
                 "order": [[1, "desc"]],
             });

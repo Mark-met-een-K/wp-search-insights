@@ -52,7 +52,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
-                    'content' => $this->recent_table(),
+                    'content' => $this->recent_table('week'),
                     'class' => '',
                     'type' => 'all',
                     'can_hide' => true,
@@ -60,7 +60,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 2 => array(
                     'title' => __("Results", "wp-search-insights"),
-                    'content' => $this->results_table(),
+                    'content' => $this->results_table('week'),
                     'class' => 'small',
                     'type' => 'results',
                     'can_hide' => true,
@@ -162,7 +162,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                'dateFilter'   => '<select class="wpsi-date-filter">
                                                 <option value="all">'.__("All time", "wp-search-insights").'</option>
                                                 <option value="year">'.__("Year", "wp-search-insights").'</option>
-                                                <option value="week">'.__("Week", "wp-search-insights").'</option>
+                                                <option value="week" selected="selected">'.__("Week", "wp-search-insights").'</option>
                                                 <option value="day">'.__("Day", "wp-search-insights").'</option>
                                             </select>',
 	                )
@@ -1232,7 +1232,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * @since 1.2
          */
 
-        public function results_table($range='all')
+        public function results_table($range='week')
         {
             ob_start();
 	        $results = $this->get_results($range)
