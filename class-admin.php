@@ -924,7 +924,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * @param string $range date range to view
          * @return false|string
          */
-        public function generate_dashboard_widget($on_grid = false, $range = 'all')
+        public function generate_dashboard_widget($on_grid = false, $range = 'month')
         {
             ob_start();
 
@@ -937,7 +937,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches = false;//get_transient("wpsi_popular_searches_$range");
+            $popular_searches = get_transient("wpsi_popular_searches_$range");
             if ($on_grid) $popular_searches = false;
             if (!$popular_searches) {
                 $args = array(
