@@ -115,33 +115,32 @@ jQuery(document).ready(function ($) {
      */
 
     // Get grid toggle checkbox values
-    var formValues = JSON.parse(localStorage.getItem('formValues')) || {};
-    var $checkboxes = $("#wpsi-toggle-dashboard :checkbox");
+    var wpsi_grid_configuration = JSON.parse(localStorage.getItem('wpsi_grid_configuration')) || {};
+    var checkboxes = $("#wpsi-toggle-dashboard :checkbox");
 
     // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
     if (localStorage.getItem("wpsiDashboardDefaultsSet") === null) {
-            console.log("localstorage default not set, enable all");
-            $checkboxes.each(function () {
-                formValues[this.id] = 'checked';
+            checkboxes.each(function () {
+                wpsi_grid_configuration[this.id] = 'checked';
             });
-            localStorage.setItem("formValues", JSON.stringify(formValues));
+            localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
         localStorage.setItem('wpsiDashboardDefaultsSet', 'set');
     }
 
     // Update storage checkbox value when checkbox value changes
-    $checkboxes.on("change", function(){
+    checkboxes.on("change", function(){
         updateStorage();
     });
 
     function updateStorage(){
-        $checkboxes.each(function(){
-            formValues[this.id] = this.checked;
+        checkboxes.each(function(){
+            wpsi_grid_configuration[this.id] = this.checked;
         });
-        localStorage.setItem("formValues", JSON.stringify(formValues));
+        localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
     }
 
     // Get checkbox values on pageload
-    $.each(formValues, function(key, value) {
+    $.each(wpsi_grid_configuration, function(key, value) {
         $("#" + key).prop('checked', value);
     });
 
