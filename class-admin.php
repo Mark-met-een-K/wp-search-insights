@@ -23,17 +23,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             self::$_this = $this;
 
             $this->capability = get_option('wpsi_select_dashboard_capability');
-			add_action('admin_init', array($this, 'init_grid') );
-	        add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
-            add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
+
+            $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
+
+            if ($is_wpsi_page) {
+                add_action('admin_init', array($this, 'init_grid') );
+                add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+                add_action('admin_head', array($this, 'inline_styles'));
+            }
+
             add_action('admin_init', array($this, 'add_privacy_info'));
 
             $plugin = wpsi_plugin;
 
             add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
             add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
-            add_action('admin_head', array($this, 'inline_styles'));
+            add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
+
 
             if (current_user_can('manage_options')) {
                 add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
@@ -45,6 +52,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
+
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
         }
 
@@ -1101,7 +1109,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             ob_start();
 
             $args = array(
-                'number' => 2000,
+                'number' => 1000,
                 'range' => $range,
             );
             $recent_searches = WPSI::$search->get_searches_single($args);
@@ -1173,11 +1181,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 $url = site_url();
                 $referrer = __('Home','wp-search-insights');
             } elseif (strpos($referrer, site_url()) === FALSE) {
-                $url = site_url($referrer);
+                $url = site_url( sanitize_title( $referrer ) );
             } else {
                 $url = $referrer;
             }
-            return '<a target="_blank" href="' . $url . '" target="_blank">' . $referrer . '</a>';
+            return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . $referrer . '</a>';
         }
 
         private function get_post_by_title($title){
@@ -1194,11 +1202,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_date($unix)
         {
-
-//            $date = date(get_option('date_format'), $unix);
             $date = date('Y-m-d', $unix);
             $date = $this->localize_date($date);
-//            $time = date(get_option('time_format'), $unix);
             $time = date('H:i', $unix);
             $date = sprintf(__("%s at %s", 'wp-search-insights'), $date, $time);
 
