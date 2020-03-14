@@ -1169,21 +1169,33 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
         }
 
+        /**
+        * Get referrer link
+        * @param $referrer
+        *
+        * @return string
+         */
+
         public function get_referrer_link($referrer){
             //legacy title search
             $post_id = $this->get_post_by_title($referrer);
             if ($post_id){
                 $url = get_permalink($post_id);
                 $referrer = get_the_title($post_id);
-            } elseif ($referrer === 'home' || $referrer === '') {
+            } elseif ($referrer === 'home' || $referrer === '' || $referrer === '/') {
                 $url = site_url();
                 $referrer = __('Home','wp-search-insights');
             } elseif (strpos($referrer, site_url()) === FALSE) {
-                $url = site_url( sanitize_title( $referrer ) );
+                $url = site_url(sanitize_title( $referrer) );
             } else {
                 $url = $referrer;
             }
-            return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . $referrer . '</a>';
+
+            //make sure the link is not too long
+            if (strlen($referrer)>30){
+                $referrer = substr($referrer, 0, 30).'...';
+            }
+            return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';
         }
 
         private function get_post_by_title($title){

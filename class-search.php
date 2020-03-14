@@ -71,7 +71,7 @@ if ( ! class_exists( 'Search' ) ) {
 			exit;
 		}
 
-		
+
 		/**
 		 * Delete term by id
 		 * @param $term_id
