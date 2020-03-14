@@ -84,14 +84,19 @@ widget
   margin: 0;
   padding: 8px 12px;
   color: #32373c;
+  position: relative;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-frequency,
-#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-frequency {
-  float: right;
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-rowfooter,
+#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-rowfooter {
+  display: flex;
+  justify-content: space-between;
+}
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-rowfooter .wpsi-frequency,
+#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-rowfooter .wpsi-frequency {
   color: #3c3c3c;
 }
-#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-time,
-#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-time {
+#dashboard_widget_wpsi .inside #wpsi-dashboard-widget li .wpsi-rowfooter .wpsi-time,
+#wpsi-dashboard .inside #wpsi-dashboard-widget li .wpsi-rowfooter .wpsi-time {
   margin-left: 25px;
   color: #3c3c3c;
 }
@@ -141,30 +146,30 @@ widget
   padding-top: 5px;
   margin-top: 10px;
 }
-.wpsi-time {
-  margin: 0 !important;
-}
-.wpsi-widget-grid-wrapper {
+.wpsi-dashboard-widget-grid {
   padding-top: 5px;
 }
-.wpsi-frequency {
+.wpsi-dashboard-widget-grid .wpsi-time {
+  margin: 0 !important;
+}
+.wpsi-dashboard-widget-grid .wpsi-frequency {
   padding-top: 10px;
 }
-.wpsi-time {
+.wpsi-dashboard-widget-grid .wpsi-time {
   margin-top: -10px;
 }
 /*
-    *
-    *   Dashboard styling
-    *
- */
+  *
+  *   Dashboard styling
+  *
+*/
 #wpsi-dashboard {
   /*
       Navigation & tabs
    */
   /*
-  General table styling
-*/
+    General table styling
+  */
   /*
       Individual table styling
    */
@@ -172,8 +177,8 @@ widget
       Table footer
    */
   /*
-        No Results grid item
-     */
+      No Results grid item
+   */
   /*
     Progress bar
    */
@@ -411,7 +416,7 @@ widget
   cursor: pointer;
   text-decoration: -webkit-link;
   color: #0073aa;
-  transition-property: border,background,color;
+  transition-property: border, background, color;
   transition-duration: 0.05s;
   transition-timing-function: ease-in-out;
   text-decoration: underline;

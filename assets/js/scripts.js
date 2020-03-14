@@ -21,9 +21,9 @@ jQuery(document).ready(function ($) {
                     },
                     searchPlaceholder: "Search",
                     "search": "",
-                    "emptyTable": "No searches recorded yet!"
+                    "emptyTable": "No searches recorded in selected period!"
                 },
-                "order": [[1, "desc"]],
+                "order": [[2, "desc"]],
             });
         });
 
@@ -57,6 +57,9 @@ jQuery(document).ready(function ($) {
         var isDataTable = (container.find('.dataTable').length);
         var range = container.find('.wpsi-date-filter').val();
         var type = $(this).closest('.wpsi-item').data('table_type');
+
+        container.html('loading...');
+
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,

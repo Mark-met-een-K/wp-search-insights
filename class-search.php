@@ -72,9 +72,6 @@ if ( ! class_exists( 'Search' ) ) {
 		}
 
 
-
-
-
 		/**
 		 * Delete term by id
 		 * @param $term_id
@@ -85,20 +82,24 @@ if ( ! class_exists( 'Search' ) ) {
 
 			global $wpdb;
 			//get the term, so we can also remove it from the single table
-			$term = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_archive where id=%s", intval($term_id)));
+			$term_single = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_single where id=%s", intval($term_id)));
+
 			$wpdb->delete(
-				$wpdb->prefix . 'searchinsights_archive',
+				$wpdb->prefix . 'searchinsights_single',
 				array('id' => intval($term_id))
 			);
 
-			if ($term){
-				$wpdb->delete(
-					$wpdb->prefix . 'searchinsights_single',
-					array('term' => sanitize_text_field($term))
-				);
+			if ($term_single){
+				$count = $wpdb->get_var($wpdb->prepare("select count(*) as count from {$wpdb->prefix}searchinsights_archive where term = %s", sanitize_text_field($term_single) ) );
+				if ($count<=1) {
+					$wpdb->delete(
+						$wpdb->prefix . 'searchinsights_archive',
+						array( 'term' => sanitize_text_field( $term_single ) )
+					);
+				}
 			}
 
-            WPSI::$admin->clear_cache();
+			WPSI::$admin->clear_cache();
 		}
 
 
@@ -371,7 +372,6 @@ if ( ! class_exists( 'Search' ) ) {
 					array('id' => $id)
 				);
 			}
-
 		}
 
 		/**
@@ -382,7 +382,7 @@ if ( ! class_exists( 'Search' ) ) {
 		 * @return array $searches
 		 */
 
-		public function get_searches($args=array(), $trend=false, $trendperiod='MONTH'){
+		public function get_searches($args=array(), $trend=false, $trendperiod='month'){
 			$defaults = array(
 				'orderby' => 'frequency',
                 'order' => 'DESC',
@@ -393,6 +393,7 @@ if ( ! class_exists( 'Search' ) ) {
 				'compare' => false,
                 'from' => "*",
 				'range' => false,
+				'include'
 			);
             $args = wp_parse_args( $args,$defaults);
             if ($args['range'] && $args['range']!=='all'){
@@ -453,12 +454,13 @@ if ( ! class_exists( 'Search' ) ) {
 			$search_sql = "SELECT ".$args['from']." from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
 			if ($trend){
 				switch ($trendperiod) {
-					case 'YEAR':
+					case 'year':
 						$period = 'years';
 						break;
-					case 'DAY':
+					case 'day':
 						$period = 'days';
 						break;
+					case 'month':
 					default:
 						$period = 'months';
 				}
@@ -492,11 +494,12 @@ if ( ! class_exists( 'Search' ) ) {
 			$defaults = array(
 				'number' => -1,
 				'order' => 'DESC',
-				'orderby' => 'term',
+				'orderby' => 'time',
 				'term'=> false,
 				'time' => false,
 				'compare' => ">",
 				'range' => false,
+				'result_count' => false,
 			);
 			$args = wp_parse_args( $args, $defaults);
 
@@ -538,28 +541,38 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['time']){
 				$compare = $args['compare']=='>' ? '>' : '<';
 				$time = intval($args['time']);
-				$where .=" AND time > $time ";
+				$where .=" AND time $compare $time ";
 			}
-			$searches =$wpdb->get_results( "SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit" );
+			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
 
-            if ($trend){
-                switch ($trendperiod) {
-                    case 'YEAR':
-                        $period = 'years';
-                        break;
-                    case 'DAY':
-                        $period = 'days';
-                        break;
-                    default:
-                        $period = 'months';
-                }
-                $last_period_start = strtotime("-2 $period");
-                $last_period_end = strtotime("-1 $period");
-                $where .= " AND time > $last_period_start AND time < $last_period_end";
-                $previous_period_sql = "SELECT frequency as previous_frequency, id from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
+			//not implemented yet
+			if ($trend){
+				switch ($trendperiod) {
+					case 'YEAR':
+						$period = 'years';
+						break;
+					case 'DAY':
+						$period = 'days';
+						break;
+					default:
+						$period = 'months';
+				}
+				$last_period_start = strtotime("-2 $period");
+				$last_period_end = strtotime("-1 $period");
+				$where .= " AND time > $last_period_start AND time < $last_period_end";
+				$previous_period_sql = "SELECT frequency as previous_frequency, id from {$wpdb->prefix}searchinsights_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
 
-                $search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
-            }
+				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
+			}
+
+			/*
+			 * We want to include the result count. Create an inner join with the archive.
+			 */
+
+			if ($args['result_count']){
+				$search_sql = "select main.*, archive.result_count, archive.frequency from ($search_sql) as main left join {$wpdb->prefix}searchinsights_archive as archive  on main.term = archive.term ORDER BY main.$orderby $order";
+			}
+			$searches =$wpdb->get_results( $search_sql );
 
 			return $searches;
 		}

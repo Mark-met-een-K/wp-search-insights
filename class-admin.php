@@ -23,17 +23,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             self::$_this = $this;
 
             $this->capability = get_option('wpsi_select_dashboard_capability');
-			add_action('admin_init', array($this, 'init_grid') );
-	        add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
-            add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
+
+            $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
+
+            if ($is_wpsi_page) {
+                add_action('admin_init', array($this, 'init_grid') );
+                add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+                add_action('admin_head', array($this, 'inline_styles'));
+            }
+
             add_action('admin_init', array($this, 'add_privacy_info'));
 
             $plugin = wpsi_plugin;
 
             add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
             add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
-            add_action('admin_head', array($this, 'inline_styles'));
+            add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
+
 
             if (current_user_can('manage_options')) {
                 add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
@@ -45,6 +52,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
+
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
         }
 
@@ -52,7 +60,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
-                    'content' => $this->recent_table(),
+                    'content' => $this->recent_table('week'),
                     'class' => '',
                     'type' => 'all',
                     'can_hide' => true,
@@ -60,7 +68,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 2 => array(
                     'title' => __("Results", "wp-search-insights"),
-                    'content' => $this->results_table(),
+                    'content' => $this->results_table('week'),
                     'class' => 'small',
                     'type' => 'results',
                     'can_hide' => true,
@@ -160,9 +168,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
-                                                <option value="all">'.__("All time", "wp-search-insights").'</option>
-                                                <option value="year">'.__("Year", "wp-search-insights").'</option>
-                                                <option value="week">'.__("Week", "wp-search-insights").'</option>
+                                                <option value="month">'.__("Month", "wp-search-insights").'</option>
+                                                <option value="week" selected="selected">'.__("Week", "wp-search-insights").'</option>
                                                 <option value="day">'.__("Day", "wp-search-insights").'</option>
                                             </select>',
 	                )
@@ -924,7 +931,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * @param string $range date range to view
          * @return false|string
          */
-        public function generate_dashboard_widget($on_grid = false, $range = 'all')
+        public function generate_dashboard_widget($on_grid = false, $range = 'month')
         {
             ob_start();
 
@@ -937,7 +944,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches = false;//get_transient("wpsi_popular_searches_$range");
+            $popular_searches = get_transient("wpsi_popular_searches_$range");
             if ($on_grid) $popular_searches = false;
             if (!$popular_searches) {
                 $args = array(
@@ -1100,11 +1107,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             ob_start();
 
-            $args = array(
-                'number' => 2000,
-                'range' => $range,
-            );
-            $recent_searches = WPSI::$search->get_searches_single($args);
+
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
                 <caption>
@@ -1113,32 +1116,34 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
-                    <th scope='col' style="width: 10%;"><?php _e("Results", "wp-search-insights"); ?> </th>
-                    <th scope="col" style="width: 13%;" class="dashboard-tooltip-hits">
+                    <th scope='col' style="width: 5%;"><?php _e("Results", "wp-search-insights"); ?> </th>
+                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">
                         <?php _e("When", "wp-search-insights"); ?> </th>
-                        <th scope='col' style="width: 10%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
+                        <th scope='col' style="width: 15%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <?php
                 // Start generating rows
+                $args = array(
+                    'number' => 1000,
+                    'range' => $range,
+                    'result_count' => true,
+                );
+                $recent_searches = WPSI::$search->get_searches_single($args);
+                error_log(print_r($recent_searches, true));
                 foreach ($recent_searches as $search) {
-	                $args = array(
-		                'term'  => $search->term,
-	                );
-	                $result = WPSI::$search->get_searches($args);
-	                if ($result) {
-		                ?>
-                        <tr>
-                            <td data-label="Term" class="wpsi-term"
-                                data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
-                            <td><?php echo $result->result_count ?></td>
-                            <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
-                            <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
-                        </tr>
-		                <?php
-	                }
+                    ?>
+                    <tr>
+                        <td data-label="Term" class="wpsi-term"
+                            data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
+                        <td><?php echo $search->result_count ?></td>
+                        <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
+                        <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
+                    </tr>
+                    <?php
+
                 }
                 ?>
                 <?php
@@ -1148,6 +1153,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
             return  ob_get_clean();
         }
+
 
         /**
          * Create a link which isn't included in the search results
@@ -1163,21 +1169,33 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
         }
 
+        /**
+        * Get referrer link
+        * @param $referrer
+        *
+        * @return string
+         */
+
         public function get_referrer_link($referrer){
             //legacy title search
             $post_id = $this->get_post_by_title($referrer);
             if ($post_id){
                 $url = get_permalink($post_id);
                 $referrer = get_the_title($post_id);
-            } elseif ($referrer === 'home' || $referrer === '') {
+            } elseif ($referrer === 'home' || $referrer === '' || $referrer === '/') {
                 $url = site_url();
                 $referrer = __('Home','wp-search-insights');
             } elseif (strpos($referrer, site_url()) === FALSE) {
-                $url = site_url($referrer);
+                $url = site_url(sanitize_title( $referrer) );
             } else {
                 $url = $referrer;
             }
-            return '<a target="_blank" href="' . $url . '" target="_blank">' . $referrer . '</a>';
+
+            //make sure the link is not too long
+            if (strlen($referrer)>30){
+                $referrer = substr($referrer, 0, 30).'...';
+            }
+            return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';
         }
 
         private function get_post_by_title($title){
@@ -1194,11 +1212,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_date($unix)
         {
-
-//            $date = date(get_option('date_format'), $unix);
             $date = date('Y-m-d', $unix);
             $date = $this->localize_date($date);
-//            $time = date(get_option('time_format'), $unix);
             $time = date('H:i', $unix);
             $date = sprintf(__("%s at %s", 'wp-search-insights'), $date, $time);
 
@@ -1232,7 +1247,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * @since 1.2
          */
 
-        public function results_table($range='all')
+        public function results_table($range='week')
         {
             ob_start();
 	        $results = $this->get_results($range)
