@@ -168,8 +168,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
-                                                <option value="all">'.__("All time", "wp-search-insights").'</option>
-                                                <option value="year">'.__("Year", "wp-search-insights").'</option>
+                                                <option value="month">'.__("Month", "wp-search-insights").'</option>
                                                 <option value="week" selected="selected">'.__("Week", "wp-search-insights").'</option>
                                                 <option value="day">'.__("Day", "wp-search-insights").'</option>
                                             </select>',
@@ -1108,11 +1107,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             ob_start();
 
-            $args = array(
-                'number' => 1000,
-                'range' => $range,
-            );
-            $recent_searches = WPSI::$search->get_searches_single($args);
+
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
                 <caption>
@@ -1121,32 +1116,34 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
-                    <th scope='col' style="width: 10%;"><?php _e("Results", "wp-search-insights"); ?> </th>
-                    <th scope="col" style="width: 13%;" class="dashboard-tooltip-hits">
+                    <th scope='col' style="width: 5%;"><?php _e("Results", "wp-search-insights"); ?> </th>
+                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">
                         <?php _e("When", "wp-search-insights"); ?> </th>
-                        <th scope='col' style="width: 10%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
+                        <th scope='col' style="width: 15%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <?php
                 // Start generating rows
+                $args = array(
+                    'number' => 1000,
+                    'range' => $range,
+                    'result_count' => true,
+                );
+                $recent_searches = WPSI::$search->get_searches_single($args);
+                error_log(print_r($recent_searches, true));
                 foreach ($recent_searches as $search) {
-	                $args = array(
-		                'term'  => $search->term,
-	                );
-	                $result = WPSI::$search->get_searches($args);
-	                if ($result) {
-		                ?>
-                        <tr>
-                            <td data-label="Term" class="wpsi-term"
-                                data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
-                            <td><?php echo $result->result_count ?></td>
-                            <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
-                            <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
-                        </tr>
-		                <?php
-	                }
+                    ?>
+                    <tr>
+                        <td data-label="Term" class="wpsi-term"
+                            data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
+                        <td><?php echo $search->result_count ?></td>
+                        <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
+                        <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
+                    </tr>
+                    <?php
+
                 }
                 ?>
                 <?php
@@ -1156,6 +1153,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
             return  ob_get_clean();
         }
+
 
         /**
          * Create a link which isn't included in the search results
