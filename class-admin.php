@@ -782,7 +782,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         </div>
                         <!--    Settings tab    -->
                         <?php if (current_user_can('manage_options')) { ?>
-                            <form action="options.php" method="post">
+                            <form action="<?php echo admin_url('tools.php?page=wpsi-settings-page#settings#top')?>" method="post">
                                 <div id="settings" class="tab-content">
                                     <div id="settings-section">
                                         <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3>
