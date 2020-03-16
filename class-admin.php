@@ -15,7 +15,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         function __construct()
         {
-            update_option('wpsi_exclude_admin', false);
             if (isset(self::$_this)) {
                 wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.',
                     'wp-search-insights'), get_class($this)));
