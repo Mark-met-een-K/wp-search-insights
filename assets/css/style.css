@@ -1,9 +1,29 @@
 .update-nag {
   display: none;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
   #wpsi-dashboard .dataTables_wrapper {
-    max-width: 400px;
+    max-width: 650px;
+  }
+  .wpsi-term {
+    word-wrap: anywhere;
+  }
+  .wpsi-tips-tricks {
+    overflow: hidden;
+  }
+  .tab-links {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0 !important;
+  }
+  #wpsi-toggle-options {
+    display: none;
+  }
+  .header-upsell {
+    display: none;
+  }
+  .table-footer {
+    display: block !important;
   }
 }
 .tools_page_wpsi-settings-page #wpcontent {
@@ -294,7 +314,6 @@ widget
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
-  max-width: 800px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;

@@ -1,3 +1,27 @@
+@media screen and (max-width: 990px) {
+  .item-container {
+    width: 600px !important;
+  }
+  input {
+    display: none;
+  }
+}
+@media screen and (max-width: 650px) {
+  .item-container {
+    width: 400px !important;
+  }
+  input {
+    display: none;
+  }
+}
+@media screen and (max-width: 450px) {
+  .item-container {
+    width: 300px !important;
+  }
+  input {
+    display: none;
+  }
+}
 .wpsi-grid {
   margin-left: 25px;
   position: relative;
