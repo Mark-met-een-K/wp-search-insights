@@ -7,6 +7,11 @@
   display: none;
 }
 
+@media screen and (max-width: 600px) {
+  #wpsi-dashboard .dataTables_wrapper {
+    max-width: 400px;
+  }
+}
 // Override default WP padding and margin on dashboard
 .tools_page_wpsi-settings-page {
 
@@ -452,8 +457,7 @@ widget
    */
 
   #wpsi-recent-table, #wpsi-popular-table {
-    width: 100%;
-
+    //width: 100%;
   }
 
   .hit-icon {

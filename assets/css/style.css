@@ -1,6 +1,11 @@
 .update-nag {
   display: none;
 }
+@media screen and (max-width: 600px) {
+  #wpsi-dashboard .dataTables_wrapper {
+    max-width: 400px;
+  }
+}
 .tools_page_wpsi-settings-page #wpcontent {
   padding: 0;
 }
@@ -369,10 +374,6 @@ widget
 }
 #wpsi-dashboard .wpsi-date-filter {
   border: 1px solid #DEDEDE;
-}
-#wpsi-dashboard #wpsi-recent-table,
-#wpsi-dashboard #wpsi-popular-table {
-  width: 100%;
 }
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
