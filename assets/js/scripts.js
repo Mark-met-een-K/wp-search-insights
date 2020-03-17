@@ -1,6 +1,9 @@
 jQuery(document).ready(function ($) {
     "use strict";
 
+    var deleteBtn = $('#wpsi-delete-selected');
+
+
     /**
      * Datatables
      */
@@ -166,7 +169,7 @@ jQuery(document).ready(function ($) {
      */
     function wpsiInitDeleteCapability() {
         //move button to location in table
-        $(".table-footer").append($('#wpsi-delete-selected'));
+        $(".table-footer").append(deleteBtn);
 
         //set button to disabled
         $('#wpsi-delete-selected').attr('disabled', true);
