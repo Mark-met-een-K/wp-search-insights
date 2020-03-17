@@ -285,7 +285,7 @@ widget
   box-shadow: initial;
 }
 #wpsi-dashboard .current .tab-text {
-  padding-bottom: 21px;
+  padding-bottom: 25px;
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
