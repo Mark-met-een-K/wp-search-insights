@@ -5,18 +5,68 @@
 @grey-light:#cecece;
 @box_shadow_color: rgba(222, 222, 222, 0.2);
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 950px) {
+    #dashboard {
+        padding-left: 0px !important;
+    }
+    .wpsi-grid {
+        margin-left: 10px !important;
+    }
+    .table-overview {
+        height: 700px !important;
+        //position: relative !important;
+        .item-container {
+            width: 600px !important;
+            height: 600px !important;
+            //top: 10px !important;
+        }
+    }
+    // Second grid item top to prevent overflowing table
+    div.wpsi-item:nth-child(2) {
+        top: 10px !important;
+    }
+    div.wpsi-item:nth-child(3) {
+        top: 10px !important;
+    }
     .item-container {
-        width: 600px !important;
+        max-width: 600px;
     }
     input {
         display: none;
     }
+    .wpsi-other-plugins-container {
+        display: inline-block !important;
+    }
+    .wpsi-rsssl {
+        width: 300px !important;
+        padding-left: 10px !important;
+    }
+    .wpsi-cmplz {
+        width: 300px !important;
+        padding-left: 10px !important;
+    }
 }
 
 @media screen and (max-width: 650px) {
+    .table-overview {
+        height: 600px !important;
+        position: relative !important;
+        .item-container {
+            width: 300px !important;
+            height: 600px !important;
+        }
+    }
+    .wpsi-grid .wpsi-item.half-height .item-container {
+        height: 400px !important;
+    }
+    .wpsi-tips-tricks {
+        height: 400px !important;
+    }
+    .tips-tricks-content {
+        height: 250px !important;
+    }
     .item-container {
-        width: 400px !important;
+        width: 300px !important;
     }
     input {
         display: none;
