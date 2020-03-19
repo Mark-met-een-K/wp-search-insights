@@ -95,6 +95,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 				require_once( wpsi_path . 'grid/grid-enqueue.php' );
 			}
 			require_once( wpsi_path . 'class-search.php' );
+			require_once( wpsi_path . 'integrations/integrations.php' );
 		}
 
 		/**
