@@ -24,12 +24,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             $this->capability = get_option('wpsi_select_dashboard_capability');
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
+            add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
 
             $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
 
             if ($is_wpsi_page) {
                 add_action('admin_init', array($this, 'init_grid') );
-                add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
                 add_action('admin_head', array($this, 'inline_styles'));
             }
 
@@ -724,6 +724,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             ?>
                         </div>
                     </div>
+                </div> <!-- toggle wrap -->
                 <div id="wpsi-dashboard">
                     <!--    Navigation-->
                     <div class="wp-search-insights-container">
@@ -732,12 +733,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wpsi_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
                                  <div class="header-links">
                                     <div class="tab-links">
-                                    <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top"><?php _e("General", "wp-search-insights");?></a>
-                                    </li>
-                                    <?php if (current_user_can('manage_options')) { ?>
-                                    <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top"><?php _e("Settings" , "wp-search-insights");?></a></li>
-                                    <?php } ?>
-                                    <!--						--><?php //echo "<img class='rsp-image' src='" . trailingslashit( wpsi_url ) . "assets/images/really-simple-plugins.png' alt='Really Simple plugins'>"; ?>
+                                        <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top"><?php _e("General", "wp-search-insights");?></a></li>
+                                        <?php if (current_user_can('manage_options')) { ?>
+                                        <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top"><?php _e("Settings" , "wp-search-insights");?></a></li>
+                                        <?php } ?>
                                     </div>
                                     <div class="documentation-pro">
                                         <div class="documentation">
@@ -747,73 +746,77 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                             <div id="wpsi-toggle-link-wrap">
                                                 <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
                                                         aria-controls="screen-options-wrap"><?php _e("Display options", "wp-search-insights"); ?>
-                                                    <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down-alt2"></span></button>
+                                                    <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down-alt2"></span>
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="header-upsell">
-                                        <a href="https://paypal.me/wpsearchinsights" target="_blank">
-                                            <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
-                                        </a>
+	                                        <a href="https://paypal.me/wpsearchinsights" target="_blank">
+	                                            <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
+	                                        </a>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                             </div>
                         </ul>
-                    <div class="wp-search-insights-main">
-                        <!--    Dashboard tab   -->
-                        <div id="dashboard" class="tab-content current">
-                            <button class="button" id="wpsi-delete-selected">
-                                <?php _e("Delete selected terms", "wp-search-insights") ?>
-                            </button>
 
-                            <?php
-                            //get html of block
-                            $grid_items = $this->grid_items;
-                            $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
-                            $element = $this->get_template('grid-element.php', wpsi_path . '/grid');
-                            $output = '';
-                            foreach ($grid_items as $index => $grid_item) {
-                                $output .= str_replace(array('{class}', '{content}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $index, $grid_item['type']), $element);
-                            }
-                            echo str_replace('{content}', $output, $container);
-                            ?>
+	                    <div class="wp-search-insights-main">
+	                        <!--    Dashboard tab   -->
+	                        <div id="dashboard" class="tab-content current">
+	                            <button class="button" id="wpsi-delete-selected">
+	                                <?php _e("Delete selected terms", "wp-search-insights") ?>
+	                            </button>
 
-                        </div>
-                        <!--    Settings tab    -->
-                        <?php if (current_user_can('manage_options')) { ?>
-                            <form action="<?php echo admin_url('tools.php?page=wpsi-settings-page#settings#top')?>" method="post">
-                                <div id="settings" class="tab-content">
-                                    <div id="settings-section">
-                                        <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3>
-                                    <div>
-                                            <?php
-                                            settings_fields('wpsi-settings-tab');
-                                            do_settings_sections('wpsi-settings');
-                                            ?> <div id="clear-searches-btn-border"></div> <?php
-                                            $this->save_button();
-                                            ?>
-                                    </div>
-                                </div>
-                                    <div id="wpsi-filter">
-                                        <div id="filter-inner">
-                                            <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
-                                                <?php
-                                                WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Separate each search term with whitespace or a comma", "wp-search-insights"));
-                                                ?>
-                                             </span>
-                                        </div>
-                                        <div class="filter-save">
-                                            <?php
-                                            $this->save_button(); ?>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
-                                </div>
-                            </form>
-                    </div>
+	                            <?php
+	                            //get html of block
+	                            $grid_items = $this->grid_items;
+	                            $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
+	                            $element = $this->get_template('grid-element.php', wpsi_path . '/grid');
+	                            $output = '';
+	                            foreach ($grid_items as $index => $grid_item) {
+	                                $output .= str_replace(array('{class}', '{content}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $index, $grid_item['type']), $element);
+	                            }
+	                            echo str_replace('{content}', $output, $container);
+	                            ?>
+
+	                        </div> <!--id=dashboard -->
+	                        <!--    Settings tab    -->
+	                        <?php if (current_user_can('manage_options')) { ?>
+	                            <form action="options.php" method="post">
+	                                <div id="settings" class="tab-content">
+	                                    <div id="settings-section">
+	                                        <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3></span>
+		                                    <div>
+		                                            <?php
+		                                            settings_fields('wpsi-settings-tab');
+		                                            do_settings_sections('wpsi-settings');
+		                                            ?> <div id="clear-searches-btn-border"></div> <?php
+		                                            $this->save_button();
+		                                            ?>
+		                                    </div>
+	                                    </div>
+
+		                                <div id="wpsi-filter">
+			                                <div id="filter-inner">
+	                                        <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
+	                                            <?php
+	                                            WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Separate each search term with whitespace or a comma", "wp-search-insights"));
+	                                            ?>
+	                                         </span>
+			                                </div>
+			                                <div class="filter-save">
+				                                <?php $this->save_button(); ?>
+			                                </div>
+		                                </div>
+
+	                                </div> <!-- id=settings -->
+
+	                            </form>
+		                    <?php } ?>
+	                    </div><!-- wp-search-insights-main-->
+                    </div><!-- wp-search-insights-container -->
                 </div>
-            </div>
+	        </div>
             <?php
         }
 
