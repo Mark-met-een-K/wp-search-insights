@@ -5,11 +5,13 @@
   .wpsi-grid {
     margin-left: 10px !important;
   }
+  .item-container {
+    width: 95vw !important;
+  }
   .table-overview {
     height: 700px !important;
   }
   .table-overview .item-container {
-    width: 600px !important;
     height: 600px !important;
   }
   div.wpsi-item:nth-child(2) {
@@ -37,14 +39,6 @@
   }
 }
 @media screen and (max-width: 650px) {
-  .table-overview {
-    height: 600px !important;
-    position: relative !important;
-  }
-  .table-overview .item-container {
-    width: 300px !important;
-    height: 600px !important;
-  }
   .wpsi-grid .wpsi-item.half-height .item-container {
     height: 400px !important;
   }
@@ -53,20 +47,6 @@
   }
   .tips-tricks-content {
     height: 250px !important;
-  }
-  .item-container {
-    width: 300px !important;
-  }
-  input {
-    display: none;
-  }
-}
-@media screen and (max-width: 450px) {
-  .item-container {
-    width: 300px !important;
-  }
-  input {
-    display: none;
   }
 }
 .wpsi-grid {

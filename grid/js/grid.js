@@ -53,6 +53,7 @@ jQuery(document).ready(function($) {
         }
         // Must save the layout on first load, otherwise filtering the grid won't work on a new install.
         saveLayout(grid);
+
     }
 
 
