@@ -679,7 +679,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             delete_transient( 'wpsi_popular_searches' );
             delete_transient( 'wpsi_top_searches' );
 	        delete_transient('wpsi_plus_ones');
-	        delete_option( 'wpsi_ten_searches_viewed_settings_page' );
 
         }
 
