@@ -698,7 +698,7 @@ widget
   background-color: #fff;
   height: 250px;
   width: 825px;
-  box-shadow: 0px 1px 1px #DEDEDE;
+  box-shadow: 1px 1px #dedede;
 }
 #wpsi-dashboard .settings-title {
   display: flex;
