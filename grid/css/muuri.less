@@ -5,6 +5,98 @@
 @grey-light:#cecece;
 @box_shadow_color: rgba(222, 222, 222, 0.2);
 
+@media screen and (max-width: 950px) {
+    // Prevent sideways scrolling on mobile
+    html, body {
+        overflow-x: hidden;
+    }
+    body {
+        position: relative
+    }
+    #dashboard {
+        padding-left: 0px !important;
+    }
+    #wpsi-dashboard .dataTables_filter {
+        margin: 0 !important;
+    }
+    .documentation {
+        word-wrap: anywhere;
+    }
+    .wpsi-grid {
+        margin-left: 10px !important;
+    }
+    .item-container {
+        width: 95vw !important;
+    }
+    .table-overview {
+        height: 750px !important;
+        .item-container {
+            height: 750px !important;
+        }
+    }
+    #wpsi-dashboard-widget h3 {
+        padding: 0 !important;
+    }
+    .inside > div:nth-child(1) {
+        margin: 0 !important;
+    }
+    .table-footer {
+        position: relative !important;
+        bottom: 0 !important;
+    }
+    .wpsi-tips-tricks {
+        height: 300px !important;
+    }
+    .wpsi-upsell-title {
+    padding: 0 !important;
+    }
+    .wpsi-top-title {
+        padding: 0 !important;
+    }
+    .button-upsell {
+        margin-top: 15px !important;
+    }
+    .wpsi-upsell-content {
+        padding-bottom: 25px !important;
+    }
+    // Second grid item top to prevent overflowing table
+    div.wpsi-item:nth-child(2) {
+        top: 10px !important;
+    }
+    div.wpsi-item:nth-child(3) {
+        top: 10px !important;
+    }
+    .item-container {
+        max-width: 600px;
+    }
+    input {
+        display: none;
+    }
+    .wpsi-other-plugins-container {
+        display: inline-block !important;
+    }
+    .wpsi-rsssl {
+        width: 300px !important;
+        padding-left: 10px !important;
+    }
+    .wpsi-cmplz {
+        width: 300px !important;
+        padding-left: 10px !important;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .wpsi-grid .wpsi-item.half-height .item-container {
+        height: 450px !important;
+    }
+    .wpsi-tips-tricks {
+        height: 450px !important;
+    }
+    .tips-tricks-content {
+        height: 250px !important;
+    }
+}
+
 .wpsi-grid {
     margin-left: 25px;
     position: relative;

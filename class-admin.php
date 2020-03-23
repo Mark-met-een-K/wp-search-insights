@@ -61,7 +61,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
                     'content' => $this->recent_table('week'),
-                    'class' => '',
+                    'class' => 'table-overview',
                     'type' => 'all',
                     'can_hide' => true,
 

@@ -2,5 +2,5 @@
 <!--{title}-->
 <!--</div>-->
 <li class="wpsi-tips-tricks-content">
-    <a href="{link}">{content}</a>
+    <a href="{link}" target="_self">{content}</a>
 </li>

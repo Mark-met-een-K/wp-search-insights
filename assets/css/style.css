@@ -1,6 +1,31 @@
 .update-nag {
   display: none;
 }
+@media screen and (max-width: 850px) {
+  #wpsi-dashboard .dataTables_wrapper {
+    max-width: 650px;
+  }
+  .wpsi-term {
+    word-wrap: anywhere;
+  }
+  .wpsi-tips-tricks {
+    overflow: hidden;
+  }
+  .tab-links {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0 !important;
+  }
+  #wpsi-toggle-options {
+    display: none;
+  }
+  .header-upsell {
+    display: none;
+  }
+  .table-footer {
+    display: block !important;
+  }
+}
 .tools_page_wpsi-settings-page #wpcontent {
   padding: 0;
 }
@@ -289,7 +314,6 @@ widget
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
-  max-width: 800px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -369,10 +393,6 @@ widget
 }
 #wpsi-dashboard .wpsi-date-filter {
   border: 1px solid #DEDEDE;
-}
-#wpsi-dashboard #wpsi-recent-table,
-#wpsi-dashboard #wpsi-popular-table {
-  width: 100%;
 }
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
@@ -596,7 +616,7 @@ widget
 #wpsi-dashboard .wpsi-rsssl {
   padding-left: 25px;
 }
-#wpsi-dashboard .wpsi-cmplz .wpsi-upsell-title {
+#wpsi-dashboard .wpsi-cmplz {
   margin-right: 25px;
 }
 #wpsi-dashboard .wpsi-cmplz .upsell-img {

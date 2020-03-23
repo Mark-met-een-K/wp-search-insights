@@ -7,6 +7,31 @@
   display: none;
 }
 
+@media screen and (max-width: 850px) {
+  #wpsi-dashboard .dataTables_wrapper {
+    max-width: 650px;
+  }
+  .wpsi-term {
+    word-wrap: anywhere;
+  }
+  .wpsi-tips-tricks {
+    overflow: hidden;
+  }
+  .tab-links {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0 !important;
+  }
+  #wpsi-toggle-options {
+    display: none;
+  }
+  .header-upsell {
+    display: none;
+  }
+  .table-footer {
+    display: block !important;
+  }
+}
 // Override default WP padding and margin on dashboard
 .tools_page_wpsi-settings-page {
 
@@ -317,7 +342,7 @@ widget
   */
 
   .dataTables_wrapper {
-    max-width: 800px;
+    //max-width: 800px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -452,8 +477,7 @@ widget
    */
 
   #wpsi-recent-table, #wpsi-popular-table {
-    width: 100%;
-
+    //width: 100%;
   }
 
   .hit-icon {
@@ -768,9 +792,7 @@ widget
   }
 
   .wpsi-cmplz {
-    .wpsi-upsell-title {
       margin-right: 25px;
-    }
 
     .upsell-img {
       padding-right: 0;
