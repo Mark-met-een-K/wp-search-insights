@@ -1,11 +1,20 @@
 jQuery(document).ready(function($) {
 
+    var drag_enabled_or_disabled;
+
+    // Disable drag on mobile
+    if (!isMobileDevice()) {
+        drag_enabled_or_disabled = true;
+    } else {
+        drag_enabled_or_disabled = false;
+    }
+
     initGrid();
 
     function initGrid() {
 
         var grid = new Muuri('.wpsi-grid', {
-            dragEnabled: true,
+            dragEnabled: drag_enabled_or_disabled,
             dragSortHeuristics: {
                 sortInterval: 50,
                 minDragDistance: 10,
@@ -125,4 +134,8 @@ jQuery(document).ready(function($) {
             initGrid();
         });
     });
+
+    function isMobileDevice() {
+        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    };
 });
