@@ -1134,7 +1134,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'result_count' => true,
                 );
                 $recent_searches = WPSI::$search->get_searches_single($args);
-                error_log(print_r($recent_searches, true));
                 foreach ($recent_searches as $search) {
                     ?>
                     <tr>
