@@ -235,8 +235,6 @@ if ( ! class_exists( 'Search' ) ) {
 		 */
 
 		public function write_terms_to_db( $search_term, $result_count ) {
-			error_log($search_term);
-
 			global $wpdb;
 			//check if this search was written with five seconds ago
 			$replace_search = false;
