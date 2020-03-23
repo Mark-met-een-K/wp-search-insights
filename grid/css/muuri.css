@@ -1,4 +1,10 @@
 @media screen and (max-width: 950px) {
+  #settings-section {
+    width: 85vw !important;
+  }
+  #wpsi-filter {
+    width: 90vw !important;
+  }
   html,
   body {
     overflow-x: hidden;
@@ -61,7 +67,7 @@
   .item-container {
     max-width: 600px;
   }
-  input {
+  #wpsi-recent-table_filter input {
     display: none;
   }
   .wpsi-other-plugins-container {

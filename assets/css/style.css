@@ -188,6 +188,16 @@ widget
   *   Dashboard styling
   *
 */
+.tab-text {
+  color: #444444;
+  font-size: 1.2em;
+  text-decoration: none;
+  outline: 0;
+  box-shadow: 0 0 0 0;
+}
+.tab-text:focus {
+  box-shadow: initial;
+}
 #wpsi-dashboard {
   /*
       Navigation & tabs
@@ -299,18 +309,8 @@ widget
 #wpsi-dashboard .tab-content.current {
   display: inherit;
 }
-#wpsi-dashboard .tab-text {
-  color: #444444;
-  font-size: 1.2em;
-  text-decoration: none;
-  outline: 0;
-  box-shadow: 0 0 0 0;
-}
-#wpsi-dashboard .tab-text:focus {
-  box-shadow: initial;
-}
 #wpsi-dashboard .current .tab-text {
-  padding-bottom: 25px;
+  padding-bottom: 23px;
   border-bottom: 2px solid #d7263d;
 }
 #wpsi-dashboard .dataTables_wrapper {
@@ -698,6 +698,7 @@ widget
   background-color: #fff;
   height: 250px;
   width: 825px;
+  box-shadow: 0px 1px 1px #DEDEDE;
 }
 #wpsi-dashboard .settings-title {
   display: flex;
