@@ -729,6 +729,9 @@ widget
   margin-bottom: 25px;
   width: 75px;
 }
+#wpsi-dashboard .wpsi-save-button:hover {
+  color: white;
+}
 #wpsi-dashboard #filter-inner {
   margin: 25px;
 }
