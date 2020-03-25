@@ -1119,7 +1119,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
                     <th scope='col' style="width: 5%;"><?php _e("Results", "wp-search-insights"); ?> </th>
-                    <th scope="col" style="width: 10%;" class="dashboard-tooltip-hits">
+                    <th scope="col" style="width: 12%;" class="dashboard-tooltip-hits">
                         <?php _e("When", "wp-search-insights"); ?> </th>
                         <th scope='col' style="width: 15%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
