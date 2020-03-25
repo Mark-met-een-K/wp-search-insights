@@ -2,6 +2,16 @@
   display: none;
 }
 @media screen and (max-width: 850px) {
+  #settings {
+    margin: 0 !important;
+  }
+  #wpsi-recent-table,
+  #wpsi-popular-table {
+    width: auto;
+  }
+  .table-footer {
+    bottom: 0 !important;
+  }
   #wpsi-dashboard .dataTables_wrapper {
     max-width: 650px;
   }
@@ -302,9 +312,13 @@ widget
   padding: 15px;
 }
 #wpsi-dashboard #wpsi-delete-selected {
+  text-shadow: none !important;
   vertical-align: middle;
   margin-left: 25px;
   margin-top: 20px;
+}
+#wpsi-dashboard #wpsi-delete-selected:hover {
+  color: white !important;
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;
@@ -393,6 +407,10 @@ widget
 }
 #wpsi-dashboard .wpsi-date-filter {
   border: 1px solid #DEDEDE;
+}
+#wpsi-dashboard #wpsi-recent-table,
+#wpsi-dashboard #wpsi-popular-table {
+  width: auto;
 }
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
@@ -704,9 +722,6 @@ widget
   height: 250px;
   width: 825px;
   box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
-}
-#wpsi-dashboard .inside > div:nth-child(1) > select:nth-child(1) {
-  margin-top: 15px;
 }
 #wpsi-dashboard .settings-title {
   display: flex;
