@@ -52,9 +52,6 @@
   .wpsi-top-title {
     padding: 0 !important;
   }
-  .button-upsell {
-    margin-top: 15px !important;
-  }
   .wpsi-upsell-content {
     padding-bottom: 25px !important;
   }
@@ -97,6 +94,11 @@
   }
   .tips-tricks-content {
     height: 250px !important;
+  }
+}
+@media screen and (max-width: 375px) {
+  .button-upsell {
+    margin-top: 15px !important;
   }
 }
 .wpsi-grid {
