@@ -52,6 +52,9 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+
+= 1.2 =
+* Changed lay-out
 = 1.1 =
 * Added text filter area to exclude terms from results
 * Added option to select which user roles can view the dashboard
