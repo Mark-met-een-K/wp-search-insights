@@ -9,6 +9,9 @@
   #wpsi-popular-table {
     width: auto;
   }
+  #wpsi-recent-table_wrapper {
+    overflow: hidden;
+  }
   .table-footer {
     bottom: 0 !important;
   }
