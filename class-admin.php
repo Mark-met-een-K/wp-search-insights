@@ -91,9 +91,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 ),
                 5 => array(
-                    'title' => 'Other',
+                    'title' => '',
                     'content' => $this->generate_other_plugins(),
-                    'class' => 'half-height no-border no-background upsell-grid-container',
+                    'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
                     'can_hide' => false,
                 ),
@@ -1520,8 +1520,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'class' => 'cmplz',
                 ),
             );
+	        $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
 
-            $container = $this->get_template('upsell-container.php');
             $element = $this->get_template('upsell-element.php');
             $output = '';
             foreach ($items as $item) {
@@ -1538,9 +1538,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     $item['link'],
                     $item['class'],
                 ), $element);
-
             }
-            return str_replace('{content}', $output, $container);
+            return str_replace('{content}', '<div class="wpsi-other-plugins-container">'.$output.'</div>', $container);
         }
 
         public function generate_tips_tricks()

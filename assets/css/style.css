@@ -616,7 +616,6 @@ widget
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #DEDEDE;
-  padding-bottom: 15px;
 }
 #wpsi-dashboard .wpsi-upsell span.dashicons {
   color: #FFB900;
@@ -640,7 +639,6 @@ widget
   padding-right: 0px;
 }
 #wpsi-dashboard .wpsi-top-title {
-  padding-bottom: 15px;
   font-weight: 700;
 }
 #wpsi-dashboard .wpsi-upsell-content {
