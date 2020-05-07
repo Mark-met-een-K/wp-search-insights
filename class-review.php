@@ -154,8 +154,6 @@ if (!class_exists("wpsi_review")) {
 
 		public function dismiss_review_notice_callback()
 		{
-			check_ajax_referer('wpsi_dismiss_review', 'token');
-
 			if (isset($_POST['type'])) {
 				$type = sanitize_title( $_POST['type'] );
             } else {
