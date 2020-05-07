@@ -21,9 +21,6 @@
   .wpsi-term {
     word-wrap: anywhere;
   }
-  .wpsi-tips-tricks {
-    overflow: hidden;
-  }
   .tab-links {
     display: flex;
     flex-direction: row;
@@ -153,6 +150,9 @@ widget
   padding: 12px;
   border-top: 1px solid #eee;
   color: #ddd;
+}
+#wpsi-dashboard #wpsi-dashboard-widget {
+  padding-top: 30px;
 }
 .wpsi-dashboard-widget-grid li {
   height: 50px;
@@ -318,7 +318,7 @@ widget
   text-shadow: none !important;
   vertical-align: middle;
   margin-left: 25px;
-  margin-top: 20px;
+  margin-bottom: 10px;
 }
 #wpsi-dashboard #wpsi-delete-selected:hover {
   color: white !important;
@@ -383,9 +383,6 @@ widget
 #wpsi-dashboard .search-insights-table table th:focus {
   outline: none;
 }
-#wpsi-dashboard .search-insights-table thead {
-  border-top: 1px solid #DEDEDE;
-}
 #wpsi-dashboard .search-insights-table tbody {
   color: #3c3c3c;
 }
@@ -433,7 +430,7 @@ widget
   justify-content: center;
   padding-top: 10px;
   position: absolute;
-  bottom: 50px;
+  bottom: 60px;
   width: 100%;
 }
 #wpsi-dashboard .table-footer button {
@@ -467,7 +464,7 @@ widget
 }
 #wpsi-dashboard .dataTables_paginate {
   flex: 1;
-  margin-top: 20px;
+  margin-bottom: 10px;
   cursor: pointer;
 }
 #wpsi-dashboard .dataTables_paginate .paginate_button {
@@ -505,7 +502,6 @@ widget
   display: flex;
   flex-direction: column;
   height: 50px;
-  border-bottom: 1px solid #DEDEDE;
 }
 #wpsi-dashboard .wpsi-nr-header-items {
   padding-top: 10px;
@@ -598,9 +594,6 @@ widget
 }
 #wpsi-dashboard .wpsi-nr-footer .dt-buttons {
   margin: 0 auto;
-}
-#wpsi-dashboard .wpsi-top-searches-btn {
-  margin-top: -7px;
 }
 #wpsi-dashboard .upsell-grid-container {
   display: flex;
@@ -785,20 +778,20 @@ widget
   margin-bottom: 20px;
   width: 95%;
 }
-#wpsi-dashboard .wpsi-tips-tricks-content {
-  font-size: 0.9em;
-  color: #3c3c3c;
-  padding-bottom: 7px;
-  list-style: decimal;
-  list-style-position: inside;
-}
-#wpsi-dashboard .tips-tricks-content {
+#wpsi-dashboard .wpsi-tips-tricks .wpsi-tips-tricks-container {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   height: 100px;
   margin-bottom: 10px;
   border-bottom: 1px solid #DEDEDE;
+}
+#wpsi-dashboard .wpsi-tips-tricks .wpsi-tips-tricks-container .wpsi-tips-tricks-element {
+  font-size: 0.9em;
+  color: #3c3c3c;
+  padding-bottom: 7px;
+  list-style: decimal;
+  list-style-position: inside;
 }
 #wpsi-dashboard .wpsi-tips-tricks-container-title {
   border-bottom: 1px solid #DEDEDE;

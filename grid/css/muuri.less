@@ -98,12 +98,6 @@
     .wpsi-grid .wpsi-item.half-height .item-container {
         height: 450px !important;
     }
-    .wpsi-tips-tricks {
-        height: 450px !important;
-    }
-    .tips-tricks-content {
-        height: 250px !important;
-    }
 }
 @media screen and (max-width: 375px) {
     .button-upsell {
@@ -133,10 +127,18 @@
         &.muuri-item-dragging {
             z-index: 3;
         }
+        .wpsi-item-header {
+            cursor:pointer;
+            height: 22px;
+            border-bottom: 1px solid #dedede;
+            padding: 20px 25px 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
         .item-container {
             background-color: #fff;
             position: relative;
-            cursor: pointer;
+            //cursor: pointer;
             box-shadow: 0px 0px 5px 5px @box_shadow_color;
             width: @gridblock_width - 2* @grid_margin;
             height: @gridblock_height - 2 * @grid_margin;

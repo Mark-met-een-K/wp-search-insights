@@ -75,7 +75,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 ),
                 3 => array(
-                    'title' => __("Most Popular Searches", "wp-search-insights"),
+                    'title' => __("Top Searches", "wp-search-insights"),
                     'content' => $this->generate_dashboard_widget($on_grid=true),
                     'class' => 'small',
                     'type' => 'popular',
@@ -86,7 +86,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'title' => __("Tips & Tricks", "wp-search-insights"),
                     'content' => $this->generate_tips_tricks(),
                     'type' => 'tasks',
-                    'class' => 'half-height',
+                    'class' => 'half-height wpsi-tips-tricks',
                     'can_hide' => true,
 
                 ),
@@ -773,7 +773,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	                            $element = $this->get_template('grid-element.php', wpsi_path . '/grid');
 	                            $output = '';
 	                            foreach ($grid_items as $index => $grid_item) {
-	                                $output .= str_replace(array('{class}', '{content}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $index, $grid_item['type']), $element);
+	                                $output .= str_replace(array('{class}', '{content}', '{title}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $grid_item['title'], $index, $grid_item['type']), $element);
 	                            }
 	                            echo str_replace('{content}', $output, $container);
 	                            ?>
@@ -1112,9 +1112,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
-                <caption>
-                    <h3><?php _e("All Searches", "wp-search-insights"); ?></h3>
-                </caption>
+
                 <thead>
                 <tr class="wpsi-thead-th">
                     <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
@@ -1256,11 +1254,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <div class="wpsi-nr-overview">
                 <div class="wpsi-nr-header">
                     <div class="wpsi-nr-header-items">
-                        <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn">
-                        </div>
-                        <div class="wpsi-no-results">
-                            <h3><?php _e("Results", "wp-search-insights"); ?></h3>
-                        </div>
+                        <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn"></div>
                     </div>
                 </div>
                 <div class="wpsi-nr-content">
@@ -1579,8 +1573,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             );
             $button_link = "https://wpsearchinsights.com/tips-tricks/";
-            $container = $this->get_template('tipstricks-container.php');
-            $element = $this->get_template('tipstricks-element.php');
+            //$container = $this->get_template('tipstricks-container.php');
+	        $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
+	        $button =     '<a href="{button_link}" target="_blank"><button class="button button-upsell">'.__("View all" , "wp-search-insights").'</button></a>';
+	        $container .= $button;
+
+	        $element = $this->get_template('tipstricks-element.php');
             $output = '';
             foreach ($items as $item) {
                 $output .= str_replace(array(
@@ -1591,7 +1589,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     $item['content'],
                 ), $element);
             }
-            return str_replace(array('{content}' , '{button_link}'), array($output, $button_link), $container);
+            return str_replace(array('{content}' , '{button_link}'), array('<div class="wpsi-tips-tricks-container">'.$output.'</div>', $button_link), $container);
         }
     }
 }

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
             {popular_searches}
         </ul>
 
-        <h3><?php _e("Top searches", "wp-search-insights")?></h3>
+        <h3><?php _e("1 Top searches", "wp-search-insights")?></h3>
         <ul>{top_searches}</ul>
     </div>
     <div id="wpsi-dashboard-widget-footer">
