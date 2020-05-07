@@ -430,7 +430,7 @@ widget
   justify-content: center;
   padding-top: 10px;
   position: absolute;
-  bottom: 60px;
+  bottom: 75px;
   width: 100%;
 }
 #wpsi-dashboard .table-footer button {
@@ -606,16 +606,15 @@ widget
   display: flex;
   justify-content: space-between;
   height: 100%;
-  width: 800px;
 }
 #wpsi-dashboard .wpsi-upsell {
   width: 475px;
+  margin-top: -58px;
 }
 #wpsi-dashboard .wpsi-upsell-title {
   height: 15%;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #DEDEDE;
 }
 #wpsi-dashboard .wpsi-upsell span.dashicons {
   color: #FFB900;
@@ -625,12 +624,6 @@ widget
   padding-top: 10px;
   height: 25px;
   width: 25px;
-}
-#wpsi-dashboard .wpsi-rsssl {
-  padding-left: 25px;
-}
-#wpsi-dashboard .wpsi-cmplz {
-  margin-right: 25px;
 }
 #wpsi-dashboard .wpsi-cmplz .upsell-img {
   padding-right: 0;

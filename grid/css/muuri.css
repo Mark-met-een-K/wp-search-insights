@@ -108,6 +108,9 @@
 .wpsi-grid .wpsi-item.small {
   width: 400px;
 }
+.wpsi-grid .wpsi-item.half-height {
+  height: 237.5px;
+}
 .wpsi-grid .wpsi-item.muuri-item-hidden {
   z-index: 0;
 }
