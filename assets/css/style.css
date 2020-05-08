@@ -1061,7 +1061,7 @@ widget
   width: 100%;
   height: 352px;
   /* change height to see repeat-y behavior */
-  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 0.5) 15%), linear-gradient(#f2f2f2 38px, transparent 0), linear-gradient(#f2f2f2 38px, transparent 0), linear-gradient(#f2f2f2 38px, transparent 0), linear-gradient(#f2f2f2 38px, transparent 0);
+  background-image: linear-gradient(100deg, rgba(211, 211, 211, 0), rgba(211, 211, 211, 0.3) 70%, rgba(211, 211, 211, 0.3) 15%), linear-gradient(#fff 38px, transparent 0), linear-gradient(#fff 38px, transparent 0), linear-gradient(#fff 38px, transparent 0), linear-gradient(#fff 38px, transparent 0);
   background-repeat: repeat-y;
   background-size: 50px 200px, /* highlight */ 100% 117px, 100% 117px, 100% 117px, 100% 117px;
   background-position: 0 0, /* highlight */ 1px 1px, 1px 40px, 1px 79px, 1px 118px;
