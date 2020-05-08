@@ -1,4 +1,5 @@
-@gridblock_height: 475px;
+@gridblock_height: 500px;
+@grid_header_height: 22px;
 @gridblock_width: 800px;
 @gridblock_width_small:400px;
 @grid_margin:10px;
@@ -34,12 +35,12 @@
     .item-container {
         width: 95vw !important;
     }
-    .table-overview {
-        height: 600px !important;
-        .item-container {
-            height: 600px !important;
-        }
-    }
+    //.table-overview {
+    //    height: 600px !important;
+    //    .item-container {
+    //        height: 600px !important;
+    //    }
+    //}
     #wpsi-dashboard-widget h3 {
         padding: 0 !important;
     }
@@ -54,7 +55,7 @@
         height: 300px !important;
     }
     .wpsi-upsell-title {
-    padding: 0 !important;
+        padding: 0 !important;
     }
     .wpsi-top-title {
         padding: 0 !important;
@@ -78,11 +79,8 @@
     .wpsi-other-plugins-container {
         display: inline-block !important;
     }
-    .wpsi-rsssl {
-        width: 300px !important;
-        padding-left: 10px !important;
-    }
-    .wpsi-cmplz {
+
+    .wpsi-rsssl, .wpsi-cmplz {
         width: 300px !important;
         padding-left: 10px !important;
     }
@@ -97,12 +95,6 @@
     }
     .wpsi-grid .wpsi-item.half-height .item-container {
         height: 450px !important;
-    }
-    .wpsi-tips-tricks {
-        height: 450px !important;
-    }
-    .tips-tricks-content {
-        height: 250px !important;
     }
 }
 @media screen and (max-width: 375px) {
@@ -122,6 +114,21 @@
         }
         position: absolute;
         height: @gridblock_height;
+        .item-content {
+            height:  @gridblock_height - @grid_header_height - @grid_margin;
+        }
+
+        &.half-height {
+            height: ( 0.5 * @gridblock_height );
+            .item-container{
+                height: (@gridblock_height / 2)- 2*@grid_margin;
+            }
+            .item-content {
+                height: ( 0.5 * @gridblock_height ) - 2 * @grid_header_height - 2*@grid_margin;
+
+            }
+        }
+
         z-index: 1;
 
         &.muuri-item-hidden {
@@ -133,10 +140,18 @@
         &.muuri-item-dragging {
             z-index: 3;
         }
+        .wpsi-item-header {
+            cursor:pointer;
+            height: @grid_header_height;
+            border-bottom: 1px solid #dedede;
+            padding: 20px 25px 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
         .item-container {
             background-color: #fff;
             position: relative;
-            cursor: pointer;
+            //cursor: pointer;
             box-shadow: 0px 0px 5px 5px @box_shadow_color;
             width: @gridblock_width - 2* @grid_margin;
             height: @gridblock_height - 2 * @grid_margin;
@@ -145,11 +160,7 @@
             }
 
         }
-        &.half-height {
-            .item-container {
-                height: @gridblock_height / 2;
-            }
-        }
+
         &.small {
             .item-container {
                 width: @gridblock_width_small - 2* @grid_margin;
@@ -178,9 +189,5 @@
             padding:0;
         }
     }
-    .upsell-grid-container {
-        .item-container {
-                box-shadow: none;
-        }
-    }
+
 }

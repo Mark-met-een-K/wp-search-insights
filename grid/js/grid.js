@@ -30,6 +30,9 @@ jQuery(document).ready(function($) {
             dragReleaseDuration: 400,
             dragReleseEasing: 'ease',
             layoutOnInit: true,
+            dragStartPredicate: function(item, e) {
+                return e.target.className === 'wpsi-item-header';
+            }
             // itemDraggingClass: 'muuri-item-dragging',
         })
         // .on('dragStart', function (item) {

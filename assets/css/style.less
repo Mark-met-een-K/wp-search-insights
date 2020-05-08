@@ -26,9 +26,7 @@
   .wpsi-term {
     word-wrap: anywhere;
   }
-  .wpsi-tips-tricks {
-    overflow: hidden;
-  }
+
   .tab-links {
     display: flex;
     flex-direction: row;
@@ -179,6 +177,12 @@ widget
         color: #ddd;
       }
     }
+  }
+}
+
+#wpsi-dashboard {
+  #wpsi-dashboard-widget {
+    padding-top: 30px;
   }
 }
 
@@ -339,7 +343,7 @@ widget
     text-shadow: none !important;
     vertical-align: middle;
     margin-left: 25px;
-    margin-top: 20px;
+    margin-bottom: 10px;
   }
   #wpsi-delete-selected:hover {
     color: white !important;
@@ -367,7 +371,6 @@ widget
   }
 
   .search-insights-table {
-    height: 100%;
     padding-top: 15px;
     flex: 1;
     margin: 0 auto;
@@ -404,24 +407,6 @@ widget
       padding-bottom: 10px;
     }
 
-    //table.dataTable thead .sorting {
-    //  background-image: url("../images/sort_both.png");
-    //  background-repeat: no-repeat;
-    //  background-position: center right;
-    //}
-    //
-    //table.dataTable thead .sorting_asc {
-    //  background-image: url("../images/sort_asc.png");
-    //  background-repeat: no-repeat;
-    //  background-position: center right;
-    //}
-    //
-    //table.dataTable thead .sorting_desc {
-    //  background-image: url("../images/sort_desc.png");
-    //  background-repeat: no-repeat;
-    //  background-position: center right;
-    //}
-
 
     table tr {
       height: 40px;
@@ -445,10 +430,6 @@ widget
       }
 
       letter-spacing: .1em;
-    }
-
-    thead {
-      border-top: 1px solid #DEDEDE;
     }
 
     thead tr:first-of-type {
@@ -524,7 +505,7 @@ widget
     justify-content: center;
     padding-top: 10px;
     position: absolute;
-    bottom: 50px;
+    bottom: 75px;
     width: 100%;
 
     button {
@@ -564,7 +545,7 @@ widget
 
   .dataTables_paginate {;
     flex: 1;
-    margin-top: 20px;
+    margin-bottom: 10px;
     //text-align: left;
     cursor: pointer;
   }
@@ -615,7 +596,6 @@ widget
     display: flex;
     flex-direction: column;
     height: 50px;
-    border-bottom: 1px solid @border-color;
   }
 
   .wpsi-nr-header-items {
@@ -754,7 +734,7 @@ widget
    */
 
   .wpsi-top-searches-btn {
-    margin-top: -7px;
+    //margin-top: -7px;
   }
 
   /*
@@ -764,32 +744,33 @@ widget
   .upsell-grid-container {
     display: flex;
     justify-content: space-between;
-    //width: 800px;
+     .item-content {
+      width: 100%;
+    }
+    .item-container {
+      box-shadow: none;
+    }
+
   }
 
-  .upsell-grid-container .item-content {
-    width: 100% !important;
-  }
+
 
 
   .wpsi-other-plugins-container {
     display: flex;
     justify-content: space-between;
     height: 100%;
-    width: 800px;
   }
 
   .wpsi-upsell {
     width: 475px;
+    margin-top:-58px;
   }
 
   .wpsi-upsell-title {
     height: 15%;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid @border-color;
-    //margin-bottom: 20px;
-    padding-bottom: 15px;
   }
 
 
@@ -805,13 +786,7 @@ widget
     width: 25px;
   }
 
-  .wpsi-rsssl {
-    padding-left: 25px;
-  }
-
   .wpsi-cmplz {
-      margin-right: 25px;
-
     .upsell-img {
       padding-right: 0;
     }
@@ -822,8 +797,6 @@ widget
   }
 
   .wpsi-top-title {
-    //padding-left: 25px;
-    padding-bottom: 15px;
     font-weight: 700;
   }
 
@@ -1017,21 +990,22 @@ widget
     Tips and Tricks
    */
 
-  .wpsi-tips-tricks-content {
-    font-size: 0.9em;
-    color: @light-text-color;
-    padding-bottom: 7px;
-    list-style: decimal;
-    list-style-position: inside;
-  }
 
-  .tips-tricks-content {
+
+  .wpsi-tips-tricks .wpsi-tips-tricks-container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     height: 100px;
     margin-bottom: 10px;
     border-bottom: 1px solid @border-color;
+    .wpsi-tips-tricks-element {
+      font-size: 0.9em;
+      color: @light-text-color;
+      padding-bottom: 7px;
+      list-style: decimal;
+      list-style-position: inside;
+    }
   }
 
   .wpsi-tips-tricks-container-title {

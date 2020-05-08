@@ -1,1 +1,3 @@
-<div class="wpsi-grid">{content}</div>
+<div class="wpsi-grid">
+    {content}
+</div>

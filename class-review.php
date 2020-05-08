@@ -114,16 +114,19 @@ if (!class_exists("wpsi_review")) {
 		public function insert_dismiss_review()
 		{
 			$ajax_nonce = wp_create_nonce("wpsi_dismiss_review");
-			?>s
+			?>
 			<script type='text/javascript'>
                 jQuery(document).ready(function ($) {
+
                     $(".wpsi-review.notice.is-dismissible").on("click", ".notice-dismiss", function (event) {
                         wpsi_dismiss_review('dismiss');
                     });
+
                     $(".wpsi-review.notice.is-dismissible").on("click", "#maybe-later", function (event) {
                         wpsi_dismiss_review('later');
                         $(this).closest('.wpsi-review').remove();
                     });
+
                     $(".wpsi-review.notice.is-dismissible").on("click", ".review-dismiss", function (event) {
                         wpsi_dismiss_review('dismiss');
                         $(this).closest('.wpsi-review').remove();
