@@ -18,9 +18,6 @@
   #wpsi-dashboard .dataTables_wrapper {
     max-width: 650px;
   }
-  .wpsi-term {
-    word-wrap: anywhere;
-  }
   .tab-links {
     display: flex;
     flex-direction: row;
