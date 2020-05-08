@@ -60,7 +60,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
-                    'content' => $this->recent_table('week'),
+                    'content' => '<div class="wpsi-skeleton"></div>',//$this->recent_table('week'),
                     'class' => 'table-overview',
                     'type' => 'all',
                     'can_hide' => true,
@@ -68,7 +68,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 2 => array(
                     'title' => __("Results", "wp-search-insights"),
-                    'content' => $this->results_table('week'),
+                    'content' => '<div class="wpsi-skeleton"></div>',//$this->results_table('week'),
                     'class' => 'small',
                     'type' => 'results',
                     'can_hide' => true,
@@ -76,7 +76,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
-                    'content' => $this->generate_dashboard_widget($on_grid=true),
+                    'content' => '<div class="wpsi-skeleton"></div>',//$this->generate_dashboard_widget($on_grid=true),
                     'class' => 'small',
                     'type' => 'popular',
                     'can_hide' => true,
