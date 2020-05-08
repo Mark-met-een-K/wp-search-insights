@@ -86,7 +86,9 @@ jQuery(document).ready(function ($) {
 
                 // Move export buttons to no results div
                 var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").addClass('csvDownloadBtn').detach();
-                $(".wpsi-nr-footer").append(export_buttons);
+                if (!$(".wpsi-nr-footer").find('.csvDownloadBtn').length){
+                    $(".wpsi-nr-footer").append(export_buttons);
+                }
 
                 // Move search term filter field outside of settings div
                 var fiter_field =  $(".form-table > tbody:nth-child(1) > tr:nth-child(7)").detach();
