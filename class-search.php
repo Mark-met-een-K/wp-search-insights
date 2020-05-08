@@ -245,7 +245,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 			//check if the last search is a recent search
 			$ten_seconds_ago = $now-10;
-			$last_search_is_recent = $last_search->time > $ten_seconds_ago;
+			$last_search_is_recent = $last_search && $last_search->time > $ten_seconds_ago;
 
 			//this search is the same as the previous one, which is recent, ignore.
 			if ($last_search && $last_search_is_recent && $last_search->term===$search_term){
@@ -313,7 +313,7 @@ if ( ! class_exists( 'Search' ) ) {
 		 */
 
 		public function update_term_count( $search_term, $result_count) {
-
+			if (!get_option('wpsi_database_created')) return;
 			global $wpdb;
 
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
@@ -334,6 +334,7 @@ if ( ! class_exists( 'Search' ) ) {
 		 */
 
 		public function replace_term( $search_term, $new_term, $result_count) {
+			if (!get_option('wpsi_database_created')) return;
 
 			global $wpdb;
 			$new_term = sanitize_text_field($new_term);
@@ -586,6 +587,8 @@ if ( ! class_exists( 'Search' ) ) {
 		 */
 
 		public function write_search_term_to_single_table( $search_term , $replace_search=false) {
+			if (!get_option('wpsi_database_created')) return;
+
 			global $wpdb;
 
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
@@ -635,6 +638,8 @@ if ( ! class_exists( 'Search' ) ) {
 		 */
 
 		public function write_search_term_to_archive_table( $search_term, $result_count) {
+			if (!get_option('wpsi_database_created')) return;
+
 			global $wpdb;
 
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';

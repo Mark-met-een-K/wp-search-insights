@@ -3,65 +3,69 @@ jQuery(document).ready(function ($) {
 
     var deleteBtn = $('#wpsi-delete-selected');
 
-
     /**
      * Datatables
      */
-    init_datatables();
-    function init_datatables() {
-        $('.wpsi-table').each(function () {
-            $(this).DataTable({
-                "dom": 'frt<"table-footer"p><"clear">B',
-                "pageLength": 6,
-                conditionalPaging: true,
-                buttons: [
-                    {extend: 'csv', text: 'Download CSV'}
-                ],
-                "language": {
-                    "paginate": {
-                        "previous": "Previous",
-                        "next": "Next",
-                    },
-                    searchPlaceholder: "Search",
-                    "search": "",
-                    "emptyTable": "No searches recorded in selected period!"
+
+    $('.item-content').each(function(){
+        wpsiLoadData($(this));
+    });
+
+    function wpsiInitSingleDataTable(container) {
+        var table = container.find('.wpsi-table');
+        table.DataTable({
+            "dom": 'frt<"table-footer"p><"clear">B',
+            "pageLength": 6,
+            conditionalPaging: true,
+            buttons: [
+                {extend: 'csv', text: 'Download CSV'}
+            ],
+            "language": {
+                "paginate": {
+                    "previous": "Previous",
+                    "next": "Next",
                 },
-                "order": [[2, "desc"]],
-            });
+                searchPlaceholder: "Search",
+                "search": "",
+                "emptyTable": "No searches recorded in selected period!"
+            },
+            "order": [[2, "desc"]],
         });
 
         /**
          * Add dropdown for data filtering
          */
-        $('.dataTables_filter').each(function(){
-            $(this).append(wpsi.dateFilter)
-        });
-
-        wpsiInitDeleteCapability();
-
-        // Move export buttons to no results div
-        var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").addClass('csvDownloadBtn').detach();
-        if (!$(".wpsi-nr-footer").find('.csvDownloadBtn').length){
-            $(".wpsi-nr-footer").append(export_buttons);
-        }
-
-        // Move search term filter field outside of settings div
-        var fiter_field =  $(".form-table > tbody:nth-child(1) > tr:nth-child(7)").detach();
-        $("#filter-inner ").append(fiter_field);
-
+        var filter = container.find('.dataTables_filter');
+        filter.append(wpsi.dateFilter);
     }
 
     $(".wpsi-date-container").html(wpsi.dateFilter);
 
     $(document).on('change', '.wpsi-date-filter', function(e){
         e.stopPropagation();
-
         var container = $(this).closest('.item-content');
-        var isDataTable = (container.find('.dataTable').length);
+        var type = container.closest('.wpsi-item').data('table_type');
         var range = container.find('.wpsi-date-filter').val();
-        var type = $(this).closest('.wpsi-item').data('table_type');
+        localStorage.setItem('wpsi_range_'+type, range);
+        wpsiLoadData(container);
 
-        container.html('loading...');
+    });
+
+    function wpsiLoadData(container){
+        var range;
+        var type = container.closest('.wpsi-item').data('table_type');
+        if (type === 'plugins' || type === 'tasks') return;
+        var defaultRange = container.closest('.wpsi-item').data('default_range');
+        var storedRange = localStorage.getItem('wpsi_range_'+type);
+        console.log("stored range");
+        console.log(storedRange);
+        if (storedRange === null ){
+            range = defaultRange;
+        } else {
+            range = storedRange;
+        }
+
+        container.html('<div class="wpsi-skeleton"></div>');
 
         $.ajax({
             type: "GET",
@@ -74,18 +78,21 @@ jQuery(document).ready(function ($) {
                 token: wpsi.token
             }),
             success: function (response) {
-                //get all occurrences on this page for this term id
                 container.html(response.html);
-                if (isDataTable) {
-                    init_datatables();
-                } else {
-                    container.find(".wpsi-date-container").html(wpsi.dateFilter);
-                }
+                wpsiInitSingleDataTable(container);
+                container.find(".wpsi-date-container").html(wpsi.dateFilter);
                 container.find('.wpsi-date-filter').val(range);
+                wpsiInitDeleteCapability();
 
-            }
+                // Move export buttons to no results div
+                var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").addClass('csvDownloadBtn').detach();
+                $(".wpsi-nr-footer").append(export_buttons);
+
+                // Move search term filter field outside of settings div
+                var fiter_field =  $(".form-table > tbody:nth-child(1) > tr:nth-child(7)").detach();
+                $("#filter-inner ").append(fiter_field);            }
         });
-    });
+    }
 
     /**
      * Show/hide dashboard items
@@ -126,10 +133,10 @@ jQuery(document).ready(function ($) {
 
     // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
     if (localStorage.getItem("wpsi_grid_initialized") === null) {
-            checkboxes.each(function () {
-                wpsi_grid_configuration[this.id] = 'checked';
-            });
-            localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
+        checkboxes.each(function () {
+            wpsi_grid_configuration[this.id] = 'checked';
+        });
+        localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
         localStorage.setItem('wpsi_grid_initialized', 'set');
     }
 
@@ -170,6 +177,7 @@ jQuery(document).ready(function ($) {
     function wpsiInitDeleteCapability() {
         //move button to location in table
         $(".table-footer").append(deleteBtn);
+        deleteBtn.show();
 
         //set button to disabled
         $('#wpsi-delete-selected').attr('disabled', true);
@@ -221,6 +229,7 @@ jQuery(document).ready(function ($) {
                             table.row('.wpsi-selected').remove().draw(false);
                         }
                     });
+
                     $('#wpsi-delete-selected').attr('disabled', true);
                 }
             });

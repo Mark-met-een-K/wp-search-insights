@@ -315,6 +315,7 @@ widget
   padding: 15px;
 }
 #wpsi-dashboard #wpsi-delete-selected {
+  display: none;
   text-shadow: none !important;
   vertical-align: middle;
   margin-left: 25px;
@@ -1052,5 +1053,24 @@ widget
   width: 135px !important;
   background-color: white !important;
   color: #0a6aa1 !important;
+}
+/*skeleton*/
+.wpsi-skeleton:empty {
+  margin: auto;
+  margin-top: 40px;
+  width: 100%;
+  height: 352px;
+  /* change height to see repeat-y behavior */
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 0.5) 15%), linear-gradient(#f2f2f2 38px, transparent 0), linear-gradient(#f2f2f2 38px, transparent 0), linear-gradient(#f2f2f2 38px, transparent 0), linear-gradient(#f2f2f2 38px, transparent 0);
+  background-repeat: repeat-y;
+  background-size: 50px 200px, /* highlight */ 100% 117px, 100% 117px, 100% 117px, 100% 117px;
+  background-position: 0 0, /* highlight */ 1px 1px, 1px 40px, 1px 79px, 1px 118px;
+  background-color: #d6d8db;
+  animation: shine 2.5s infinite;
+}
+@keyframes shine {
+  to {
+    background-position: 100% 0, /* move highlight to right */ 1px 1px, 1px 40px, 1px 79px, 1px 118px;
+  }
 }
 /*# sourceMappingURL=style.css.map */
