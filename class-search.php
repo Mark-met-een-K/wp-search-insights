@@ -245,7 +245,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 			//check if the last search is a recent search
 			$ten_seconds_ago = $now-10;
-			$last_search_is_recent = $last_search->time > $ten_seconds_ago;
+			$last_search_is_recent = $last_search && $last_search->time > $ten_seconds_ago;
 
 			//this search is the same as the previous one, which is recent, ignore.
 			if ($last_search && $last_search_is_recent && $last_search->term===$search_term){
