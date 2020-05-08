@@ -336,7 +336,6 @@ widget
   flex-direction: column;
 }
 #wpsi-dashboard .search-insights-table {
-  height: 100%;
   padding-top: 15px;
   flex: 1;
   margin: 0 auto;
@@ -600,7 +599,10 @@ widget
   justify-content: space-between;
 }
 #wpsi-dashboard .upsell-grid-container .item-content {
-  width: 100% !important;
+  width: 100%;
+}
+#wpsi-dashboard .upsell-grid-container .item-container {
+  box-shadow: none;
 }
 #wpsi-dashboard .wpsi-other-plugins-container {
   display: flex;

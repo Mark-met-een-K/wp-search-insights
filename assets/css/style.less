@@ -370,7 +370,6 @@ widget
   }
 
   .search-insights-table {
-    height: 100%;
     padding-top: 15px;
     flex: 1;
     margin: 0 auto;
@@ -744,12 +743,16 @@ widget
   .upsell-grid-container {
     display: flex;
     justify-content: space-between;
-    //width: 800px;
+     .item-content {
+      width: 100%;
+    }
+    .item-container {
+      box-shadow: none;
+    }
+
   }
 
-  .upsell-grid-container .item-content {
-    width: 100% !important;
-  }
+
 
 
   .wpsi-other-plugins-container {
