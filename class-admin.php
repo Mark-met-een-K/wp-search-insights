@@ -1187,7 +1187,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 $url = site_url();
                 $referrer = __('Home','wp-search-insights');
             } elseif (strpos($referrer, site_url()) === FALSE) {
-                $url = site_url(sanitize_title( $referrer) );
+                $url = site_url( $referrer );
             } else {
                 $url = $referrer;
             }
