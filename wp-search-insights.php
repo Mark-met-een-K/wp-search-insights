@@ -29,6 +29,27 @@
 */
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
+/**
+ * Checks if the plugin can safely be activated, at least php 5.6 and wp 4.6
+ * @since 2.1.5
+ */
+if (!function_exists('wpsi_activation_check')) {
+	function wpsi_activation_check()
+	{
+		if (version_compare(PHP_VERSION, '5.6', '<')) {
+			deactivate_plugins(plugin_basename(__FILE__));
+			wp_die(__('WP Search Insights cannot be activated. The plugin requires PHP 5.6 or higher', 'complianz-gdpr'));
+		}
+
+		global $wp_version;
+		if (version_compare($wp_version, '4.6', '<')) {
+			deactivate_plugins(plugin_basename(__FILE__));
+			wp_die(__('WP Search Insights cannot be activated. The plugin requires WordPress 4.6 or higher', 'complianz-gdpr'));
+		}
+	}
+}
+register_activation_hook( __FILE__, 'wpsi_activation_check' );
+
 if ( ! class_exists( 'WPSI' ) ) {
 	class WPSI {
 		public static $instance;
