@@ -131,6 +131,15 @@ if ( ! class_exists( 'WPSI' ) ) {
 				wpsi_path . '/languages/' );
 		}
 
+		/**
+		 * Get directory of free plugin
+		 * @return string
+		 */
+
+		public static function get_actual_directory_name() {
+			return basename( __DIR__ );
+		}
+
 		private function hooks() {
 
 		}
