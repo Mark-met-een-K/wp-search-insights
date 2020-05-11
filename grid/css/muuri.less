@@ -8,98 +8,20 @@
 
 @media screen and (max-width: 950px) {
     // Prevent sideways scrolling on mobile
-    #settings-section {
-        width: 85vw !important;
-    }
-    #wpsi-filter {
-        width: 90vw !important;
-    }
     html, body {
         overflow-x: hidden;
     }
     body {
         position: relative
     }
-    #dashboard {
-        padding-left: 0px !important;
-    }
-    #wpsi-dashboard .dataTables_filter {
-        margin: 0 !important;
-    }
-    .documentation {
-        word-wrap: anywhere;
-    }
-    .wpsi-grid {
-        margin-left: 10px !important;
-    }
-    .item-container {
-        width: 95vw !important;
-    }
-    //.table-overview {
-    //    height: 600px !important;
-    //    .item-container {
-    //        height: 600px !important;
-    //    }
-    //}
-    #wpsi-dashboard-widget h3 {
-        padding: 0 !important;
-    }
-    .inside > div:nth-child(1) {
-        margin: 0 !important;
-    }
-    .table-footer {
-        position: relative !important;
-        bottom: 0 !important;
-    }
-    .wpsi-tips-tricks {
-        height: 300px !important;
-    }
-    .wpsi-upsell-title {
-        padding: 0 !important;
-    }
-    .wpsi-top-title {
-        padding: 0 !important;
-    }
-    .wpsi-upsell-content {
-        padding-bottom: 25px !important;
-    }
-    // Second grid item top to prevent overflowing table
-    div.wpsi-item:nth-child(2) {
-        top: 10px !important;
-    }
-    div.wpsi-item:nth-child(3) {
-        top: 10px !important;
-    }
-    .item-container {
-        max-width: 90vw;
-    }
-    #wpsi-recent-table_filter input {
-        display: none;
-    }
-    .wpsi-other-plugins-container {
-        display: inline-block !important;
-    }
 
-    .wpsi-rsssl, .wpsi-cmplz {
-        width: 300px !important;
-        padding-left: 10px !important;
-    }
-}
-
-@media screen and (max-width: 650px) {
-    .table-overview {
-        max-height: 700px !important;
-        .item-container {
-            max-height: 700px !important;
+    #wpsi-dashboard {
+        #dashboard {
+            padding: 0px;
         }
-    }
-    .wpsi-grid .wpsi-item.half-height .item-container {
-        height: 450px !important;
-    }
-}
-@media screen and (max-width: 375px) {
-    .button-upsell {
-        margin-top: 15px !important;
+        .wpsi-grid {
+            margin-left: 10px;
+        }
     }
 }
 
@@ -151,7 +73,6 @@
         .item-container {
             background-color: #fff;
             position: relative;
-            //cursor: pointer;
             box-shadow: 0px 0px 5px 5px @box_shadow_color;
             width: @gridblock_width - 2* @grid_margin;
             height: @gridblock_height - 2 * @grid_margin;
