@@ -697,18 +697,28 @@ widget
 #wpsi-dashboard .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
   display: none;
 }
-#wpsi-dashboard #settings-section {
+#wpsi-dashboard .settings-section {
   padding-left: 25px;
   padding-top: 10px;
   background-color: #fff;
   box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
   width: 800px;
 }
-#wpsi-dashboard #wpsi-filter {
-  background-color: #fff;
+#wpsi-dashboard .settings-section.half {
   height: 250px;
-  width: 825px;
-  box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
+}
+#wpsi-dashboard .settings-section tr {
+  display: flex;
+  flex-direction: column;
+}
+#wpsi-dashboard .settings-section th {
+  display: flex;
+  justify-content: flex-start;
+}
+@media screen and (max-width: 950px) {
+  #wpsi-dashboard .settings-section {
+    width: 85vw !important;
+  }
 }
 #wpsi-dashboard .settings-title {
   display: flex;
@@ -718,14 +728,6 @@ widget
   flex-direction: unset;
   align-items: center;
   margin-bottom: 10px;
-}
-#wpsi-dashboard #wpsi-filter tr {
-  display: flex;
-  flex-direction: column;
-}
-#wpsi-dashboard #wpsi-filter th {
-  display: flex;
-  justify-content: flex-start;
 }
 #wpsi-dashboard .wpsi-save-button {
   margin-bottom: 25px;

@@ -103,6 +103,7 @@ jQuery(document).ready(function ($) {
     $('ul.tabs li').click(function () {
         var tab_id = $(this).attr('data-tab');
         // Sort and filter the grid
+        console.log(tab_id);
         if  (tab_id !== 'dashboard') {
             $('#wpsi-toggle-link-wrap').hide();
         } else {

@@ -7,6 +7,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         private static $_this;
         public $grid_items;
         public $capability = 'activate_plugins';
+        public $tabs;
 
 
 		static function this() {
@@ -54,9 +55,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
 
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
-        }
+
+            }
+
+
+	    /**
+	     * Set up grid array
+	     */
 
         public function init_grid(){
+		    $this->tabs = apply_filters('wpsi_tabs', array(
+		            'dashboard' => array(
+		                    'title'=> __( "General", "wp-search-insights" ),
+                    ),
+		            'settings' => array(
+			            'title'=> __( "Settings", "wp-search-insights" ),
+			            'capability' => 'manage_options',
+		            ),
+            ));
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
@@ -723,101 +739,46 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             ?>
                         </div>
                     </div>
-                </div> <!-- toggle wrap -->
+                </div>
+
                 <div id="wpsi-dashboard">
-                    <!--    Navigation-->
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
                             <div class="tabs-content">
-                            <img class="wpsi-settings-logo"><?php echo "<img class='wpsi-image' src='" . trailingslashit(wpsi_url) . "assets/images/logo.png' alt='WP Search Insights logo'>"; ?></img></span>
+                                <img class="wpsi-settings-logo wpsi-image" src="<?=trailingslashit(wpsi_url)?>assets/images/logo.png" alt="WP Search Insights logo">
                                  <div class="header-links">
                                     <div class="tab-links">
-                                        <li class="tab-link current" data-tab="dashboard"><a class="tab-text tab-dashboard" href="#dashboard#top"><?php _e("General", "wp-search-insights");?></a></li>
-                                        <?php if (current_user_can('manage_options')) { ?>
-                                        <li class="tab-link" data-tab="settings"><a class="tab-text tab-settings" href="#settings#top"><?php _e("Settings" , "wp-search-insights");?></a></li>
-                                        <?php } ?>
+                                        <?php foreach ($this->tabs as $key => $tab) {
+                                            if (isset($tab['capability']) && !current_user_can($tab['capability'])) continue;
+	                                        $current = $key=='dashboard' ? 'current' : '';
+                                            ?>
+                                            <li class="tab-link <?=$current?>" data-tab="<?=$key?>"><a class="tab-text tab-<?=$key?>" href="#<?=$key?>#top"><?=$tab['title']?></a></li>
+                                        <?php }?>
                                     </div>
-                                    <div class="documentation-pro">
-                                        <div class="documentation">
-                                            <a href="https://wpsearchinsights.com/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
-                                        </div>
-                                        <div id="wpsi-toggle-options">
-                                            <div id="wpsi-toggle-link-wrap">
-                                                <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
-                                                        aria-controls="screen-options-wrap"><?php _e("Display options", "wp-search-insights"); ?>
-                                                    <span id="wpsi-toggle-arrows" class="dashicons dashicons-arrow-down-alt2"></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="header-upsell">
-	                                        <a href="https://paypal.me/wpsearchinsights" target="_blank">
-	                                            <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
-	                                        </a>
-                                        </div>
-                                    </div>
+                                    <?php do_action('wpsi_tab_options')?>
                                 </div>
                             </div>
                         </ul>
 
 	                    <div class="wp-search-insights-main">
-	                        <!--    Dashboard tab   -->
-	                        <div id="dashboard" class="tab-content current">
-	                            <button class="button" id="wpsi-delete-selected">
-	                                <?php _e("Delete selected terms", "wp-search-insights") ?>
-	                            </button>
-
-	                            <?php
-	                            //get html of block
-	                            $grid_items = $this->grid_items;
-	                            $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
-	                            $element = $this->get_template('grid-element.php', wpsi_path . '/grid');
-	                            $output = '';
-	                            foreach ($grid_items as $index => $grid_item) {
-	                                $output .= str_replace(array('{class}', '{content}', '{title}', '{index}', '{type}'), array($grid_item['class'], $grid_item['content'], $grid_item['title'], $index, $grid_item['type']), $element);
-	                            }
-	                            echo str_replace('{content}', $output, $container);
-	                            ?>
-
-	                        </div> <!--id=dashboard -->
-	                        <!--    Settings tab    -->
-	                        <?php if (current_user_can('manage_options')) { ?>
-	                            <form action="options.php" method="post">
-	                                <div id="settings" class="tab-content">
-	                                    <div id="settings-section">
-	                                        <span class="settings-title"><h3> <?php _e("General settings" , "wp-search-insights");?> </h3></span>
-		                                    <div>
-		                                            <?php
-		                                            settings_fields('wpsi-settings-tab');
-		                                            do_settings_sections('wpsi-settings');
-		                                            ?> <div id="clear-searches-btn-border"></div> <?php
-		                                            $this->save_button();
-		                                            ?>
-		                                    </div>
-	                                    </div>
-
-		                                <div id="wpsi-filter">
-			                                <div id="filter-inner">
-	                                        <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
-	                                            <?php
-	                                            WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Separate each search term with whitespace or a comma", "wp-search-insights"));
-	                                            ?>
-	                                         </span>
-			                                </div>
-			                                <div class="filter-save">
-				                                <?php $this->save_button(); ?>
-			                                </div>
-		                                </div>
-
-	                                </div> <!-- id=settings -->
-
-	                            </form>
-		                    <?php } ?>
-	                    </div><!-- wp-search-insights-main-->
-                    </div><!-- wp-search-insights-container -->
+		                    <?php foreach ($this->tabs as $key => $tab) {
+			                    if (isset($tab['capability']) && !current_user_can($tab['capability'])) continue;
+			                    $current = $key=='dashboard' ? 'current' : '';
+			                    ?>
+                                <div id="<?=$key?>" class="tab-content <?=$current?>">
+			                    <?php do_action("wpsi_tab_content_$key");?>
+                                </div>
+		                    <?php }?>
+	                    </div>
+                    </div>
                 </div>
 	        </div>
             <?php
         }
+
+	    /**
+	     * Save button for the forms
+	     */
 
         public function save_button() {
             ?>
