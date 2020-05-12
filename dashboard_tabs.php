@@ -49,39 +49,40 @@ add_action( "wpsi_tab_content_dashboard", 'wpsi_tab_content_dashboard' );
 function wpsi_tab_content_settings(){
     if (!is_user_logged_in()) return;
 
+
+	ob_start();
+	do_settings_sections('wpsi-settings');
+	settings_fields('wpsi-settings-tab');
+	$content = ob_get_clean();
+	$title = __( "General settings", "wp-search-insights" );
+	$args = array(
+		'title' => $title,
+		'content' => $content,
+		'class' => '',
+	);
+	echo WPSI::$admin->get_template( 'settings-block.php', wpsi_path, $args );
+
+	ob_start();
+	do_settings_sections('wpsi-filter');
+	settings_fields('wpsi-filter-tab');
+	$content = ob_get_clean();
+	$title = __("Filters" , "wp-search-insights");
+	$args = array(
+		'title' => $title,
+		'content' => $content,
+		'class' => 'full-width',
+	);
+	echo WPSI::$admin->get_template( 'settings-block.php', wpsi_path, $args );
 	?>
-	<form action="options.php" method="post">
-		<div class="settings-section">
-			<span class="settings-title"><h3><?php _e("General settings" , "wp-search-insights");?></h3></span>
-			<div>
-				<?php
-				settings_fields('wpsi-settings-tab');
-				do_settings_sections('wpsi-settings');
-				?> <div id="clear-searches-btn-border"></div> <?php
-				WPSI::$admin->save_button();
-				?>
-			</div>
-		</div>
 
-		<div class="settings-section">
-			<div id="filter-inner">
-                <span class="settings-title filter-title"><h3> <?php _e("Search filter" , "wp-search-insights");?> </h3>
-                    <?php
-                    WPSI::$help->get_help_tip(__("Exclude words, sentences or URL's. Separate each search term with whitespace or a comma", "wp-search-insights"));
-                    ?>
-                 </span>
-			</div>
-			<div class="filter-save">
-				<?php WPSI::$admin->save_button(); ?>
-			</div>
-		</div>
 
-	</form>
 <?php
 }
 add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
 
-
+/**
+ * set of options in the tabs bar
+ */
 
 function wpsi_tab_options(){
     ?>

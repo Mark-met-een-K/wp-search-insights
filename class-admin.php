@@ -437,17 +437,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             );
 
             add_settings_field(
-                'clear_database',
+                'wpsi_clear_database',
                 __("Clear database", 'wp-search-insights'),
                 array($this, 'option_wpsi_clear_database'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
-            );
-
-            add_settings_field(
-                'wpsi_filter_textarea',
-                "",
-                array($this, 'option_textarea_filter'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
             );
@@ -459,7 +451,23 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
-            register_setting('wpsi-settings-tab', 'wpsi_filter_textarea');
+
+
+	        add_settings_section(
+		        'wpsi-filter-tab',
+		        __("", "wpsi-search-insights"),
+		        array($this, 'wpsi_settings_tab_intro'),
+		        'wpsi-filter'
+	        );
+
+	        add_settings_field(
+		        'wpsi_filter_textarea',
+		        __("Search Filter","wp-search-insights"),
+		        array($this, 'option_textarea_filter'),
+		        'wpsi-filter',
+		        'wpsi-filter-tab'
+	        );
+            register_setting('wpsi-filter-tab', 'wpsi_filter_textarea');
 
         }
 
@@ -489,15 +497,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          *
          */
 
-        public function wpsi_settings_tab_intro()
-        {
-            ?>
-<!--            <div class="wpsi-settings-intro">-->
-<!--                <span class="wpsi-settings-logo"><i class="icon-cog-alt"></i></span>-->
-<!--                <span class="wpsi-settings-intro-text">--><?php //_e('WP Search Insights settings', 'wp-search-insights'); ?><!--</span>-->
-<!--            </div>-->
-            <?php
-        }
+        public function wpsi_settings_tab_intro() {}
 
         public function option_wpsi_exclude_admin()
         {
@@ -592,7 +592,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 'action_label' => __("Clear database", "wp-search-insights"),
                 'title' => __("Are you sure?", "wp-search-insights"),
                 'description' => __("Clearing the database deletes all recorded searches. You can create a backup by exporting the tables to either .csv or .xlsx format by pressing the download button beneath the tables.", "wp-search-insights"),
-                'action' => 'clear_database',
+                'action' => 'wpsi_clear_database',
             );
             $this->add_thickbox_button($args);
 //	        WPSI::$help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
@@ -679,7 +679,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 return;
             }
             //check for action
-            if (isset($_GET["action"]) && $_GET["action"] == 'clear_database') {
+            if (isset($_GET["action"]) && $_GET["action"] == 'wpsi_clear_database') {
                 $this->clear_database_tables();
                 $this->clear_cache();
             }
@@ -780,7 +780,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	     * Save button for the forms
 	     */
 
-        public function save_button() {
+        public function save_button($add_border=false) {
+            if ($add_border){
+	            ?> <div id="clear-searches-btn-border"></div> <?php
+            }
             ?>
             <input class="button wpsi-save-button" name="Submit"
                    type="submit"
@@ -875,6 +878,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 $contents = ob_get_clean();
             } else {
                 $contents = file_get_contents($file);
+            }
+
+            foreach ($args as $key => $value ){
+                $contents = str_replace('{'.$key.'}', $value, $contents);
             }
 
             return $contents;
