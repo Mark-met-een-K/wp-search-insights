@@ -26,12 +26,19 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->capability = get_option('wpsi_select_dashboard_capability');
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+            add_action( 'admin_init', array( $this, 'check_upgrade' ), 10, 2 );
 
             $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
 
             if ($is_wpsi_page) {
                 add_action('admin_init', array($this, 'init_grid') );
                 add_action('admin_head', array($this, 'inline_styles'));
+
+                // Dot not add action to clear entries from db when the option is set to never
+                if (get_option('wpsi_select_term_deletion_period') && get_option('wpsi_select_term_deletion_period') !== 'never') {
+                    add_action('admin_init', array($this, 'clear_entries_from_database'));
+                }
+
             }
 
             add_action('admin_init', array($this, 'add_privacy_info'));
@@ -114,6 +121,25 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'can_hide' => false,
                 ),
             );
+        }
+
+        /**
+         *
+         * Stuff to update after plugin upgrade
+         *
+         * @since 1.3
+         *
+         */
+
+        public function check_upgrade() {
+
+            $prev_version = get_option( 'wpsi-current-version', false );
+
+            if ( $prev_version && version_compare( $prev_version, '1.3', '<' ) ) {
+                update_option('wpsi_select_term_deletion_period' , 'never');
+            }
+
+            update_option( 'wpsi-current-version', wp_search_insights_version );
         }
 
         public function inline_styles()
@@ -212,10 +238,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 wp_enqueue_script('datatables-pagination');
             }
         }
-
-
-
-
 
 		public function reset_plus_one_ten_searches(){
 		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
@@ -429,6 +451,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             );
 
             add_settings_field(
+                'wpsi_delete_terms_after_period',
+                __("Automatically delete terms from your database after this period", 'wp-search-insights'),
+                array($this, 'option_wpsi_delete_terms_after_period'),
+                'wpsi-settings',
+                'wpsi-settings-tab'
+            );
+
+            add_settings_field(
                 'wpsi_cleardatabase',
                 __("Clear data on plugin uninstall", 'wp-search-insights'),
                 array($this, 'option_clear_database_on_uninstall'),
@@ -451,7 +481,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
-
+            register_setting('wpsi-settings-tab', 'wpsi_select_term_deletion_period');
 
 	        add_settings_section(
 		        'wpsi-filter-tab',
@@ -537,6 +567,37 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
+        /**
+         * Set the option to automatically delete search terms from the database after a certain time period
+         *
+         * @since 1.3
+         *
+         */
+
+        public function option_wpsi_delete_terms_after_period()
+        {
+            ?>
+            <label class="wpsi-select-deletion-period">
+                <select name="wpsi_select_term_deletion_period" id="wpsi_select_term_deletion_period">
+                    <option value="never" <?php if (get_option('wpsi_select_term_deletion_period') == 'never') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Never', 'wp-search-insights'); ?></option>
+                    <option value="week" <?php if (get_option('wpsi_select_term_deletion_period') == 'week') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Week', 'wp-search-insights'); ?></option>
+                    <option value="month" <?php if (get_option('wpsi_select_term_deletion_period') == 'month') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Month', 'wp-search-insights'); ?></option>
+                    <option value="year" <?php if (get_option('wpsi_select_term_deletion_period') == 'year') {
+                        echo 'selected="selected"';
+                        } ?>><?php _e('Year', 'wp-search-insights'); ?></option>
+                </select>
+            </label>
+            <?php
+            WPSI::$help->get_help_tip(__("When to delete terms from your database after this time period", "wp-search-insights"));
+            ?>
+            <?php
+        }
 
         public function option_clear_database_on_uninstall()
         {
@@ -544,12 +605,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <div class="tg-list-item">
                 <label class="wpsi-switch">
                     <input name="wpsi_cleardatabase" type="hidden" value="0"/>
-
                     <input name="wpsi_cleardatabase" size="40" type="checkbox"
                            value="1" <?php checked(1, get_option('wpsi_cleardatabase'), true) ?> />
                     <span class="wpsi-slider wpsi-round"></span>
                 </label>
-
                 <?php
                 WPSI::$help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
                 ?>
@@ -695,6 +754,49 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             delete_transient( 'wpsi_popular_searches' );
             delete_transient( 'wpsi_top_searches' );
 	        delete_transient('wpsi_plus_ones');
+        }
+
+        /**
+         * Delete entires from database after certain period
+         *
+         * @since 1.3
+         *
+         */
+
+        public function clear_entries_from_database() {
+            // Nonce is already verified before calling this function
+            if (!current_user_can($this->capability)) {
+                return;
+            }
+
+            $period = get_option('wpsi_select_term_deletion_period');
+
+            $past_date = '';
+
+            if ($period == 'week') {
+                $past_date = strtotime("-1 week");
+            }
+
+            if ($period == 'month') {
+                $past_date = strtotime("-1 month");
+            }
+
+            if ($period == 'year') {
+                $past_date = strtotime("-1 year");
+            }
+
+            $this->delete_from_tables($past_date);
+        }
+
+        public function delete_from_tables($past_date) {
+
+            global $wpdb;
+
+            $table_name_single = $wpdb->prefix . 'searchinsights_single';
+            $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+
+            $wpdb->query("DELETE FROM $table_name_single WHERE (time < $past_date)");
+            $wpdb->query("DELETE FROM $table_name_archive WHERE (time < $past_date)");
 
         }
 
