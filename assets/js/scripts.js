@@ -89,10 +89,7 @@ jQuery(document).ready(function ($) {
                 if (!$(".wpsi-nr-footer").find('.csvDownloadBtn').length){
                     $(".wpsi-nr-footer").append(export_buttons);
                 }
-
-                // Move search term filter field outside of settings div
-                var fiter_field =  $(".form-table > tbody:nth-child(1) > tr:nth-child(7)").detach();
-                $("#filter-inner ").append(fiter_field);            }
+            }
         });
     }
 
@@ -103,6 +100,7 @@ jQuery(document).ready(function ($) {
     $('ul.tabs li').click(function () {
         var tab_id = $(this).attr('data-tab');
         // Sort and filter the grid
+        console.log(tab_id);
         if  (tab_id !== 'dashboard') {
             $('#wpsi-toggle-link-wrap').hide();
         } else {

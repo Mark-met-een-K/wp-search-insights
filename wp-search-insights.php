@@ -3,7 +3,7 @@
  * Plugin Name: WP Search Insights
  * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
  * Description: WP Search Insights shows you what your users are looking for on your site, and which searches don't have results
- * Version: 1.2
+ * Version: 1.3
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters, Rogier Lankhorst
@@ -28,6 +28,27 @@
 
 */
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
+
+/**
+ * Checks if the plugin can safely be activated, at least php 5.6 and wp 4.6
+ * @since 2.1.5
+ */
+if (!function_exists('wpsi_activation_check')) {
+	function wpsi_activation_check()
+	{
+		if (version_compare(PHP_VERSION, '5.6', '<')) {
+			deactivate_plugins(plugin_basename(__FILE__));
+			wp_die(__('WP Search Insights cannot be activated. The plugin requires PHP 5.6 or higher', 'complianz-gdpr'));
+		}
+
+		global $wp_version;
+		if (version_compare($wp_version, '4.6', '<')) {
+			deactivate_plugins(plugin_basename(__FILE__));
+			wp_die(__('WP Search Insights cannot be activated. The plugin requires WordPress 4.6 or higher', 'complianz-gdpr'));
+		}
+	}
+}
+register_activation_hook( __FILE__, 'wpsi_activation_check' );
 
 if ( ! class_exists( 'WPSI' ) ) {
 	class WPSI {
@@ -89,6 +110,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 		private function includes() {
 			if ( is_admin() ) {
 				require_once( wpsi_path . 'class-admin.php' );
+				require_once( wpsi_path . 'dashboard_tabs.php' );
 				require_once( wpsi_path . 'class-help.php' );
 				require_once( wpsi_path . 'class-review.php' );
 				require_once( wpsi_path . 'shepherd/tour.php' );
@@ -108,6 +130,15 @@ if ( ! class_exists( 'WPSI' ) ) {
 		private function load_translation() {
 			load_plugin_textdomain( 'wp-search-insights', false,
 				wpsi_path . '/languages/' );
+		}
+
+		/**
+		 * Get directory of free plugin
+		 * @return string
+		 */
+
+		public static function get_actual_directory_name() {
+			return basename( __DIR__ );
 		}
 
 		private function hooks() {

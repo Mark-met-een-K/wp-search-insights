@@ -927,14 +927,18 @@ widget
     display: none;
   }
 
-  #settings-section {
+  .settings-block {
     padding-left: 25px;
     padding-top: 10px;
+    margin-top:20px;
     background-color: #fff;
     box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
     width: 800px;
-  }
-
+    &.full-width {
+      tr {
+        display: flex;
+        flex-direction: column;
+      }
   #wpsi-filter {
     background-color: #fff;
     height: 250px;
@@ -947,20 +951,16 @@ widget
     flex-direction: column;
   }
 
-  .filter-title {
-    flex-direction: unset;
-    align-items: center;
-    margin-bottom: 10px;
+  @media screen and (max-width: 950px) {
+    // Prevent sideways scrolling on mobile
+    .settings-block {
+      width: 85vw !important;
+    }
   }
 
-  #wpsi-filter tr {
+  .settings-title {
     display: flex;
     flex-direction: column;
-  }
-
-  #wpsi-filter th {
-    display: flex;
-    justify-content: flex-start;
   }
 
   .wpsi-save-button {
@@ -973,13 +973,7 @@ widget
   }
 
   #filter-inner {
-    margin: 25px;
-  }
-
-  #wpsi_filter_textarea {
-    width: 700px;
-    height: 100px;
-    border: 1px solid @border-color;
+    //margin: 25px;
   }
 
   .filter-save {
