@@ -330,9 +330,6 @@ widget
   margin-left: 25px;
   margin-bottom: 10px;
 }
-#wpsi-dashboard #wpsi-delete-selected:hover {
-  color: white !important;
-}
 #wpsi-dashboard .tab-content.current {
   display: inherit;
 }

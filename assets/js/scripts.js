@@ -186,7 +186,7 @@ jQuery(document).ready(function ($) {
             }
 
             //if at least one row is selected, enable the delete button
-            var table = $(this).closest('.search-insights-table').find('.dataTable');
+            var table = $(this).closest('.item-content').find('.dataTable');
             table.find('.wpsi-selected').each(function () {
                 $('#wpsi-delete-selected').attr('disabled', false);
             });
