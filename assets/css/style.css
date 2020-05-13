@@ -1074,7 +1074,7 @@ Animating one layer of the background which is a tilted linear gradient with whi
   width: 350px;
   height: 400px;
   /* change height to see repeat-y behavior */
-  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(lightgray 20px, transparent 0), linear-gradient(lightgray 20px, transparent 0), linear-gradient(lightgray 20px, transparent 0), linear-gradient(lightgray 20px, transparent 0);
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(#dadada 20px, transparent 0), linear-gradient(#dadada 20px, transparent 0), linear-gradient(#dadada 20px, transparent 0), linear-gradient(#dadada 20px, transparent 0);
   background-repeat: repeat-y;
   background-size: 50px 160px, /* highlight */ 150px 160px, 350px 160px, 300px 160px, 250px 160px;
   background-position: 0 0, /* highlight */ 0px 0, 0px 40px, 0px 80px, 0px 120px;
