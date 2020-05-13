@@ -32,23 +32,20 @@ jQuery(document).ready(function ($) {
             "order": [[2, "desc"]],
         });
 
-        /**
-         * Add dropdown for data filtering
-         */
-        var filter = container.find('.dataTables_filter');
-        filter.append(wpsi.dateFilter);
     }
 
     $(".wpsi-date-container").html(wpsi.dateFilter);
 
     $(document).on('change', '.wpsi-date-filter', function(e){
+        console.log('test');
         e.stopPropagation();
-        var container = $(this).closest('.item-content');
+        var container = $(this).closest('.item-container');
         var type = container.closest('.wpsi-item').data('table_type');
+        console.log(type);
         var range = container.find('.wpsi-date-filter').val();
+        console.log(range);
         localStorage.setItem('wpsi_range_'+type, range);
-        wpsiLoadData(container);
-
+        wpsiLoadData(container.find('.item-content'));
     });
 
     function wpsiLoadData(container){
@@ -57,8 +54,6 @@ jQuery(document).ready(function ($) {
         if (type === 'plugins' || type === 'tasks') return;
         var defaultRange = container.closest('.wpsi-item').data('default_range');
         var storedRange = localStorage.getItem('wpsi_range_'+type);
-        console.log("stored range");
-        console.log(storedRange);
         if (storedRange === null ){
             range = defaultRange;
         } else {
@@ -191,7 +186,7 @@ jQuery(document).ready(function ($) {
             }
 
             //if at least one row is selected, enable the delete button
-            var table = $(this).closest('.search-insights-table').find('.dataTable');
+            var table = $(this).closest('.item-content').find('.dataTable');
             table.find('.wpsi-selected').each(function () {
                 $('#wpsi-delete-selected').attr('disabled', false);
             });

@@ -7,6 +7,9 @@
 .wrap {
   margin: 0 0 0 0;
 }
+.item-container {
+  opacity: 0;
+}
 @media screen and (max-width: 850px) {
   .tabs #wpsi-toggle-options {
     display: none;
@@ -14,7 +17,7 @@
   .tabs .header-upsell {
     display: none;
   }
-  #wpsi-dashboard .wpsi-date-container {
+  #wpsi-dashboard .wpsi-grid-controls {
     display: flex;
     justify-content: end;
   }
@@ -43,12 +46,6 @@
   }
   #wpsi-dashboard .item-container {
     width: 95vw;
-  }
-  #wpsi-dashboard .dataTables_filter {
-    margin: 0;
-  }
-  #wpsi-dashboard #wpsi-recent-table_filter input {
-    display: none;
   }
   #wpsi-dashboard .wpsi-sub-title {
     padding-top: 30px;
@@ -246,9 +243,6 @@ widget
     Progress bar
    */
   /*
-    Top Searches grid widget
-   */
-  /*
     Other plugins
    */
   /*
@@ -294,7 +288,7 @@ widget
   display: none;
 }
 #wpsi-dashboard .dataTables_filter {
-  margin-top: 5px;
+  margin: -56px 95px 0 0;
   position: absolute;
   right: 0;
 }
@@ -336,9 +330,6 @@ widget
   margin-left: 25px;
   margin-bottom: 10px;
 }
-#wpsi-dashboard #wpsi-delete-selected:hover {
-  color: white !important;
-}
 #wpsi-dashboard .tab-content.current {
   display: inherit;
 }
@@ -351,67 +342,67 @@ widget
   justify-content: space-between;
   flex-direction: column;
 }
-#wpsi-dashboard .search-insights-table {
+#wpsi-dashboard .item-content {
   padding-top: 15px;
   flex: 1;
   margin: 0 auto;
   position: relative;
   width: 95%;
 }
-#wpsi-dashboard .search-insights-table input[type="search"] {
+#wpsi-dashboard .item-content input[type="search"] {
   width: 250px;
   margin-right: 10px;
   border: 1px solid #DEDEDE;
 }
-#wpsi-dashboard .search-insights-table table {
+#wpsi-dashboard .item-content table {
   border-collapse: collapse;
   margin: 0;
   padding: 0;
   table-layout: fixed;
   justify-content: normal;
 }
-#wpsi-dashboard .search-insights-table table.dataTable .wpsi-selected {
+#wpsi-dashboard .item-content table.dataTable .wpsi-selected {
   background-color: rgba(41, 182, 246, 0.35);
 }
-#wpsi-dashboard .search-insights-table table caption {
+#wpsi-dashboard .item-content table caption {
   height: 50px;
   text-align: left;
   margin-top: -10px;
   padding-bottom: 10px;
 }
-#wpsi-dashboard .search-insights-table table tr {
+#wpsi-dashboard .item-content table tr {
   height: 40px;
   background-color: #f8f8f8;
   padding: 0.35em;
 }
-#wpsi-dashboard .search-insights-table table tbody tr {
+#wpsi-dashboard .item-content table tbody tr {
   border-bottom: 0.1em solid #DEDEDE;
 }
-#wpsi-dashboard .search-insights-table table th,
-#wpsi-dashboard .search-insights-table table td {
+#wpsi-dashboard .item-content table th,
+#wpsi-dashboard .item-content table td {
   padding: 0.625em;
   text-align: left;
 }
-#wpsi-dashboard .search-insights-table table th {
+#wpsi-dashboard .item-content table th {
   letter-spacing: 0.1em;
 }
-#wpsi-dashboard .search-insights-table table th:focus {
+#wpsi-dashboard .item-content table th:focus {
   outline: none;
 }
-#wpsi-dashboard .search-insights-table tbody {
+#wpsi-dashboard .item-content tbody {
   color: #3c3c3c;
 }
-#wpsi-dashboard .search-insights-table tr:nth-child(even) {
+#wpsi-dashboard .item-content tr:nth-child(even) {
   background-color: #FFFFFF;
 }
-#wpsi-dashboard .search-insights-table tr:nth-child(odd) {
+#wpsi-dashboard .item-content tr:nth-child(odd) {
   background-color: #FFFFFF;
 }
-#wpsi-dashboard .search-insights-table tr:first-child {
+#wpsi-dashboard .item-content tr:first-child {
   border-top-left-radius: 0.55rem;
   border-top-right-radius: 0.55rem;
 }
-#wpsi-dashboard .search-insights-table tr:last-child {
+#wpsi-dashboard .item-content tr:last-child {
   margin-bottom: 0;
   border-bottom-left-radius: 0.55rem;
   border-bottom-right-radius: 0.55rem;
@@ -420,7 +411,11 @@ widget
   text-decoration: none;
   color: #3c3c3c;
 }
-#wpsi-dashboard .wpsi-date-filter {
+#wpsi-dashboard .wpsi-grid-controls {
+  float: right;
+  margin-top: -8px;
+}
+#wpsi-dashboard .wpsi-grid-controls .wpsi-date-filter {
   border: 1px solid #DEDEDE;
 }
 #wpsi-dashboard #wpsi-recent-table,
@@ -592,8 +587,6 @@ widget
 #wpsi-dashboard .wpsi-search-count {
   font-size: 1.1em;
   font-weight: 700;
-}
-#wpsi-dashboard .wpsi-header-right {
   float: right;
 }
 #wpsi-dashboard .date-btn-all-searches {
@@ -727,14 +720,15 @@ widget
   display: flex;
   flex-direction: column;
 }
-#wpsi-dashboard .settings-block.full-width th {
-  display: flex;
-  justify-content: flex-start;
+#wpsi-dashboard #wpsi-filter {
+  background-color: #fff;
+  height: 250px;
+  width: 825px;
+  box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
 }
-#wpsi-dashboard .settings-block textarea {
-  width: 700px;
-  height: 100px;
-  border: 1px solid #DEDEDE;
+#wpsi-dashboard .settings-title {
+  display: flex;
+  flex-direction: column;
 }
 @media screen and (max-width: 950px) {
   #wpsi-dashboard .settings-block {
@@ -1062,22 +1056,30 @@ widget
   color: #0a6aa1 !important;
 }
 /*skeleton*/
+/*
+Animated skeleton screen using CSS.
+
+Create shapes using gradients that simulate solids.
+
+Use `:empty` pseduo-class to show skeleton screen background only while container has no content (ex: for the "loading" state). When content is added to the container element, the pseudo-class selector won't match anymore and the skeleton screen will be removed automatically; no need to toggle a separate class on the container.
+
+See: https://developer.mozilla.org/en-US/docs/Web/CSS/:empty
+
+Animating one layer of the background which is a tilted linear gradient with white in the middle to achieve shine effect.
+*/
 .wpsi-skeleton:empty {
-  margin: auto;
-  margin-top: 40px;
-  width: 100%;
-  height: 352px;
+  width: 350px;
+  height: 400px;
   /* change height to see repeat-y behavior */
-  background-image: linear-gradient(100deg, rgba(211, 211, 211, 0), rgba(211, 211, 211, 0.3) 70%, rgba(211, 211, 211, 0.3) 15%), linear-gradient(#fff 38px, transparent 0), linear-gradient(#fff 38px, transparent 0), linear-gradient(#fff 38px, transparent 0), linear-gradient(#fff 38px, transparent 0);
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(#dadada 20px, transparent 0), linear-gradient(#dadada 20px, transparent 0), linear-gradient(#dadada 20px, transparent 0), linear-gradient(#dadada 20px, transparent 0);
   background-repeat: repeat-y;
-  background-size: 50px 200px, /* highlight */ 100% 117px, 100% 117px, 100% 117px, 100% 117px;
-  background-position: 0 0, /* highlight */ 1px 1px, 1px 40px, 1px 79px, 1px 118px;
-  background-color: #d6d8db;
-  animation: shine 2.5s infinite;
+  background-size: 50px 160px, /* highlight */ 150px 160px, 350px 160px, 300px 160px, 250px 160px;
+  background-position: 0 0, /* highlight */ 0px 0, 0px 40px, 0px 80px, 0px 120px;
+  animation: shine 1s infinite;
 }
 @keyframes shine {
   to {
-    background-position: 100% 0, /* move highlight to right */ 1px 1px, 1px 40px, 1px 79px, 1px 118px;
+    background-position: 100% 0, /* move highlight to right */ 0px 0, 0px 40px, 0px 80px, 0px 120px;
   }
 }
 /*# sourceMappingURL=style.css.map */

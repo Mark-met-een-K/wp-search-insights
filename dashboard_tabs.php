@@ -28,13 +28,15 @@ function wpsi_tab_content_dashboard(){
 			'{content}',
 			'{title}',
 			'{index}',
-			'{type}'
+			'{type}',
+			'{controls}',
 		), array(
 			$grid_item['class'],
 			$grid_item['content'],
 			$grid_item['title'],
 			$index,
-			$grid_item['type']
+			$grid_item['type'],
+			$grid_item['controls'],
 		), $element );
 	}
 	echo str_replace( '{content}', $output, $container );

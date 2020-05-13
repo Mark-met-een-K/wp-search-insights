@@ -18,6 +18,11 @@
   margin: 0 0 0 0;
 }
 
+//set opacity to 0 to make sure the grid only shows after fully loaded
+.item-container {
+  opacity: 0;
+}
+
 @media screen and (max-width: 850px) {
 
   .tabs {
@@ -32,7 +37,7 @@
 
   #wpsi-dashboard {
 
-    .wpsi-date-container {
+    .wpsi-grid-controls {
       display: flex;
       justify-content: end;
     }
@@ -63,7 +68,7 @@
     }
 
     // Second grid item top to prevent overflowing table
-    .wpsi-item  {
+    .wpsi-item {
       margin-top: 10px;
     }
 
@@ -71,13 +76,11 @@
       width: 95vw;
     }
 
-    .dataTables_filter {
-      margin: 0;
-    }
 
-    #wpsi-recent-table_filter input {
-      display: none;
-    }
+
+    //#wpsi-recent-table_filter input {
+    //  display: none;
+    //}
 
     .wpsi-sub-title {
       padding-top: 30px;
@@ -87,6 +90,7 @@
       button {
         margin-top: 120px;
       }
+
       //width: 300px;
       //padding-left: 10px;
     }
@@ -249,11 +253,11 @@ widget
 .term-frequency-container {
   padding-left: 25px;
   padding-top: 10px;
-}
 
-.term-frequency-container a {
-  text-decoration: none;
-  color: black;
+  a {
+    text-decoration: none;
+    color: black;
+  }
 }
 
 .widget-row {
@@ -270,7 +274,9 @@ widget
   .wpsi-time {
     margin: 0 !important;
   }
+
   padding-top: 5px;
+
   .wpsi-frequency {
     padding-top: 10px;
   }
@@ -279,7 +285,6 @@ widget
     margin-top: -10px
   }
 }
-
 
 
 /*
@@ -330,7 +335,7 @@ widget
   }
 
   .dataTables_filter {
-    margin-top: 5px;
+    margin: -56px 95px 0 0;
     position: absolute;
     right: 0;
   }
@@ -382,15 +387,12 @@ widget
   }
 
   #wpsi-delete-selected {
-    display:none;
+    display: none;
     text-shadow: none !important;
     vertical-align: middle;
     margin-left: 25px;
     margin-bottom: 10px;
   }
-  #wpsi-delete-selected:hover {
-    color: white !important;
-   }
 
   .tab-content.current {
     display: inherit;
@@ -413,7 +415,7 @@ widget
     flex-direction: column;
   }
 
-  .search-insights-table {
+  .item-content {
     padding-top: 15px;
     flex: 1;
     margin: 0 auto;
@@ -509,8 +511,14 @@ widget
     color: @light-text-color;
   }
 
-  .wpsi-date-filter {
-    border: 1px solid #DEDEDE;
+
+
+  .wpsi-grid-controls {
+    float:right;
+    margin-top:-8px;
+    .wpsi-date-filter {
+      border: 1px solid #DEDEDE;
+    }
   }
 
 
@@ -742,11 +750,10 @@ widget
   .wpsi-search-count {
     font-size: 1.1em;
     font-weight: 700;
+    float:right;
   }
 
-  .wpsi-header-right {
-    float: right;
-  }
+
 
   .date-btn-all-searches {
     position: absolute;
@@ -754,12 +761,6 @@ widget
     margin-top: 5px;
   }
 
-  .wpsi-btn-no-results {
-  }
-
-  //.wpsi-nr-content {
-  //  height: 270px;
-  //}
 
   .wpsi-nr-footer {
     display: flex;
@@ -773,30 +774,22 @@ widget
   }
 
   /*
-    Top Searches grid widget
-   */
-
-  .wpsi-top-searches-btn {
-    //margin-top: -7px;
-  }
-
-  /*
     Other plugins
    */
 
   .upsell-grid-container {
     display: flex;
     justify-content: space-between;
-     .item-content {
+
+    .item-content {
       width: 100%;
     }
+
     .item-container {
       box-shadow: none;
     }
 
   }
-
-
 
 
   .wpsi-other-plugins-container {
@@ -807,7 +800,7 @@ widget
 
   .wpsi-upsell {
     width: 475px;
-    margin-top:-58px;
+    margin-top: -58px;
   }
 
   .wpsi-upsell-title {
@@ -930,15 +923,19 @@ widget
   .settings-block {
     padding-left: 25px;
     padding-top: 10px;
-    margin-top:20px;
+    margin-top: 20px;
     background-color: #fff;
     box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
     width: 800px;
+
     &.full-width {
       tr {
         display: flex;
         flex-direction: column;
       }
+    }
+  }
+
   #wpsi-filter {
     background-color: #fff;
     height: 250px;
@@ -1020,6 +1017,7 @@ widget
     height: 100px;
     margin-bottom: 10px;
     border-bottom: 1px solid @border-color;
+
     .wpsi-tips-tricks-element {
       font-size: 0.9em;
       color: @light-text-color;
@@ -1384,51 +1382,103 @@ widget
 }
 
 
-
 /*skeleton*/
-@panelheight : 38px;
-@panelborder : 1px;
-@paneloffset : 3*(@panelborder+@panelheight);
-@rows : 9;
+//@panelheight : 38px;
+//@panelborder : 1px;
+//@paneloffset : 3*(@panelborder+@panelheight);
+//@rows : 9;
+//.wpsi-skeleton:empty {
+//  margin: auto;
+//  margin-top:40px;
+//  width: 100%;
+//  height: (@rows*@panelheight)+(@rows+1)*@panelborder; /* change height to see repeat-y behavior */
+//
+//  background-image:
+//          linear-gradient( 100deg, rgba(211, 211, 211, 0), rgba(211, 211, 211, 0.3) 70%, rgba(211, 211, 211, 0.3) 15% ),
+//          linear-gradient( #fff @panelheight, transparent 0 ),
+//          linear-gradient( #fff @panelheight, transparent 0 ),
+//          linear-gradient( #fff @panelheight, transparent 0 ),
+//          linear-gradient( #fff @panelheight, transparent 0 );
+//
+//  background-repeat: repeat-y;
+//
+//  background-size:
+//          50px 200px, /* highlight */
+//          100% @paneloffset,
+//          100% @paneloffset,
+//          100% @paneloffset,
+//          100% @paneloffset;
+//
+//  background-position:
+//          0 0, /* highlight */
+//          @panelborder @panelborder,
+//          @panelborder @panelheight+(2*@panelborder),
+//          @panelborder (2*@panelheight)+(3*@panelborder),
+//          @panelborder (3*@panelheight)+(4*@panelborder);
+//
+//  background-color:#d6d8db;
+//  animation: shine 2.5s infinite;
+//}
+//@keyframes shine {
+//  to {
+//    background-position:
+//            100% 0, /* move highlight to right */
+//            @panelborder @panelborder,
+//            @panelborder @panelheight+(2*@panelborder),
+//            @panelborder (2*@panelheight)+(3*@panelborder),
+//            @panelborder (3*@panelheight)+(4*@panelborder);
+//  }
+//}
+
+/*
+Animated skeleton screen using CSS.
+
+Create shapes using gradients that simulate solids.
+
+Use `:empty` pseduo-class to show skeleton screen background only while container has no content (ex: for the "loading" state). When content is added to the container element, the pseudo-class selector won't match anymore and the skeleton screen will be removed automatically; no need to toggle a separate class on the container.
+
+See: https://developer.mozilla.org/en-US/docs/Web/CSS/:empty
+
+Animating one layer of the background which is a tilted linear gradient with white in the middle to achieve shine effect.
+*/
 .wpsi-skeleton:empty {
-  margin: auto;
-  margin-top:40px;
-  width: 100%;
-  height: (@rows*@panelheight)+(@rows+1)*@panelborder; /* change height to see repeat-y behavior */
 
-  background-image:
-          linear-gradient( 100deg, rgba(211, 211, 211, 0), rgba(211, 211, 211, 0.3) 70%, rgba(211, 211, 211, 0.3) 15% ),
-          linear-gradient( #fff @panelheight, transparent 0 ),
-          linear-gradient( #fff @panelheight, transparent 0 ),
-          linear-gradient( #fff @panelheight, transparent 0 ),
-          linear-gradient( #fff @panelheight, transparent 0 );
+    width: 350px;
+    height: 400px; /* change height to see repeat-y behavior */
 
-  background-repeat: repeat-y;
+    background-image:
+            linear-gradient( 100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 80% ),
+            linear-gradient( #dadada 20px, transparent 0 ),
+            linear-gradient( #dadada 20px, transparent 0 ),
+            linear-gradient( #dadada 20px, transparent 0 ),
+            linear-gradient( #dadada 20px, transparent 0 );
 
-  background-size:
-          50px 200px, /* highlight */
-          100% @paneloffset,
-          100% @paneloffset,
-          100% @paneloffset,
-          100% @paneloffset;
+    background-repeat: repeat-y;
 
-  background-position:
-          0 0, /* highlight */
-          @panelborder @panelborder,
-          @panelborder @panelheight+(2*@panelborder),
-          @panelborder (2*@panelheight)+(3*@panelborder),
-          @panelborder (3*@panelheight)+(4*@panelborder);
+    background-size:
+            50px 160px, /* highlight */
+            150px 160px,
+            350px 160px,
+            300px 160px,
+            250px 160px;
 
-  background-color:#d6d8db;
-  animation: shine 2.5s infinite;
-}
-@keyframes shine {
-  to {
     background-position:
-            100% 0, /* move highlight to right */
-            @panelborder @panelborder,
-            @panelborder @panelheight+(2*@panelborder),
-            @panelborder (2*@panelheight)+(3*@panelborder),
-            @panelborder (3*@panelheight)+(4*@panelborder);
+            0 0, /* highlight */
+            0px 0,
+            0px 40px,
+            0px 80px,
+            0px 120px;
+
+    animation: shine 1s infinite;
   }
-}
+
+  @keyframes shine {
+    to {
+      background-position:
+              100% 0, /* move highlight to right */
+              0px 0,
+              0px 40px,
+              0px 80px,
+              0px 120px;
+    }
+  }
