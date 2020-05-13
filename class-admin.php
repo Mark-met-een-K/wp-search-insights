@@ -79,6 +79,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',//$this->recent_table('week'),
                     'class' => 'table-overview',
                     'type' => 'all',
+                    'controls' => '<div class="wpsi-date-container"></div>',
                     'can_hide' => true,
 
                 ),
@@ -87,6 +88,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',//$this->results_table('week'),
                     'class' => 'small',
                     'type' => 'results',
+                    'controls' => '<div class="wpsi-date-container"></div>',
                     'can_hide' => true,
 
                 ),
@@ -95,6 +97,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',//$this->generate_dashboard_widget($on_grid=true),
                     'class' => 'small',
                     'type' => 'popular',
+                    'controls' => '<div class="wpsi-date-container"></div>',
                     'can_hide' => true,
 
                 ),
@@ -104,6 +107,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'type' => 'tasks',
                     'class' => 'half-height wpsi-tips-tricks',
                     'can_hide' => true,
+                    'controls' => '',
+
 
                 ),
                 5 => array(
@@ -112,6 +117,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
                     'can_hide' => false,
+                    'controls' => '',
+
                 ),
             );
         }
@@ -1220,11 +1227,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	        $results = $this->get_results($range)
             ?>
             <div class="wpsi-nr-overview">
-                <div class="wpsi-nr-header">
-                    <div class="wpsi-nr-header-items">
-                        <div class="wpsi-date-container wpsi-btn-no-results wpsi-header-right wpsi-top-searches-btn"></div>
-                    </div>
-                </div>
+
                 <div class="wpsi-nr-content">
                     <div class="progress-bar-container">
                         <div class="progress">
@@ -1238,7 +1241,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     </div>
                     <div class="wpsi-total-searches">
                         <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
-                        <span class="wpsi-search-count wpsi-header-right">
+                        <span class="wpsi-search-count">
                             <?php
                             $args = array(
                                 'range'=>$range,
@@ -1499,12 +1502,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     '{content}',
                     '{link}',
                     '{class}',
+                    '{controls}',
                 ), array(
                     $item['title'],
                     $item['logo'],
                     $item['content'],
                     $item['link'],
                     $item['class'],
+                    $item['controls'],
                 ), $element);
             }
             return str_replace('{content}', '<div class="wpsi-other-plugins-container">'.$output.'</div>', $container);
