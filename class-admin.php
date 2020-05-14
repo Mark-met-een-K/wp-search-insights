@@ -656,29 +656,40 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                        value="<?php echo __('Clear all searches', 'wp-search-insights'); ?>"/>
             </div>
             <div id="wpsi_<?php echo esc_attr($args['action']) ?>" style="display: none;">
-
-                <h1 style="padding-top: 5px;"><?php echo $args["title"] ?></h1>
-                <p><?php echo $args['description'] ?></p>
-                <script>
+	            <?php
+	            /**
+	             * Using a H1 tag here causes some strange issues with admin notices.
+	             */
+	            ?>
+	            <div class="wpsi-thickboxheader"><?php echo $args["title"] ?></div>
+	            <p><?php echo $args['description'] ?></p>
+	            <script>
                     jQuery(document).ready(function ($) {
                         $('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
                     });
-                </script>
-                <a class="button button-primary"
-                   style="width: 130px; height: 25px; line-height: 25px; margin-right:20px; text-align: center; font-weight: 700;"
-                   href="<?php echo $action_url ?>">
-                    <?php echo $args['action_label'] ?>
-                </a>
+	            </script>
+	            <a class="button button-primary"
+	               style="width: 130px; height: 25px; line-height: 25px; margin-right:20px; text-align: center; font-weight: 700;"
+	               href="<?php echo $action_url ?>">
+		            <?php echo $args['action_label'] ?>
+	            </a>
 
-                <a class="button" style="height: 25px; line-height: 25px;" href="#"
-                   id="wpsi_cancel_<?php echo esc_attr($args['action']) ?>">
-                    <?php _e("Cancel", "wp-search-insights") ?>
-                </a>
+	            <a class="button" style="height: 25px; line-height: 25px;" href="#"
+	               id="wpsi_cancel_<?php echo esc_attr($args['action']) ?>">
+		            <?php _e("Cancel", "wp-search-insights") ?>
+	            </a>
 
             </div>
             <?php
         }
 
+        /*
+
+
+
+
+
+         */
 
         public function option_textarea_filter()
         {
