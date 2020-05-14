@@ -1082,10 +1082,6 @@ Animating one layer of the background which is a tilted linear gradient with whi
     background-position: 100% 0, /* move highlight to right */ 0px 0, 0px 40px, 0px 80px, 0px 120px;
   }
 }
-.wpsi-license-btn {
-  float: right;
-  margin-right: 35px;
-}
 /* Notices */
 .wpsi-panel {
   font-size: 13px!important;
