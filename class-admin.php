@@ -478,6 +478,26 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         }
 
+	    /**
+	     * @param string $msg
+	     * @param string $type notice | warning | success
+	     * @param bool $hide
+	     * @param bool $echo
+	     * @return string|void
+	     */
+	    public function notice($msg, $type = 'notice', $hide = false, $echo = true)
+	    {
+		    if ($msg == '') return;
+
+		    $hide_class = $hide ? "wpsi-hide" : "";
+		    $html = '<div class="wpsi-panel wpsi-' . $type . ' ' . $hide_class . '">' . $msg . '</div>';
+		    if ($echo) {
+			    echo $html;
+		    } else {
+			    return $html;
+		    }
+	    }
+
         public function add_privacy_info()
         {
             if (!function_exists('wp_add_privacy_policy_content')) {
@@ -1354,7 +1374,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                              if (!empty($top_search_no_result)) {
                                 echo  $top_search_no_result[0]->frequency . " ". __("searches", "wp-search-insights");
                              } else {
-                                 echo "0".__("searches", "wp-search-insights");
+                                 echo "0 ".__("searches", "wp-search-insights");
                              }
                              ?>
 
