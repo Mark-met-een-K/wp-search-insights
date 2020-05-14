@@ -1502,6 +1502,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'link' => admin_url() . "plugin-install.php?s=Really+Simple+SSL+Mark+Wolters&tab=search&type=term",
                     'logo' => "$plugin_url"."assets/images/rsssl-logo.png",
                     'class' => 'rsssl',
+                    'controls' => '',
                 ),
                 2 => array(
                     'title' => __("Complianz Privacy Suite", "wp-search-insights"),
@@ -1509,6 +1510,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term",
                     'logo' => "$plugin_url"."assets/images/complianz-logo.png",
                     'class' => 'cmplz',
+                    'controls' => '',
                 ),
             );
 	        $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
