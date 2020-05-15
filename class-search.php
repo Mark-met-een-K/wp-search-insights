@@ -183,6 +183,20 @@ if ( ! class_exists( 'Search' ) ) {
 		        return;
 	        }
 
+	        /**
+	         * allow skipping this search term
+	         */
+
+	        if ( !apply_filters('wpsi_process_search_term', true, $search_term, $result_count ) ) {
+	        	return;
+	        }
+
+	        /**
+	         * allow manipulation of search term
+	         */
+
+	        $search_term = apply_filters('wpsi_search_term', $search_term, $result_count );
+
 	        $filtered_terms = get_option('wpsi_filter_textarea');
 
 	        // Remove commas from option
@@ -191,7 +205,8 @@ if ( ! class_exists( 'Search' ) ) {
 
 	        // Check if search term should be filtered
 	        foreach ($filtered_terms as $term) {
-				if ($term === $search_term) {return;
+				if ($term === $search_term) {
+					return;
 				}
 	        }
 
