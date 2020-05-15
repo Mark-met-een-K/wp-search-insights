@@ -7,7 +7,14 @@
 .wrap {
   margin: 0 0 0 0;
 }
-.item-container {
+#wpsi-dashboard .button-secondary {
+  background-color: #fff;
+  border-color: #3c3c3c;
+  color: #3c3c3c;
+  width: 100px;
+  text-align: center;
+}
+#wpsi-dashboard .item-container {
   opacity: 0;
 }
 @media screen and (max-width: 850px) {
