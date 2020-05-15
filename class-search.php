@@ -514,6 +514,8 @@ if ( ! class_exists( 'Search' ) ) {
 				'compare' => ">",
 				'range' => false,
 				'result_count' => false,
+				'offset' => false,
+				'count' => false,
 			);
 			$args = wp_parse_args( $args, $defaults);
 
@@ -544,6 +546,9 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['number']!=-1){
 				$count = intval($args['number']);
 				$limit = "LIMIT $count";
+				if ($args['offset']){
+					$limit .= ' OFFSET '.intval($args['offset']);
+				}
 			}
 			$order = $args['order']=='ASC' ? 'ASC' : 'DESC';
 			$orderby = sanitize_title($args['orderby']);
@@ -586,7 +591,15 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['result_count']){
 				$search_sql = "select main.*, archive.result_count, archive.frequency from ($search_sql) as main left join {$wpdb->prefix}searchinsights_archive as archive  on main.term = archive.term ORDER BY main.$orderby $order";
 			}
-			$searches =$wpdb->get_results( $search_sql );
+
+
+			if ($args['count']) {
+				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
+				$searches =$wpdb->get_var( $search_sql );
+			} else {
+				$searches =$wpdb->get_results( $search_sql );
+
+			}
 
 			return $searches;
 		}

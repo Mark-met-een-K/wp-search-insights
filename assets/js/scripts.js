@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
             "pageLength": 6,
             conditionalPaging: true,
             buttons: [
-                {extend: 'csv', text: 'Download CSV'}
+                //{extend: 'csv', text: 'Download CSV'}
             ],
             "language": {
                 "paginate": {
@@ -41,7 +41,6 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
         var container = $(this).closest('.item-container');
         var type = container.closest('.wpsi-item').data('table_type');
-        console.log(type);
         var range = container.find('.wpsi-date-filter').val();
         console.log(range);
         localStorage.setItem('wpsi_range_'+type, range);
@@ -79,11 +78,6 @@ jQuery(document).ready(function ($) {
                 container.find('.wpsi-date-filter').val(range);
                 wpsiInitDeleteCapability();
 
-                // Move export buttons to no results div
-                var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").addClass('csvDownloadBtn').detach();
-                if (!$(".wpsi-nr-footer").find('.csvDownloadBtn').length){
-                    $(".wpsi-nr-footer").append(export_buttons);
-                }
             }
         });
     }
@@ -95,7 +89,6 @@ jQuery(document).ready(function ($) {
     $('ul.tabs li').click(function () {
         var tab_id = $(this).attr('data-tab');
         // Sort and filter the grid
-        console.log(tab_id);
         if  (tab_id !== 'dashboard') {
             $('#wpsi-toggle-link-wrap').hide();
         } else {
@@ -228,6 +221,41 @@ jQuery(document).ready(function ($) {
                     $('#wpsi-delete-selected').attr('disabled', true);
                 }
             });
+        });
+    }
+
+    /**
+     * Export
+     */
+
+    $(document).on('click', '#wpsi-start-export', wpsiExportData);
+    if (wpsi.export_in_progress){
+        wpsiExportData();
+    }
+
+    function wpsiExportData(){
+        var downloadContainer = $('.wpsi-download-link');
+        var button = $('#wpsi-start-export');
+        button.prop('disabled', true);
+        $.ajax({
+            type: "GET",
+            url: wpsi.ajaxurl,
+            dataType: 'json',
+            data: ({
+                action: 'wpsi_start_export',
+                token: wpsi.token,
+            }),
+            success: function (response) {
+                console.log(response);
+                if (response.percent < 100) {
+                    downloadContainer.html(response.percent+'%');
+                    wpsiExportData();
+                } else {
+                    var link = '<div><a href="'+response.path+'">'+wpsi.strings['download']+'</a></div>';
+                    downloadContainer.html(link);
+                    button.prop('disabled', false);
+                }
+            }
         });
     }
 });
