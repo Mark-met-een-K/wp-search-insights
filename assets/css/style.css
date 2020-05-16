@@ -621,6 +621,16 @@ widget
 #wpsi-dashboard .upsell-grid-container .item-container {
   box-shadow: none;
 }
+#wpsi-dashboard .upsell-grid-container .wpsi-drag-handle {
+  display: flex;
+  align-items: center;
+}
+#wpsi-dashboard .upsell-grid-container .wpsi-drag-handle .rsp-logo {
+  margin-left: auto;
+}
+#wpsi-dashboard .upsell-grid-container .wpsi-drag-handle .rsp-logo img {
+  height: 30px;
+}
 #wpsi-dashboard .wpsi-other-plugins-container {
   height: 100%;
   border-bottom: 1px solid #DEDEDE;
@@ -631,6 +641,7 @@ widget
   flex-direction: row;
   padding: 6px;
   align-items: center;
+  color: #3c3c3c;
 }
 #wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .upsell-round {
   height: 15px;
@@ -760,7 +771,6 @@ widget
   border-bottom: 1px solid #DEDEDE;
 }
 #wpsi-dashboard .wpsi-tips-tricks .wpsi-tips-tricks-container .wpsi-tips-tricks-element {
-  font-size: 0.9em;
   color: #3c3c3c;
   padding-bottom: 7px;
   list-style: decimal;

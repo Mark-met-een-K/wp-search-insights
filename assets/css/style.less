@@ -805,6 +805,19 @@ widget
 
   }
 
+.upsell-grid-container {
+  .wpsi-drag-handle {
+    display: flex;
+    align-items: center;
+    .rsp-logo {
+      margin-left: auto;
+
+      img {
+        height: 30px;
+      }
+    }
+  }
+}
 
   .wpsi-other-plugins-container {
     //display: flex;
@@ -818,6 +831,7 @@ widget
       flex-direction: row;
       padding: 6px;
       align-items: center;
+      color: @light-text-color;
 
       .upsell-round {
         height: 15px;
@@ -838,82 +852,15 @@ widget
         background-color: #E366A1;
       }
 
+      //.plugin-text {
+      //  color: @light-text-color;
+      //}
+
       .plugin-status {
         margin-left: auto;
       }
     }
   }
-  //.wpsi-upsell {
-  //  width: 475px;
-  //  margin-top: -58px;
-  //}
-  //
-  //.wpsi-upsell-title {
-  //  height: 15%;
-  //  display: flex;
-  //  justify-content: space-between;
-  //}
-  //
-  //
-  //.wpsi-upsell span.dashicons {
-  //  //margin-top: 10px;
-  //  color: #FFB900;
-  //}
-  //
-  //.upsell-img {
-  //  padding-right: 30px;
-  //  padding-top: 10px;
-  //  height: 25px;
-  //  width: 25px;
-  //}
-  //
-  //.wpsi-cmplz {
-  //  .upsell-img {
-  //    padding-right: 0;
-  //  }
-  //
-  //  .wpsi-upsell-content {
-  //    padding-right: 0px;
-  //  }
-  //}
-  //
-  //.wpsi-top-title {
-  //  font-weight: 700;
-  //}
-  //
-  //.wpsi-upsell-content {
-  //  padding-right: 25px;
-  //  padding-bottom: 15px;
-  //  height: 100px;
-  //  display: flex;
-  //  flex-direction: column;
-  //  border-bottom: 1px solid @border-color;
-  //
-  //  .wpsi-sub-title {
-  //    padding-top: 20px;
-  //    padding-bottom: 15px;
-  //  }
-  //}
-  //
-  //.wpsi-upsell-button {
-  //  height: 50px;
-  //  display: flex;
-  //  align-items: center;
-  //}
-  //
-  //.wpsi-upsell-button > a {
-  //  width: 80%;
-  //}
-  //
-  //.button-upsell {
-  //  width: 100px;
-  //  color: #0071a1;
-  //}
-  //
-  //.button-upsell:hover {
-  //  color: white;
-  //}
-
   // hide the export buttons on popular searches tables
   #wpsi-popular-table_wrapper > div.dt-buttons {
     display: none;
@@ -1064,7 +1011,7 @@ widget
     border-bottom: 1px solid @border-color;
 
     .wpsi-tips-tricks-element {
-      font-size: 0.9em;
+      //font-size: 0.9em;
       color: @light-text-color;
       padding-bottom: 7px;
       list-style: decimal;
