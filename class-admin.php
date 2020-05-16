@@ -112,7 +112,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 ),
                 5 => array(
-                    'title' => '',
+                    'title' => 'Our plugins',
                     'content' => $this->generate_other_plugins(),
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
@@ -1508,19 +1508,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $plugin_url = trailingslashit(wpsi_url);
             $items = array(
                 1 => array(
-                    'title' => __("Really Simple SSL", "wp-search-insights"),
-                    'content' => __("Really Simple SSL automatically detects your settings and configures your website to run over HTTPS! Migrate your website to SSL with just one-click", "wp-search-insights"),
+                    'title' => '<div class="rsssl-yellow upsell-round"></div>',
+                    'content' => __("Really Simple SSL - Easily migrate your website to SSL"),
                     'link' => admin_url() . "plugin-install.php?s=Really+Simple+SSL+Mark+Wolters&tab=search&type=term",
-                    'logo' => "$plugin_url"."assets/images/rsssl-logo.png",
                     'class' => 'rsssl',
                     'controls' => '',
                 ),
                 2 => array(
-                    'title' => __("Complianz Privacy Suite", "wp-search-insights"),
-                    'content' => __("Get compliant today in the European Union and/or in the United States,  Canada, and United Kingdom with the only Privacy Suite that offers a fully-featured privacy plugin!", "wp-search-insights"),
+                    'title' => '<div class="cmplz-blue upsell-round"></div>',
+                    'content' => __("Complianz Privacy Suite - Consent Management as it should be ", "wp-search-insights"),
                     'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term",
-                    'logo' => "$plugin_url"."assets/images/complianz-logo.png",
                     'class' => 'cmplz',
+                    'controls' => '',
+                ),
+                3 => array(
+                    'title' => '<div class="zip-pink upsell-round"></div>',
+                    'content' => __("Zip Recipes - Beautiful recipes optimized for Google ", "wp-search-insights"),
+                    'link' => admin_url() . "plugin-install.php?s=zip+recipes&tab=search&type=term",
+                    'class' => 'zip',
                     'controls' => '',
                 ),
             );
@@ -1531,14 +1536,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             foreach ($items as $item) {
                 $output .= str_replace(array(
                     '{title}',
-                    '{logo}',
                     '{content}',
                     '{link}',
                     '{class}',
                     '{controls}',
                 ), array(
                     $item['title'],
-                    $item['logo'],
                     $item['content'],
                     $item['link'],
                     $item['class'],
