@@ -1202,7 +1202,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             }
 
             //make sure the link is not too long
-            if (strlen($referrer)>30){
+            if (strlen($referrer)>25){
                 $referrer = substr($referrer, 0, 22).'...';
             }
             return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';

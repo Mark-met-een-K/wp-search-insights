@@ -65,6 +65,10 @@
 /**
 widget
  */
+#dashboard_widget_wpsi,
+#wpsi-dashboard {
+  font-size: 13px;
+}
 #dashboard_widget_wpsi .inside,
 #wpsi-dashboard .inside {
   padding: 0;
@@ -212,22 +216,12 @@ widget
 .wpsi-dashboard-widget-grid .wpsi-time {
   margin-top: -10px;
 }
-/*
+#wpsi-dashboard {
+  /*
   *
   *   Dashboard styling
   *
-*/
-.tab-text {
-  color: #444444;
-  font-size: 1.2em;
-  text-decoration: none;
-  outline: 0;
-  box-shadow: 0 0 0 0;
-}
-.tab-text:focus {
-  box-shadow: initial;
-}
-#wpsi-dashboard {
+  */
   /*
       Navigation & tabs
    */
@@ -275,6 +269,16 @@ widget
   /* Right */
   /* Move directional arrows down a bit for left/right wpsi-tooltips */
   /* Vertically center wpsi-tooltip content for left/right wpsi-tooltips */
+}
+#wpsi-dashboard .tab-text {
+  color: #444444;
+  font-size: 1.2em;
+  text-decoration: none;
+  outline: 0;
+  box-shadow: 0 0 0 0;
+}
+#wpsi-dashboard .tab-text:focus {
+  box-shadow: initial;
 }
 #wpsi-dashboard .wpsi-settings-intro {
   margin-left: 0 !important;
@@ -383,7 +387,7 @@ widget
   padding: 0.35em;
 }
 #wpsi-dashboard .item-content table th:nth-child(3) {
-  width: 150px !important;
+  width: 80px !important;
 }
 #wpsi-dashboard .item-content table th,
 #wpsi-dashboard .item-content table td {
@@ -554,7 +558,7 @@ widget
   padding-top: 20px;
 }
 #wpsi-dashboard .percentage {
-  font-size: 24px;
+  font-size: 1.8em;
   font-weight: 700;
 }
 #wpsi-dashboard .percentage-text {
