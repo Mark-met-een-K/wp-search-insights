@@ -793,7 +793,6 @@ widget
   .upsell-grid-container {
     display: flex;
     justify-content: space-between;
-    border: 1px solid @border-color;
 
     .item-content {
       width: 100%;
@@ -801,6 +800,7 @@ widget
 
     .item-container {
       box-shadow: none;
+      border: 1px solid @border-color;
     }
 
   }
@@ -809,6 +809,7 @@ widget
   .wpsi-drag-handle {
     display: flex;
     align-items: center;
+    margin-top: -5px;
     .rsp-logo {
       margin-left: auto;
 
@@ -852,12 +853,9 @@ widget
         background-color: #E366A1;
       }
 
-      //.plugin-text {
-      //  color: @light-text-color;
-      //}
-
       .plugin-status {
         margin-left: auto;
+        padding-right: 25px;
       }
     }
   }

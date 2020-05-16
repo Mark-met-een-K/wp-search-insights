@@ -613,17 +613,18 @@ widget
 #wpsi-dashboard .upsell-grid-container {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #DEDEDE;
 }
 #wpsi-dashboard .upsell-grid-container .item-content {
   width: 100%;
 }
 #wpsi-dashboard .upsell-grid-container .item-container {
   box-shadow: none;
+  border: 1px solid #DEDEDE;
 }
 #wpsi-dashboard .upsell-grid-container .wpsi-drag-handle {
   display: flex;
   align-items: center;
+  margin-top: -5px;
 }
 #wpsi-dashboard .upsell-grid-container .wpsi-drag-handle .rsp-logo {
   margin-left: auto;
@@ -660,6 +661,7 @@ widget
 }
 #wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .plugin-status {
   margin-left: auto;
+  padding-right: 25px;
 }
 #wpsi-dashboard #wpsi-popular-table_wrapper > div.dt-buttons {
   display: none;
