@@ -755,6 +755,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             }
             do_action('wpsi_on_settings_page' );
             ?>
+            <style>
+                #wpcontent {padding-left: 0 !important;}
+            </style>
             <div class="wrap">
                 <div id="wpsi-toggle-wrap">
                     <div id="wpsi-toggle-dashboard">
@@ -1118,7 +1121,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             ob_start();
 
-
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
 
@@ -1201,7 +1203,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             //make sure the link is not too long
             if (strlen($referrer)>30){
-                $referrer = substr($referrer, 0, 30).'...';
+                $referrer = substr($referrer, 0, 22).'...';
             }
             return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';
         }
