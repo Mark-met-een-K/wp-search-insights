@@ -631,11 +631,13 @@ widget
 }
 #wpsi-dashboard .upsell-grid-container .wpsi-drag-handle .rsp-logo img {
   height: 30px;
+  padding-right: 10px;
 }
 #wpsi-dashboard .wpsi-other-plugins-container {
   height: 100%;
   border-bottom: 1px solid #DEDEDE;
   padding-bottom: 10px;
+  width: 95%;
 }
 #wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell {
   display: flex;
@@ -661,7 +663,6 @@ widget
 }
 #wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .plugin-status {
   margin-left: auto;
-  padding-right: 25px;
 }
 #wpsi-dashboard #wpsi-popular-table_wrapper > div.dt-buttons {
   display: none;
