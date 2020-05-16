@@ -7,17 +7,9 @@
   display: none;
 }
 
-// Override default WP padding and margin on dashboard
-
-#wpcontent {
-  // Has to be important because it's WP style
-  padding-left: 0 !important;
-}
-
 .wrap {
   margin: 0 0 0 0;
 }
-
 
 #wpsi-dashboard {
 
@@ -447,76 +439,80 @@ widget
       padding: 0;
       table-layout: fixed;
       justify-content: normal;
-    }
-
-    table.dataTable {
-      .wpsi-selected {
-        background-color: rgba(41, 182, 246, 0.35);
-      }
-    }
-
-    table caption {
-      //font-weight: 600;
-      //width: 50%;
-      //font-size: 1.5em;
-      height: 50px;
-      text-align: left;
-      margin-top: -10px;
-      padding-bottom: 10px;
-    }
-
-
-    table tr {
-      height: 40px;
-      background-color: #f8f8f8;
-      padding: .35em;
-    }
-
-    table tbody tr {
-      border-bottom: .1em solid @border-color;
-    }
-
-    table th,
-    table td {
-      padding: .625em;
-      text-align: left;
-    }
-
-    table th {
-      &:focus {
-        outline: none;
+      &.dataTable {
+        .wpsi-selected {
+          background-color: rgba(41, 182, 246, 0.35);
+        }
       }
 
-      letter-spacing: .1em;
+      caption {
+        //font-weight: 600;
+        //width: 50%;
+        //font-size: 1.5em;
+        height: 50px;
+        text-align: left;
+        margin-top: -10px;
+        padding-bottom: 10px;
+      }
+
+      tbody tr {
+        border-bottom: .1em solid @border-color;
+      }
+
+      tr {
+        height: 40px;
+        background-color: #f8f8f8;
+        padding: .35em;
+      }
+
+      th:nth-child(3) {
+        width:150px !important;
+      }
+
+      th,
+      td {
+        padding: .625em;
+        text-align: left;
+      }
+
+      th {
+        &:focus {
+          outline: none;
+        }
+
+        letter-spacing: .1em;
+      }
+
+      thead tr:first-of-type {
+        //background-color: #F5F6FA;
+        //color: #A3A6B4;
+      }
+
+      tbody {
+        color: @light-text-color;
+      }
+
+      tr:nth-child(even) {
+        background-color: #FFFFFF;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #FFFFFF;
+      }
+
+      tr:first-child {
+        border-top-left-radius: .55rem;
+        border-top-right-radius: .55rem;
+      }
+
+      tr:last-child {
+        margin-bottom: 0;
+        border-bottom-left-radius: .55rem;
+        border-bottom-right-radius: .55rem;
+      }
+
     }
 
-    thead tr:first-of-type {
-      //background-color: #F5F6FA;
-      //color: #A3A6B4;
-    }
-
-    tbody {
-      color: @light-text-color;
-    }
-
-    tr:nth-child(even) {
-      background-color: #FFFFFF;
-    }
-
-    tr:nth-child(odd) {
-      background-color: #FFFFFF;
-    }
-
-    tr:first-child {
-      border-top-left-radius: .55rem;
-      border-top-right-radius: .55rem;
-    }
-
-    tr:last-child {
-      margin-bottom: 0;
-      border-bottom-left-radius: .55rem;
-      border-bottom-right-radius: .55rem;
-    }
   }
 
   .wpsi-term a {
