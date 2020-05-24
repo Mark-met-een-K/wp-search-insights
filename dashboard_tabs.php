@@ -17,8 +17,7 @@ function wpsi_tab_content_dashboard(){
 	<?php
 	//get html of block
 	$grid_items = WPSI::$admin->grid_items;
-	$container  = WPSI::$admin->get_template( 'grid-container.php',
-		wpsi_path . '/grid' );
+
 	$element    = WPSI::$admin->get_template( 'grid-element.php',
 		wpsi_path . '/grid' );
 	$output     = '';
@@ -39,7 +38,14 @@ function wpsi_tab_content_dashboard(){
 			$grid_item['controls'],
 		), $element );
 	}
-	echo str_replace( '{content}', $output, $container );
+
+	echo WPSI::$admin->get_template( 'grid-container.php',
+		wpsi_path . '/grid', array(
+		'grid_type'=> 'dashboard',
+		'content' => $output
+    ));
+
+
 }
 
 add_action( "wpsi_tab_content_dashboard", 'wpsi_tab_content_dashboard' );
@@ -51,36 +57,59 @@ add_action( "wpsi_tab_content_dashboard", 'wpsi_tab_content_dashboard' );
 function wpsi_tab_content_settings(){
     if (!is_user_logged_in()) return;
 
+	//get html of block
+	$element = '';
+	$blocks = array(
+        array(
+			'title' => __( "General settings", "wp-search-insights" ),
+			'content' => '<div class="wpsi-skeleton"></div>',
+			'class' => '',
+			'index' => 'settings',
+			'type'=> 'settings',
+			'controls' => '',
+		),
+		array(
+			'title' => __( "Filters", "wp-search-insights" ),
+			'content' => '<div class="wpsi-skeleton"></div>',
+			'class' => 'full-width',
+			'index' => 'filter',
+			'type'=> 'filter',
+			'controls' => '',
+		),
+    );
+	foreach($blocks as $args) {
+		$element    .= WPSI::$admin->get_template( 'grid-element.php',
+			wpsi_path . '/grid' , $args);
+	}
 
-	ob_start();
-	do_settings_sections('wpsi-settings');
-	settings_fields('wpsi-settings-tab');
-	$content = ob_get_clean();
-	$title = __( "General settings", "wp-search-insights" );
-	$args = array(
-		'title' => $title,
-		'content' => $content,
-		'class' => '',
-	);
-	echo WPSI::$admin->get_template( 'settings-block.php', wpsi_path, $args );
 
-	ob_start();
-	do_settings_sections('wpsi-filter');
-	settings_fields('wpsi-filter-tab');
-	$content = ob_get_clean();
-	$title = __("Filters" , "wp-search-insights");
-	$args = array(
-		'title' => $title,
-		'content' => $content,
-		'class' => 'full-width',
+
+	echo  WPSI::$admin->get_template( 'grid-container.php',wpsi_path . '/grid', array(
+		    'grid_type'=> 'settings',
+	        'content' => $element)
 	);
-	echo WPSI::$admin->get_template( 'settings-block.php', wpsi_path, $args );
 	?>
 
 
 <?php
 }
 add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
+
+function wpsi_ajax_content_settings(){
+	ob_start();
+	do_settings_sections('wpsi-settings');
+	settings_fields('wpsi-settings-tab');
+	return ob_get_clean();
+}
+add_filter("wpsi_ajax_content_settings", 'wpsi_ajax_content_settings');
+
+function wpsi_ajax_content_filter(){
+	ob_start();
+	do_settings_sections('wpsi-filter');
+	settings_fields('wpsi-filter-tab');
+	return ob_get_clean();
+}
+add_filter("wpsi_ajax_content_filter", 'wpsi_ajax_content_filter');
 
 /**
  * set of options in the tabs bar

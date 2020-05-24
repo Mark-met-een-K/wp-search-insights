@@ -1,6 +1,5 @@
 jQuery(document).ready(function ($) {
     "use strict";
-
     var deleteBtn = $('#wpsi-delete-selected');
 
     /**
@@ -31,19 +30,15 @@ jQuery(document).ready(function ($) {
             },
             "order": [[2, "desc"]],
         });
-
     }
 
     $(".wpsi-date-container").html(wpsi.dateFilter);
 
     $(document).on('change', '.wpsi-date-filter', function(e){
-        console.log('test');
         e.stopPropagation();
         var container = $(this).closest('.item-container');
         var type = container.closest('.wpsi-item').data('table_type');
-        console.log(type);
         var range = container.find('.wpsi-date-filter').val();
-        console.log(range);
         localStorage.setItem('wpsi_range_'+type, range);
         wpsiLoadData(container.find('.item-content'));
     });
@@ -51,6 +46,13 @@ jQuery(document).ready(function ($) {
     function wpsiLoadData(container){
         var range;
         var type = container.closest('.wpsi-item').data('table_type');
+
+        console.log(type);
+        console.log("container content");
+        console.log(container.html());
+
+        if (container.html() !== '<div class="wpsi-skeleton"></div>') return;
+
         if (type === 'plugins' || type === 'tasks') return;
         var defaultRange = container.closest('.wpsi-item').data('default_range');
         var storedRange = localStorage.getItem('wpsi_range_'+type);
@@ -60,7 +62,7 @@ jQuery(document).ready(function ($) {
             range = storedRange;
         }
 
-        container.html('<div class="wpsi-skeleton"></div>');
+        //container.html('<div class="wpsi-skeleton"></div>');
 
         $.ajax({
             type: "GET",
