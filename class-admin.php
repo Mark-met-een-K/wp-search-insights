@@ -668,7 +668,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	            <p><?php echo $args['description'] ?></p>
 	            <script>
                     jQuery(document).ready(function ($) {
-                        $('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
+                        //$('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
                     });
 	            </script>
 	            <a class="button button-primary"
@@ -774,8 +774,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 }
                                 ?>
                                 <label for="wpsi-hide-panel-<?= $index ?>" <?php echo $style ?>>
-                                    <input class="wpsi-toggle-items" name="toggle_data_id_<?= $index ?>" type="checkbox"
-                                           id="toggle_data_id_<?= $index ?>" value="data_id_<?= $index ?>">
+                                    <input class="wpsi-toggle-items" name="wpsi_toggle_data_id_<?= $index ?>" type="checkbox"
+                                           id="wpsi_toggle_data_id_<?= $index ?>" value="data_id_<?= $index ?>">
                                     <?= $grid_item['title'] ?>
                                 </label>
                                 <?php
@@ -1092,7 +1092,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 					    $html = $this->results_table($range);
 					    break;
                     default:
-                        $html = __('Invalid command','wp-search-insights');
+                        $html = apply_filters("wpsi_ajax_content_$type", '');
                         break;
 			    }
 		    }
@@ -1534,7 +1534,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'controls' => '',
                 ),
             );
-	        $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
+
 
             $element = $this->get_template('upsell-element.php');
             $output = '';
@@ -1553,7 +1553,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     $item['controls'],
                 ), $element);
             }
-            return str_replace('{content}', '<div class="wpsi-other-plugins-container">'.$output.'</div>', $container);
+
+	        return $this->get_template('grid-container.php', wpsi_path . '/grid', array( 'content' => '<div class="wpsi-other-plugins-container">'.$output.'</div>', 'grid_type' => 'upsell'));
         }
 
         public function get_rsssl_status() {
@@ -1625,7 +1626,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => __("Positioning your search form", "wp-search-insights"),
                     'link' => 'https://wpsearchinsights.com/about-search-forms/',
                 ),
-
             );
             $button_link = "https://wpsearchinsights.com/tips-tricks/";
             //$container = $this->get_template('tipstricks-container.php');
@@ -1644,7 +1644,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     $item['content'],
                 ), $element);
             }
-            return str_replace(array('{content}' , '{button_link}'), array('<div class="wpsi-tips-tricks-container">'.$output.'</div>', $button_link), $container);
+            return str_replace(array('{content}' , '{button_link}', '{grid_type}'), array('<div class="wpsi-tips-tricks-container">'.$output.'</div>', $button_link, 'tips_tricks'), $container);
         }
     }
 }

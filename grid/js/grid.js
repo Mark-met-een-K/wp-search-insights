@@ -12,8 +12,18 @@ jQuery(document).ready(function($) {
     initGrid();
 
     function initGrid() {
+        $('.wpsi-grid').each(function(){
+           var grid_type = $(this).data('grid_type');
+            initGridByClass(grid_type);
+        });
+    }
 
-        var grid = new Muuri('.wpsi-grid', {
+    /**
+     * Init by classname
+     * @param className
+     */
+    function initGridByClass(className){
+        var grid = new Muuri('.wpsi-grid.'+className, {
             dragEnabled: drag_enabled_or_disabled,
             dragSortHeuristics: {
                 sortInterval: 50,
@@ -33,41 +43,27 @@ jQuery(document).ready(function($) {
             dragStartPredicate: function(item, e) {
                 return e.target.className === 'wpsi-drag-handle';
             }
-            // itemDraggingClass: 'muuri-item-dragging',
         })
-        // .on('dragStart', function (item) {
-        //         ++dragCounter;
-        //         docElem.classList.add('dragging');
-        //         item.getElement().style.width = item.getWidth() + 'px';
-        //         item.getElement().style.height = item.getHeight() + 'px';
-        //     })
-        //     .on('dragEnd', function (item) {
-        //         if (--dragCounter < 1) {
-        //             docElem.classList.remove('dragging');
-        //         }
-        //     })
-        //     .on('dragReleaseEnd', function (item) {
-        //         item.getElement().style.width = '';
-        //         item.getElement().style.height = '';
-        //         columnGrids.forEach(function (muuri) {
-        //             muuri.refreshItems();
-        //         });
-        //     })
-        .on('move', function () {
-            saveLayout(grid);
-        });
 
-        var layout = window.localStorage.getItem('layout');
+            .on('move', function () {
+                saveLayout(grid, className);
+            });
+
+        var layout = window.localStorage.getItem('wpsi_layout_'+className);
         if (layout) {
-            loadLayout(grid, layout);
+            loadLayout(grid, layout, className);
         } else {
             grid.layout(true);
         }
         // Must save the layout on first load, otherwise filtering the grid won't work on a new install.
-        saveLayout(grid);
-
+        saveLayout(grid, className);
     }
 
+    /**
+     * Serialize the layout
+     * @param grid
+     * @returns {string}
+     */
 
     function serializeLayout(grid) {
         var itemIds = grid.getItems().map(function (item) {
@@ -76,10 +72,21 @@ jQuery(document).ready(function($) {
         return JSON.stringify(itemIds);
     }
 
-    function saveLayout(grid) {
+    /**
+     * Save the layout
+     * @param grid
+     * @param className
+     */
+    function saveLayout(grid, className) {
         var layout = serializeLayout(grid);
-        window.localStorage.setItem('layout', layout);
+        window.localStorage.setItem('wpsi_layout_'+className, layout);
     }
+
+    /**
+     * Load a grid layout
+     * @param grid
+     * @param serializedLayout
+     */
 
     function loadLayout(grid, serializedLayout) {
         var layout = JSON.parse(serializedLayout);
@@ -87,18 +94,17 @@ jQuery(document).ready(function($) {
         // // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
         $('.wpsi-item').each(function(){
             var toggle_id = $(this).data('id');
-            if (localStorage.getItem("toggle_data_id_"+toggle_id) === null) {
-                window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+            if (localStorage.getItem("wpsi_toggle_data_id_"+toggle_id) === null) {
+                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
             }
 
             // // Add or remove the active class when the checkbox is checked/unchecked
-            if (window.localStorage.getItem('toggle_data_id_'+toggle_id) == 'checked') {
+            if (window.localStorage.getItem('wpsi_toggle_data_id_'+toggle_id) == 'checked') {
                 $(this).addClass("muuri-active");
             } else {
                 $(this).removeClass("muuri-active");
             }
         });
-
 
         var currentItemIds = currentItems.map(function (item) {
             return item.getElement().getAttribute('data-id')
@@ -125,19 +131,23 @@ jQuery(document).ready(function($) {
     $('.wpsi-item').each(function(){
         var toggle_id = $(this).data('id');
         // Set defaults for localstorage checkboxes
-        if (!window.localStorage.getItem('toggle_data_id_'+toggle_id)) {
-            window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+        if (!window.localStorage.getItem('wpsi_toggle_data_id_'+toggle_id)) {
+            window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
         }
-        $('#toggle_data_id_'+toggle_id).change(function() {
-            if (document.getElementById("toggle_data_id_"+toggle_id).checked ) {
-                window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+        $('#wpsi_toggle_data_id_'+toggle_id).change(function() {
+            if (document.getElementById("wpsi_toggle_data_id_"+toggle_id).checked ) {
+                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
             } else {
-                window.localStorage.setItem('toggle_data_id_'+toggle_id, 'unchecked');
+                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'unchecked');
             }
             initGrid();
         });
     });
 
+    /**
+     * check if it's a mobile device
+     * @returns {boolean}
+     */
     function isMobileDevice() {
         return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
     };

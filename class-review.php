@@ -14,7 +14,8 @@ if (!class_exists("wpsi_review")) {
 				wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.', 'wpsi-search-insights'), get_class($this)));
 
 			self::$_this = $this;
-
+//			update_option('wpsi_review_notice_shown',false);
+//			update_option('wpsi_activation_time',  strtotime("-2 month"));
 			//show review notice, only to free users
 			if (!defined("wpsi_premium") && !is_multisite()) {
 			    if (!get_option('wpsi_activation_time')){
@@ -34,8 +35,10 @@ if (!class_exists("wpsi_review")) {
 					add_action('admin_notices', array($this, 'show_leave_review_notice'));
 					add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_review'));
 				}
-
 			}
+
+			add_action('admin_init', array($this, 'process_get_review_dismiss' ));
+
 
 		}
 
@@ -47,6 +50,7 @@ if (!class_exists("wpsi_review")) {
 
 		public function show_leave_review_notice()
 		{
+			if (isset( $_GET['wpsi_dismiss_review'] ) ) return;
 
 			/**
 			 * Prevent notice from being shown on Gutenberg page, as it strips off the class we need for the ajax callback.
@@ -91,7 +95,7 @@ if (!class_exists("wpsi_review")) {
 
                     <div class="dashicons dashicons-calendar"></div><a href="#" id="maybe-later"><?php _e('Maybe later', 'wp-search-insights'); ?></a>
 
-                    <div class="dashicons dashicons-no-alt"></div><a href="#" class="review-dismiss"><?php _e('Don\'t show again', 'wp-search-insights'); ?></a>
+                    <div class="dashicons dashicons-no-alt"></div><a href="<?php echo add_query_arg(array('page'=>'wpsi-settings-page', 'wpsi_dismiss_review'=>1), admin_url('tools.php') )?>" class="review-dismiss"><?php _e('Don\'t show again', 'wp-search-insights'); ?></a>
                 </div>
                 </div>
                 </div>
@@ -171,6 +175,16 @@ if (!class_exists("wpsi_review")) {
 			}
 
 			wp_die(); // this is required to terminate immediately and return a proper response
+		}
+
+		/**
+		 * Dismiss review notice with get, which is more stable
+		 */
+
+		public function process_get_review_dismiss(){
+			if (isset( $_GET['wpsi_dismiss_review'] ) ){
+				update_option( 'wpsi_review_notice_shown', true );
+			}
 		}
 	}
 }
