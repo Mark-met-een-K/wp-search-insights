@@ -31,7 +31,7 @@ if (!class_exists("wpsi_review")) {
 				$notice_has_been_shown= get_option('wpsi_review_notice_shown');
 				$over_one_month_old = get_option('wpsi_activation_time') && (get_option('wpsi_activation_time') < strtotime("-1 month"));
 				if (!$notice_has_been_shown && $over_one_month_old ){
-					add_action('wp_ajax_dismiss_review_notice', array($this, 'dismiss_review_notice_callback'));
+					add_action('wp_ajax_wpsi_dismiss_review_notice', array($this, 'dismiss_review_notice_callback'));
 					add_action('admin_notices', array($this, 'show_leave_review_notice'));
 					add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_review'));
 				}
@@ -138,7 +138,7 @@ if (!class_exists("wpsi_review")) {
 
                     function wpsi_dismiss_review(type) {
                         var data = {
-                            'action': 'dismiss_review_notice',
+                            'action': 'wpsi_dismiss_review_notice',
                             'type': type,
                             'token': '<?php echo $ajax_nonce; ?>'
                         };
