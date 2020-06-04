@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
     "use strict";
+
+
     var deleteBtn = $('#wpsi-delete-selected');
 
     /**
@@ -71,6 +73,8 @@ jQuery(document).ready(function ($) {
                 container.find(".wpsi-date-container").html(wpsi.dateFilter);
                 container.find('.wpsi-date-filter').val(range);
                 wpsiInitDeleteCapability();
+
+                $('#jquery-datepicker').datepicker();
             }
         });
     }
