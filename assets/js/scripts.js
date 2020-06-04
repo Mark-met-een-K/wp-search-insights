@@ -73,7 +73,7 @@ jQuery(document).ready(function ($) {
                 wpsiInitDeleteCapability();
             }
         });
-    }   
+    }
 
     /**
      * select and delete functions

@@ -19,11 +19,26 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 			self::$_this = $this;
 
-			add_action( "wpsi_tab_content_settings", array($this, 'wpsi_tab_content_export'));
+			add_filter("wpsi_ajax_content_export", array($this, 'ajax_content_export') );
+			add_filter('wpsi_settings_blocks', array($this, 'export_block') );
+
 			add_action('wp_ajax_wpsi_start_export', array($this, 'ajax_start_export'));
 		}
 
-		public function wpsi_tab_content_export(){
+		public function export_block($blocks){
+			$blocks[] = array(
+				'title' => __( "Export", "wp-search-insights" ),
+				'content' => '<div class="wpsi-skeleton"></div>',
+				'index' => 'export',
+				'type'=> 'export',
+				'controls' => '',
+			);
+			return $blocks;
+
+		}
+
+
+		public function ajax_content_export(){
 			if (!current_user_can('manage_options')) return;
 			$disabled = get_transient('wpsi_export_in_progress') ? 'disabled' : '';
 			$content = '<button '.$disabled.' class="button-secondary" id="wpsi-start-export">'.__("Export", "wp-search-insights").'</button>';
@@ -31,14 +46,11 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			if (file_exists($this->filepath() )){
 				$link = '<a href="'.$this->fileurl().'">'.__("Download", "wp-search-insights").'</a></div>';
 			}
+
 			$content .= '<div class="wpsi-download-link">'.$link.'</div>';
-			$title = __("Export" , 'wp-search-insights-pro');
-			$args = array(
-				'title' => $title,
-				'content' => $content,
-				'class' => '',
-			);
-			echo WPSI::$admin->get_template( 'settings-block-noform.php', wpsi_path, $args );
+			ob_start();
+            echo $content;
+			return ob_get_clean();
 		}
 
 

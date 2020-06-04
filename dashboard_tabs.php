@@ -77,12 +77,11 @@ function wpsi_tab_content_settings(){
 			'controls' => '',
 		),
     );
+	$blocks = apply_filters('wpsi_settings_blocks', $blocks);
 	foreach($blocks as $args) {
 		$element    .= WPSI::$admin->get_template( 'grid-element.php',
 			wpsi_path . '/grid' , $args);
 	}
-
-
 
 	echo  WPSI::$admin->get_template( 'grid-container.php',wpsi_path . '/grid', array(
 		    'grid_type'=> 'settings',
@@ -102,6 +101,7 @@ function wpsi_ajax_content_settings(){
 	return ob_get_clean();
 }
 add_filter("wpsi_ajax_content_settings", 'wpsi_ajax_content_settings');
+
 
 function wpsi_ajax_content_filter(){
 	ob_start();

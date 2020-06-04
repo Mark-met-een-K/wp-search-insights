@@ -109,8 +109,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'can_hide' => true,
                     'controls' => '',
                 ),
-            5 => array(
-                    'title' => $this->get_other_plugins_title(),
+                5 => array(
+                    'title' => __("Our Plugins", "wp-search-insights").'<div class="rsp-logo"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></div>',
                     'content' => '',
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
@@ -118,12 +118,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'controls' => '',
                 ),
             );
-        }
-
-        public function get_other_plugins_title() {
-            $logo = trailingslashit(wpsi_url) . "assets/images/really-simple-plugins.png";
-            $title = "Our Plugins <div class='rsp-logo'><img src='$logo'/></div>";
-            return $title;
         }
 
         public function inline_styles()
@@ -816,6 +810,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                    <?php foreach ($this->tabs as $key => $tab) {
 			                    if (isset($tab['capability']) && !current_user_can($tab['capability'])) continue;
 			                    $current = $key=='dashboard' ? 'current' : '';
+
 			                    ?>
                                 <div id="<?=$key?>" class="tab-content <?=$current?>">
 			                    <?php do_action("wpsi_tab_content_$key");?>
