@@ -516,6 +516,8 @@ if ( ! class_exists( 'Search' ) ) {
 				'result_count' => false,
 				'offset' => false,
 				'count' => false,
+				'date_from' => false,
+				'date_to' => false,
 			);
 			$args = wp_parse_args( $args, $defaults);
 
@@ -562,8 +564,19 @@ if ( ! class_exists( 'Search' ) ) {
 				$time = intval($args['time']);
 				$where .=" AND time $compare $time ";
 			}
-			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
 
+			if ($args['date_from']){
+				$from = intval($args['date_from']);
+				$where .=" AND time > $from ";
+			}
+
+			if ($args['date_to']){
+				$to = intval($args['date_to']);
+				$where .=" AND time < $to ";
+			}
+
+			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
+error_log($search_sql);
 			//not implemented yet
 			if ($trend){
 				switch ($trendperiod) {
