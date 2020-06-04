@@ -41,7 +41,8 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		public function ajax_content_export(){
 			if (!current_user_can('manage_options')) return;
 			$disabled = get_transient('wpsi_export_in_progress') ? 'disabled' : '';
-			$content = '<button '.$disabled.' class="button-secondary" id="wpsi-start-export">'.__("Export", "wp-search-insights").'</button>';
+			$content = '<input type="text" id="jquery-datepicker" name="entry_post_date" value="">';
+			$content .= '<button '.$disabled.' class="button-secondary" id="wpsi-start-export">'.__("Export", "wp-search-insights").'</button>';
 			$link = '';
 			if (file_exists($this->filepath() )){
 				$link = '<a href="'.$this->fileurl().'">'.__("Download", "wp-search-insights").'</a></div>';

@@ -42,7 +42,7 @@ jQuery(document).ready(function($) {
             }
         })
             .on('move', function () {
-                wpsiSaveLayout(grid[className], className);
+                wpsiSaveLayout(grid, className);
             })
         ;
 
