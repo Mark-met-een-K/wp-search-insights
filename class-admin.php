@@ -196,6 +196,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                'localize'   => array(
 		                	    'previous', __('Previous', 'wp-search-insights'),
 		                	    'next', __('Next', 'wp-search-insights'),
+		                	    'no-searches', __('"No searches recorded in selected period."', 'wp-search-insights'),
 		                ),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
                                                 <option value="month">'.__("Month", "wp-search-insights").'</option>

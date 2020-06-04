@@ -26,7 +26,7 @@ jQuery(document).ready(function ($) {
                 },
                 searchPlaceholder: "Search",
                 "search": "",
-                "emptyTable": "No searches recorded in selected period!"
+                "emptyTable": wpsi.localize['no-searches']
             },
             "order": [[2, "desc"]],
         });
