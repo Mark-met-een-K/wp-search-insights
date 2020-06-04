@@ -175,10 +175,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
 	            //datapicker
-
-	            wp_enqueue_style( 'jquery-ui-datepicker-style' , '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css');
+	            wp_enqueue_style( 'jquery-ui-datepicker-style' , trailingslashit(wpsi_url) . 'assets/css/datepicker.css', "",
+		            wp_search_insights_version);
 	            wp_enqueue_script( 'jquery-ui-datepicker' );
-
 
                 wp_register_style('search-insights',
                     trailingslashit(wpsi_url) . "assets/css/style.min.css", "",

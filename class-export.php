@@ -41,16 +41,20 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		public function ajax_content_export(){
 			if (!current_user_can('manage_options')) return;
 			$disabled = get_transient('wpsi_export_in_progress') ? 'disabled' : '';
-			$content = '<input type="text" id="jquery-datepicker" name="entry_post_date" value="">';
-			$content .= '<button '.$disabled.' class="button-secondary" id="wpsi-start-export">'.__("Export", "wp-search-insights").'</button>';
+
 			$link = '';
 			if (file_exists($this->filepath() )){
 				$link = '<a href="'.$this->fileurl().'">'.__("Download", "wp-search-insights").'</a></div>';
 			}
 
-			$content .= '<div class="wpsi-download-link">'.$link.'</div>';
+
 			ob_start();
-            echo $content;
+			?>
+			<input type="text" class="wpsi-datepicker" name="wpsi-export-from" value="<?php echo date('F j, yy', strtotime('-1 month'))?>">
+			<input type="text" class="wpsi-datepicker" name="wpsi-export-to" value="<?php echo date('F j, yy')?>">
+			<button <?=$disabled?> class="button-secondary" id="wpsi-start-export"><?php _e("Export", "wp-search-insights")?></button>
+			<div class="wpsi-download-link"><?=$link?></div>
+			<?php
 			return ob_get_clean();
 		}
 
@@ -79,6 +83,8 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			);
 
 			if (!$error){
+			    $date_from = strtotime($_GET['date_from']);
+			    $date_to = strtotime($_GET['date_to']);
 				//first call, start generation
 				if ( !get_transient('wpsi_export_in_progress') ){
 					set_transient('wpsi_export_in_progress', true, 2 * DAY_IN_SECONDS);
@@ -92,6 +98,8 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 						'number' => -1,
 						'range' => false,
 						'count' => true,
+						'date_from' => $date_from,
+						'date_to' => $date_to,
 					);
 
 					$count = WPSI::$search->get_searches_single($args);
@@ -99,14 +107,18 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 					$progress = 0;
 					update_option('wpsi_export_progress', $progress );
 				} else {
-					$percent = $this->process_csv_chunk();
+					$args = array(
+						'date_from' => $date_from,
+						'date_to' => $date_to,
+					);
+					$percent = $this->process_csv_chunk($args);
 				}
 
 				$data = array(
 					'success' => !$error,
 					'percent' => round($percent, 0),
 					'total' => round($percent, 0),
-					'path' => $this->fileurl(),
+					'path' => $this->fileurl()."?token=".time(), //add time to make sure it's not cached
 				);
 
 			}
@@ -118,7 +130,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		}
 
 
-		public function process_csv_chunk(){
+		public function process_csv_chunk($args = array()){
 			if ( !get_transient('wpsi_export_in_progress') ) return;
 
 			$progress = get_option('wpsi_export_progress') + 1;
@@ -139,12 +151,10 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 				delete_transient('wpsi_export_in_progress');
 			}
 
-			$args = array(
-				'number' => $this->rows,
-				'range' => false,
-				'result_count' => true,
-				'offset' => $offset,
-			);
+			$args['number'] = $this->rows;
+			$args['range'] = false;
+			$args['result_count'] = true;
+			$args['offset'] = $offset;
 			$searches = WPSI::$search->get_searches_single($args);
 
 			//convert to array

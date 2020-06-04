@@ -73,9 +73,17 @@ jQuery(document).ready(function ($) {
                 container.find(".wpsi-date-container").html(wpsi.dateFilter);
                 container.find('.wpsi-date-filter').val(range);
                 wpsiInitDeleteCapability();
+                wpsiInitDatePicker();
 
-                $('#jquery-datepicker').datepicker();
             }
+        });
+    }
+
+    function wpsiInitDatePicker(){
+        $('.wpsi-datepicker').each(function(){
+            $(this).datepicker(
+
+            );
         });
     }
 
@@ -156,6 +164,9 @@ jQuery(document).ready(function ($) {
     function wpsiExportData(){
         var downloadContainer = $('.wpsi-download-link');
         var button = $('#wpsi-start-export');
+        var date_from = $('input[name=wpsi-export-from]').val();
+        var date_to = $('input[name=wpsi-export-to]').val();
+        console.log(date_from);
         button.prop('disabled', true);
         $.ajax({
             type: "GET",
@@ -163,10 +174,11 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             data: ({
                 action: 'wpsi_start_export',
+                date_from: date_from,
+                date_to: date_to,
                 token: wpsi.token,
             }),
             success: function (response) {
-                console.log(response);
                 if (response.percent < 100) {
                     downloadContainer.html(response.percent+'%');
                     wpsiExportData();
