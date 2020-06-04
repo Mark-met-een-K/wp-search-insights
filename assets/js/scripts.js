@@ -17,7 +17,6 @@ jQuery(document).ready(function ($) {
             "pageLength": 6,
             conditionalPaging: true,
             buttons: [
-                {extend: 'csv', text: 'Download CSV'}
             ],
             "language": {
                 "paginate": {
