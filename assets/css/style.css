@@ -697,10 +697,6 @@ widget
 #wpsi-dashboard .form-table {
   padding-left: 50px;
 }
-#wpsi-dashboard #settings {
-  position: relative;
-  margin-left: 25px;
-}
 #wpsi-dashboard .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
   display: none;
 }

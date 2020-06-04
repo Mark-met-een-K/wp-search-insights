@@ -76,7 +76,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
-                    'content' => '<div class="wpsi-skeleton"></div>',//$this->recent_table('week'),
+                    'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'table-overview',
                     'type' => 'all',
                     'controls' => '<div class="wpsi-date-container"></div>',
@@ -85,7 +85,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 2 => array(
                     'title' => __("Results", "wp-search-insights"),
-                    'content' => '<div class="wpsi-skeleton"></div>',//$this->results_table('week'),
+                    'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small',
                     'type' => 'results',
                     'controls' => '<div class="wpsi-date-container"></div>',
@@ -94,7 +94,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
-                    'content' => '<div class="wpsi-skeleton"></div>',//$this->generate_dashboard_widget($on_grid=true),
+                    'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small',
                     'type' => 'popular',
                     'controls' => '<div class="wpsi-date-container"></div>',
@@ -103,7 +103,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 4 => array(
                     'title' => __("Tips & Tricks", "wp-search-insights"),
-                    'content' => $this->generate_tips_tricks(),
+                    'content' => '',
                     'type' => 'tasks',
                     'class' => 'half-height wpsi-tips-tricks',
                     'can_hide' => true,
@@ -111,7 +111,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
             5 => array(
                     'title' => $this->get_other_plugins_title(),
-                    'content' => $this->generate_other_plugins(),
+                    'content' => '',
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
                     'can_hide' => false,
