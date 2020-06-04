@@ -1,19 +1,26 @@
+window.addEventListener('wpsiSwitchTab', function (tab) {
+    console.log("switch tab "+tab);
+    wpsiInitGrid();
+});
+
 jQuery(document).ready(function($) {
+    var drag_enabled_or_disabled = !wpsiIsMobileDevice();
 
-    var drag_enabled_or_disabled;
+    wpsiInitGrid();
 
-    // Disable drag on mobile
-    if (!isMobileDevice()) {
-        drag_enabled_or_disabled = true;
-    } else {
-        drag_enabled_or_disabled = false;
+    function wpsiInitGrid() {
+        $('.wpsi-grid').each(function(){
+           var grid_type = $(this).data('grid_type');
+           wpsiInitGridByClass(grid_type);
+        });
     }
 
-    initGrid();
-
-    function initGrid() {
-
-        var grid = new Muuri('.wpsi-grid', {
+    /**
+     * Init by classname
+     * @param className
+     */
+    function wpsiInitGridByClass(className){
+        var grid = new Muuri('.wpsi-grid.'+className, {
             dragEnabled: drag_enabled_or_disabled,
             dragSortHeuristics: {
                 sortInterval: 50,
@@ -33,72 +40,73 @@ jQuery(document).ready(function($) {
             dragStartPredicate: function(item, e) {
                 return e.target.className === 'wpsi-drag-handle';
             }
-            // itemDraggingClass: 'muuri-item-dragging',
         })
-        // .on('dragStart', function (item) {
-        //         ++dragCounter;
-        //         docElem.classList.add('dragging');
-        //         item.getElement().style.width = item.getWidth() + 'px';
-        //         item.getElement().style.height = item.getHeight() + 'px';
-        //     })
-        //     .on('dragEnd', function (item) {
-        //         if (--dragCounter < 1) {
-        //             docElem.classList.remove('dragging');
-        //         }
-        //     })
-        //     .on('dragReleaseEnd', function (item) {
-        //         item.getElement().style.width = '';
-        //         item.getElement().style.height = '';
-        //         columnGrids.forEach(function (muuri) {
-        //             muuri.refreshItems();
-        //         });
-        //     })
-        .on('move', function () {
-            saveLayout(grid);
-        });
+            .on('move', function () {
+                wpsiSaveLayout(grid[className], className);
+            })
+        ;
 
-        var layout = window.localStorage.getItem('layout');
-        if (layout) {
-            loadLayout(grid, layout);
+        var layout = window.localStorage.getItem('wpsi_layout_'+className);
+        if (layout && className === 'dashboard') {
+            wpsiloadLayout(grid, layout, className);
         } else {
             grid.layout(true);
         }
-        // Must save the layout on first load, otherwise filtering the grid won't work on a new install.
-        saveLayout(grid);
 
+        // Must save the layout on first load, otherwise filtering the grid won't work on a new install.
+        wpsiSaveLayout(grid, className);
     }
 
 
-    function serializeLayout(grid) {
+
+    /**
+     * Serialize the layout
+     * @param grid
+     * @returns {string}
+     */
+
+    function wpsiSerializeLayout(grid) {
         var itemIds = grid.getItems().map(function (item) {
             return item.getElement().getAttribute('data-id');
         });
         return JSON.stringify(itemIds);
     }
 
-    function saveLayout(grid) {
-        var layout = serializeLayout(grid);
-        window.localStorage.setItem('layout', layout);
+    /**
+     * Save the layout
+     * @param grid
+     * @param className
+     */
+    function wpsiSaveLayout(grid, className) {
+        var layout = wpsiSerializeLayout(grid);
+        window.localStorage.setItem('wpsi_layout_'+className, layout);
     }
 
-    function loadLayout(grid, serializedLayout) {
+
+
+    /**
+     * Load a grid layout
+     * @param grid
+     * @param serializedLayout
+     */
+
+    function wpsiloadLayout(grid, serializedLayout) {
         var layout = JSON.parse(serializedLayout);
         var currentItems = grid.getItems();
-        // // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
+        // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
         $('.wpsi-item').each(function(){
             var toggle_id = $(this).data('id');
-            if (localStorage.getItem("toggle_data_id_"+toggle_id) === null) {
-                window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+            if (localStorage.getItem("wpsi_toggle_data_id_"+toggle_id) === null) {
+                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
             }
 
-            // // Add or remove the active class when the checkbox is checked/unchecked
-            if (window.localStorage.getItem('toggle_data_id_'+toggle_id) == 'checked') {
+            // Add or remove the active class when the checkbox is checked/unchecked
+            if (window.localStorage.getItem('wpsi_toggle_data_id_'+toggle_id) == 'checked') {
                 $(this).addClass("muuri-active");
             } else {
                 $(this).removeClass("muuri-active");
             }
         });
-
 
         var currentItemIds = currentItems.map(function (item) {
             return item.getElement().getAttribute('data-id')
@@ -114,31 +122,114 @@ jQuery(document).ready(function($) {
                 newItems.push(currentItems[itemIndex])
             }
         }
-
         // Sort and filter the grid
         grid.sort(newItems, {layout: 'instant'});
         grid.filter('.muuri-active');
     }
 
-
     // Reload the grid when checkbox value changes
     $('.wpsi-item').each(function(){
         var toggle_id = $(this).data('id');
         // Set defaults for localstorage checkboxes
-        if (!window.localStorage.getItem('toggle_data_id_'+toggle_id)) {
-            window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+        if (!window.localStorage.getItem('wpsi_toggle_data_id_'+toggle_id)) {
+            window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
         }
-        $('#toggle_data_id_'+toggle_id).change(function() {
-            if (document.getElementById("toggle_data_id_"+toggle_id).checked ) {
-                window.localStorage.setItem('toggle_data_id_'+toggle_id, 'checked');
+        $('#wpsi_toggle_data_id_'+toggle_id).change(function() {
+            if (document.getElementById("wpsi_toggle_data_id_"+toggle_id).checked ) {
+                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
             } else {
-                window.localStorage.setItem('toggle_data_id_'+toggle_id, 'unchecked');
+                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'unchecked');
             }
-            initGrid();
+            wpsiInitGrid();
         });
     });
 
-    function isMobileDevice() {
+    /**
+     * check if it's a mobile device
+     * @returns {boolean}
+     */
+    function wpsiIsMobileDevice() {
         return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-    };
+    }
+
+    /**
+     * Show/hide dashboard items
+     */
+
+    $('ul.tabs li').click(function () {
+        var tab_id = $(this).attr('data-tab');
+        // Sort and filter the grid
+        if  (tab_id !== 'dashboard') {
+            $('#wpsi-toggle-link-wrap').hide();
+        } else {
+            $('#wpsi-toggle-link-wrap').show();
+        }
+
+        $('ul.tabs li').removeClass('current');
+        $('.tab-content').removeClass('current');
+
+        $(this).addClass('current');
+        $("#" + tab_id).addClass('current');
+
+        wpsiInitGrid();
+
+    });
+
+    //Get the window hash for redirect to #settings after settings save
+    var hash = "#" + window.location.hash.substr(1);
+    var tab = window.location.hash.substr(1).replace('#top','');
+    var href = $('.tab-'+tab).attr('href');
+    if (href === hash) {
+        $('.tab-'+tab)[0].click();
+        window.location.href = href; //causes the browser to refresh and load the requested url
+    }
+
+    /**
+     * Checkboxes
+     */
+
+        // Get grid toggle checkbox values
+    var wpsi_grid_configuration = JSON.parse(localStorage.getItem('wpsi_grid_configuration')) || {};
+    var checkboxes = $("#wpsi-toggle-dashboard :checkbox");
+
+    // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
+    if (localStorage.getItem("wpsi_grid_initialized") === null) {
+        checkboxes.each(function () {
+            wpsi_grid_configuration[this.id] = 'checked';
+        });
+        localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
+        localStorage.setItem('wpsi_grid_initialized', 'set');
+    }
+
+    // Update storage checkbox value when checkbox value changes
+    checkboxes.on("change", function(){
+        updateStorage();
+    });
+
+    function updateStorage(){
+        checkboxes.each(function(){
+            wpsi_grid_configuration[this.id] = this.checked;
+        });
+        localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
+    }
+
+    // Get checkbox values on pageload
+    $.each(wpsi_grid_configuration, function(key, value) {
+        $("#" + key).prop('checked', value);
+    });
+
+    // Hide screen options by default
+    $("#wpsi-toggle-dashboard").hide();
+
+    // Show/hide screen options on toggle click
+    $('#wpsi-show-toggles').click(function(){
+        if ($("#wpsi-toggle-dashboard").is(":visible") ){
+            $("#wpsi-toggle-dashboard").slideUp();
+            $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-down-alt2');
+        } else {
+            $("#wpsi-toggle-dashboard").slideDown();
+            $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-up-alt2');
+        }
+    });
+
 });

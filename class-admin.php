@@ -76,7 +76,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
-                    'content' => '<div class="wpsi-skeleton"></div>',//$this->recent_table('week'),
+                    'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'table-overview',
                     'type' => 'all',
                     'controls' => '<div class="wpsi-date-container"></div>',
@@ -85,7 +85,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 2 => array(
                     'title' => __("Results", "wp-search-insights"),
-                    'content' => '<div class="wpsi-skeleton"></div>',//$this->results_table('week'),
+                    'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small',
                     'type' => 'results',
                     'controls' => '<div class="wpsi-date-container"></div>',
@@ -94,7 +94,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
-                    'content' => '<div class="wpsi-skeleton"></div>',//$this->generate_dashboard_widget($on_grid=true),
+                    'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small',
                     'type' => 'popular',
                     'controls' => '<div class="wpsi-date-container"></div>',
@@ -103,24 +103,27 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 4 => array(
                     'title' => __("Tips & Tricks", "wp-search-insights"),
-                    'content' => $this->generate_tips_tricks(),
+                    'content' => '',
                     'type' => 'tasks',
                     'class' => 'half-height wpsi-tips-tricks',
                     'can_hide' => true,
                     'controls' => '',
-
-
                 ),
-                5 => array(
-                    'title' => '',
-                    'content' => $this->generate_other_plugins(),
+            5 => array(
+                    'title' => $this->get_other_plugins_title(),
+                    'content' => '',
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
                     'can_hide' => false,
                     'controls' => '',
-
                 ),
             );
+        }
+
+        public function get_other_plugins_title() {
+            $logo = trailingslashit(wpsi_url) . "assets/images/really-simple-plugins.png";
+            $title = "Our Plugins <div class='rsp-logo'><img src='$logo'/></div>";
+            return $title;
         }
 
         public function inline_styles()
@@ -194,6 +197,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         ),
 		                'export_in_progress' => get_transient('wpsi_export_in_progress'),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
+		                'localize'   => array(
+		                	    'previous', __('Previous', 'wp-search-insights'),
+		                	    'next', __('Next', 'wp-search-insights'),
+		                ),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
                                                 <option value="month">'.__("Month", "wp-search-insights").'</option>
                                                 <option value="week" selected="selected">'.__("Week", "wp-search-insights").'</option>
@@ -669,7 +676,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	            <p><?php echo $args['description'] ?></p>
 	            <script>
                     jQuery(document).ready(function ($) {
-                        $('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
+                        //$('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
                     });
 	            </script>
 	            <a class="button button-primary"
@@ -756,6 +763,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             }
             do_action('wpsi_on_settings_page' );
             ?>
+            <style>
+                #wpcontent {padding-left: 0 !important;}
+            </style>
             <div class="wrap">
                 <div id="wpsi-toggle-wrap">
                     <div id="wpsi-toggle-dashboard">
@@ -772,8 +782,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 }
                                 ?>
                                 <label for="wpsi-hide-panel-<?= $index ?>" <?php echo $style ?>>
-                                    <input class="wpsi-toggle-items" name="toggle_data_id_<?= $index ?>" type="checkbox"
-                                           id="toggle_data_id_<?= $index ?>" value="data_id_<?= $index ?>">
+                                    <input class="wpsi-toggle-items" name="wpsi_toggle_data_id_<?= $index ?>" type="checkbox"
+                                           id="wpsi_toggle_data_id_<?= $index ?>" value="data_id_<?= $index ?>">
                                     <?= $grid_item['title'] ?>
                                 </label>
                                 <?php
@@ -1092,7 +1102,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 					    $html = $this->results_table($range);
 					    break;
                     default:
-                        $html = __('Invalid command','wp-search-insights');
+                        $html = apply_filters("wpsi_ajax_content_$type", '');
                         break;
 			    }
 		    }
@@ -1120,7 +1130,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function recent_table($range = 'all')
         {
             ob_start();
-
 
             ?>
             <table id="wpsi-recent-table" class="wpsi-table">
@@ -1206,8 +1215,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             }
 
             //make sure the link is not too long
-            if (strlen($referrer)>30){
-                $referrer = substr($referrer, 0, 30).'...';
+            if (strlen($referrer)>25){
+                $referrer = substr($referrer, 0, 22).'...';
             }
             return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';
         }
@@ -1518,44 +1527,90 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $plugin_url = trailingslashit(wpsi_url);
             $items = array(
                 1 => array(
-                    'title' => __("Really Simple SSL", "wp-search-insights"),
-                    'content' => __("Really Simple SSL automatically detects your settings and configures your website to run over HTTPS! Migrate your website to SSL with just one-click", "wp-search-insights"),
-                    'link' => admin_url() . "plugin-install.php?s=Really+Simple+SSL+Mark+Wolters&tab=search&type=term",
-                    'logo' => "$plugin_url"."assets/images/rsssl-logo.png",
+                    'title' => '<div class="rsssl-yellow upsell-round"></div>',
+                    'content' => __("Really Simple SSL - Easily migrate your website to SSL"),
+                    'status' => $this->get_rsssl_status(),
                     'class' => 'rsssl',
                     'controls' => '',
                 ),
                 2 => array(
-                    'title' => __("Complianz Privacy Suite", "wp-search-insights"),
-                    'content' => __("Get compliant today in the European Union and/or in the United States,  Canada, and United Kingdom with the only Privacy Suite that offers a fully-featured privacy plugin!", "wp-search-insights"),
-                    'link' => admin_url() . "plugin-install.php?s=complianz&tab=search&type=term",
-                    'logo' => "$plugin_url"."assets/images/complianz-logo.png",
+                    'title' => '<div class="cmplz-blue upsell-round"></div>',
+                    'content' => __("Complianz Privacy Suite - Consent Management as it should be ", "wp-search-insights"),
+                    'status' => $this->get_cmplz_status(),
                     'class' => 'cmplz',
                     'controls' => '',
                 ),
+                3 => array(
+                    'title' => '<div class="zip-pink upsell-round"></div>',
+                    'content' => __("Zip Recipes - Beautiful recipes optimized for Google ", "wp-search-insights"),
+                    'status' => $this->get_zip_status(),
+                    'class' => 'zip',
+                    'controls' => '',
+                ),
             );
-	        $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
+
 
             $element = $this->get_template('upsell-element.php');
             $output = '';
             foreach ($items as $item) {
                 $output .= str_replace(array(
                     '{title}',
-                    '{logo}',
                     '{content}',
-                    '{link}',
+                    '{status}',
                     '{class}',
                     '{controls}',
                 ), array(
                     $item['title'],
-                    $item['logo'],
                     $item['content'],
-                    $item['link'],
+                    $item['status'],
                     $item['class'],
                     $item['controls'],
                 ), $element);
             }
-            return str_replace('{content}', '<div class="wpsi-other-plugins-container">'.$output.'</div>', $container);
+
+	        return $this->get_template('grid-container.php', wpsi_path . '/grid', array( 'content' => '<div class="wpsi-other-plugins-container">'.$output.'</div>', 'grid_type' => 'upsell'));
+        }
+
+        public function get_rsssl_status() {
+            if (defined('rsssl_plugin') && defined('rsssl_pro_plugin')) {
+                $status = "Installed";
+            } elseif (defined('rsssl_plugin') && !defined('rsssl_pro_plugin')) {
+                $link = "https://really-simple-ssl.com/pro";
+                $text = __('Upgrade to pro', 'wp-search-insights');
+                $status = "<a href=$link>$text</a>";
+            }
+            else {
+                $link = admin_url() . "plugin-install.php?s=Really+Simple+SSL+Mark+Wolters&tab=search&type=term";
+                $text = __('Install', 'wp-search-insights');
+                $status = "<a href=$link>$text</a>";
+            }
+            return $status;
+        }
+
+        public function get_cmplz_status() {
+            if (defined('cmplz_plugin') && defined('cmplz_premium')) {
+                $status = "Installed";
+            } elseif (defined('cmplz_plugin') && !defined('cmplz_premium')) {
+                $link = "https://complianz.io/pricing";
+                $text = __('Upgrade to pro', 'wp-search-insights');
+                $status = "<a href=$link>$text</a>";
+            } else {
+                $link = admin_url() . "plugin-install.php?s=complianz&tab=search&type=term";
+                $text = __('Install', 'wp-search-insights');
+                $status = "<a href=$link>$text</a>";
+            }
+            return $status;
+        }
+
+        public function get_zip_status() {
+            if (defined('ZRDN_PLUGIN_BASENAME')) {
+                $status = "Installed";
+            } else {
+                $link = admin_url() . "plugin-install.php?s=zip+recipes&tab=search&type=term";
+                $text = __('Install', 'wp-search-insights');
+                $status = "<a href=$link>$text</a>";
+            }
+            return $status;
         }
 
         public function generate_tips_tricks()
@@ -1585,7 +1640,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => __("Positioning your search form", "wp-search-insights"),
                     'link' => 'https://wpsearchinsights.com/about-search-forms/',
                 ),
-
             );
             $button_link = "https://wpsearchinsights.com/tips-tricks/";
             //$container = $this->get_template('tipstricks-container.php');
@@ -1604,7 +1658,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     $item['content'],
                 ), $element);
             }
-            return str_replace(array('{content}' , '{button_link}'), array('<div class="wpsi-tips-tricks-container">'.$output.'</div>', $button_link), $container);
+            return str_replace(array('{content}' , '{button_link}', '{grid_type}'), array('<div class="wpsi-tips-tricks-container">'.$output.'</div>', $button_link, 'tips_tricks'), $container);
         }
     }
 }

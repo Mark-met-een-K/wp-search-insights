@@ -7,17 +7,9 @@
   display: none;
 }
 
-// Override default WP padding and margin on dashboard
-
-#wpcontent {
-  // Has to be important because it's WP style
-  padding-left: 0 !important;
-}
-
 .wrap {
   margin: 0 0 0 0;
 }
-
 
 #wpsi-dashboard {
 
@@ -129,6 +121,7 @@
 widget
  */
 #dashboard_widget_wpsi, #wpsi-dashboard {
+  font-size:13px;
   .inside {
     padding: 0;
 
@@ -304,26 +297,26 @@ widget
   }
 }
 
+#wpsi-dashboard {
 
-/*
+  /*
   *
   *   Dashboard styling
   *
-*/
+  */
 
-.tab-text {
-  color: #444444;
-  font-size: 1.2em;
-  text-decoration: none;
-  outline: 0;
-  box-shadow: 0 0 0 0;
+  .tab-text {
+    color: #444444;
+    font-size: 1.2em;
+    text-decoration: none;
+    outline: 0;
+    box-shadow: 0 0 0 0;
 
-  &:focus {
-    box-shadow: initial;
+    &:focus {
+      box-shadow: initial;
+    }
   }
-}
 
-#wpsi-dashboard {
   //padding-right:15px;
 
   .wpsi-settings-intro {
@@ -452,76 +445,80 @@ widget
       padding: 0;
       table-layout: fixed;
       justify-content: normal;
-    }
-
-    table.dataTable {
-      .wpsi-selected {
-        background-color: rgba(41, 182, 246, 0.35);
-      }
-    }
-
-    table caption {
-      //font-weight: 600;
-      //width: 50%;
-      //font-size: 1.5em;
-      height: 50px;
-      text-align: left;
-      margin-top: -10px;
-      padding-bottom: 10px;
-    }
-
-
-    table tr {
-      height: 40px;
-      background-color: #f8f8f8;
-      padding: .35em;
-    }
-
-    table tbody tr {
-      border-bottom: .1em solid @border-color;
-    }
-
-    table th,
-    table td {
-      padding: .625em;
-      text-align: left;
-    }
-
-    table th {
-      &:focus {
-        outline: none;
+      &.dataTable {
+        .wpsi-selected {
+          background-color: rgba(41, 182, 246, 0.35);
+        }
       }
 
-      letter-spacing: .1em;
+      caption {
+        //font-weight: 600;
+        //width: 50%;
+        //font-size: 1.5em;
+        height: 50px;
+        text-align: left;
+        margin-top: -10px;
+        padding-bottom: 10px;
+      }
+
+      tbody tr {
+        border-bottom: .1em solid @border-color;
+      }
+
+      tr {
+        height: 40px;
+        background-color: #f8f8f8;
+        padding: .35em;
+      }
+
+      th:nth-child(3) {
+        width:80px !important;
+      }
+
+      th,
+      td {
+        padding: .625em;
+        text-align: left;
+      }
+
+      th {
+        &:focus {
+          outline: none;
+        }
+
+        letter-spacing: .1em;
+      }
+
+      thead tr:first-of-type {
+        //background-color: #F5F6FA;
+        //color: #A3A6B4;
+      }
+
+      tbody {
+        color: @light-text-color;
+      }
+
+      tr:nth-child(even) {
+        background-color: #FFFFFF;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #FFFFFF;
+      }
+
+      tr:first-child {
+        border-top-left-radius: .55rem;
+        border-top-right-radius: .55rem;
+      }
+
+      tr:last-child {
+        margin-bottom: 0;
+        border-bottom-left-radius: .55rem;
+        border-bottom-right-radius: .55rem;
+      }
+
     }
 
-    thead tr:first-of-type {
-      //background-color: #F5F6FA;
-      //color: #A3A6B4;
-    }
-
-    tbody {
-      color: @light-text-color;
-    }
-
-    tr:nth-child(even) {
-      background-color: #FFFFFF;
-    }
-
-    tr:nth-child(odd) {
-      background-color: #FFFFFF;
-    }
-
-    tr:first-child {
-      border-top-left-radius: .55rem;
-      border-top-right-radius: .55rem;
-    }
-
-    tr:last-child {
-      margin-bottom: 0;
-      border-bottom-left-radius: .55rem;
-      border-bottom-right-radius: .55rem;
-    }
   }
 
   .wpsi-term a {
@@ -716,7 +713,7 @@ widget
   }
 
   .percentage {
-    font-size: 24px;
+    font-size: 1.8em;
     font-weight: 700;
   }
 
@@ -805,88 +802,66 @@ widget
 
     .item-container {
       box-shadow: none;
+      border: 1px solid @border-color;
     }
 
   }
 
-
-  .wpsi-other-plugins-container {
-    display: flex;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  .wpsi-upsell {
-    width: 475px;
-    margin-top: -58px;
-  }
-
-  .wpsi-upsell-title {
-    height: 15%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-
-  .wpsi-upsell span.dashicons {
-    //margin-top: 10px;
-    color: #FFB900;
-  }
-
-  .upsell-img {
-    padding-right: 30px;
-    padding-top: 10px;
-    height: 25px;
-    width: 25px;
-  }
-
-  .wpsi-cmplz {
-    .upsell-img {
-      padding-right: 0;
-    }
-
-    .wpsi-upsell-content {
-      padding-right: 0px;
-    }
-  }
-
-  .wpsi-top-title {
-    font-weight: 700;
-  }
-
-  .wpsi-upsell-content {
-    padding-right: 25px;
-    padding-bottom: 15px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid @border-color;
-
-    .wpsi-sub-title {
-      padding-top: 20px;
-      padding-bottom: 15px;
-    }
-  }
-
-  .wpsi-upsell-button {
-    height: 50px;
+.upsell-grid-container {
+  .wpsi-drag-handle {
     display: flex;
     align-items: center;
+    margin-top: -5px;
+    .rsp-logo {
+      margin-left: auto;
+      img {
+        height: 30px;
+        padding-right: 10px;
+      }
+    }
   }
+}
 
-  .wpsi-upsell-button > a {
-    width: 80%;
+  .wpsi-other-plugins-container {
+    //display: flex;
+    //justify-content: space-between;
+    height: 100%;
+    border-bottom: 1px solid @border-color;
+    padding-bottom: 10px;
+    width: 95%;
+
+    .wpsi-upsell {
+      display: flex;
+      flex-direction: row;
+      padding: 6px;
+      align-items: center;
+      color: @light-text-color;
+
+      .upsell-round {
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .rsssl-yellow {
+            background-color: #EFBF4B;
+      }
+
+      .cmplz-blue  {
+          background-color: #27ADEA;
+      }
+
+      .zip-pink {
+        background-color: #E366A1;
+      }
+
+      .plugin-status {
+        margin-left: auto;
+        //padding-right: 25px;
+      }
+    }
   }
-
-  .button-upsell {
-    width: 100px;
-    color: #0071a1;
-  }
-
-  .button-upsell:hover {
-    color: white;
-  }
-
   // hide the export buttons on popular searches tables
   #wpsi-popular-table_wrapper > div.dt-buttons {
     display: none;
@@ -927,11 +902,6 @@ widget
 
   .form-table {
     padding-left: 50px;
-  }
-
-  #settings {
-    position: relative;
-    margin-left: 25px;
   }
 
   .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
@@ -1038,7 +1008,7 @@ widget
     border-bottom: 1px solid @border-color;
 
     .wpsi-tips-tricks-element {
-      font-size: 0.9em;
+      //font-size: 0.9em;
       color: @light-text-color;
       padding-bottom: 7px;
       list-style: decimal;
