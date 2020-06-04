@@ -88,12 +88,12 @@ function wpsi_tab_content_settings(){
 		    'grid_type'=> 'settings',
 	        'content' => $element)
 	);
-	?>
-
-
-<?php
 }
 add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
+
+
+
+
 
 function wpsi_ajax_content_settings(){
 	ob_start();
@@ -110,6 +110,18 @@ function wpsi_ajax_content_filter(){
 	return ob_get_clean();
 }
 add_filter("wpsi_ajax_content_filter", 'wpsi_ajax_content_filter');
+
+function wpsi_ajax_content_tasks(){
+	return WPSI::$admin->generate_tips_tricks();
+}
+add_filter("wpsi_ajax_content_tasks", 'wpsi_ajax_content_tasks');
+
+
+function wpsi_ajax_content_plugins(){
+	return WPSI::$admin->generate_other_plugins();
+}
+add_filter("wpsi_ajax_content_plugins", 'wpsi_ajax_content_plugins');
+
 
 /**
  * set of options in the tabs bar

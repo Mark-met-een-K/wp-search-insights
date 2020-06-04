@@ -47,13 +47,6 @@ jQuery(document).ready(function ($) {
         var range;
         var type = container.closest('.wpsi-item').data('table_type');
 
-        console.log(type);
-        console.log("container content");
-        console.log(container.html());
-
-        if (container.html() !== '<div class="wpsi-skeleton"></div>') return;
-
-        if (type === 'plugins' || type === 'tasks') return;
         var defaultRange = container.closest('.wpsi-item').data('default_range');
         var storedRange = localStorage.getItem('wpsi_range_'+type);
         if (storedRange === null ){
@@ -61,8 +54,6 @@ jQuery(document).ready(function ($) {
         } else {
             range = storedRange;
         }
-
-        //container.html('<div class="wpsi-skeleton"></div>');
 
         $.ajax({
             type: "GET",
@@ -80,93 +71,11 @@ jQuery(document).ready(function ($) {
                 container.find(".wpsi-date-container").html(wpsi.dateFilter);
                 container.find('.wpsi-date-filter').val(range);
                 wpsiInitDeleteCapability();
-
-                // Move export buttons to no results div
-                var export_buttons =  $("#wpsi-recent-table_wrapper > div.dt-buttons").addClass('csvDownloadBtn').detach();
-                if (!$(".wpsi-nr-footer").find('.csvDownloadBtn').length){
-                    $(".wpsi-nr-footer").append(export_buttons);
-                }
             }
         });
     }
 
-    /**
-     * Show/hide dashboard items
-     */
 
-    $('ul.tabs li').click(function () {
-        var tab_id = $(this).attr('data-tab');
-        // Sort and filter the grid
-        console.log(tab_id);
-        if  (tab_id !== 'dashboard') {
-            $('#wpsi-toggle-link-wrap').hide();
-        } else {
-            $('#wpsi-toggle-link-wrap').show();
-        }
-
-        $('ul.tabs li').removeClass('current');
-        $('.tab-content').removeClass('current');
-
-        $(this).addClass('current');
-        $("#" + tab_id).addClass('current');
-    });
-
-    //Get the window hash for redirect to #settings after settings save
-    var hash = "#" + window.location.hash.substr(1);
-    var tab = window.location.hash.substr(1).replace('#top','');
-    var href = $('.tab-'+tab).attr('href');
-    if (href === hash) {
-        $('.tab-'+tab)[0].click();
-        window.location.href = href; //causes the browser to refresh and load the requested url
-    }
-
-    /**
-     * Checkboxes
-     */
-
-    // Get grid toggle checkbox values
-    var wpsi_grid_configuration = JSON.parse(localStorage.getItem('wpsi_grid_configuration')) || {};
-    var checkboxes = $("#wpsi-toggle-dashboard :checkbox");
-
-    // Enable all checkboxes by default to show all grid items. Set localstorage val when set so it only runs once.
-    if (localStorage.getItem("wpsi_grid_initialized") === null) {
-        checkboxes.each(function () {
-            wpsi_grid_configuration[this.id] = 'checked';
-        });
-        localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
-        localStorage.setItem('wpsi_grid_initialized', 'set');
-    }
-
-    // Update storage checkbox value when checkbox value changes
-    checkboxes.on("change", function(){
-        updateStorage();
-    });
-
-    function updateStorage(){
-        checkboxes.each(function(){
-            wpsi_grid_configuration[this.id] = this.checked;
-        });
-        localStorage.setItem("wpsi_grid_configuration", JSON.stringify(wpsi_grid_configuration));
-    }
-
-    // Get checkbox values on pageload
-    $.each(wpsi_grid_configuration, function(key, value) {
-        $("#" + key).prop('checked', value);
-    });
-
-    // Hide screen options by default
-    $("#wpsi-toggle-dashboard").hide();
-
-    // Show/hide screen options on toggle click
-    $('#wpsi-show-toggles').click(function(){
-        if ($("#wpsi-toggle-dashboard").is(":visible") ){
-            $("#wpsi-toggle-dashboard").slideUp();
-            $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-down-alt2');
-        } else {
-            $("#wpsi-toggle-dashboard").slideDown();
-            $("#wpsi-toggle-arrows").attr('class', 'dashicons dashicons-arrow-up-alt2');
-        }
-    });
 
     /**
      * select and delete functions
