@@ -1403,9 +1403,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     </div>
                 </div>
             </div>
-                <div class="wpsi-nr-footer">
-                    <span class="wpsi-export-searches"></span>
-                </div>
             </div>
             <?php
             $contents = ob_get_clean();
