@@ -193,6 +193,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     array(
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
+		                'localize'   => array(
+		                	    'previous', __('Previous', 'wp-search-insights'),
+		                	    'next', __('Next', 'wp-search-insights'),
+		                ),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
                                                 <option value="month">'.__("Month", "wp-search-insights").'</option>
                                                 <option value="week" selected="selected">'.__("Week", "wp-search-insights").'</option>

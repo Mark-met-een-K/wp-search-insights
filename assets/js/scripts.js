@@ -21,8 +21,8 @@ jQuery(document).ready(function ($) {
             ],
             "language": {
                 "paginate": {
-                    "previous": "Previous",
-                    "next": "Next",
+                    "previous": wpsi.localize['previous'],
+                    "next": wpsi.localize['next'],
                 },
                 searchPlaceholder: "Search",
                 "search": "",
