@@ -17,7 +17,6 @@ jQuery(document).ready(function ($) {
             "pageLength": 6,
             conditionalPaging: true,
             buttons: [
-                {extend: 'csv', text: 'Download CSV'}
             ],
             "language": {
                 "paginate": {
@@ -26,7 +25,7 @@ jQuery(document).ready(function ($) {
                 },
                 searchPlaceholder: "Search",
                 "search": "",
-                "emptyTable": "No searches recorded in selected period!"
+                "emptyTable": wpsi.localize['no-searches']
             },
             "order": [[2, "desc"]],
         });
