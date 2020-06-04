@@ -58,6 +58,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 		public static $tour;
 		public static $review;
 		public static $help;
+		public static $export;
 
 		private function __construct() {
 			self::setup_constants();
@@ -69,6 +70,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 			if ( is_admin() ) {
 				self::$review = new wpsi_review();
 				self::$admin  = new WPSI_ADMIN();
+				self::$export  = new WPSI_EXPORT();
 				self::$tour   = new wpsi_tour();
 				self::$help   = new wpsi_help();
 			}
@@ -110,6 +112,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 		private function includes() {
 			if ( is_admin() ) {
 				require_once( wpsi_path . 'class-admin.php' );
+				require_once( wpsi_path . 'class-export.php' );
 				require_once( wpsi_path . 'dashboard_tabs.php' );
 				require_once( wpsi_path . 'class-help.php' );
 				require_once( wpsi_path . 'class-review.php' );

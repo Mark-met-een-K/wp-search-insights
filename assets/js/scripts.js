@@ -74,8 +74,6 @@ jQuery(document).ready(function ($) {
         });
     }
 
-
-
     /**
      * select and delete functions
      */
@@ -138,6 +136,41 @@ jQuery(document).ready(function ($) {
                     $('#wpsi-delete-selected').attr('disabled', true);
                 }
             });
+        });
+    }
+
+    /**
+     * Export
+     */
+
+    $(document).on('click', '#wpsi-start-export', wpsiExportData);
+    if (wpsi.export_in_progress){
+        wpsiExportData();
+    }
+
+    function wpsiExportData(){
+        var downloadContainer = $('.wpsi-download-link');
+        var button = $('#wpsi-start-export');
+        button.prop('disabled', true);
+        $.ajax({
+            type: "GET",
+            url: wpsi.ajaxurl,
+            dataType: 'json',
+            data: ({
+                action: 'wpsi_start_export',
+                token: wpsi.token,
+            }),
+            success: function (response) {
+                console.log(response);
+                if (response.percent < 100) {
+                    downloadContainer.html(response.percent+'%');
+                    wpsiExportData();
+                } else {
+                    var link = '<div><a href="'+response.path+'">'+wpsi.strings['download']+'</a></div>';
+                    downloadContainer.html(link);
+                    button.prop('disabled', false);
+                }
+            }
         });
     }
 });

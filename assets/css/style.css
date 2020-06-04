@@ -10,6 +10,11 @@
   color: #3c3c3c;
   width: 100px;
   text-align: center;
+  margin-bottom: 20px;
+}
+#wpsi-dashboard .button-secondary:hover {
+  color: #DEDEDE;
+  border-color: #DEDEDE;
 }
 #wpsi-dashboard .item-container {
   opacity: 0;
@@ -707,6 +712,8 @@ widget
   background-color: #fff;
   box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
   width: 800px;
+  float: left;
+  margin-right: 30px;
 }
 #wpsi-dashboard .settings-block.full-width tr {
   display: flex;
