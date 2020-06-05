@@ -615,7 +615,7 @@ widget
   margin: 0 auto;
 }
 #wpsi-dashboard .upsell-grid-container {
-  display: flex;
+  display: flex !important;
   justify-content: space-between;
 }
 #wpsi-dashboard .upsell-grid-container .item-content {
@@ -644,7 +644,7 @@ widget
   width: 95%;
 }
 #wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell {
-  display: flex;
+  display: flex !important;
   flex-direction: row;
   padding: 6px;
   align-items: center;

@@ -31,7 +31,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    $(".wpsi-date-container").html(wpsi.dateFilter);
+    //$(".wpsi-date-container").html(wpsi.dateFilter);
 
     $(document).on('change', '.wpsi-date-filter', function(e){
         e.stopPropagation();
@@ -67,9 +67,14 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 container.html(response.html);
                 wpsiInitSingleDataTable(container);
-                container.find(".wpsi-date-container").html(wpsi.dateFilter);
-                container.find('.wpsi-date-filter').val(range);
+                if (type === 'results') {
+                    console.log(container.html());
+                }
+                var date_container = container.closest('.item-container').find(".wpsi-date-container");
+                date_container.html(wpsi.dateFilter);
+                date_container.find('.wpsi-date-filter').val(range);
                 wpsiInitDeleteCapability();
+                wpsiInitDatePicker();
             }
         });
     }
@@ -140,5 +145,45 @@ jQuery(document).ready(function ($) {
             });
         });
     }
+
+
+    /**
+     * Export
+     */
+
+    $(document).on('click', '#wpsi-start-export', wpsiExportData);
+    if (wpsi.export_in_progress){
+        wpsiExportData();
+    }
+
+    function wpsiExportData(){
+        var downloadContainer = $('.wpsi-download-link');
+        var button = $('#wpsi-start-export');
+        var date_from = $('input[name=wpsi-export-from]').val();
+        var date_to = $('input[name=wpsi-export-to]').val();
+        button.prop('disabled', true);
+        $.ajax({
+            type: "GET",
+            url: wpsi.ajaxurl,
+            dataType: 'json',
+            data: ({
+                action: 'wpsi_start_export',
+                date_from: date_from,
+                date_to: date_to,
+                token: wpsi.token,
+            }),
+            success: function (response) {
+                if (response.percent < 100) {
+                    downloadContainer.html(response.percent+'%');
+                    wpsiExportData();
+                } else {
+                    var link = '<div><a href="'+response.path+'">'+wpsi.strings['download']+'</a></div>';
+                    downloadContainer.html(link);
+                    button.prop('disabled', false);
+                }
+            }
+        });
+    }
+
 });
 
