@@ -109,8 +109,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'can_hide' => true,
                     'controls' => '',
                 ),
-            5 => array(
-                    'title' => $this->get_other_plugins_title(),
+                5 => array(
+                    'title' => __("Our Plugins", "wp-search-insights").'<div class="rsp-logo"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></div>',
                     'content' => '',
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
@@ -118,12 +118,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'controls' => '',
                 ),
             );
-        }
-
-        public function get_other_plugins_title() {
-            $logo = trailingslashit(wpsi_url) . "assets/images/really-simple-plugins.png";
-            $title = "Our Plugins <div class='rsp-logo'><img src='$logo'/></div>";
-            return $title;
         }
 
         public function inline_styles()
@@ -180,6 +174,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
+	            //datapicker
+	            wp_enqueue_style( 'jquery-ui-datepicker-style' , trailingslashit(wpsi_url) . 'assets/css/datepicker.css', "",
+		            wp_search_insights_version);
+	            wp_enqueue_script( 'jquery-ui-datepicker' );
+
                 wp_register_style('search-insights',
                     trailingslashit(wpsi_url) . "assets/css/style.min.css", "",
                     wp_search_insights_version);
@@ -192,6 +191,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 wp_localize_script('search-insights', 'wpsi',
                     array(
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		                'strings' => array(
+		                        'download' => __("Download", 'wp-search-insights')
+                        ),
+		                'export_in_progress' => get_transient('wpsi_export_in_progress'),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
 		                'localize'   => array(
 		                	    'previous', __('Previous', 'wp-search-insights'),
@@ -225,6 +228,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     trailingslashit(wpsi_url)
                     . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wp_search_insights_version);
                 wp_enqueue_script('datatables-pagination');
+
+
+
+
+
+
             }
         }
 
@@ -813,6 +822,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                    <?php foreach ($this->tabs as $key => $tab) {
 			                    if (isset($tab['capability']) && !current_user_can($tab['capability'])) continue;
 			                    $current = $key=='dashboard' ? 'current' : '';
+
 			                    ?>
                                 <div id="<?=$key?>" class="tab-content <?=$current?>">
 			                    <?php do_action("wpsi_tab_content_$key");?>
@@ -834,7 +844,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	            ?> <div id="clear-searches-btn-border"></div> <?php
             }
             ?>
-            <input class="button wpsi-save-button" name="Submit"
+            <input class="button-secondary" name="Submit"
                    type="submit"
                    value="<?php echo __("Save",
                        "wp-search-insights"); ?>"/>
@@ -991,6 +1001,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     ''
                 ), $tmpl);
             }
+	        $home_url = home_url();
             foreach ($popular_searches as $search) {
                 if ($search->frequency == $search->previous_frequency) {
                     $icon = 'dashicons-minus';
@@ -1003,7 +1014,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 $searches = sprintf(_n('%s search', '%s searches', $search->frequency, 'wpsi-search-insights'), number_format_i18n($search->frequency));
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
                     $icon,
-                    $this->get_term_link($search->term),
+                    $this->get_term_link($search->term, $home_url),
                     $searches,
                     $time
                 ), $tmpl);
@@ -1033,6 +1044,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     ''
                 ), $tmpl);
             }
+	        $home_url = home_url();
             foreach ($top_searches as $search) {
                 if ($search->frequency == $search->previous_frequency) {
                     $icon = 'dashicons-minus';
@@ -1046,7 +1058,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 $searches = sprintf(_n('%s search', '%s searches', $search->frequency, 'wpsi-search-insights'), number_format_i18n($search->frequency));
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
                     $icon,
-                    $this->get_term_link($search->term),
+                    $this->get_term_link($search->term, $home_url),
                     $searches,
                     $time
                 ), $tmpl);
@@ -1114,9 +1126,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	    }
 
         /**
-         * @param bool $dashboard_widget
-         *
          * Generate the recent searches table in dashboard
+         * @param bool $dashboard_widget
+         * @param string $range
          *
          * @return string
          * @since 1.0
@@ -1148,11 +1160,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'result_count' => true,
                 );
                 $recent_searches = WPSI::$search->get_searches_single($args);
+                $home_url = home_url();
                 foreach ($recent_searches as $search) {
                     ?>
                     <tr>
                         <td data-label="Term" class="wpsi-term"
-                            data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term ) ?></td>
+                            data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term , $home_url) ?></td>
                         <td><?php echo $search->result_count ?></td>
                         <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
                         <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
@@ -1173,13 +1186,15 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         /**
          * Create a link which isn't included in the search results
          *
-         * @param $term
+         * @param string $term
+         * @param string $home_url
          *
          * @return string
          */
 
         public function get_term_link($term, $home_url = false)
         {
+
 
         	if (!$home_url) $home_url = home_url();
             $search_url = $home_url. "?s=" . $term . "&searchinsights";
@@ -1188,7 +1203,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	        if (strlen($term)>28){
 		        $term = substr($term, 0, 25).'...';
 	        }
-
             return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
         }
 
@@ -1501,9 +1515,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 </thead>
                 <tbody>
                 <?php
+                $home_url = home_url();
 
                 foreach ($popular_searches as $search) {
-                    echo "<tr>" . '<td class="wpsi-term" data-label="Term" data-term_id="' . $search->id . '">' . $this->get_term_link($search->term)
+                    echo "<tr>" . '<td class="wpsi-term" data-label="Term" data-term_id="' . $search->id . '">' . $this->get_term_link($search->term, $home_url)
                         . "</td>" . "<td data-label='Count'>" . $search->frequency
                         . "</td>" . "</tr>";
                 }

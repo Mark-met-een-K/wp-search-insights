@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
     "use strict";
+
+
     var deleteBtn = $('#wpsi-delete-selected');
 
     /**
@@ -17,6 +19,7 @@ jQuery(document).ready(function ($) {
             "pageLength": 6,
             conditionalPaging: true,
             buttons: [
+                //{extend: 'csv', text: 'Download CSV'}
             ],
             "language": {
                 "paginate": {
@@ -25,7 +28,7 @@ jQuery(document).ready(function ($) {
                 },
                 searchPlaceholder: "Search",
                 "search": "",
-                "emptyTable": wpsi.localize['no-searches']
+                "emptyTable": "No searches recorded in selected period!"
             },
             "order": [[2, "desc"]],
         });
@@ -79,7 +82,13 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    function wpsiInitDatePicker(){
+        $('.wpsi-datepicker').each(function(){
+            $(this).datepicker(
 
+            );
+        });
+    }
 
     /**
      * select and delete functions
@@ -146,7 +155,6 @@ jQuery(document).ready(function ($) {
         });
     }
 
-
     /**
      * Export
      */
@@ -184,6 +192,5 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-
 });
 

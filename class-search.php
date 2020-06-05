@@ -514,6 +514,10 @@ if ( ! class_exists( 'Search' ) ) {
 				'compare' => ">",
 				'range' => false,
 				'result_count' => false,
+				'offset' => false,
+				'count' => false,
+				'date_from' => false,
+				'date_to' => false,
 			);
 			$args = wp_parse_args( $args, $defaults);
 
@@ -544,6 +548,9 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['number']!=-1){
 				$count = intval($args['number']);
 				$limit = "LIMIT $count";
+				if ($args['offset']){
+					$limit .= ' OFFSET '.intval($args['offset']);
+				}
 			}
 			$order = $args['order']=='ASC' ? 'ASC' : 'DESC';
 			$orderby = sanitize_title($args['orderby']);
@@ -557,8 +564,19 @@ if ( ! class_exists( 'Search' ) ) {
 				$time = intval($args['time']);
 				$where .=" AND time $compare $time ";
 			}
-			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
 
+			if ($args['date_from']){
+				$from = intval($args['date_from']);
+				$where .=" AND time > $from ";
+			}
+
+			if ($args['date_to']){
+				$to = intval($args['date_to']);
+				$where .=" AND time < $to ";
+			}
+
+			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
+error_log($search_sql);
 			//not implemented yet
 			if ($trend){
 				switch ($trendperiod) {
@@ -586,7 +604,15 @@ if ( ! class_exists( 'Search' ) ) {
 			if ($args['result_count']){
 				$search_sql = "select main.*, archive.result_count, archive.frequency from ($search_sql) as main left join {$wpdb->prefix}searchinsights_archive as archive  on main.term = archive.term ORDER BY main.$orderby $order";
 			}
-			$searches =$wpdb->get_results( $search_sql );
+
+
+			if ($args['count']) {
+				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
+				$searches =$wpdb->get_var( $search_sql );
+			} else {
+				$searches =$wpdb->get_results( $search_sql );
+
+			}
 
 			return $searches;
 		}
