@@ -70,9 +70,6 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 container.html(response.html);
                 wpsiInitSingleDataTable(container);
-                if (type === 'results') {
-                    console.log(container.html());
-                }
                 var date_container = container.closest('.item-container').find(".wpsi-date-container");
                 date_container.html(wpsi.dateFilter);
                 date_container.find('.wpsi-date-filter').val(range);
