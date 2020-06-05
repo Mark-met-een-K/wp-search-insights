@@ -793,7 +793,7 @@ widget
    */
 
   .upsell-grid-container {
-    display: flex;
+    display: flex !important; //we need important here, because the grid switch overrides it on element level
     justify-content: space-between;
 
     .item-content {
@@ -831,7 +831,7 @@ widget
     width: 95%;
 
     .wpsi-upsell {
-      display: flex;
+      display: flex !important; //we need important here, because the grid switch overrides it on element level
       flex-direction: row;
       padding: 6px;
       align-items: center;

@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    $(".wpsi-date-container").html(wpsi.dateFilter);
+    //$(".wpsi-date-container").html(wpsi.dateFilter);
 
     $(document).on('change', '.wpsi-date-filter', function(e){
         e.stopPropagation();
@@ -70,11 +70,14 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 container.html(response.html);
                 wpsiInitSingleDataTable(container);
-                container.find(".wpsi-date-container").html(wpsi.dateFilter);
-                container.find('.wpsi-date-filter').val(range);
+                if (type === 'results') {
+                    console.log(container.html());
+                }
+                var date_container = container.closest('.item-container').find(".wpsi-date-container");
+                date_container.html(wpsi.dateFilter);
+                date_container.find('.wpsi-date-filter').val(range);
                 wpsiInitDeleteCapability();
                 wpsiInitDatePicker();
-
             }
         });
     }
@@ -166,7 +169,6 @@ jQuery(document).ready(function ($) {
         var button = $('#wpsi-start-export');
         var date_from = $('input[name=wpsi-export-from]').val();
         var date_to = $('input[name=wpsi-export-to]').val();
-        console.log(date_from);
         button.prop('disabled', true);
         $.ajax({
             type: "GET",

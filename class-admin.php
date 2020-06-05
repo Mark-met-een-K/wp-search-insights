@@ -1194,8 +1194,15 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_term_link($term, $home_url = false)
         {
+
+
         	if (!$home_url) $home_url = home_url();
             $search_url = $home_url. "?s=" . $term . "&searchinsights";
+
+	        //make sure the link is not too long
+	        if (strlen($term)>28){
+		        $term = substr($term, 0, 25).'...';
+	        }
             return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
         }
 
