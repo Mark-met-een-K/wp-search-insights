@@ -1178,7 +1178,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * @return string
          */
 
-        public function get_term_link($term)
+        public function get_term_link($term, $home_url = false)
         {
 
         	if (!$home_url) $home_url = home_url();
