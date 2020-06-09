@@ -135,18 +135,21 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 			$progress = get_option('wpsi_export_progress') + 1;
 			update_option('wpsi_export_progress', $progress);
-			$offset = $progress * $this->rows;
+			$offset = ($progress -1) * $this->rows;
 
-			//if $progress * $this->rows > $count, stop.
+			//if ($progress * $this->rows > $count), stop.
 			$count = get_option('wpsi_export_row_count');
-			if ($count ==0 ){
+
+			if ($count == 0 ){
 				$percent = 100;
 			} else {
+			    error_log("rows ".$this->rows);
 				$percent = 100 * ( ($progress * $this->rows) / $count );
+				error_log("calculated percent  ".$percent);
+
 				if ($percent >= 100) $percent = 100;
 			}
-
-			if ($percent == 100) {
+			if ($percent >= 100) {
 				update_option('wpsi_export_progress', 0);
 				delete_transient('wpsi_export_in_progress');
 			}
@@ -160,11 +163,29 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			//convert to array
 			$json  = json_encode($searches);
 			$searches = json_decode($json, true);
+
 			$this->create_csv_file($this->filename, $searches);
 			return $percent;
 		}
 
+		/**
+         * Get headers from an array
+		 * @param array $array
+		 *
+		 * @return array|bool
+		 */
 
+		private function parse_headers_from_array($array){
+		    if (!isset($array[0])) return false;
+		    $array = $array[0];
+            return array_keys($array);
+        }
+
+		/**
+         * create csv file from array
+		 * @param $filename
+		 * @param $data
+		 */
 		private function create_csv_file($filename, $data){
 			$delimiter=";";
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -183,6 +204,9 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 			//'a' creates file if not existing, otherwise appends.
 			$csv_handle = fopen ($file,'a');
+
+			$headers = $this->parse_headers_from_array($data);
+			fputcsv($csv_handle, $headers, $delimiter);
 			foreach ($data as $line) {
 				fputcsv($csv_handle, $line, $delimiter);
 			}
