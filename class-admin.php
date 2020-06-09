@@ -408,7 +408,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if (!current_user_can('manage_options')) {
                 return;
             }
-
+	        add_thickbox();
             // Add a settings section to the 'Settings' tab
             add_settings_section(
                 'wpsi-settings-tab',
@@ -652,7 +652,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function add_thickbox_button($args)
         {
-            add_thickbox();
+
 
             $default_args = array(
                 "title" => '',
@@ -682,7 +682,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	            <p><?php echo $args['description'] ?></p>
 	            <script>
                     jQuery(document).ready(function ($) {
-                        //$('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
+                        $('#wpsi_cancel_<?php echo esc_attr($args['action'])?>').click(tb_remove);
                     });
 	            </script>
 	            <a class="button button-primary"
