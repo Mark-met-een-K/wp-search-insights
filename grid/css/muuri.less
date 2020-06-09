@@ -1,5 +1,7 @@
 @gridblock_height: 500px;
 @grid_header_height: 22px;
+@grid_header_padding_top: 20px;
+@grid_header_padding_bottom: 10px;
 @gridblock_width: 800px;
 @gridblock_width_small:400px;
 @grid_margin:10px;
@@ -38,7 +40,7 @@
         position: absolute;
         height: @gridblock_height;
         .item-content {
-            height:  @gridblock_height - @grid_header_height - @grid_margin;
+            height:  @gridblock_height - @grid_header_height - @grid_header_padding_top - @grid_header_padding_bottom - @grid_margin;
         }
 
         &.half-height {
@@ -47,7 +49,7 @@
                 height: (@gridblock_height / 2)- 2*@grid_margin;
             }
             .item-content {
-                height: ( 0.5 * @gridblock_height ) - 2 * @grid_header_height - 2*@grid_margin;
+                height: ( 0.5 * @gridblock_height ) - 2 * @grid_header_height - 2*@grid_margin - @grid_header_padding_top - @grid_header_padding_bottom;
 
             }
         }
@@ -66,7 +68,7 @@
         .wpsi-item-header {
             height: @grid_header_height;
             border-bottom: 1px solid #dedede;
-            padding: 20px 25px 10px;
+            padding: @grid_header_padding_top 25px @grid_header_padding_bottom;
             font-size: 1.2em;
             font-weight: bold;
             .wpsi-drag-handle{

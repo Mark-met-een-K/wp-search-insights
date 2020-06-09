@@ -27,7 +27,7 @@
   width: 400px;
 }
 .wpsi-grid .wpsi-item .item-content {
-  height: 468px;
+  height: 438px;
 }
 .wpsi-grid .wpsi-item.half-height {
   height: 250px;
@@ -36,7 +36,7 @@
   height: 230px;
 }
 .wpsi-grid .wpsi-item.half-height .item-content {
-  height: 186px;
+  height: 156px;
 }
 .wpsi-grid .wpsi-item.muuri-item-hidden {
   z-index: 0;
