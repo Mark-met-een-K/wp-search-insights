@@ -162,7 +162,11 @@ if ( ! class_exists( 'Search' ) ) {
                 $result_count = $search_query->found_posts;
                 $this->process_search_term($search_term, $result_count);
             }
-            exit;
+			$data['success'] = true;
+			$response               = json_encode( $data );
+			header( "Content-Type: application/json" );
+			echo $response;
+			exit;
         }
 
 
@@ -293,7 +297,7 @@ if ( ! class_exists( 'Search' ) ) {
 					$this->update_term_count( $search_term, $result_count);
 				}
 			} else {
-				// Doesn't exists, write a new entry to archive
+				// Doesn't exist, write a new entry to archive
 				$this->write_search_term_to_archive_table( $search_term, $result_count );
 			}
 		}
@@ -576,7 +580,7 @@ if ( ! class_exists( 'Search' ) ) {
 			}
 
 			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
-error_log($search_sql);
+
 			//not implemented yet
 			if ($trend){
 				switch ($trendperiod) {

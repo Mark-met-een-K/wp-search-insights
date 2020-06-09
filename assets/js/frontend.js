@@ -4,14 +4,27 @@ jQuery(document).ready(function ($) {
     var input_type_search = $('input[type="search"]');
     //Elementor and some themes use input name=s
     var input_name_search = $('input[name="s"]');
-    var term = "";
-    listen_for_search();
+    var typingTimer;
+    var doneTypingInterval = 800;
+    var activeSearchObject;
+    var ajaxCallActive = false;
 
-    function listen_for_search() {
+    //on keyup, start the countdown
+    $(input_type_search, input_name_search).on('keyup', function (e) {
+        activeSearchObject = $(this);
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(afterFinishedTyping, doneTypingInterval);
+    });
 
-        // Post the search term after x ms
-        $(input_type_search, input_name_search).keyup(delay(function (e) {
-            term = this.value;
+    //on keydown, clear the countdown
+    $(input_type_search, input_name_search).on('keydown', function (e) {
+        clearTimeout(typingTimer);
+    });
+
+    function afterFinishedTyping(e){
+        var term = activeSearchObject.val();
+        if (!ajaxCallActive) {
+            ajaxCallActive = true;
             $.ajax({
                 type: "POST",
                 url: search_insights_ajax.ajaxurl,
@@ -20,19 +33,11 @@ jQuery(document).ready(function ($) {
                     action: 'wpsi_process_search',
                     searchterm: term,
                     token: search_insights_ajax.token,
-                })
+                }),
+                success: function (response) {
+                    ajaxCallActive = false;
+                }
             });
-        }, 500));
-    }
-
-    function delay(callback, ms) {
-        var timer = 0;
-        return function() {
-            var context = this, args = arguments;
-            clearTimeout(timer);
-            timer = setTimeout(function () {
-                callback.apply(context, args);
-            }, ms || 0);
-        };
+        }
     }
 });
