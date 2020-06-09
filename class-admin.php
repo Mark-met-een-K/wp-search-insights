@@ -8,7 +8,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public $grid_items;
         public $capability = 'activate_plugins';
         public $tabs;
-        public $rows_batch = 500;
+        public $rows_batch = 300;
 
 		static function this() {
 			return self::$_this;
@@ -1374,8 +1374,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             <?php
                             $args = array(
                                 'range'=>$range,
+                                'count' => true,
                             );
-                            echo count(WPSI::$search->get_searches_single($args));
+                            echo WPSI::$search->get_searches_single($args);
                             ?>
                         <?php } else { ?>
                             <span class="percentage-text">
@@ -1447,7 +1448,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         <div class="wpsi-result-count">
                         <?php
                             if (!empty($top_search)) {
-                            echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights");
+                                echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights");
                              } else {
                                  echo "0 ".__("searches", "wp-search-insights");
                              }
