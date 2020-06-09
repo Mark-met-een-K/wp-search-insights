@@ -11,7 +11,7 @@ Stable tag: 1.3.0
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
 == Description ==
-Records all searches made on your site. See from which post, page, or product a search originated in a simple and clean dashboard. The dashboard can be found in the Tools -> Search Insights menu.
+Records all searches made on your website. See from which post, page, or product a search originated in a simple and clean dashboard. The dashboard can be found in the Tools -> Search Insights menu.
 
 Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-search-insights) as well!
 
@@ -20,6 +20,7 @@ Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-sea
 * Sort recorded searches alphabetically, on data, results, and popularity
 * Records originating pages and subsequent landing page after a search query
 * Export records in CSV and for Excel
+* Privacy-friendly search analytics
 
 = Love WP Search Insights? =
 Hopefully, this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
