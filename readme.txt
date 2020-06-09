@@ -1,14 +1,14 @@
 === WP Search Insights ===
 Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, search term, recording searches, search queries, searches, search form, search analytics, search filter
+Tags: search, search term, recording searches, analytics, searches, search form, search filter
 Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
 Requires PHP: 5.6
 Stable tag: 1.3.0
 
-What are your visitors searching for? Keep track of on-site search activity with WP Search Insights. See terms, hits, results, and more!
+Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
 == Description ==
 Records all searches made on your site. See from which post, page, or product a search originated in a simple and clean dashboard. The dashboard can be found in the Tools -> Search Insights menu.
