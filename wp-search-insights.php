@@ -111,6 +111,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 
 		private function includes() {
 			if ( is_admin() ) {
+				require_once( wpsi_path . 'upgrade.php' );
 				require_once( wpsi_path . 'class-admin.php' );
 				require_once( wpsi_path . 'class-export.php' );
 				require_once( wpsi_path . 'dashboard_tabs.php' );

@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
      */
 
     $('.item-content').each(function(){
-        wpsiLoadData($(this));
+        wpsiLoadData($(this),1, 0);
     });
 
     function wpsiInitSingleDataTable(container) {
@@ -42,13 +42,12 @@ jQuery(document).ready(function ($) {
         var type = container.closest('.wpsi-item').data('table_type');
         var range = container.find('.wpsi-date-filter').val();
         localStorage.setItem('wpsi_range_'+type, range);
-        wpsiLoadData(container.find('.item-content'));
+        wpsiLoadData(container.find('.item-content'), 1, 0);
     });
 
-    function wpsiLoadData(container){
+    function wpsiLoadData(container, page, received){
         var range;
         var type = container.closest('.wpsi-item').data('table_type');
-
         var defaultRange = container.closest('.wpsi-item').data('default_range');
         var storedRange = localStorage.getItem('wpsi_range_'+type);
         if (storedRange === null ){
@@ -56,7 +55,6 @@ jQuery(document).ready(function ($) {
         } else {
             range = storedRange;
         }
-
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
@@ -64,17 +62,44 @@ jQuery(document).ready(function ($) {
             data: ({
                 action: 'wpsi_get_datatable',
                 range:range,
+                page:page,
                 type:type,
                 token: wpsi.token
             }),
             success: function (response) {
-                container.html(response.html);
-                wpsiInitSingleDataTable(container);
-                var date_container = container.closest('.item-container').find(".wpsi-date-container");
-                date_container.html(wpsi.dateFilter);
-                date_container.find('.wpsi-date-filter').val(range);
-                wpsiInitDeleteCapability();
-                wpsiInitDatePicker();
+                //this only on first page of table
+                if (page===1){
+                    container.html(response.html);
+                    wpsiInitSingleDataTable(container);
+                    var date_container = container.closest('.item-container').find(".wpsi-date-container");
+                    date_container.html(wpsi.dateFilter);
+                    date_container.find('.wpsi-date-filter').val(range);
+                    wpsiInitDeleteCapability();
+                    wpsiInitDatePicker();
+                } else {
+                    var table = container.find('table').DataTable();
+                    var rowCount = response.html.length;
+                    for (var key in response.html) {
+                        if (response.html.hasOwnProperty(key)) {
+                            var row = $(response.html[key]);
+                            //only redraw on last row
+                            if (parseInt(key) >= (rowCount-1) ) {
+                                table.row.add(row).draw();
+                            } else {
+                                table.row.add(row);
+                            }
+                        }
+                    }
+                }
+
+                received += response.batch;
+                if (response.total_rows > received) {
+                    page++;
+                    wpsiLoadData(container, page , received);
+                } else {
+                    page = 1;
+                }
+
             }
         });
     }

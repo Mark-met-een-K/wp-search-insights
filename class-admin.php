@@ -8,7 +8,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public $grid_items;
         public $capability = 'activate_plugins';
         public $tabs;
-
+        public $rows_batch = 500;
 
 		static function this() {
 			return self::$_this;
@@ -1074,6 +1074,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	    public function ajax_get_datatable()
 	    {
 		    $error = false;
+		    $total = 0;
 		    $html  = __("No data found", "wp-search-insights");
 		    if (!current_user_can('manage_options')) {
 			    $error = true;
@@ -1091,6 +1092,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			    $error = true;
 		    }
 
+		    $page = isset($_GET['page']) ? intval($_GET['page']) : false;
+
 		    if (!$error && !wp_verify_nonce(sanitize_title($_GET['token']), 'search_insights_nonce')){
 			    $error = true;
 		    }
@@ -1098,9 +1101,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		    if (!$error){
 			    $range = sanitize_title($_GET['range']);
 			    $type = sanitize_title($_GET['type']);
+			    $total = $this->get_results_count($type, $range);
 			    switch ($type){
                     case 'all':
-	                    $html = $this->recent_table($range);
+	                    $html = $this->recent_table($range, $page);
 	                    break;
                     case 'popular':
 	                    $html = $this->generate_dashboard_widget(true, $range);
@@ -1117,6 +1121,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		    $data = array(
 			    'success' => !$error,
 			    'html' => $html,
+                'total_rows' => $total,
+                'batch' => $this->rows_batch,
 		    );
 
 		    $response = json_encode($data);
@@ -1125,21 +1131,71 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		    exit;
 	    }
 
+	    /**
+         * Get total results count for an ajax request
+         *
+	     * @param string $type
+	     * @param string $range
+         *
+         * @return int
+	     */
+
+	    public function get_results_count($type, $range){
+	        $count = 0;
+		    if ($type === 'all' ) {
+		        $count = get_transient("wpsi_results_count_$range");
+		        if (!$count){
+			        $args = array(
+				        'range' => $range,
+				        'count' => true,
+			        );
+			        $count = WPSI::$search->get_searches_single($args);
+                }
+		        set_transient("wpsi_results_count_$range", $count, 20 * MINUTE_IN_SECONDS);
+		    }
+
+		    return $count;
+        }
+
         /**
          * Generate the recent searches table in dashboard
-         * @param bool $dashboard_widget
          * @param string $range
+         * @param int $page
          *
-         * @return string
+         * @return string|array
          * @since 1.0
          */
 
-        public function recent_table($range = 'all')
+        public function recent_table($range = 'all', $page)
         {
-            ob_start();
+	        $home_url = home_url();
 
+	        // Start generating rows
+	        $args = array(
+                'offset' => $this->rows_batch * ($page-1),
+		        'number' =>$this->rows_batch,
+		        'range' => $range,
+		        'result_count' => true,
+	        );
+	        $recent_searches = WPSI::$search->get_searches_single($args);
+	        if ( $page > 1 ) {
+		        $output = array();
+		        foreach ($recent_searches as $search) {
+			        $output[] = '
+                    <tr>
+                        <td data-label="Term" class="wpsi-term"
+                            data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term , $home_url).'</td>
+                        <td>'.$search->result_count.'</td>
+                        <td data-label="When">'.$this->get_date( $search->time ).'</td>
+                        <td>'.$this->get_referrer_link($search) .'</td>
+                    </tr>';
+		        }
+		        return $output;
+            }
+
+            ob_start();
             ?>
-            <table id="wpsi-recent-table" class="wpsi-table">
+                <table id="wpsi-recent-table" class="wpsi-table">
 
                 <thead>
                 <tr class="wpsi-thead-th">
@@ -1150,17 +1206,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         <th scope='col' style="width: 15%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
                 </tr>
                 </thead>
-
                 <tbody>
                 <?php
-                // Start generating rows
-                $args = array(
-                    'number' => 1000,
-                    'range' => $range,
-                    'result_count' => true,
-                );
-                $recent_searches = WPSI::$search->get_searches_single($args);
-                $home_url = home_url();
+
                 foreach ($recent_searches as $search) {
                     ?>
                     <tr>
@@ -1168,19 +1216,22 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term , $home_url) ?></td>
                         <td><?php echo $search->result_count ?></td>
                         <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
-                        <td><?php echo $this->get_referrer_link($search->referrer) ?></td>
+                        <td><?php echo $this->get_referrer_link($search) ?></td>
                     </tr>
                     <?php
-
                 }
                 ?>
-                <?php
-                ?>
-                </tbody>
-            </table>
-            <?php
+
+
+            </tbody>
+                </table>
+
+	        <?php
             return  ob_get_clean();
         }
+
+
+
 
 
         /**
@@ -1213,19 +1264,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         * @return string
          */
 
-        public function get_referrer_link($referrer){
+        public function get_referrer_link($search){
             //legacy title search
-            $post_id = $this->get_post_by_title($referrer);
-            if ($post_id){
+            $post_id = $search->referrer_id;
+            if ( $post_id !== 0 ) {
                 $url = get_permalink($post_id);
                 $referrer = get_the_title($post_id);
-            } elseif ($referrer === 'home' || $referrer === '' || $referrer === '/') {
+            } elseif ($search->referrer === 'home' || $search->referrer === '' || $search->referrer === '/') {
                 $url = site_url();
                 $referrer = __('Home','wp-search-insights');
-            } elseif (strpos($referrer, site_url()) === FALSE) {
-                $url = site_url( $referrer );
+            } elseif (strpos($search->referrer, site_url()) === FALSE) {
+                $url = site_url( $search->referrer );
+                $referrer = $search->referrer;
             } else {
-                $url = $referrer;
+                $url = $search->referrer;
+	            $referrer = $search->referrer;
             }
 
             //make sure the link is not too long
@@ -1235,7 +1288,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';
         }
 
-        private function get_post_by_title($title){
+	    /**
+         * Get post id from a string
+	     * @param string $title
+	     *
+	     * @return string|null
+	     */
+
+        public function get_post_by_title($title){
 			global $wpdb;
 
 			$query = $wpdb->prepare(
@@ -1246,6 +1306,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			return $wpdb->get_var( $query );
 		}
 
+	    /**
+         * Get localized date
+	     * @param int $unix
+	     *
+	     * @return string
+	     */
 
         public function get_date($unix)
         {
@@ -1479,58 +1545,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         }
 
 
-        /**
-         *
-         * Generate the popular searches table in
-         *
-         * @return string
-         * @since 1.0
-         */
-
-        public function generate_popular_table()
-        {
-            ob_start();
-
-            $args = array(
-                'orderby' => 'frequency',
-                'order' => 'DESC',
-                'number' => 1000,
-            );
-            $popular_searches = WPSI::$search->get_searches($args);
-            ?>
-            <table id="wpsi-popular-table" class="wpsi-table"><span class="wpsi-tour-hook wpsi-tour-popular"></span>
-                <div class="wpsi-caption">
-                    <caption><?php _e('Popular searches', 'wp-search-insights'); ?></caption>
-                </div>
-
-                <thead>
-                <tr class="wpsi-thead-th">
-                    <?php
-                    echo "<th scope='col' style='width: 20%;'>" . __("Term", "wp-search-insights")
-                        . "</th>";
-                    echo "<th scope='col' style='width: 10%;'>" . __("Count", "wp-search-insights")
-                        . "</th>";
-                    ?>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                $home_url = home_url();
-
-                foreach ($popular_searches as $search) {
-                    echo "<tr>" . '<td class="wpsi-term" data-label="Term" data-term_id="' . $search->id . '">' . $this->get_term_link($search->term, $home_url)
-                        . "</td>" . "<td data-label='Count'>" . $search->frequency
-                        . "</td>" . "</tr>";
-                }
-
-                ?>
-                </tbody>
-            </table>
-            <?php
-
-            $contents = ob_get_clean();
-            return $contents;
-        }
 
         public function generate_other_plugins()
         {
