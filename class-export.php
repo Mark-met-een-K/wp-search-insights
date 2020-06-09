@@ -186,6 +186,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		 * @param $filename
 		 * @param $data
 		 */
+
 		private function create_csv_file($filename, $data){
 			$delimiter=";";
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
