@@ -398,6 +398,7 @@ widget
 #wpsi-dashboard .item-content table td {
   padding: 0.625em;
   text-align: left;
+  font-size: 12px;
 }
 #wpsi-dashboard .item-content table th {
   letter-spacing: 0.1em;
