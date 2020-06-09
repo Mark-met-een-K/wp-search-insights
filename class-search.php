@@ -168,8 +168,9 @@ if ( ! class_exists( 'Search' ) ) {
 
 
         /**
-         * @param $search_term
-         * @param $result_count
+         * @param string $search_term
+         * @param int $result_count
+         * @param string $caller
          *
          * Check if conditions are met, if so write the term to DB
          *
@@ -177,7 +178,7 @@ if ( ! class_exists( 'Search' ) ) {
          *
          */
 
-        public function process_search_term( $search_term , $result_count ) {
+        public function process_search_term( $search_term , $result_count , $caller = '') {
         	//Exclude empty search queries
 	        if (strlen( $search_term ) === 0) {
 		        return;
