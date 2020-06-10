@@ -19,7 +19,7 @@ class wpsi_tour {
 		self::$_this = $this;
 
 		$this->url = wpsi_url.'/shepherd';
-		$this->version = wp_search_insights_version;
+		$this->version = wpsi_version;
 		add_action( 'init', array( $this, 'listen_for_cancel_tour') );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}

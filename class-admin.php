@@ -178,18 +178,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
 
 	            //datapicker
-	            wp_enqueue_style( 'jquery-ui-datepicker-style' , trailingslashit(wpsi_url) . 'assets/css/datepicker.css', "",
-		            wp_search_insights_version);
-	            wp_enqueue_script( 'jquery-ui-datepicker' );
+	            wp_enqueue_style( 'wpsi-datepicker' , trailingslashit(wpsi_url) . 'assets/pikaday/pikaday.css', "",
+		            wpsi_version);
+
+	            wp_register_script('wpsi-datepicker',
+		            trailingslashit(wpsi_url)
+		            . 'assets/js/scripts.js', array("jquery"), wpsi_version);
 
                 wp_register_style('search-insights',
                     trailingslashit(wpsi_url) . "assets/css/style.min.css", "",
-                    wp_search_insights_version);
+                    wpsi_version);
                 wp_enqueue_style('search-insights');
 
                 wp_register_script('search-insights',
                     trailingslashit(wpsi_url)
-                    . 'assets/js/scripts.js', array("jquery"), wp_search_insights_version);
+                    . 'assets/js/scripts.js', array("jquery"), wpsi_version);
                 wp_enqueue_script('search-insights');
                 wp_localize_script('search-insights', 'wpsi',
                     array(
@@ -215,7 +218,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 //Datatables javascript for interactive tables
                 wp_register_script('datatables',
                     trailingslashit(wpsi_url)
-                    . 'assets/js/datatables.min.js', array("jquery"), wp_search_insights_version);
+                    . 'assets/js/datatables.min.js', array("jquery"), wpsi_version);
                 wp_enqueue_script('datatables');
 
                 // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
@@ -223,13 +226,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 wp_register_style('fontello',
                     trailingslashit(wpsi_url) . 'assets/font-icons/css/fontello.css', "",
-                    wp_search_insights_version);
+                    wpsi_version);
                 wp_enqueue_style('fontello');
 
                 //Datatables plugin to hide pagination when it isn't needed
                 wp_register_script('datatables-pagination',
                     trailingslashit(wpsi_url)
-                    . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wp_search_insights_version);
+                    . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wpsi_version);
                 wp_enqueue_script('datatables-pagination');
 
 

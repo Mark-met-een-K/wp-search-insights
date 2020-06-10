@@ -107,7 +107,7 @@ if ( ! class_exists( 'Search' ) ) {
 			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
             wp_register_script( 'search-insights-frontend-js',
                 trailingslashit( wpsi_url )
-                . "assets/js/frontend$minified.js", array('jquery'), wp_search_insights_version , true);
+                . "assets/js/frontend$minified.js", array('jquery'), wpsi_version , true);
             wp_enqueue_script( 'search-insights-frontend-js' );
             wp_localize_script( 'search-insights-frontend-js', 'search_insights_ajax',
                 array(
@@ -734,7 +734,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 		public function update_db() {
 			if ( get_option( 'search_insights_db_version' )
-			     != wp_search_insights_version
+			     != wpsi_version
 			) {
 				global $wpdb;
 				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -762,7 +762,7 @@ if ( ! class_exists( 'Search' ) ) {
                       ) $charset_collate;";
 				dbDelta( $sql );
 				update_option( 'search_insights_db_version',
-					wp_search_insights_version );
+					wpsi_version );
 			}
             update_option('wpsi_database_created', true);
         }

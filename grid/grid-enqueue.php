@@ -11,17 +11,17 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
 				wp_register_style('wpsi-muuri',
 					trailingslashit(wpsi_url) . "grid/css/muuri.css", "",
-					wp_search_insights_version);
+					wpsi_version);
 				wp_enqueue_style('wpsi-muuri');
 
 				wp_register_script('wpsi-muuri',
 					trailingslashit(wpsi_url)
-					. 'grid/js/muuri.min.js', array("jquery"), wp_search_insights_version);
+					. 'grid/js/muuri.min.js', array("jquery"), wpsi_version);
 				wp_enqueue_script('wpsi-muuri');
 
 			wp_register_script('wpsi-grid',
 				trailingslashit(wpsi_url)
-				. 'grid/js/grid.js', array("jquery", "wpsi-muuri"), wp_search_insights_version);
+				. 'grid/js/grid.js', array("jquery", "wpsi-muuri"), wpsi_version);
 			wp_enqueue_script('wpsi-grid');
 
 			}
