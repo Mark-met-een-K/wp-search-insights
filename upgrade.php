@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
  * Upgrade all entries to use post_id where possible
  */
 
-add_action('init', 'wpsi_upgrade_database');
+add_action('plugins_loaded', 'wpsi_upgrade_database', 100);
 function wpsi_upgrade_database(){
 	if (!get_option('wpsi_database_postids_upgrade_completed')){
 		global $wpdb;

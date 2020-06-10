@@ -8,7 +8,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public $grid_items;
         public $capability = 'activate_plugins';
         public $tabs;
-        public $rows_batch = 300;
+        public $rows_batch = 200;
 
 		static function this() {
 			return self::$_this;
@@ -73,11 +73,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			            'capability' => 'manage_options',
 		            ),
             ));
+
             $this->grid_items = array(
                 1 => array(
                     'title' => __("All Searches", "wp-search-insights"),
                     'content' => '<div class="wpsi-skeleton"></div>',
-                    'class' => 'table-overview',
+                    'class' => 'table-overview wpsi-load-ajax',
                     'type' => 'all',
                     'controls' => '<div class="wpsi-date-container"></div>',
                     'can_hide' => true,
@@ -86,24 +87,26 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 2 => array(
                     'title' => __("Results", "wp-search-insights"),
                     'content' => '<div class="wpsi-skeleton"></div>',
-                    'class' => 'small',
+                    'class' => 'small wpsi-load-ajax',
                     'type' => 'results',
                     'controls' => '<div class="wpsi-date-container"></div>',
                     'can_hide' => true,
+                    'ajax_load' => true,
 
                 ),
                 3 => array(
                     'title' => __("Most Popular Searches", "wp-search-insights"),
                     'content' => '<div class="wpsi-skeleton"></div>',
-                    'class' => 'small',
+                    'class' => 'small wpsi-load-ajax',
                     'type' => 'popular',
                     'controls' => '<div class="wpsi-date-container"></div>',
                     'can_hide' => true,
+                    'ajax_load' => true,
 
                 ),
                 4 => array(
                     'title' => __("Tips & Tricks", "wp-search-insights"),
-                    'content' => '',
+                    'content' => $this->generate_tips_tricks(),
                     'type' => 'tasks',
                     'class' => 'half-height wpsi-tips-tricks',
                     'can_hide' => true,
@@ -111,7 +114,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ),
                 5 => array(
                     'title' => __("Our Plugins", "wp-search-insights").'<div class="rsp-logo"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></div>',
-                    'content' => '',
+                    'content' => $this->generate_other_plugins(),
                     'class' => 'half-height no-border no-background upsell-grid-container ',
                     'type' => 'plugins',
                     'can_hide' => false,
@@ -1169,7 +1172,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function recent_table($range = 'all', $page)
         {
 	        $home_url = home_url();
-
 	        // Start generating rows
 	        $args = array(
                 'offset' => $this->rows_batch * ($page-1),
@@ -1191,43 +1193,32 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     </tr>';
 		        }
 		        return $output;
-            }
+            } else {
 
-            ob_start();
-            ?>
-                <table id="wpsi-recent-table" class="wpsi-table">
-
-                <thead>
-                <tr class="wpsi-thead-th">
-                    <th scope='col' style="width: 15%;"><?php _e("Search term", "wp-search-insights"); ?> </th>
-                    <th scope='col' style="width: 5%;"><?php _e("Results", "wp-search-insights"); ?> </th>
-                    <th scope="col" style="width: 12%;" class="dashboard-tooltip-hits">
-                        <?php _e("When", "wp-search-insights"); ?> </th>
-                        <th scope='col' style="width: 15%;" class="dashboard-tooltip-from"><?php _e("From", "wp-search-insights") ?> </th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-
-                foreach ($recent_searches as $search) {
-                    ?>
-                    <tr>
-                        <td data-label="Term" class="wpsi-term"
-                            data-term_id="<?php echo $search->id ?>"><?php echo $this->get_term_link( $search->term , $home_url) ?></td>
-                        <td><?php echo $search->result_count ?></td>
-                        <td data-label='When'><?php echo $this->get_date( $search->time ) ?></td>
-                        <td><?php echo $this->get_referrer_link($search) ?></td>
+                $output = '<table id="wpsi-recent-table" class="wpsi-table"><thead>
+                    <tr class="wpsi-thead-th">
+                        <th scope="col" style="width: 15%;">'.__( "Search term", "wp-search-insights" ).'</th>
+                        <th scope="col" style="width: 5%;">'.__( "Results", "wp-search-insights" ).'</th>
+                        <th scope="col" style="width: 12%;" class="dashboard-tooltip-hits">'.__( "When", "wp-search-insights" ).'</th>
+                        <th scope="col" style="width: 15%;" class="dashboard-tooltip-from">'.__( "From", "wp-search-insights" ).'</th>
                     </tr>
-                    <?php
-                }
-                ?>
+                    </thead>
+                    <tbody>';
 
+			        foreach ( $recent_searches as $search ) {
+				        $output .=
+                        '<tr>
+                            <td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term, $home_url ).'</td>
+                            <td>'.$search->result_count.'</td>
+                            <td data-label="When">'.$this->get_date( $search->time ).'</td>
+                            <td>'.$this->get_referrer_link( $search ).'</td>
+                        </tr>';
+			        }
+		            $output .= '</tbody>
+                </table>';
 
-            </tbody>
-                </table>
-
-	        <?php
-            return  ob_get_clean();
+		        return $output;
+	        }
         }
 
 
@@ -1245,21 +1236,20 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_term_link($term, $home_url = false)
         {
-
-
         	if (!$home_url) $home_url = home_url();
-            $search_url = $home_url. "?s=" . $term . "&searchinsights";
+
+            $search_url = $home_url. "?s=" . esc_url_raw($term) . "&searchinsights";
 
 	        //make sure the link is not too long
 	        if (strlen($term)>28){
-		        $term = substr($term, 0, 25).'...';
+		        $term = mb_strcut($term, 0, 25).'...';
 	        }
             return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
         }
 
         /**
         * Get referrer link
-        * @param $referrer
+        * @param $search
         *
         * @return string
          */
@@ -1267,25 +1257,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function get_referrer_link($search){
             //legacy title search
             $post_id = $search->referrer_id;
-            if ( $post_id !== 0 ) {
-                $url = get_permalink($post_id);
+            if ( $post_id != 0 ) {
+	            $url = get_permalink($post_id);
                 $referrer = get_the_title($post_id);
             } elseif ($search->referrer === 'home' || $search->referrer === '' || $search->referrer === '/') {
-                $url = site_url();
+	            $url = site_url();
                 $referrer = __('Home','wp-search-insights');
             } elseif (strpos($search->referrer, site_url()) === FALSE) {
-                $url = site_url( $search->referrer );
+	            $url = site_url( $search->referrer );
                 $referrer = $search->referrer;
             } else {
-                $url = $search->referrer;
+	            $url = $search->referrer;
 	            $referrer = $search->referrer;
             }
-
             //make sure the link is not too long
             if (strlen($referrer)>25){
-                $referrer = substr($referrer, 0, 22).'...';
+                $referrer = mb_strcut($referrer, 0, 22).'...';
             }
-            return '<a target="_blank" href="' . esc_url_raw($url) . '" target="_blank">' . esc_html($referrer) . '</a>';
+            return '<a target="_blank" href="' . esc_url_raw($url) . ' target="_blank">' . esc_html($referrer) . '</a>';
         }
 
 	    /**

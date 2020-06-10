@@ -9,7 +9,9 @@ jQuery(document).ready(function ($) {
      */
 
     $('.item-content').each(function(){
-        wpsiLoadData($(this),1, 0);
+        if ($(this).closest('.wpsi-item').hasClass('wpsi-load-ajax')) {
+            wpsiLoadData($(this), 1, 0);
+        }
     });
 
     function wpsiInitSingleDataTable(container) {

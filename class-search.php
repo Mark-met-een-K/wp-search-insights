@@ -641,8 +641,8 @@ if ( ! class_exists( 'Search' ) ) {
 
 			$update_args = array(
 				'term'          => sanitize_text_field($search_term),
-				'referrer'      => $referrer['url'],
-				'referrer_id'   => $referrer['post_id'],
+				'referrer'      => esc_url_raw($referrer['url']),
+				'referrer_id'   => intval($referrer['post_id']),
 				'time'          => $this->current_time(),
 			);
 
