@@ -36,8 +36,6 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    //$(".wpsi-date-container").html(wpsi.dateFilter);
-
     $(document).on('change', '.wpsi-date-filter', function(e){
         e.stopPropagation();
         var container = $(this).closest('.item-container');
@@ -72,12 +70,17 @@ jQuery(document).ready(function ($) {
                 //this only on first page of table
                 if (page===1){
                     container.html(response.html);
-                    wpsiInitSingleDataTable(container);
+
                     var date_container = container.closest('.item-container').find(".wpsi-date-container");
                     date_container.html(wpsi.dateFilter);
                     date_container.find('.wpsi-date-filter').val(range);
-                    wpsiInitDeleteCapability();
                     wpsiInitDatePicker();
+
+                    if (type==='all') {
+                        wpsiInitSingleDataTable(container);
+                        wpsiInitDeleteCapability();
+                    }
+
                 } else {
                     var table = container.find('table').DataTable();
                     var rowCount = response.html.length;
