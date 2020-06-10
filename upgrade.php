@@ -9,7 +9,7 @@ add_action('init', 'wpsi_upgrade_database');
 function wpsi_upgrade_database(){
 	if (!get_option('wpsi_database_postids_upgrade_completed')){
 		global $wpdb;
-		$rows = $wpdb->get_results("select * from {$wpdb->prefix}searchinsights_single where referrer_id is null limit 50");
+		$rows = $wpdb->get_results("select * from {$wpdb->prefix}searchinsights_single where referrer_id is null order by time DESC limit 50");
 		foreach ($rows as $row ) {
 			$referrer = $row->referrer;
 			$post_id = WPSI::$admin->get_post_by_title($referrer);
@@ -21,6 +21,6 @@ function wpsi_upgrade_database(){
 			);
 		}
 
-		if ( count($rows) ==0 ) update_option('wpsi_database_postids_upgrade_completed', true);
+		if ( count($rows) == 0 ) update_option('wpsi_database_postids_upgrade_completed', true);
 	}
 }
