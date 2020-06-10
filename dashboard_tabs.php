@@ -21,6 +21,8 @@ function wpsi_tab_content_dashboard(){
 	$element    = WPSI::$admin->get_template( 'grid-element.php',
 		wpsi_path . '/grid' );
 	$output     = '';
+
+
 	foreach ( $grid_items as $index => $grid_item ) {
 		$output .= str_replace( array(
 			'{class}',
@@ -62,7 +64,7 @@ function wpsi_tab_content_settings(){
 	$blocks = array(
         array(
 			'title' => __( "General settings", "wp-search-insights" ),
-			'content' => '<div class="wpsi-skeleton"></div>',
+			'content' => wpsi_grid_content_settings(),
 			'class' => '',
 			'index' => 'settings',
 			'type'=> 'settings',
@@ -70,7 +72,7 @@ function wpsi_tab_content_settings(){
 		),
 		array(
 			'title' => __( "Filters", "wp-search-insights" ),
-			'content' => '<div class="wpsi-skeleton"></div>',
+			'content' => wpsi_grid_content_filter(),
 			'class' => 'full-width',
 			'index' => 'filter',
 			'type'=> 'filter',
@@ -78,6 +80,7 @@ function wpsi_tab_content_settings(){
 		),
     );
 	$blocks = apply_filters('wpsi_settings_blocks', $blocks);
+
 	foreach($blocks as $args) {
 		$element    .= WPSI::$admin->get_template( 'grid-element.php',
 			wpsi_path . '/grid' , $args);
@@ -94,34 +97,20 @@ add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
 
 
 
-function wpsi_ajax_content_settings(){
+function wpsi_grid_content_settings(){
 	ob_start();
 	do_settings_sections('wpsi-settings');
 	settings_fields('wpsi-settings-tab');
 	return ob_get_clean();
 }
-add_filter("wpsi_ajax_content_settings", 'wpsi_ajax_content_settings');
 
 
-function wpsi_ajax_content_filter(){
+function wpsi_grid_content_filter(){
 	ob_start();
 	do_settings_sections('wpsi-filter');
 	settings_fields('wpsi-filter-tab');
 	return ob_get_clean();
 }
-add_filter("wpsi_ajax_content_filter", 'wpsi_ajax_content_filter');
-
-function wpsi_ajax_content_tasks(){
-	return WPSI::$admin->generate_tips_tricks();
-}
-add_filter("wpsi_ajax_content_tasks", 'wpsi_ajax_content_tasks');
-
-
-function wpsi_ajax_content_plugins(){
-	return WPSI::$admin->generate_other_plugins();
-}
-add_filter("wpsi_ajax_content_plugins", 'wpsi_ajax_content_plugins');
-
 
 /**
  * set of options in the tabs bar

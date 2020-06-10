@@ -22,13 +22,12 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			add_filter("wpsi_ajax_content_export", array($this, 'ajax_content_export') );
 			add_filter('wpsi_settings_blocks', array($this, 'export_block') );
 
-			add_action('wp_ajax_wpsi_start_export', array($this, 'ajax_start_export'));
 		}
 
 		public function export_block($blocks){
 			$blocks[] = array(
 				'title' => __( "Export", "wp-search-insights" ),
-				'content' => '<div class="wpsi-skeleton"></div>',
+				'content' => $this->content_export(),
 				'index' => 'export',
 				'type'=> 'export',
 				'controls' => '',
@@ -38,7 +37,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		}
 
 
-		public function ajax_content_export(){
+		public function content_export(){
 			if (!current_user_can('manage_options')) return;
 			$disabled = get_transient('wpsi_export_in_progress') ? 'disabled' : '';
 
@@ -206,9 +205,12 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			//'a' creates file if not existing, otherwise appends.
 			$csv_handle = fopen ($file,'a');
 
+			//create a line with headers
 			$headers = $this->parse_headers_from_array($data);
 			fputcsv($csv_handle, $headers, $delimiter);
+
 			foreach ($data as $line) {
+				$line = array_map('sanitize_text_field', $line);
 				fputcsv($csv_handle, $line, $delimiter);
 			}
 			fclose ($csv_handle);

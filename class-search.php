@@ -636,25 +636,25 @@ if ( ! class_exists( 'Search' ) ) {
 			if (!get_option('wpsi_database_created')) return;
 
 			global $wpdb;
-
 			$table_name_single = $wpdb->prefix . 'searchinsights_single';
-			if (!$replace_search) {
+			$referrer = $this->get_referer();
+
+			$update_args = array(
+				'term'          => sanitize_text_field($search_term),
+				'referrer'      => esc_url_raw($referrer['url']),
+				'referrer_id'   => intval($referrer['post_id']),
+				'time'          => $this->current_time(),
+			);
+
+			if ( !$replace_search ) {
 				$wpdb->insert(
 					$table_name_single,
-					array(
-						'time'     => $this->current_time(),
-						'term'     => sanitize_text_field($search_term),
-						'referrer' => $this->get_referer(),
-					)
+					$update_args
 				);
 			} else {
 				$wpdb->update(
 					$table_name_single,
-					array(
-						'term'     => sanitize_text_field($search_term),
-						'referrer' => $this->get_referer(),
-						'time'     => $this->current_time(),
-					),
+					$update_args,
 					array(
 						'id' => intval($replace_search->id),
 					)
@@ -702,24 +702,29 @@ if ( ! class_exists( 'Search' ) ) {
 		}
 
 		/**
-		 * @return string
-		 *
 		 * Get the post title of the referer
+		 * @return array
+		 *
 		 *
 		 */
 
 		public function get_referer() {
-            $referrer = wp_get_referer();//esc_url_raw("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            $referrer = wp_get_referer();
 			$uri_parts = explode('?', $referrer, 2);
 			if ($uri_parts && isset($uri_parts[0])) $referrer = $uri_parts[0];
 			$post_id = url_to_postid($referrer);
 			if ($post_id){
-				return str_replace(site_url(), '', get_permalink($post_id));
+				$url = str_replace(site_url(), '', get_permalink($post_id));
 			} elseif (trailingslashit($referrer)==trailingslashit(site_url())) {
-				return 'home';
+				$url = 'home';
 			} else {
-				return str_replace(site_url(), '', $referrer);
+				$url = str_replace(site_url(), '', $referrer);
 			}
+
+			return array(
+				'url' => $url,
+				'post_id' => $post_id,
+			);
 		}
 
 
@@ -741,6 +746,7 @@ if ( ! class_exists( 'Search' ) ) {
                       `time` INT(11) NOT NULL,
                       `term` text NOT NULL,
                       `referrer` text NOT NULL,
+                      `referrer_id` INT(11),
                       PRIMARY KEY (id)
                     ) $charset_collate;";
 				dbDelta( $sql );
