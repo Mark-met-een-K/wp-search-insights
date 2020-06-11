@@ -80,7 +80,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'table-overview wpsi-load-ajax',
                     'type' => 'all',
-                    'controls' => '<div class="wpsi-date-container"></div>',
+                    'controls' => '',
                     'can_hide' => true,
 
                 ),
@@ -89,7 +89,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small wpsi-load-ajax',
                     'type' => 'results',
-                    'controls' => '<div class="wpsi-date-container"></div>',
+                    'controls' => '',
                     'can_hide' => true,
                     'ajax_load' => true,
 
@@ -99,7 +99,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small wpsi-load-ajax',
                     'type' => 'popular',
-                    'controls' => '<div class="wpsi-date-container"></div>',
+                    'controls' => '',
                     'can_hide' => true,
                     'ajax_load' => true,
 
@@ -126,6 +126,86 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function inline_styles()
         {
             ?>
+	        <script type="text/javascript">
+                jQuery(document).ready(function ($) {
+                    "use strict";
+
+                    var unixStart = localStorage.getItem('wpsi_range_start');
+                    var unixEnd = localStorage.getItem('wpsi_range_end');
+                     if (unixStart === null || unixEnd === null ) {
+                        unixStart = moment().subtract(1, 'week').unix();
+                        unixEnd = moment().unix();
+                        localStorage.setItem('wpsi_range_start', unixStart);
+                        localStorage.setItem('wpsi_range_end', unixEnd);
+                     }
+
+	                unixStart = parseInt(unixStart);
+                    unixEnd = parseInt(unixEnd);
+
+                    function wpsiUpdateDate(start, end) {
+                        $('.wpsi-date-container span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                        localStorage.setItem('wpsi_range_start', start.unix());
+                        localStorage.setItem('wpsi_range_end', end.unix());
+                    }
+
+                    $('.wpsi-date-container').daterangepicker(
+                        {
+                            ranges: {
+                                'Today': [moment(), moment()],
+                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            },
+                            "locale": {
+                                "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
+                                "separator": " - ",
+                                "applyLabel": "<?php _e("Apply","wp-search-insights")?>",
+                                "cancelLabel": "<?php _e("Cancel","wp-search-insights")?>",
+                                "fromLabel": "<?php _e("From","wp-search-insights")?>",
+                                "toLabel": "<?php _e("To","wp-search-insights")?>",
+                                "customRangeLabel": "<?php _e("Custom","wp-search-insights")?>",
+                                "weekLabel": "<?php _e("W","wp-search-insights")?>",
+                                "daysOfWeek": [
+                                    "<?php _e("Mo","wp-search-insights")?>",
+                                    "<?php _e("Tu","wp-search-insights")?>",
+                                    "<?php _e("We","wp-search-insights")?>",
+                                    "<?php _e("Th","wp-search-insights")?>",
+                                    "<?php _e("Fr","wp-search-insights")?>",
+                                    "<?php _e("Sa","wp-search-insights")?>",
+                                    "<?php _e("Su","wp-search-insights")?>",
+
+                                ],
+                                "monthNames": [
+                                    "<?php _e("January")?>",
+                                    "<?php _e("February")?>",
+                                    "<?php _e("March")?>",
+                                    "<?php _e("April")?>",
+                                    "<?php _e("May")?>",
+                                    "<?php _e("June")?>",
+                                    "<?php _e("July")?>",
+                                    "<?php _e("August")?>",
+                                    "<?php _e("September")?>",
+                                    "<?php _e("October")?>",
+                                    "<?php _e("November")?>",
+                                    "<?php _e("December")?>"
+                                ],
+                                "firstDay": 1
+                            },
+                            "alwaysShowCalendars": true,
+                            startDate: moment.unix(unixStart),
+                            endDate: moment.unix(unixEnd),
+                            "opens": "left",
+                        }, function (start, end, label) {
+                            wpsiUpdateDate(start, end);
+                            window.wpsiLoadAjaxTables();
+                        });
+
+                        wpsiUpdateDate(moment.unix(unixStart), moment.unix(unixEnd));
+
+                });
+	        </script>
             <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
             <style>
                 div#TB_window {
@@ -169,31 +249,43 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			<?php
 		}
 
-
         public function enqueue_assets($hook)
         {
             global $search_insights_settings_page;
             // Enqueue assest when on index.php (WP dashboard) or plugins settings page
 
             if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
+	            //Datatables javascript for interactive tables
+	            wp_register_script('wpsi-datatables',
+		            trailingslashit(wpsi_url)
+		            . 'assets/js/datatables.min.js', array("jquery"), wpsi_version);
+	            wp_enqueue_script('wpsi-datatables');
 
 	            //datapicker
-	            wp_enqueue_style( 'jquery-ui-datepicker-style' , trailingslashit(wpsi_url) . 'assets/css/datepicker.css', "",
-		            wp_search_insights_version);
-	            wp_enqueue_script( 'jquery-ui-datepicker' );
+	            wp_enqueue_style( 'wpsi-datepicker' , trailingslashit(wpsi_url) . 'assets/datepicker/datepicker.css', "",
+		            wpsi_version);
 
-                wp_register_style('search-insights',
+	            wp_register_script('wpsi-moment',
+		            trailingslashit(wpsi_url)
+		            . 'assets/datepicker/moment.js', array("jquery"), wpsi_version);
+
+	            wp_register_script('wpsi-datepicker',
+		            trailingslashit(wpsi_url)
+		            . 'assets/datepicker/datepicker.js', array("jquery", "moment"), wpsi_version);
+
+                wp_register_style('wpsi',
                     trailingslashit(wpsi_url) . "assets/css/style.min.css", "",
-                    wp_search_insights_version);
-                wp_enqueue_style('search-insights');
+                    wpsi_version);
+                wp_enqueue_style('wpsi');
 
-                wp_register_script('search-insights',
+                wp_register_script('wpsi',
                     trailingslashit(wpsi_url)
-                    . 'assets/js/scripts.js', array("jquery"), wp_search_insights_version);
-                wp_enqueue_script('search-insights');
-                wp_localize_script('search-insights', 'wpsi',
+                    . 'assets/js/scripts.js', array("jquery", "wpsi-datepicker", "wpsi-datatables"), wpsi_version);
+                wp_enqueue_script('wpsi');
+                wp_localize_script('wpsi', 'wpsi',
                     array(
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		                'skeleton' => '<div class="wpsi-skeleton"></div>',
 		                'strings' => array(
 		                        'download' => __("Download", 'wp-search-insights')
                         ),
@@ -212,29 +304,16 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	                )
                 );
 
-                //Datatables javascript for interactive tables
-                wp_register_script('datatables',
-                    trailingslashit(wpsi_url)
-                    . 'assets/js/datatables.min.js', array("jquery"), wp_search_insights_version);
-                wp_enqueue_script('datatables');
+
 
                 // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
                 if ($hook == 'index.php') return;
 
-                wp_register_style('fontello',
-                    trailingslashit(wpsi_url) . 'assets/font-icons/css/fontello.css', "",
-                    wp_search_insights_version);
-                wp_enqueue_style('fontello');
-
-                //Datatables plugin to hide pagination when it isn't needed
-                wp_register_script('datatables-pagination',
-                    trailingslashit(wpsi_url)
-                    . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wp_search_insights_version);
-                wp_enqueue_script('datatables-pagination');
-
-
-
-
+	            //Datatables plugin to hide pagination when it isn't needed
+	            wp_register_script('wpsi-datatables-pagination',
+		            trailingslashit(wpsi_url)
+		            . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wpsi_version);
+	            wp_enqueue_script('wpsi-datatables-pagination');
 
 
             }
@@ -960,10 +1039,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * Also generated the Top Searches grid item
          *
          * @param bool $on_grid true if on grid
-         * @param string $range date range to view
+         * @param int|bool $start
+         * @param int|bool $end
          * @return false|string
          */
-        public function generate_dashboard_widget($on_grid = false, $range = 'month')
+        public function generate_dashboard_widget($on_grid = false, $start=false, $end=false)
         {
             ob_start();
 
@@ -976,7 +1056,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches = get_transient("wpsi_popular_searches_$range");
+            $popular_searches = get_transient("wpsi_popular_searches_month");
             if ($on_grid) $popular_searches = false;
             if (!$popular_searches) {
                 $args = array(
@@ -984,11 +1064,18 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'order' => 'DESC',
                     'result_count' => 0,
                     'number' => 5,
-                    'range' => $range,
                 );
 
-                $popular_searches = WPSI::$search->get_searches($args, $trend = true, 'MONTH');
-                set_transient("wpsi_popular_searches_$range", $popular_searches, HOUR_IN_SECONDS);
+                //from the dashboard, we don't get a start-end range. We use default month.
+                if (!$start) {
+                    $args['range'] = 'month';
+                } else {
+	                $args['date_from'] = $start;
+	                $args['date_to'] = $end;
+                }
+
+                $popular_searches = WPSI::$search->get_searches($args, $trend = true);
+                set_transient("wpsi_popular_searches_month", $popular_searches, HOUR_IN_SECONDS);
             }
 
             if (!$on_grid) {
@@ -1026,7 +1113,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $widget = str_replace('{popular_searches}', $html, $widget);
 
             $html = "";
-            $top_searches = get_transient("wpsi_top_searches_$range");
+            $top_searches = get_transient("wpsi_top_searches_week");
 	        if ($on_grid) $top_searches = false;
 
 	        if (!$top_searches) {
@@ -1034,10 +1121,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'orderby' => 'frequency',
                     'order' => 'DESC',
                     'number' => 5,
-                    'range' => $range,
+                    'range' => 'week',
                 );
-                $top_searches = WPSI::$search->get_searches($args, $trend = true, 'MONTH');
-                set_transient("wpsi_top_searches_$range", $top_searches, HOUR_IN_SECONDS);
+                $top_searches = WPSI::$search->get_searches($args, $trend = true);
+                set_transient("wpsi_top_searches_week", $top_searches, HOUR_IN_SECONDS);
             }
             if (count($top_searches) == 0) {
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
@@ -1083,7 +1170,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			    $error = true;
 		    }
 
-		    if (!isset($_GET['range'])){
+		    if (!isset($_GET['start'])){
+			    $error = true;
+		    }
+
+		    if (!isset($_GET['end'])){
 			    $error = true;
 		    }
 
@@ -1102,18 +1193,19 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		    }
 
 		    if (!$error){
-			    $range = sanitize_title($_GET['range']);
+			    $start = intval($_GET['start']);
+			    $end = intval($_GET['end']);
 			    $type = sanitize_title($_GET['type']);
-			    $total = $this->get_results_count($type, $range);
+			    $total = $this->get_results_count($type, $start, $end);
 			    switch ($type){
                     case 'all':
-	                    $html = $this->recent_table($range, $page);
+	                    $html = $this->recent_table( $start, $end, $page);
 	                    break;
                     case 'popular':
-	                    $html = $this->generate_dashboard_widget(true, $range);
+	                    $html = $this->generate_dashboard_widget(true, $start, $end);
 	                    break;
 				    case 'results':
-					    $html = $this->results_table($range);
+					    $html = $this->results_table( $start, $end);
 					    break;
                     default:
                         $html = apply_filters("wpsi_ajax_content_$type", '');
@@ -1138,23 +1230,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
          * Get total results count for an ajax request
          *
 	     * @param string $type
-	     * @param string $range
+	     * @param int $start
+	     * @param int $end
          *
          * @return int
 	     */
 
-	    public function get_results_count($type, $range){
+	    public function get_results_count($type, $start, $end){
 	        $count = 0;
 		    if ($type === 'all' ) {
-		        $count = get_transient("wpsi_results_count_$range");
-		        if (!$count){
-			        $args = array(
-				        'range' => $range,
-				        'count' => true,
-			        );
-			        $count = WPSI::$search->get_searches_single($args);
-                }
-		        set_transient("wpsi_results_count_$range", $count, 20 * MINUTE_IN_SECONDS);
+                $args = array(
+                    'date_from' => $start,
+                    'date_to' => $end,
+                    'count' => true,
+                );
+                $count = WPSI::$search->get_searches_single($args);
 		    }
 
 		    return $count;
@@ -1162,21 +1252,23 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         /**
          * Generate the recent searches table in dashboard
-         * @param string $range
+         * @param int $start
+         * @param int $end
          * @param int $page
          *
          * @return string|array
          * @since 1.0
          */
 
-        public function recent_table($range = 'all', $page)
+        public function recent_table($start, $end, $page)
         {
 	        $home_url = home_url();
 	        // Start generating rows
 	        $args = array(
                 'offset' => $this->rows_batch * ($page-1),
 		        'number' =>$this->rows_batch,
-		        'range' => $range,
+		        'date_from' => $start,
+		        'date_to' => $end,
 		        'result_count' => true,
 	        );
 	        $recent_searches = WPSI::$search->get_searches_single($args);
@@ -1334,47 +1426,71 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         /**
          *
          * Generate the no results overview in dashboard
+         * @param int $start
+         * @param int $end
          *
          * @return string
          * @since 1.2
          */
 
-        public function results_table($range='week')
+        public function results_table($start, $end)
         {
+	        // Get the count of all searches made in period
+            $args        = array(
+                'date_from' => $start,
+                'date_to'   => $end,
+                'count'     => true,
+            );
+            $nr_of_terms = WPSI::$search->get_searches( $args );
+
+	        // Get terms with more than one result
+            $args = array(
+                'date_from' => $start,
+                'date_to' => $end,
+                'result_count' => 0,
+                'compare' => '>',
+                'count' => true,
+            );
+            $have_results = WPSI::$search->get_searches($args);
+
+	        $no_results = $nr_of_terms - $have_results;
+	        if ( $have_results == 0 || $nr_of_terms == 0 ) {
+		        $percentage_results = 0;
+	        } else {
+		        $percentage_results = round(($have_results / $nr_of_terms) * 100,0);
+	        }
+
             ob_start();
-	        $results = $this->get_results($range)
+
             ?>
             <div class="wpsi-nr-overview">
 
                 <div class="wpsi-nr-content">
                     <div class="progress-bar-container">
                         <div class="progress">
-                            <div class="bar" style="width:<?php echo $results['results']['percentage']?>%"></div>
+                            <div class="bar" style="width:<?php echo $percentage_results?>%"></div>
                         </div>
                     </div>
-                    <div class="progress-text">
-                    <?php if ($results['results']['count'] ==! 0) { ?>
-                        <span class="percentage"><?php echo $results['results']['percentage'] . "% " ?></span>
-                        <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
-                    </div>
-                    <div class="wpsi-total-searches">
-                        <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
-                        <span class="wpsi-search-count">
-                            <?php
-                            $args = array(
-                                'range'=>$range,
-                                'count' => true,
-                            );
-                            echo WPSI::$search->get_searches_single($args);
-                            ?>
-                        <?php } else { ?>
+
+                    <?php if ($nr_of_terms != 0) { ?>
+                        <div class="progress-text">
+                            <span class="percentage"><?php echo $percentage_results . "% " ?></span>
+                            <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
+                        </div>
+                        <div class="wpsi-total-searches">
+                            <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
+                            <span class="wpsi-search-count"><?= $nr_of_terms; ?></span>
+                        </div>
+                    <?php } else { ?>
+
+                        <div class="progress-text">
                             <span class="percentage-text">
-                                <?php _e("No searches in selected period", "wp-search-insights");
-                                ?>
+                                <?php _e("No searches in selected period", "wp-search-insights"); ?>
                             </span>
-                            <?php } ?>
-                        </span>
-                    </div>
+                        </div>
+
+                    <?php } ?>
+
                     <div class="nr-widget-results-container">
                         <div class="wpsi-nr-has-result">
                             <div class="dot-and-text">
@@ -1386,7 +1502,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 </div>
                             </div>
                             <div class="wpsi-result-count">
-                                <?php echo  $results['results']['count'] . " ". __("searches", "wp-search-insights"); ?>
+                                <?php printf(__("%s searches", "wp-search-insights"), $have_results ); ?>
                             </div>
                         </div>
                         <div class="wpsi-nr-no-result">
@@ -1399,7 +1515,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 </div>
                             </div>
                             <div class="wpsi-result-count">
-                                <?php echo  $results['no-results']['count'] . " ". __("searches", "wp-search-insights"); ?>
+                                <?php printf(__("%s searches", "wp-search-insights"), $no_results ); ?>
                             </div>
                         </div>
                     </div>
@@ -1417,31 +1533,25 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             </div>
                             <div class="result-title">
                                 <?php
-                                $args = array(
-                                    'range' => $range,
-                                    'orderby' => 'frequency',
-                                    'result_count' => 0,
-                                    'compare' => '>',
-                                    'number' => 1,
+                                    $args = array(
+                                        'date_from' => $start,
+                                        'date_to' => $end,
+                                        'orderby' => 'frequency',
+                                        'result_count' => 0,
+                                        'compare' => '>',
+                                        'number' => 1,
                                     );
 
-                                $top_search = WPSI::$search->get_searches($args);
-                                if (!empty($top_search)) {
-                                echo $top_search[0]->term;
-                                } else {
-                                    _e("No result", "wp-search-insights");
-                                }
+                                    $top_search = WPSI::$search->get_searches( $args );
+                                    $top_search_term = !empty($top_search) ? $top_search[0]->term : __("No result", "wp-search-insights");
+                                    $top_search_frequency = !empty($top_search) ? $top_search[0]->frequency : '0';
+
+                                    echo $top_search_term;
                                 ?>
                             </div>
                         </div>
                         <div class="wpsi-result-count">
-                        <?php
-                            if (!empty($top_search)) {
-                                echo  $top_search[0]->frequency . " ". __("searches", "wp-search-insights");
-                             } else {
-                                 echo "0 ".__("searches", "wp-search-insights");
-                             }
-                       ?>
+                            <?php printf(__("%s searches", "wp-search-insights"), $top_search_frequency); ?>
                         </div>
                     </div>
                     <div class="wpsi-nr-no-result">
@@ -1452,94 +1562,36 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             <div class="result-title">
                                 <?php
                                 $args = array(
-                                    'range' => $range,
-                                    'result_count' => 0,
+                                    'date_from' => $start,
+                                    'date_to' => $end,
                                     'orderby' => 'frequency',
+                                    'result_count' => 0,
                                     'order' => 'DESC',
                                     'number' => 1,
                                 );
 
                                 $top_search_no_result = WPSI::$search->get_searches($args);
-                                if (!empty($top_search_no_result)) {
-                                    echo $top_search_no_result[0]->term;
-                                } else {
-                                    _e("No result", "wp-search-insights");
-                                }
+                                $top_search_no_result_term = !empty($top_search_no_result) ? $top_search_no_result[0]->term : __("No result", "wp-search-insights");
+                                $top_search_no_result_frequency = !empty($top_search_no_result) ? $top_search_no_result[0]->frequency : '0';
+
+                                echo $top_search_no_result_term;
                                 ?>
                             </div>
                         </div>
                         <div class="wpsi-result-count">
-                            <?php
-                             if (!empty($top_search_no_result)) {
-                                echo  $top_search_no_result[0]->frequency . " ". __("searches", "wp-search-insights");
-                             } else {
-                                 echo "0 ".__("searches", "wp-search-insights");
-                             }
-                             ?>
-
+	                        <?php printf(__("%s searches", "wp-search-insights"), $top_search_no_result_frequency); ?>
                         </div>
                     </div>
                 </div>
             </div>
             </div>
             <?php
-            $contents = ob_get_clean();
-            return $contents;
+            return ob_get_clean();
         }
-
-        /**
-         * @param string $range
-         * @return array
-         *
-         * Get the result count for a period
-         */
-
-        public function get_results($range)
-        {
-
-            // Get the count of all searches made in period
-	        $args = array(
-		        'range' => $range,
-	        );
-            $nr_of_terms = count(WPSI::$search->get_searches_single($args));
-
-            // Set args for query
-            $args = array(
-	            'range' => $range,
-                'result_count' => 0,
-                'compare' => '>',
-            );
-
-            // Get terms with more than one result
-            $have_results = count(WPSI::$search->get_searches($args));
-            $no_results = $nr_of_terms - $have_results;
-            if ( $have_results == 0 ) {
-                $percentage_results = 0;
-            } else {
-                $percentage_results = $have_results / $nr_of_terms * 100;
-            }
-
-            $percentage_no_results = 100 - $percentage_results;
-
-            return array(
-                    'results' => array(
-                            'percentage' => round($percentage_results,0),
-                            'count' => $have_results,
-                    ),
-                    'no-results' => array(
-	                    'percentage' => round($percentage_no_results,0),
-	                    'count' => $no_results,
-                    ),
-                    'total' => $nr_of_terms
-            );
-        }
-
 
 
         public function generate_other_plugins()
         {
-
-            $plugin_url = trailingslashit(wpsi_url);
             $items = array(
                 1 => array(
                     'title' => '<div class="rsssl-yellow upsell-round"></div>',
@@ -1563,7 +1615,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'controls' => '',
                 ),
             );
-
 
             $element = $this->get_template('upsell-element.php');
             $output = '';

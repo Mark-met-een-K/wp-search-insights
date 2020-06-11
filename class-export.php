@@ -95,7 +95,6 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 					//get total rows
 					$args = array(
 						'number' => -1,
-						'range' => false,
 						'count' => true,
 						'date_from' => $date_from,
 						'date_to' => $date_to,
@@ -154,7 +153,6 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			}
 
 			$args['number'] = $this->rows;
-			$args['range'] = false;
 			$args['result_count'] = true;
 			$args['offset'] = $offset;
 			$searches = WPSI::$search->get_searches_single($args);

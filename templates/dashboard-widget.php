@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 <div id="wpsi-dashboard-widget">
     <div>
         <div class="wpsi-widget-logo"><img width=35px" height="35px" src="<?php echo wpsi_url?>/assets/images/noname_logo.png" alt="review-logo">
-            <span><?php printf("WP Search Insights %s", wp_search_insights_version)?></span>
+            <span><?php printf("WP Search Insights %s", wpsi_version)?></span>
         </div>
 
         <h3><?php _e("Popular searches without results", "wp-search-insights")?></h3>

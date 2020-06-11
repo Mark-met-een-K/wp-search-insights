@@ -3,7 +3,7 @@
  * Plugin Name: WP Search Insights
  * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
  * Description: WP Search Insights shows you what your users are looking for on your site, and which searches don't have results
- * Version: 1.3
+ * Version: 1.3.5
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters, Rogier Lankhorst
@@ -25,7 +25,6 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 */
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
@@ -105,7 +104,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			$plugin_data = get_plugin_data( __FILE__ );
 			$debug       = defined( "WP_DEBUG" ) && WP_DEBUG ? time() : "";
-			define( 'wp_search_insights_version',
+			define( 'wpsi_version',
 				$plugin_data['Version'] . $debug );
 		}
 

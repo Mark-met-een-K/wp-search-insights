@@ -1,18 +1,21 @@
 jQuery(document).ready(function ($) {
     "use strict";
 
-
     var deleteBtn = $('#wpsi-delete-selected');
+    var lastSelectedPage = 0;
 
     /**
-     * Datatables
+     * Ajax loading of tables
      */
 
-    $('.item-content').each(function(){
-        if ($(this).closest('.wpsi-item').hasClass('wpsi-load-ajax')) {
-            wpsiLoadData($(this), 1, 0);
-        }
-    });
+    window.wpsiLoadAjaxTables = function() {
+        $('.item-content').each(function () {
+            if ($(this).closest('.wpsi-item').hasClass('wpsi-load-ajax')) {
+                wpsiLoadData($(this), 1, 0);
+            }
+        });
+    };
+    window.wpsiLoadAjaxTables();
 
     function wpsiInitSingleDataTable(container) {
         var table = container.find('.wpsi-table');
@@ -34,34 +37,36 @@ jQuery(document).ready(function ($) {
             },
             "order": [[2, "desc"]],
         });
+
+        container.find('.wpsi-table').on( 'page.dt', function () {
+            var table = $(this).closest('table').DataTable();
+            var info = table.page.info();
+            lastSelectedPage = info.page;
+        } );
     }
 
-    $(document).on('change', '.wpsi-date-filter', function(e){
-        e.stopPropagation();
-        var container = $(this).closest('.item-container');
-        var type = container.closest('.wpsi-item').data('table_type');
-        var range = container.find('.wpsi-date-filter').val();
-        localStorage.setItem('wpsi_range_'+type, range);
-        wpsiLoadData(container.find('.item-content'), 1, 0);
-    });
 
     function wpsiLoadData(container, page, received){
-        var range;
         var type = container.closest('.wpsi-item').data('table_type');
-        var defaultRange = container.closest('.wpsi-item').data('default_range');
-        var storedRange = localStorage.getItem('wpsi_range_'+type);
-        if (storedRange === null ){
-            range = defaultRange;
-        } else {
-            range = storedRange;
+        if(page===1) container.html(wpsi.skeleton);
+        var unixStart = localStorage.getItem('wpsi_range_start');
+        var unixEnd = localStorage.getItem('wpsi_range_end');
+        if (unixStart === null || unixEnd === null ) {
+            unixStart = moment().subtract(1, 'week').unix();
+            unixEnd = moment().unix();
+            localStorage.setItem('wpsi_range_start', unixStart);
+            localStorage.setItem('wpsi_range_end', unixEnd);
         }
+        unixStart = parseInt(unixStart);
+        unixEnd = parseInt(unixEnd);
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
             dataType: 'json',
             data: ({
                 action: 'wpsi_get_datatable',
-                range:range,
+                start:unixStart,
+                end:unixEnd,
                 page:page,
                 type:type,
                 token: wpsi.token
@@ -70,17 +75,10 @@ jQuery(document).ready(function ($) {
                 //this only on first page of table
                 if (page===1){
                     container.html(response.html);
-
-                    var date_container = container.closest('.item-container').find(".wpsi-date-container");
-                    date_container.html(wpsi.dateFilter);
-                    date_container.find('.wpsi-date-filter').val(range);
-                    wpsiInitDatePicker();
-
                     if (type==='all') {
                         wpsiInitSingleDataTable(container);
                         wpsiInitDeleteCapability();
                     }
-
                 } else {
                     var table = container.find('table').DataTable();
                     var rowCount = response.html.length;
@@ -90,6 +88,8 @@ jQuery(document).ready(function ($) {
                             //only redraw on last row
                             if (parseInt(key) >= (rowCount-1) ) {
                                 table.row.add(row).draw();
+                                console.log(lastSelectedPage);
+                                table.page( lastSelectedPage ).draw( false )
                             } else {
                                 table.row.add(row);
                             }
@@ -109,13 +109,6 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    function wpsiInitDatePicker(){
-        $('.wpsi-datepicker').each(function(){
-            $(this).datepicker(
-
-            );
-        });
-    }
 
     /**
      * select and delete functions

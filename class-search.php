@@ -107,7 +107,7 @@ if ( ! class_exists( 'Search' ) ) {
 			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
             wp_register_script( 'search-insights-frontend-js',
                 trailingslashit( wpsi_url )
-                . "assets/js/frontend$minified.js", array('jquery'), wp_search_insights_version , true);
+                . "assets/js/frontend$minified.js", array('jquery'), wpsi_version , true);
             wp_enqueue_script( 'search-insights-frontend-js' );
             wp_localize_script( 'search-insights-frontend-js', 'search_insights_ajax',
                 array(
@@ -397,11 +397,10 @@ if ( ! class_exists( 'Search' ) ) {
 		 * Get searches
 		 * @param array $args
 		 * @param bool $trend
-		 * @param string $trendperiod
-		 * @return array $searches
+		 * @return array|int $searches
 		 */
 
-		public function get_searches($args=array(), $trend=false, $trendperiod='month'){
+		public function get_searches($args=array(), $trend=false){
 			$defaults = array(
 				'orderby' => 'frequency',
                 'order' => 'DESC',
@@ -412,6 +411,9 @@ if ( ! class_exists( 'Search' ) ) {
 				'compare' => false,
                 'from' => "*",
 				'range' => false,
+				'count' => false,
+				'date_from' => false,
+				'date_to' => false,
 				'include'
 			);
             $args = wp_parse_args( $args,$defaults);
@@ -455,6 +457,7 @@ if ( ! class_exists( 'Search' ) ) {
                 }
                 $where .= $args['result_count'];
 			}
+
 			if ($args['term']){
 				$where .= $wpdb->prepare(' AND term = %s ',sanitize_text_field($args['term']));
 			}
@@ -465,32 +468,38 @@ if ( ! class_exists( 'Search' ) ) {
 				$where .=" AND time > $time ";
 			}
 
+			if ($args['date_from']){
+				$from = intval($args['date_from']);
+				$where .=" AND time > $from ";
+			}
 
+			if ($args['date_to']){
+				$to = intval($args['date_to']);
+				$where .=" AND time < $to ";
+			}
 
 			/**
 			 * If $trend=true, we need two searches, to check foreach search the number of hits the previous trend month. We join these searches in one query
 			 */
 			$search_sql = "SELECT ".$args['from']." from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-			if ($trend){
-				switch ($trendperiod) {
-					case 'year':
-						$period = 'years';
-						break;
-					case 'day':
-						$period = 'days';
-						break;
-					case 'month':
-					default:
-						$period = 'months';
-				}
-				$last_period_start = strtotime("-2 $period");
-				$last_period_end = strtotime("-1 $period");
+			if ($trend && isset($args['date_from']) && isset($args['date_to'])){
+				$period = intval($args['date_to']) - intval($args['date_from']);
+
+				$last_period_start = intval($args['date_from'])-$period;
+				$last_period_end = intval($args['date_from']);
 				$where .= " AND time > $last_period_start AND time < $last_period_end";
 				$previous_period_sql = "SELECT frequency as previous_frequency, id from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-
 				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
 			}
-            $searches =$wpdb->get_results( $search_sql );
+
+			if ($args['count']) {
+				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
+				error_log($search_sql);
+				$searches =$wpdb->get_var( $search_sql );
+			} else {
+				$searches =$wpdb->get_results( $search_sql );
+			}
+
 			//if we searched for a term, there is only one result
 			if ($args['term']){
 				if (isset($searches[0])){
@@ -506,10 +515,11 @@ if ( ! class_exists( 'Search' ) ) {
 		/**
 		 * Get popular searches
 		 * @param array $args
-		 * @return array $searches
+		 *
+		 * @return array|int $searches
 		 */
 
-		public function get_searches_single($args=array(), $trend=false, $trendperiod='MONTH'){
+		public function get_searches_single($args=array()){
 			$defaults = array(
 				'number' => -1,
 				'order' => 'DESC',
@@ -581,26 +591,6 @@ if ( ! class_exists( 'Search' ) ) {
 			}
 
 			$search_sql ="SELECT * from $table_name WHERE 1=1 $where ORDER BY $orderby $order $limit";
-
-			//not implemented yet
-			if ($trend){
-				switch ($trendperiod) {
-					case 'YEAR':
-						$period = 'years';
-						break;
-					case 'DAY':
-						$period = 'days';
-						break;
-					default:
-						$period = 'months';
-				}
-				$last_period_start = strtotime("-2 $period");
-				$last_period_end = strtotime("-1 $period");
-				$where .= " AND time > $last_period_start AND time < $last_period_end";
-				$previous_period_sql = "SELECT frequency as previous_frequency, id from {$wpdb->prefix}searchinsights_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-
-				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
-			}
 
 			/*
 			 * We want to include the result count. Create an inner join with the archive.
@@ -734,7 +724,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 		public function update_db() {
 			if ( get_option( 'search_insights_db_version' )
-			     != wp_search_insights_version
+			     != wpsi_version
 			) {
 				global $wpdb;
 				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -762,7 +752,7 @@ if ( ! class_exists( 'Search' ) ) {
                       ) $charset_collate;";
 				dbDelta( $sql );
 				update_option( 'search_insights_db_version',
-					wp_search_insights_version );
+					wpsi_version );
 			}
             update_option('wpsi_database_created', true);
         }

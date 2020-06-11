@@ -301,7 +301,7 @@ widget
   display: none;
 }
 #wpsi-dashboard .dataTables_filter {
-  margin: -56px 95px 0 0;
+  margin: -56px 0 0 0;
   position: absolute;
   right: 0;
 }
