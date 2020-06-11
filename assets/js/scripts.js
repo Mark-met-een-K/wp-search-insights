@@ -40,7 +40,7 @@ jQuery(document).ready(function ($) {
 
     function wpsiLoadData(container, page, received){
         var type = container.closest('.wpsi-item').data('table_type');
-        container.html(wpsi.skeleton);
+        if(page===1) container.html(wpsi.skeleton);
         var unixStart = localStorage.getItem('wpsi_range_start');
         var unixEnd = localStorage.getItem('wpsi_range_end');
         if (unixStart === null || unixEnd === null ) {
@@ -51,6 +51,9 @@ jQuery(document).ready(function ($) {
         }
         unixStart = parseInt(unixStart);
         unixEnd = parseInt(unixEnd);
+
+        console.log(page);
+        console.log(unixStart);
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
@@ -64,6 +67,8 @@ jQuery(document).ready(function ($) {
                 token: wpsi.token
             }),
             success: function (response) {
+                console.log(response);
+                console.log(type);
                 //this only on first page of table
                 if (page===1){
                     container.html(response.html);

@@ -1186,8 +1186,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			    $error = true;
 		    }
 
-		    error_log(print_r($_GET, true));
-
 		    $page = isset($_GET['page']) ? intval($_GET['page']) : false;
 
 		    if (!$error && !wp_verify_nonce(sanitize_title($_GET['token']), 'search_insights_nonce')){
@@ -1438,7 +1436,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function results_table($start, $end)
         {
 	        // Get the count of all searches made in period
-            $nr_of_terms = get_transient('wpsi_nr_of_terms');
+            $nr_of_terms = false;//get_transient('wpsi_nr_of_terms');
             if (!$nr_of_terms) {
 	            $args        = array(
 		            'date_from' => $start,
@@ -1450,7 +1448,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             }
 
 	        // Get terms with more than one result
-	        $have_results = get_transient('wpsi_have_results');
+	        $have_results = false;//get_transient('wpsi_have_results');
 	        if (!$have_results) {
                 $args = array(
                     'date_from' => $start,
@@ -1464,23 +1462,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	        }
 
 	        $no_results = $nr_of_terms - $have_results;
-	        if ( $have_results == 0 ) {
+	        if ( $have_results == 0 || $nr_of_terms == 0 ) {
 		        $percentage_results = 0;
 	        } else {
-		        $percentage_results = $have_results / $nr_of_terms * 100;
+		        $percentage_results = round($have_results / $nr_of_terms * 100,0);
 	        }
-
-	        $percentage_no_results = 100 - $percentage_results;
-
-	        $results = array(
-                'percentage' => round($percentage_results,0),
-                'count' => $have_results,
-            );
-
-	        $no_results = array(
-                'percentage' => round($percentage_no_results,0),
-                'count' => $no_results,
-            );
 
             ob_start();
 
@@ -1490,12 +1476,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 <div class="wpsi-nr-content">
                     <div class="progress-bar-container">
                         <div class="progress">
-                            <div class="bar" style="width:<?php echo $results['percentage']?>%"></div>
+                            <div class="bar" style="width:<?php echo $percentage_results?>%"></div>
                         </div>
                     </div>
                     <div class="progress-text">
-                    <?php if ($results['count'] ==! 0) { ?>
-                        <span class="percentage"><?php echo $results['percentage'] . "% " ?></span>
+                    <?php if ($have_results ==! 0) { ?>
+                        <span class="percentage"><?php echo $percentage_results . "% " ?></span>
                         <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
                     </div>
                     <div class="wpsi-total-searches">
@@ -1520,7 +1506,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 </div>
                             </div>
                             <div class="wpsi-result-count">
-                                <?php printf(__("%s searches", "wp-search-insights"), $results['count'] ); ?>
+                                <?php printf(__("%s searches", "wp-search-insights"), $have_results ); ?>
                             </div>
                         </div>
                         <div class="wpsi-nr-no-result">
@@ -1533,7 +1519,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 </div>
                             </div>
                             <div class="wpsi-result-count">
-                                <?php printf(__("%s searches", "wp-search-insights"), $no_results['count'] ); ?>
+                                <?php printf(__("%s searches", "wp-search-insights"), $no_results ); ?>
                             </div>
                         </div>
                     </div>

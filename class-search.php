@@ -488,12 +488,11 @@ if ( ! class_exists( 'Search' ) ) {
 				$last_period_end = strtotime("-1 $period");
 				$where .= " AND time > $last_period_start AND time < $last_period_end";
 				$previous_period_sql = "SELECT frequency as previous_frequency, id from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-
 				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
 			}
+
 			if ($args['count']) {
 				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
-				error_log($search_sql);
 				$searches =$wpdb->get_var( $search_sql );
 			} else {
 				$searches =$wpdb->get_results( $search_sql );
