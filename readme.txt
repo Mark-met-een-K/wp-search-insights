@@ -1,7 +1,7 @@
 === WP Search Insights ===
 Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, search term, recording searches, analytics, searches, search form, search filter
+Tags: search, analytics, search term, recording searches, searches, search form, search filter
 Requires at least: 4.6
 License: GPL2
 Tested up to: 5.3
@@ -11,15 +11,19 @@ Stable tag: 1.3.0
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
 == Description ==
-Records all searches made on your website. See from which post, page, or product a search originated in a simple and clean dashboard. The dashboard can be found in the Tools -> Search Insights menu.
+WP Search Insights records all searches made on your website. See from which post, page, or product a search originated in a clean and straightforward dashboard. Keep records of most popular searches, with and without results. Rank keywords by popularity and use the search filter to keep out spam.
 
 Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-search-insights) as well!
 
 == Features ==
 * Records search activity on your website
-* Sort recorded searches alphabetically, on data, results, and popularity
+* Explore results in custom date ranges
+* Keep records of most popular searches, with and without results
+* Rank keywords by popularity
+* Search filter to keep out spam
+* Works with Ajax Search forms
 * Records originating pages and subsequent landing page after a search query
-* Export records in CSV and for Excel
+* Export records in CSV
 * Privacy-friendly search analytics
 
 = Love WP Search Insights? =
