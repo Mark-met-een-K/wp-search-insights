@@ -398,7 +398,7 @@ if ( ! class_exists( 'Search' ) ) {
 		 * @param array $args
 		 * @param bool $trend
 		 * @param string $trendperiod
-		 * @return array $searches
+		 * @return array|int $searches
 		 */
 
 		public function get_searches($args=array(), $trend=false, $trendperiod='month'){
@@ -412,6 +412,7 @@ if ( ! class_exists( 'Search' ) ) {
 				'compare' => false,
                 'from' => "*",
 				'range' => false,
+				'count' => false,
 				'include'
 			);
             $args = wp_parse_args( $args,$defaults);
@@ -490,7 +491,14 @@ if ( ! class_exists( 'Search' ) ) {
 
 				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
 			}
-            $searches =$wpdb->get_results( $search_sql );
+			if ($args['count']) {
+				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
+				error_log($search_sql);
+				$searches =$wpdb->get_var( $search_sql );
+			} else {
+				$searches =$wpdb->get_results( $search_sql );
+			}
+
 			//if we searched for a term, there is only one result
 			if ($args['term']){
 				if (isset($searches[0])){
@@ -506,7 +514,10 @@ if ( ! class_exists( 'Search' ) ) {
 		/**
 		 * Get popular searches
 		 * @param array $args
-		 * @return array $searches
+		 * @param string $trend
+		 * @param string $trendperiod
+		 *
+		 * @return array|int $searches
 		 */
 
 		public function get_searches_single($args=array(), $trend=false, $trendperiod='MONTH'){
