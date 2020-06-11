@@ -1,18 +1,20 @@
 jQuery(document).ready(function ($) {
     "use strict";
 
-
     var deleteBtn = $('#wpsi-delete-selected');
 
     /**
-     * Datatables
+     * Ajax loading of tables
      */
 
-    $('.item-content').each(function(){
-        if ($(this).closest('.wpsi-item').hasClass('wpsi-load-ajax')) {
-            wpsiLoadData($(this), 1, 0);
-        }
-    });
+    window.wpsiLoadAjaxTables = function() {
+        $('.item-content').each(function () {
+            if ($(this).closest('.wpsi-item').hasClass('wpsi-load-ajax')) {
+                wpsiLoadData($(this), 1, 0);
+            }
+        });
+    };
+    window.wpsiLoadAjaxTables();
 
     function wpsiInitSingleDataTable(container) {
         var table = container.find('.wpsi-table');
@@ -48,6 +50,7 @@ jQuery(document).ready(function ($) {
     function wpsiLoadData(container, page, received){
         var range;
         var type = container.closest('.wpsi-item').data('table_type');
+        container.html(wpsi.skeleton);
         var defaultRange = container.closest('.wpsi-item').data('default_range');
         var storedRange = localStorage.getItem('wpsi_range_'+type);
         if (storedRange === null ){
@@ -74,7 +77,6 @@ jQuery(document).ready(function ($) {
                     var date_container = container.closest('.item-container').find(".wpsi-date-container");
                     date_container.html(wpsi.dateFilter);
                     date_container.find('.wpsi-date-filter').val(range);
-                    wpsiInitDatePicker();
 
                     if (type==='all') {
                         wpsiInitSingleDataTable(container);
@@ -109,13 +111,6 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    function wpsiInitDatePicker(){
-        $('.wpsi-datepicker').each(function(){
-            $(this).datepicker(
-
-            );
-        });
-    }
 
     /**
      * select and delete functions

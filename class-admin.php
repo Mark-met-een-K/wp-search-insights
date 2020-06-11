@@ -80,7 +80,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'table-overview wpsi-load-ajax',
                     'type' => 'all',
-                    'controls' => '<div class="wpsi-date-container"></div>',
+                    'controls' => '',
                     'can_hide' => true,
 
                 ),
@@ -89,7 +89,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small wpsi-load-ajax',
                     'type' => 'results',
-                    'controls' => '<div class="wpsi-date-container"></div>',
+                    'controls' => '',
                     'can_hide' => true,
                     'ajax_load' => true,
 
@@ -99,7 +99,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'content' => '<div class="wpsi-skeleton"></div>',
                     'class' => 'small wpsi-load-ajax',
                     'type' => 'popular',
-                    'controls' => '<div class="wpsi-date-container"></div>',
+                    'controls' => '',
                     'can_hide' => true,
                     'ajax_load' => true,
 
@@ -126,6 +126,68 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function inline_styles()
         {
             ?>
+	        <script type="text/javascript">
+                jQuery(document).ready(function ($) {
+                    "use strict";
+                    $('.wpsi-date-container input').daterangepicker(
+                        {
+                            ranges: {
+                                'Today': [moment(), moment()],
+                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            },
+                            "locale": {
+                                "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
+                                "separator": " - ",
+                                "applyLabel": "<?php _e("Apply","wp-search-insights")?>",
+                                "cancelLabel": "<?php _e("Cancel","wp-search-insights")?>",
+                                "fromLabel": "<?php _e("From","wp-search-insights")?>",
+                                "toLabel": "<?php _e("To","wp-search-insights")?>",
+                                "customRangeLabel": "<?php _e("Custom","wp-search-insights")?>",
+                                "weekLabel": "<?php _e("W","wp-search-insights")?>",
+                                "daysOfWeek": [
+                                    "<?php _e("Mo","wp-search-insights")?>",
+                                    "<?php _e("Tu","wp-search-insights")?>",
+                                    "<?php _e("We","wp-search-insights")?>",
+                                    "<?php _e("Th","wp-search-insights")?>",
+                                    "<?php _e("Fr","wp-search-insights")?>",
+                                    "<?php _e("Sa","wp-search-insights")?>",
+                                    "<?php _e("Su","wp-search-insights")?>",
+
+                                ],
+                                "monthNames": [
+                                    "<?php _e("January")?>",
+                                    "<?php _e("February")?>",
+                                    "<?php _e("March")?>",
+                                    "<?php _e("April")?>",
+                                    "<?php _e("May")?>",
+                                    "<?php _e("June")?>",
+                                    "<?php _e("July")?>",
+                                    "<?php _e("August")?>",
+                                    "<?php _e("September")?>",
+                                    "<?php _e("October")?>",
+                                    "<?php _e("November")?>",
+                                    "<?php _e("December")?>"
+                                ],
+                                "firstDay": 1
+                            },
+                            "alwaysShowCalendars": true,
+                            // "startDate": "06/04/2020",
+                            // "endDate": "06/10/2020"
+                        }, function (start, end, label) {
+                            console.log(start);
+                            console.log(end);
+                            window.wpsiLoadAjaxTables();
+                            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+                        });
+
+                });
+
+
+	        </script>
             <!--    Thickbox needs inline style, otherwise the style is overriden by WordPres thickbox.css-->
             <style>
                 div#TB_window {
@@ -169,34 +231,43 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			<?php
 		}
 
-
         public function enqueue_assets($hook)
         {
             global $search_insights_settings_page;
             // Enqueue assest when on index.php (WP dashboard) or plugins settings page
 
             if ($hook == 'index.php' || $hook == $search_insights_settings_page) {
+	            //Datatables javascript for interactive tables
+	            wp_register_script('wpsi-datatables',
+		            trailingslashit(wpsi_url)
+		            . 'assets/js/datatables.min.js', array("jquery"), wpsi_version);
+	            wp_enqueue_script('wpsi-datatables');
 
 	            //datapicker
-	            wp_enqueue_style( 'wpsi-datepicker' , trailingslashit(wpsi_url) . 'assets/pikaday/pikaday.css', "",
+	            wp_enqueue_style( 'wpsi-datepicker' , trailingslashit(wpsi_url) . 'assets/datepicker/datepicker.css', "",
 		            wpsi_version);
+
+	            wp_register_script('wpsi-moment',
+		            trailingslashit(wpsi_url)
+		            . 'assets/datepicker/moment.js', array("jquery"), wpsi_version);
 
 	            wp_register_script('wpsi-datepicker',
 		            trailingslashit(wpsi_url)
-		            . 'assets/js/scripts.js', array("jquery"), wpsi_version);
+		            . 'assets/datepicker/datepicker.js', array("jquery", "moment"), wpsi_version);
 
-                wp_register_style('search-insights',
+                wp_register_style('wpsi',
                     trailingslashit(wpsi_url) . "assets/css/style.min.css", "",
                     wpsi_version);
-                wp_enqueue_style('search-insights');
+                wp_enqueue_style('wpsi');
 
-                wp_register_script('search-insights',
+                wp_register_script('wpsi',
                     trailingslashit(wpsi_url)
-                    . 'assets/js/scripts.js', array("jquery"), wpsi_version);
-                wp_enqueue_script('search-insights');
-                wp_localize_script('search-insights', 'wpsi',
+                    . 'assets/js/scripts.js', array("jquery", "wpsi-datepicker", "wpsi-datatables"), wpsi_version);
+                wp_enqueue_script('wpsi');
+                wp_localize_script('wpsi', 'wpsi',
                     array(
 		                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		                'skeleton' => '<div class="wpsi-skeleton"></div>',
 		                'strings' => array(
 		                        'download' => __("Download", 'wp-search-insights')
                         ),
@@ -215,29 +286,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	                )
                 );
 
-                //Datatables javascript for interactive tables
-                wp_register_script('datatables',
-                    trailingslashit(wpsi_url)
-                    . 'assets/js/datatables.min.js', array("jquery"), wpsi_version);
-                wp_enqueue_script('datatables');
+
 
                 // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
                 if ($hook == 'index.php') return;
 
-                wp_register_style('fontello',
+                wp_register_style('wpsi-fontello',
                     trailingslashit(wpsi_url) . 'assets/font-icons/css/fontello.css', "",
                     wpsi_version);
-                wp_enqueue_style('fontello');
+                wp_enqueue_style('wpsi-fontello');
 
-                //Datatables plugin to hide pagination when it isn't needed
-                wp_register_script('datatables-pagination',
-                    trailingslashit(wpsi_url)
-                    . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wpsi_version);
-                wp_enqueue_script('datatables-pagination');
-
-
-
-
+	            //Datatables plugin to hide pagination when it isn't needed
+	            wp_register_script('wpsi-datatables-pagination',
+		            trailingslashit(wpsi_url)
+		            . 'assets/js/dataTables.conditionalPaging.js', array("jquery"), wpsi_version);
+	            wp_enqueue_script('wpsi-datatables-pagination');
 
 
             }

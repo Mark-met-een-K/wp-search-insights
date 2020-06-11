@@ -119,6 +119,9 @@ function wpsi_grid_content_filter(){
 function wpsi_tab_options(){
     ?>
     <div class="documentation-pro">
+        <div class="wpsi-date-container">
+            <input type="text" id="datepicker">
+        </div>
         <div class="documentation">
             <a href="https://wpsearchinsights.com/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
         </div>
