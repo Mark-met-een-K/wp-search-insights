@@ -194,8 +194,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 "firstDay": 1
                             },
                             "alwaysShowCalendars": true,
-                            startDate: moment(unixStart),
-                            endDate: moment(unixEnd),
+                            startDate: moment.unix(unixStart),
+                            endDate: moment.unix(unixEnd),
                             "opens": "left",
                         }, function (start, end, label) {
                             wpsiUpdateDate(start, end);
@@ -1074,7 +1074,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	                $args['date_to'] = $end;
                 }
 
-                $popular_searches = WPSI::$search->get_searches($args, $trend = true, 'MONTH');
+                $popular_searches = WPSI::$search->get_searches($args, $trend = true);
                 set_transient("wpsi_popular_searches_month", $popular_searches, HOUR_IN_SECONDS);
             }
 
@@ -1123,7 +1123,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'number' => 5,
                     'range' => 'week',
                 );
-                $top_searches = WPSI::$search->get_searches($args, $trend = true, 'MONTH');
+                $top_searches = WPSI::$search->get_searches($args, $trend = true);
                 set_transient("wpsi_top_searches_week", $top_searches, HOUR_IN_SECONDS);
             }
             if (count($top_searches) == 0) {
@@ -1471,22 +1471,26 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             <div class="bar" style="width:<?php echo $percentage_results?>%"></div>
                         </div>
                     </div>
-                    <div class="progress-text">
-                    <?php if ($have_results ==! 0) { ?>
-                        <span class="percentage"><?php echo $percentage_results . "% " ?></span>
-                        <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
-                    </div>
-                    <div class="wpsi-total-searches">
-                        <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
-                        <span class="wpsi-search-count">
-                            <?= $nr_of_terms; ?>
-                        <?php } else { ?>
+
+                    <?php if ($nr_of_terms != 0) { ?>
+                        <div class="progress-text">
+                            <span class="percentage"><?php echo $percentage_results . "% " ?></span>
+                            <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
+                        </div>
+                        <div class="wpsi-total-searches">
+                            <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
+                            <span class="wpsi-search-count"><?= $nr_of_terms; ?></span>
+                        </div>
+                    <?php } else { ?>
+
+                        <div class="progress-text">
                             <span class="percentage-text">
                                 <?php _e("No searches in selected period", "wp-search-insights"); ?>
                             </span>
-                        <?php } ?>
-                        </span>
-                    </div>
+                        </div>
+
+                    <?php } ?>
+
                     <div class="nr-widget-results-container">
                         <div class="wpsi-nr-has-result">
                             <div class="dot-and-text">
