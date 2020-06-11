@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
     "use strict";
 
     var deleteBtn = $('#wpsi-delete-selected');
+    var lastSelectedPage = 0;
 
     /**
      * Ajax loading of tables
@@ -36,7 +37,14 @@ jQuery(document).ready(function ($) {
             },
             "order": [[2, "desc"]],
         });
+
+        container.find('.wpsi-table').on( 'page.dt', function () {
+            var table = $(this).closest('table').DataTable();
+            var info = table.page.info();
+            lastSelectedPage = info.page;
+        } );
     }
+
 
     function wpsiLoadData(container, page, received){
         var type = container.closest('.wpsi-item').data('table_type');
@@ -51,9 +59,6 @@ jQuery(document).ready(function ($) {
         }
         unixStart = parseInt(unixStart);
         unixEnd = parseInt(unixEnd);
-
-        console.log(page);
-        console.log(unixStart);
         $.ajax({
             type: "GET",
             url: wpsi.ajaxurl,
@@ -67,8 +72,6 @@ jQuery(document).ready(function ($) {
                 token: wpsi.token
             }),
             success: function (response) {
-                console.log(response);
-                console.log(type);
                 //this only on first page of table
                 if (page===1){
                     container.html(response.html);
@@ -76,7 +79,6 @@ jQuery(document).ready(function ($) {
                         wpsiInitSingleDataTable(container);
                         wpsiInitDeleteCapability();
                     }
-
                 } else {
                     var table = container.find('table').DataTable();
                     var rowCount = response.html.length;
@@ -86,6 +88,8 @@ jQuery(document).ready(function ($) {
                             //only redraw on last row
                             if (parseInt(key) >= (rowCount-1) ) {
                                 table.row.add(row).draw();
+                                console.log(lastSelectedPage);
+                                table.page( lastSelectedPage ).draw( false )
                             } else {
                                 table.row.add(row);
                             }

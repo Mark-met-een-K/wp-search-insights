@@ -1436,36 +1436,28 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function results_table($start, $end)
         {
 	        // Get the count of all searches made in period
-            $nr_of_terms = false;//get_transient('wpsi_nr_of_terms');
-            if (!$nr_of_terms) {
-	            $args        = array(
-		            'date_from' => $start,
-		            'date_to'   => $end,
-		            'count'     => true,
-	            );
-	            $nr_of_terms = WPSI::$search->get_searches_single( $args );
-	            set_transient('wpsi_nr_of_terms', $nr_of_terms, 20 * MINUTE_IN_SECONDS);
-            }
+            $args        = array(
+                'date_from' => $start,
+                'date_to'   => $end,
+                'count'     => true,
+            );
+            $nr_of_terms = WPSI::$search->get_searches( $args );
 
 	        // Get terms with more than one result
-	        $have_results = false;//get_transient('wpsi_have_results');
-	        if (!$have_results) {
-                $args = array(
-                    'date_from' => $start,
-                    'date_to' => $end,
-                    'result_count' => 0,
-                    'compare' => '>',
-                    'count' => true,
-                );
-                $have_results = WPSI::$search->get_searches($args);
-		        set_transient('wpsi_have_results', $have_results, 20 * MINUTE_IN_SECONDS);
-	        }
+            $args = array(
+                'date_from' => $start,
+                'date_to' => $end,
+                'result_count' => 0,
+                'compare' => '>',
+                'count' => true,
+            );
+            $have_results = WPSI::$search->get_searches($args);
 
 	        $no_results = $nr_of_terms - $have_results;
 	        if ( $have_results == 0 || $nr_of_terms == 0 ) {
 		        $percentage_results = 0;
 	        } else {
-		        $percentage_results = round($have_results / $nr_of_terms * 100,0);
+		        $percentage_results = round(($have_results / $nr_of_terms) * 100,0);
 	        }
 
             ob_start();
@@ -1537,24 +1529,19 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             </div>
                             <div class="result-title">
                                 <?php
-                                    $top_search_term = get_transient('wpsi_top_search_term');
-                                    $top_search_frequency = get_transient('wpsi_top_search_frequency');
-                                    if (!$top_search_term) {
-                                        $args = array(
-                                            'date_from' => $start,
-                                            'date_to' => $end,
-                                            'orderby' => 'frequency',
-                                            'result_count' => 0,
-                                            'compare' => '>',
-                                            'number' => 1,
-                                        );
+                                    $args = array(
+                                        'date_from' => $start,
+                                        'date_to' => $end,
+                                        'orderby' => 'frequency',
+                                        'result_count' => 0,
+                                        'compare' => '>',
+                                        'number' => 1,
+                                    );
 
-                                        $top_search = WPSI::$search->get_searches( $args );
-                                        $top_search_term = !empty($top_search) ? $top_search[0]->term : __("No result", "wp-search-insights");
-                                        $top_search_frequency = !empty($top_search) ? $top_search[0]->frequency : '0';
-                                        set_transient('wpsi_top_search_term', $top_search_term, 20* MINUTE_IN_SECONDS);
-                                        set_transient('wpsi_top_search_frequency', $top_search_frequency, 20* MINUTE_IN_SECONDS);
-                                    }
+                                    $top_search = WPSI::$search->get_searches( $args );
+                                    $top_search_term = !empty($top_search) ? $top_search[0]->term : __("No result", "wp-search-insights");
+                                    $top_search_frequency = !empty($top_search) ? $top_search[0]->frequency : '0';
+
                                     echo $top_search_term;
                                 ?>
                             </div>
@@ -1570,24 +1557,19 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             </div>
                             <div class="result-title">
                                 <?php
-                                $top_search_no_result_term = get_transient('wpsi_top_search_no_result_term');
-                                $top_search_no_result_frequency = get_transient('wpsi_top_search_no_result_frequency');
-                                if (!$top_search_no_result_term) {
-                                    $args = array(
-                                        'date_from' => $start,
-                                        'date_to' => $end,
-                                        'orderby' => 'frequency',
-                                        'result_count' => 0,
-                                        'order' => 'DESC',
-                                        'number' => 1,
-                                    );
+                                $args = array(
+                                    'date_from' => $start,
+                                    'date_to' => $end,
+                                    'orderby' => 'frequency',
+                                    'result_count' => 0,
+                                    'order' => 'DESC',
+                                    'number' => 1,
+                                );
 
-                                    $top_search_no_result = WPSI::$search->get_searches($args);
-	                                $top_search_no_result_term = !empty($top_search_no_result) ? $top_search_no_result[0]->term : __("No result", "wp-search-insights");
-	                                $top_search_no_result_frequency = !empty($top_search_no_result) ? $top_search_no_result[0]->frequency : '0';
-                                    set_transient('wpsi_top_search_no_result_term', $top_search_no_result_term, 20* MINUTE_IN_SECONDS);
-                                    set_transient('wpsi_top_search_no_result_frequency', $top_search_no_result_frequency, 20* MINUTE_IN_SECONDS);
-                                }
+                                $top_search_no_result = WPSI::$search->get_searches($args);
+                                $top_search_no_result_term = !empty($top_search_no_result) ? $top_search_no_result[0]->term : __("No result", "wp-search-insights");
+                                $top_search_no_result_frequency = !empty($top_search_no_result) ? $top_search_no_result[0]->frequency : '0';
+
                                 echo $top_search_no_result_term;
                                 ?>
                             </div>

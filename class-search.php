@@ -493,6 +493,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 			if ($args['count']) {
 				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
+				error_log($search_sql);
 				$searches =$wpdb->get_var( $search_sql );
 			} else {
 				$searches =$wpdb->get_results( $search_sql );
