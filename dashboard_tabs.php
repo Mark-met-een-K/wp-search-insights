@@ -119,7 +119,7 @@ function wpsi_grid_content_filter(){
 function wpsi_tab_options(){
     ?>
     <div class="documentation-pro">
-        <div class="wpsi-date-container" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;margin-right:20px">
+        <div class="wpsi-date-container wpsi-table-range">
             <i class="dashicons dashicons-calendar-alt"></i>&nbsp;
             <span></span>
             <i class="dashicons dashicons-arrow-down-alt2"></i>

@@ -1,3 +1,6 @@
+.daterangepicker.show-calendar {
+  z-index: 9999 !important;
+}
 .update-nag {
   display: none;
 }
@@ -296,6 +299,17 @@ widget
   vertical-align: middle;
   height: 50px;
   width: 50px;
+}
+#wpsi-dashboard .wpsi-date-container {
+  background: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+#wpsi-dashboard .wpsi-date-container.wpsi-export {
+  float: left;
 }
 #wpsi-dashboard .dataTables_length {
   display: none;

@@ -481,12 +481,20 @@ if ( ! class_exists( 'Search' ) ) {
 			/**
 			 * If $trend=true, we need two searches, to check foreach search the number of hits the previous trend month. We join these searches in one query
 			 */
-			$search_sql = "SELECT ".$args['from']." from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-			if ($trend && isset($args['date_from']) && isset($args['date_to'])){
-				$period = intval($args['date_to']) - intval($args['date_from']);
 
-				$last_period_start = intval($args['date_from'])-$period;
-				$last_period_end = intval($args['date_from']);
+			$search_sql = "SELECT ".$args['from']." from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
+			if ( $trend ) {
+				if ($args['date_from'] && $args['date_to'] ) {
+					$period = intval( $args['date_to'] )
+					          - intval( $args['date_from'] );
+					$last_period_start = intval($args['date_from'])-$period;
+					$last_period_end = intval($args['date_from']);
+				} elseif ($args['range']) {
+					$period = $args['range'];
+					$last_period_start = strtotime("-2 $period");
+					$last_period_end = strtotime("-1 $period");
+				}
+
 				$where .= " AND time > $last_period_start AND time < $last_period_end";
 				$previous_period_sql = "SELECT frequency as previous_frequency, id from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
 				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
@@ -494,7 +502,6 @@ if ( ! class_exists( 'Search' ) ) {
 
 			if ($args['count']) {
 				$search_sql = str_replace(" * ", " count(*) as count ",  $search_sql);
-				error_log($search_sql);
 				$searches =$wpdb->get_var( $search_sql );
 			} else {
 				$searches =$wpdb->get_results( $search_sql );

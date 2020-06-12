@@ -22,6 +22,8 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			add_filter("wpsi_ajax_content_export", array($this, 'ajax_content_export') );
 			add_filter('wpsi_settings_blocks', array($this, 'export_block') );
 
+			add_action('wp_ajax_wpsi_start_export', array($this, 'ajax_start_export'));
+
 		}
 
 		public function export_block($blocks){
@@ -46,11 +48,14 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 				$link = '<a href="'.$this->fileurl().'">'.__("Download", "wp-search-insights").'</a></div>';
 			}
 
-
 			ob_start();
 			?>
-			<input type="text" class="wpsi-datepicker" name="wpsi-export-from" value="<?php echo date('F j, yy', strtotime('-1 month'))?>">
-			<input type="text" class="wpsi-datepicker" name="wpsi-export-to" value="<?php echo date('F j, yy')?>">
+            <div class="wpsi-date-container wpsi-export">
+                <i class="dashicons dashicons-calendar-alt"></i>&nbsp;
+                <span></span>
+                <i class="dashicons dashicons-arrow-down-alt2"></i>
+            </div>
+
 			<button <?=$disabled?> class="button-secondary" id="wpsi-start-export"><?php _e("Export", "wp-search-insights")?></button>
 			<div class="wpsi-download-link"><?=$link?></div>
 			<?php
@@ -72,6 +77,10 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 				$error = true;
 			}
 
+			if (!isset($_GET['date_from']) || !isset($_GET['date_to'])){
+				$error = true;
+			}
+
 			if (!$error && !wp_verify_nonce(sanitize_title($_GET['token']), 'search_insights_nonce')){
 				$error = true;
 			}
@@ -82,8 +91,8 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			);
 
 			if (!$error){
-			    $date_from = strtotime($_GET['date_from']);
-			    $date_to = strtotime($_GET['date_to']);
+			    $date_from = intval($_GET['date_from']);
+			    $date_to = intval($_GET['date_to']);
 				//first call, start generation
 				if ( !get_transient('wpsi_export_in_progress') ){
 					set_transient('wpsi_export_in_progress', true, 2 * DAY_IN_SECONDS);

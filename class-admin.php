@@ -141,6 +141,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
 	                unixStart = parseInt(unixStart);
                     unixEnd = parseInt(unixEnd);
+                    wpsiUpdateDate(moment.unix(unixStart), moment.unix(unixEnd));
 
                     function wpsiUpdateDate(start, end) {
                         $('.wpsi-date-container span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -148,7 +149,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         localStorage.setItem('wpsi_range_end', end.unix());
                     }
 
-                    $('.wpsi-date-container').daterangepicker(
+                    $('.wpsi-date-container.wpsi-table-range').daterangepicker(
                         {
                             ranges: {
                                 'Today': [moment(), moment()],
@@ -196,13 +197,70 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             "alwaysShowCalendars": true,
                             startDate: moment.unix(unixStart),
                             endDate: moment.unix(unixEnd),
-                            "opens": "left",
+                            "opens": "center",
                         }, function (start, end, label) {
                             wpsiUpdateDate(start, end);
                             window.wpsiLoadAjaxTables();
                         });
 
-                        wpsiUpdateDate(moment.unix(unixStart), moment.unix(unixEnd));
+
+                    $('.wpsi-date-container.wpsi-export').daterangepicker(
+                        {
+                            ranges: {
+                                'Today': [moment(), moment()],
+                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            },
+                            "locale": {
+                                "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
+                                "separator": " - ",
+                                "applyLabel": "<?php _e("Apply","wp-search-insights")?>",
+                                "cancelLabel": "<?php _e("Cancel","wp-search-insights")?>",
+                                "fromLabel": "<?php _e("From","wp-search-insights")?>",
+                                "toLabel": "<?php _e("To","wp-search-insights")?>",
+                                "customRangeLabel": "<?php _e("Custom","wp-search-insights")?>",
+                                "weekLabel": "<?php _e("W","wp-search-insights")?>",
+                                "daysOfWeek": [
+                                    "<?php _e("Mo","wp-search-insights")?>",
+                                    "<?php _e("Tu","wp-search-insights")?>",
+                                    "<?php _e("We","wp-search-insights")?>",
+                                    "<?php _e("Th","wp-search-insights")?>",
+                                    "<?php _e("Fr","wp-search-insights")?>",
+                                    "<?php _e("Sa","wp-search-insights")?>",
+                                    "<?php _e("Su","wp-search-insights")?>",
+
+                                ],
+                                "monthNames": [
+                                    "<?php _e("January")?>",
+                                    "<?php _e("February")?>",
+                                    "<?php _e("March")?>",
+                                    "<?php _e("April")?>",
+                                    "<?php _e("May")?>",
+                                    "<?php _e("June")?>",
+                                    "<?php _e("July")?>",
+                                    "<?php _e("August")?>",
+                                    "<?php _e("September")?>",
+                                    "<?php _e("October")?>",
+                                    "<?php _e("November")?>",
+                                    "<?php _e("December")?>"
+                                ],
+                                "firstDay": 1
+                            },
+                            "alwaysShowCalendars": true,
+                            startDate: moment.unix(unixStart),
+                            endDate: moment.unix(unixEnd),
+                            "opens": "center",
+                        }, function (start, end, label) {
+                            wpsiUpdateDate(start, end);
+                        });
+
+
+
+
+
 
                 });
 	        </script>
