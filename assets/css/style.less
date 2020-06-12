@@ -3,6 +3,12 @@
 @color-error: #d7263d;
 @light-text-color: #3c3c3c;
 @border-color: #DEDEDE;
+
+//make sure it floats on top of the wp menu
+.daterangepicker.show-calendar {
+  z-index: 9999 !important;
+}
+
 .update-nag {
   display: none;
 }
@@ -334,11 +340,19 @@ widget
     width: 50px;
   }
 
-  //.wpsi-select-date-range {
-  //  float: right;
-  //  margin-right: 180px;
-  //  margin-top: 5px;
-  //}
+
+
+  .wpsi-date-container{
+    background: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    white-space: nowrap;
+    &.wpsi-export{
+      float:left;
+    }
+  }
 
   //hide the "25 entries" dropdown
   .dataTables_length {
@@ -808,20 +822,20 @@ widget
 
   }
 
-.upsell-grid-container {
-  .wpsi-drag-handle {
-    display: flex;
-    align-items: center;
-    margin-top: -5px;
-    .rsp-logo {
-      margin-left: auto;
-      img {
-        height: 30px;
-        padding-right: 10px;
+  .upsell-grid-container {
+    .wpsi-drag-handle {
+      display: flex;
+      align-items: center;
+      margin-top: -5px;
+      .rsp-logo {
+        margin-left: auto;
+        img {
+          height: 30px;
+          padding-right: 10px;
+        }
       }
     }
   }
-}
 
   .wpsi-other-plugins-container {
     //display: flex;

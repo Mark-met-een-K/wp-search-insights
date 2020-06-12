@@ -161,8 +161,10 @@ jQuery(document).ready(function($) {
         // Sort and filter the grid
         if  (tab_id !== 'dashboard') {
             $('#wpsi-toggle-link-wrap').hide();
+            $('.wpsi-date-container.wpsi-table-range').hide();
         } else {
             $('#wpsi-toggle-link-wrap').show();
+            $('.wpsi-date-container.wpsi-table-range').show();
         }
 
         $('ul.tabs li').removeClass('current');

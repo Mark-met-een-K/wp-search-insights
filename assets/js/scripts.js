@@ -16,7 +16,6 @@ jQuery(document).ready(function ($) {
         });
     };
     window.wpsiLoadAjaxTables();
-
     function wpsiInitSingleDataTable(container) {
         var table = container.find('.wpsi-table');
         table.DataTable({
@@ -187,8 +186,17 @@ jQuery(document).ready(function ($) {
     function wpsiExportData(){
         var downloadContainer = $('.wpsi-download-link');
         var button = $('#wpsi-start-export');
-        var date_from = $('input[name=wpsi-export-from]').val();
-        var date_to = $('input[name=wpsi-export-to]').val();
+
+        var unixStart = localStorage.getItem('wpsi_range_start');
+        var unixEnd = localStorage.getItem('wpsi_range_end');
+        if (unixStart === null || unixEnd === null ) {
+            unixStart = moment().subtract(1, 'week').unix();
+            unixEnd = moment().unix();
+            localStorage.setItem('wpsi_range_start', unixStart);
+            localStorage.setItem('wpsi_range_end', unixEnd);
+        }
+        unixStart = parseInt(unixStart);
+        unixEnd = parseInt(unixEnd);
         button.prop('disabled', true);
         $.ajax({
             type: "GET",
@@ -196,8 +204,8 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             data: ({
                 action: 'wpsi_start_export',
-                date_from: date_from,
-                date_to: date_to,
+                date_from: unixStart,
+                date_to: unixEnd,
                 token: wpsi.token,
             }),
             success: function (response) {
