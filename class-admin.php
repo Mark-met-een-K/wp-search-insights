@@ -197,7 +197,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             "alwaysShowCalendars": true,
                             startDate: moment.unix(unixStart),
                             endDate: moment.unix(unixEnd),
-                            "opens": "center",
+                            "opens": "left",
                         }, function (start, end, label) {
                             wpsiUpdateDate(start, end);
                             window.wpsiLoadAjaxTables();
@@ -252,7 +252,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             "alwaysShowCalendars": true,
                             startDate: moment.unix(unixStart),
                             endDate: moment.unix(unixEnd),
-                            "opens": "center",
+                            "opens": "right",
                         }, function (start, end, label) {
                             wpsiUpdateDate(start, end);
                         });
