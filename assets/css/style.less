@@ -27,8 +27,8 @@
     text-align: center;
     margin-bottom:20px;
     &:hover {
-      color:@border-color;
-      border-color:@border-color;
+      color:#000;
+      border-color:#000;
     }
   }
 
@@ -324,16 +324,16 @@ widget
   }
 
 
-
-  .wpsi-date-container{
+  .wpsi-date-container {
     background: #fff;
     cursor: pointer;
     padding: 5px 10px;
     border: 1px solid #ccc;
     margin-right: 20px;
     white-space: nowrap;
-    &.wpsi-export{
-      float:left;
+
+    &.wpsi-export {
+      float: left;
     }
   }
 
@@ -416,6 +416,7 @@ widget
     General table styling
   */
 
+  #dashboard {
   .dataTables_wrapper {
     //max-width: 800px;
     display: flex;
@@ -442,6 +443,7 @@ widget
       padding: 0;
       table-layout: fixed;
       justify-content: normal;
+
       &.dataTable {
         .wpsi-selected {
           background-color: rgba(41, 182, 246, 0.35);
@@ -472,7 +474,7 @@ widget
       td {
         padding: .625em;
         text-align: left;
-        font-size:12px;
+        font-size: 12px;
       }
 
       th {
@@ -509,6 +511,7 @@ widget
     }
 
   }
+}
 
   .wpsi-term a {
     text-decoration: none;
@@ -947,8 +950,11 @@ widget
     margin-left: 25px;
   }
 
-  #settings td {
-    display: flex;
+  #settings {
+    textarea {width:100%}
+    td {
+      display: flex;
+    }
   }
 
   #wpsi_exclude_admin {
