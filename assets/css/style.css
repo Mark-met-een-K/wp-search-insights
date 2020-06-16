@@ -16,8 +16,8 @@
   margin-bottom: 20px;
 }
 #wpsi-dashboard .button-secondary:hover {
-  color: #DEDEDE;
-  border-color: #DEDEDE;
+  color: #000;
+  border-color: #000;
 }
 #wpsi-dashboard .item-container {
   opacity: 0;
@@ -358,73 +358,73 @@ widget
   padding-bottom: 23px;
   border-bottom: 2px solid #d7263d;
 }
-#wpsi-dashboard .dataTables_wrapper {
+#wpsi-dashboard #dashboard .dataTables_wrapper {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
-#wpsi-dashboard .item-content {
+#wpsi-dashboard #dashboard .item-content {
   padding-top: 15px;
   flex: 1;
   margin: 0 auto;
   position: relative;
   width: 95%;
 }
-#wpsi-dashboard .item-content input[type="search"] {
+#wpsi-dashboard #dashboard .item-content input[type="search"] {
   width: 250px;
   margin-right: 10px;
   border: 1px solid #DEDEDE;
 }
-#wpsi-dashboard .item-content table {
+#wpsi-dashboard #dashboard .item-content table {
   border-collapse: collapse;
   margin: 0;
   padding: 0;
   table-layout: fixed;
   justify-content: normal;
 }
-#wpsi-dashboard .item-content table.dataTable .wpsi-selected {
+#wpsi-dashboard #dashboard .item-content table.dataTable .wpsi-selected {
   background-color: rgba(41, 182, 246, 0.35);
 }
-#wpsi-dashboard .item-content table caption {
+#wpsi-dashboard #dashboard .item-content table caption {
   height: 50px;
   text-align: left;
   margin-top: -10px;
   padding-bottom: 10px;
 }
-#wpsi-dashboard .item-content table tbody tr {
+#wpsi-dashboard #dashboard .item-content table tbody tr {
   border-bottom: 0.1em solid #DEDEDE;
 }
-#wpsi-dashboard .item-content table tr {
+#wpsi-dashboard #dashboard .item-content table tr {
   height: 40px;
   background-color: #f8f8f8;
   padding: 0.35em;
 }
-#wpsi-dashboard .item-content table th,
-#wpsi-dashboard .item-content table td {
+#wpsi-dashboard #dashboard .item-content table th,
+#wpsi-dashboard #dashboard .item-content table td {
   padding: 0.625em;
   text-align: left;
   font-size: 12px;
 }
-#wpsi-dashboard .item-content table th {
+#wpsi-dashboard #dashboard .item-content table th {
   letter-spacing: 0.1em;
 }
-#wpsi-dashboard .item-content table th:focus {
+#wpsi-dashboard #dashboard .item-content table th:focus {
   outline: none;
 }
-#wpsi-dashboard .item-content table tbody {
+#wpsi-dashboard #dashboard .item-content table tbody {
   color: #3c3c3c;
 }
-#wpsi-dashboard .item-content table tr:nth-child(even) {
+#wpsi-dashboard #dashboard .item-content table tr:nth-child(even) {
   background-color: #FFFFFF;
 }
-#wpsi-dashboard .item-content table tr:nth-child(odd) {
+#wpsi-dashboard #dashboard .item-content table tr:nth-child(odd) {
   background-color: #FFFFFF;
 }
-#wpsi-dashboard .item-content table tr:first-child {
+#wpsi-dashboard #dashboard .item-content table tr:first-child {
   border-top-left-radius: 0.55rem;
   border-top-right-radius: 0.55rem;
 }
-#wpsi-dashboard .item-content table tr:last-child {
+#wpsi-dashboard #dashboard .item-content table tr:last-child {
   margin-bottom: 0;
   border-bottom-left-radius: 0.55rem;
   border-bottom-right-radius: 0.55rem;
@@ -749,6 +749,9 @@ widget
 }
 #wpsi-dashboard .filter-save {
   margin-left: 25px;
+}
+#wpsi-dashboard #settings textarea {
+  width: 100%;
 }
 #wpsi-dashboard #settings td {
   display: flex;
