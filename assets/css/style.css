@@ -22,6 +22,10 @@
 #wpsi-dashboard .item-container {
   opacity: 0;
 }
+#wpsi-dashboard #wpsi-recent-table,
+#wpsi-dashboard #wpsi-popular-table {
+  width: 100% !important;
+}
 @media screen and (max-width: 850px) {
   .tabs #wpsi-toggle-options {
     display: none;
@@ -32,10 +36,6 @@
   #wpsi-dashboard .wpsi-grid-controls {
     display: flex;
     justify-content: end;
-  }
-  #wpsi-dashboard #wpsi-recent-table,
-  #wpsi-dashboard #wpsi-popular-table {
-    width: auto;
   }
   #wpsi-dashboard #wpsi-recent-table_wrapper {
     overflow: hidden;
@@ -237,9 +237,6 @@ widget
     General table styling
   */
   /*
-      Individual table styling
-   */
-  /*
       Table footer
    */
   /*
@@ -405,9 +402,6 @@ widget
   background-color: #f8f8f8;
   padding: 0.35em;
 }
-#wpsi-dashboard .item-content table th:nth-child(3) {
-  width: 80px !important;
-}
 #wpsi-dashboard .item-content table th,
 #wpsi-dashboard .item-content table td {
   padding: 0.625em;
@@ -449,10 +443,6 @@ widget
 #wpsi-dashboard .wpsi-grid-controls .wpsi-date-filter {
   border: 1px solid #DEDEDE;
 }
-#wpsi-dashboard #wpsi-recent-table,
-#wpsi-dashboard #wpsi-popular-table {
-  width: auto;
-}
 #wpsi-dashboard .hit-icon {
   font-size: 1.6em;
 }
@@ -471,7 +461,7 @@ widget
   justify-content: center;
   padding-top: 10px;
   position: absolute;
-  bottom: 75px;
+  bottom: 30px;
   width: 100%;
 }
 #wpsi-dashboard .table-footer button {

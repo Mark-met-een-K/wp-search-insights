@@ -37,6 +37,10 @@
     opacity: 0;
   }
 
+  #wpsi-recent-table, #wpsi-popular-table {
+    width: 100% !important;
+  }
+
 }
 
 @media screen and (max-width: 850px) {
@@ -56,10 +60,6 @@
     .wpsi-grid-controls {
       display: flex;
       justify-content: end;
-    }
-
-    #wpsi-recent-table, #wpsi-popular-table {
-      width: auto;
     }
 
     #wpsi-recent-table_wrapper {
@@ -485,10 +485,6 @@ widget
         padding: .35em;
       }
 
-      th:nth-child(3) {
-        width:80px !important;
-      }
-
       th,
       td {
         padding: .625em;
@@ -502,11 +498,6 @@ widget
         }
 
         letter-spacing: .1em;
-      }
-
-      thead tr:first-of-type {
-        //background-color: #F5F6FA;
-        //color: #A3A6B4;
       }
 
       tbody {
@@ -552,13 +543,7 @@ widget
   }
 
 
-  /*
-      Individual table styling
-   */
 
-  #wpsi-recent-table, #wpsi-popular-table {
-    width: auto;
-  }
 
   .hit-icon {
     font-size: 1.6em;
@@ -586,7 +571,7 @@ widget
     justify-content: center;
     padding-top: 10px;
     position: absolute;
-    bottom: 75px;
+    bottom: 30px;
     width: 100%;
 
     button {

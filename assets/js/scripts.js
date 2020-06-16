@@ -1,8 +1,33 @@
 jQuery(document).ready(function ($) {
     "use strict";
 
+    var wpsiScreensizeHideColumn = 600;
     var deleteBtn = $('#wpsi-delete-selected');
     var lastSelectedPage = 0;
+
+    $(window).on('resize', function(){
+        wpsi_resize_datatables();
+    });
+
+    /**
+     * Hide columns based on screen size, and redraw
+     */
+    function wpsi_resize_datatables() {
+        $('.item-content').each(function () {
+            if ($(this).closest('.wpsi-item').hasClass('wpsi-load-ajax')) {
+                var table = $(this).find('table').DataTable();
+                var column = table.column(2);
+                var win = $(window);
+                if (win.width() > wpsiScreensizeHideColumn) {
+                    if (!column.visible()) column.visible(true);
+                } else {
+                    column.visible(false);
+                }
+                table.columns.adjust().draw();
+            }
+
+        });
+    }
 
     /**
      * Ajax loading of tables
@@ -15,12 +40,31 @@ jQuery(document).ready(function ($) {
             }
         });
     };
+
     window.wpsiLoadAjaxTables();
     function wpsiInitSingleDataTable(container) {
         var table = container.find('.wpsi-table');
-        table.DataTable({
+        var win = $(window);
+
+        var columnVisible = 'true';
+        if (win.width() > wpsiScreensizeHideColumn) {
+            columnVisible = 'false';        }
+        var columnTwoDef = '{ "visible": '+columnVisible+',  "targets": [ 2 ] }';
+        table.DataTable( {
             "dom": 'frt<"table-footer"p><"clear">B',
-            "pageLength": 6,
+            "pageLength": 7,
+            "columns": [
+                { "width": "15%" },
+                { "width": "5%" },
+                { "width": "12%" },
+                { "width": "" },
+                { "width": "15%" },
+            ],
+            "columnDefs": [
+                { "visible": false,  "targets": [ 3 ] },
+                { "iDataSort": 3, "aTargets": [ 2] },
+                columnTwoDef
+            ],
             conditionalPaging: true,
             buttons: [
                 //{extend: 'csv', text: 'Download CSV'}
@@ -63,12 +107,12 @@ jQuery(document).ready(function ($) {
             url: wpsi.ajaxurl,
             dataType: 'json',
             data: ({
-                action: 'wpsi_get_datatable',
-                start:unixStart,
-                end:unixEnd,
-                page:page,
-                type:type,
-                token: wpsi.token
+                action : 'wpsi_get_datatable',
+                start  : unixStart,
+                end    : unixEnd,
+                page   : page,
+                type   : type,
+                token  : wpsi.token
             }),
             success: function (response) {
                 //this only on first page of table
@@ -87,7 +131,6 @@ jQuery(document).ready(function ($) {
                             //only redraw on last row
                             if (parseInt(key) >= (rowCount-1) ) {
                                 table.row.add(row).draw();
-                                console.log(lastSelectedPage);
                                 table.page( lastSelectedPage ).draw( false )
                             } else {
                                 table.row.add(row);
