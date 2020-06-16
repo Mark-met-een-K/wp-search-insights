@@ -1338,7 +1338,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         <td data-label="Term" class="wpsi-term"
                             data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term , $home_url).'</td>
                         <td>'.$search->result_count.'</td>
-                        <td data-label="When">'.rand ( 1 , 10 ) .' '. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
+                        <td data-label="When">'. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
                         <td data-label="When-unix">'.$search->time.'</td>                        <td>'.$this->get_referrer_link($search) .'</td>
                     </tr>';
 		        }
@@ -1361,7 +1361,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         '<tr>
                             <td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term, $home_url ).'</td>
                             <td>'.$search->result_count.'</td>
-                            <td data-label="When">'.rand ( 1 , 10 ) .' '. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
+                            <td data-label="When">'. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
                             <td data-label="When-unix">'.$search->time.'</td>
                             <td>'.$this->get_referrer_link( $search ).'</td>
                         </tr>';
@@ -1620,24 +1620,29 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 1 => array(
                     'title' => '<div class="rsssl-yellow upsell-round"></div>',
                     'content' => __("Really Simple SSL - Easily migrate your website to SSL"),
-                    'status' => $this->get_rsssl_status(),
                     'class' => 'rsssl',
-                    'controls' => '',
+                    'constant_free' => 'rsssl_plugin',
+                    'constant_premium' => 'rsssl_pro_plugin',
+                    'website' => 'https://really-simple-ssl.com/pro',
+                    'search' => 'Really+Simple+SSL+Mark+Wolters',
                 ),
                 2 => array(
                     'title' => '<div class="cmplz-blue upsell-round"></div>',
                     'content' => __("Complianz Privacy Suite - Consent Management as it should be ", "wp-search-insights"),
-                    'status' => $this->get_cmplz_status(),
                     'class' => 'cmplz',
-                    'controls' => '',
+                    'constant_free' => 'cmplz_plugin',
+                    'constant_premium' => 'cmplz_premium',
+                    'website' => 'https://complianz.io/pricing',
+                    'search' => 'complianz',
                 ),
                 3 => array(
                     'title' => '<div class="zip-pink upsell-round"></div>',
                     'content' => __("Zip Recipes - Beautiful recipes optimized for Google ", "wp-search-insights"),
-                    'status' => $this->get_zip_status(),
                     'class' => 'zip',
-                    'controls' => '',
-                ),
+                    'constant_free' => 'ZRDN_PLUGIN_BASENAME',
+                    'constant_premium' => 'ZRDN_PREMIUM',
+                    'website' => 'https://ziprecipes.net/premium/',
+                    'search' => 'zip+recipes+recipe+maker+really+simple+plugins',                ),
             );
 
             $element = $this->get_template('upsell-element.php');
@@ -1652,56 +1657,39 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ), array(
                     $item['title'],
                     $item['content'],
-                    $item['status'],
+                    $this->get_status_link($item),
                     $item['class'],
-                    $item['controls'],
+                    '',
                 ), $element);
             }
 
 	        return $this->get_template('grid-container.php', wpsi_path . '/grid', array( 'content' => '<div class="wpsi-other-plugins-container">'.$output.'</div>', 'grid_type' => 'upsell'));
         }
 
-        public function get_rsssl_status() {
-            if (defined('rsssl_plugin') && defined('rsssl_pro_plugin')) {
-                $status = "Installed";
-            } elseif (defined('rsssl_plugin') && !defined('rsssl_pro_plugin')) {
-                $link = "https://really-simple-ssl.com/pro";
-                $text = __('Upgrade to pro', 'wp-search-insights');
-                $status = "<a href=$link>$text</a>";
-            }
-            else {
-                $link = admin_url() . "plugin-install.php?s=Really+Simple+SSL+Mark+Wolters&tab=search&type=term";
-                $text = __('Install', 'wp-search-insights');
-                $status = "<a href=$link>$text</a>";
-            }
-            return $status;
+	    /**
+         * Get status link for plugin, depending on installed, or premium availability
+	     * @param $item
+	     *
+	     * @return string
+	     */
+
+        public function get_status_link($item){
+	        if (defined($item['constant_free']) && defined($item['constant_premium'])) {
+		        $status = __("Installed", "wp-search-insights");
+	        } elseif (defined($item['constant_free']) && !defined($item['constant_premium'])) {
+		        $link = $item['website'];
+		        $text = __('Upgrade to pro', 'wp-search-insights');
+		        $status = "<a href=$link>$text</a>";
+	        } else {
+		        $link = admin_url() . "plugin-install.php?s=".$item['search']."&tab=search&type=term";
+		        $text = __('Install', 'wp-search-insights');
+		        $status = "<a href=$link>$text</a>";
+	        }
+	        return $status;
         }
 
-        public function get_cmplz_status() {
-            if (defined('cmplz_plugin') && defined('cmplz_premium')) {
-                $status = "Installed";
-            } elseif (defined('cmplz_plugin') && !defined('cmplz_premium')) {
-                $link = "https://complianz.io/pricing";
-                $text = __('Upgrade to pro', 'wp-search-insights');
-                $status = "<a href=$link>$text</a>";
-            } else {
-                $link = admin_url() . "plugin-install.php?s=complianz&tab=search&type=term";
-                $text = __('Install', 'wp-search-insights');
-                $status = "<a href=$link>$text</a>";
-            }
-            return $status;
-        }
 
-        public function get_zip_status() {
-            if (defined('ZRDN_PLUGIN_BASENAME')) {
-                $status = "Installed";
-            } else {
-                $link = admin_url() . "plugin-install.php?s=zip+recipes&tab=search&type=term";
-                $text = __('Install', 'wp-search-insights');
-                $status = "<a href=$link>$text</a>";
-            }
-            return $status;
-        }
+
 
         public function generate_tips_tricks()
         {
