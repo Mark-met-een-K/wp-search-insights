@@ -1338,8 +1338,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         <td data-label="Term" class="wpsi-term"
                             data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term , $home_url).'</td>
                         <td>'.$search->result_count.'</td>
-                        <td data-label="When">'.$this->get_date( $search->time ).'</td>
-                        <td>'.$this->get_referrer_link($search) .'</td>
+                        <td data-label="When">'.rand ( 1 , 10 ) .' '. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
+                        <td data-label="When-unix">'.$search->time.'</td>                        <td>'.$this->get_referrer_link($search) .'</td>
                     </tr>';
 		        }
 		        return $output;
@@ -1347,10 +1347,11 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 $output = '<table id="wpsi-recent-table" class="wpsi-table"><thead>
                     <tr class="wpsi-thead-th">
-                        <th scope="col" style="width: 15%;">'.__( "Search term", "wp-search-insights" ).'</th>
-                        <th scope="col" style="width: 5%;">'.__( "Results", "wp-search-insights" ).'</th>
-                        <th scope="col" style="width: 12%;" class="dashboard-tooltip-hits">'.__( "When", "wp-search-insights" ).'</th>
-                        <th scope="col" style="width: 15%;" class="dashboard-tooltip-from">'.__( "From", "wp-search-insights" ).'</th>
+                        <th scope="col">'.__( "Search term", "wp-search-insights" ).'</th>
+                        <th scope="col">'.__( "Results", "wp-search-insights" ).'</th>
+                        <th scope="col" class="dashboard-tooltip-hits">'.__( "When", "wp-search-insights" ).'</th>
+                        <th scope="col"></th>
+                        <th scope="col" class="dashboard-tooltip-from">'.__( "From", "wp-search-insights" ).'</th>
                     </tr>
                     </thead>
                     <tbody>';
@@ -1360,7 +1361,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         '<tr>
                             <td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term, $home_url ).'</td>
                             <td>'.$search->result_count.'</td>
-                            <td data-label="When">'.$this->get_date( $search->time ).'</td>
+                            <td data-label="When">'.rand ( 1 , 10 ) .' '. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
+                            <td data-label="When-unix">'.$search->time.'</td>
                             <td>'.$this->get_referrer_link( $search ).'</td>
                         </tr>';
 			        }
@@ -1444,42 +1446,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
 			return $wpdb->get_var( $query );
 		}
-
-	    /**
-         * Get localized date
-	     * @param int $unix
-	     *
-	     * @return string
-	     */
-
-        public function get_date($unix)
-        {
-            $date = date('Y-m-d', $unix);
-            $date = $this->localize_date($date);
-            $time = date('H:i', $unix);
-            $date = sprintf(__("%s at %s", 'wp-search-insights'), $date, $time);
-
-            return $date;
-        }
-
-        /**
-         * Get translated date
-         *
-         * @param $date
-         *
-         * @return mixed
-         */
-        public function localize_date($date)
-        {
-            $month = date('F', strtotime($date)); //june
-            $month_localized = __($month); //juni
-            $date = str_replace($month, $month_localized, $date);
-            $weekday = date('l', strtotime($date)); //wednesday
-            $weekday_localized = __($weekday); //woensdag
-            $date = str_replace($weekday, $weekday_localized, $date);
-
-            return $date;
-        }
 
         /**
          *
