@@ -92,12 +92,6 @@
       width: 95vw;
     }
 
-
-
-    //#wpsi-recent-table_filter input {
-    //  display: none;
-    //}
-
     .wpsi-sub-title {
       padding-top: 30px;
     }
@@ -106,19 +100,10 @@
       button {
         margin-top: 120px;
       }
-
-      //width: 300px;
-      //padding-left: 10px;
     }
 
     #settings {
-      margin-left: 0px;
-      //#settings-section {
-      //  width: 85vw;
-      //}
-      //#wpsi-filter {
-      //  width: 90vw;
-      //}
+      margin-left: 0;
     }
   }
 }
@@ -250,15 +235,13 @@ widget
   }
 }
 
-.wpsi-dashboard-widget-grid li {
-  height: 50px;
-  border-top: 0 !important;
-  border-bottom: 1px solid @border-color;
-  background-color: #fff;
-}
-
-.wpsi-dashboard-widget-grid ul {
-  border-top: 1px solid #eee;
+.wpsi-dashboard-widget-grid {
+  li {
+    height: 50px;
+    border-top: 0 !important;
+    border-bottom: 1px solid @border-color;
+    background-color: #fff;
+  }
 }
 
 .search-info-container {
@@ -823,9 +806,7 @@ widget
   }
 
   .wpsi-other-plugins-container {
-    //display: flex;
-    //justify-content: space-between;
-    height: 100%;
+    height: 110px;
     border-bottom: 1px solid @border-color;
     padding-bottom: 10px;
     width: 95%;
@@ -862,9 +843,9 @@ widget
       }
     }
   }
-  // hide the export buttons on popular searches tables
-  #wpsi-popular-table_wrapper > div.dt-buttons {
-    display: none;
+
+  #wpsi-start-export {
+    float:right;
   }
 
   /*
@@ -1337,38 +1318,35 @@ widget
   display: none;
   position: relative;
   background-color: #fff;
-  border: 1px solid #ccd0d4;
-  border-top-color: rgb(204, 208, 212);
-  border-top-style: solid;
-  border-top-width: 1px;
+  border: 1px solid rgb(204, 208, 212);
   border-top: 0;
   box-shadow: 0 0 0 transparent;
+  #wpsi-toggle-dashboard-text {
+    padding-top: 25px;
+    padding-left: 15px;
+    font-weight: 600;
+  }
+  #wpsi-checkboxes {
+    padding-top: 10px;
+    .wpsi-toggle-items {
+      margin-left: 15px !important;
+    }
+  }
 }
 
-#wpsi-toggle-dashboard-text {
-  padding-top: 25px;
-  padding-left: 15px;
-  font-weight: 600;
-}
-
-#wpsi-checkboxes {
-  padding-top: 10px;
-}
-
-.wpsi-toggle-items {
-  margin-left: 15px !important;
-}
 
 #wpsi-toggle-link-wrap {
   width: 150px;
+  #wpsi-show-toggles {
+    width: 135px ;
+    background-color: white ;
+    color: #0a6aa1 ;
+    border-color: #7e8993;
+  }
 }
 
 
-#wpsi-show-toggles {
-  width: 135px !important;
-  background-color: white !important;
-  color: #0a6aa1 !important;
-}
+
 
 
 /*skeleton*/

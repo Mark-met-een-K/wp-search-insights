@@ -434,7 +434,6 @@ if ( ! class_exists( 'Search' ) ) {
 		            default:
 			            $range = time() - MONTH_IN_SECONDS;
 	            }
-				unset($args['range']);
 	            $args['time'] = $range;
             }
 

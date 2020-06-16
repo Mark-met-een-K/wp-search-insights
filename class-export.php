@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 	class WPSI_EXPORT {
 		private static $_this;
-		public $filename = "wpsi-export.csv";
 		public $rows = 500;
 
 		static function this() {
@@ -150,10 +149,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			if ($count == 0 ){
 				$percent = 100;
 			} else {
-			    error_log("rows ".$this->rows);
 				$percent = 100 * ( ($progress * $this->rows) / $count );
-				error_log("calculated percent  ".$percent);
-
 				if ($percent >= 100) $percent = 100;
 			}
 			if ($percent >= 100) {
@@ -170,7 +166,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			$json  = json_encode($searches);
 			$searches = json_decode($json, true);
 
-			$this->create_csv_file($this->filename, $searches);
+			$this->create_csv_file($searches);
 			return $percent;
 		}
 
@@ -182,18 +178,20 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		 */
 
 		private function parse_headers_from_array($array){
-		    if (!isset($array[0])) return false;
+		    if (!isset($array[0])) return array();
 		    $array = $array[0];
             return array_keys($array);
         }
 
 		/**
-         * create csv file from array
-		 * @param $filename
+		 * create csv file from array
+		 *
 		 * @param $data
+		 *
+		 * @throws Exception
 		 */
 
-		private function create_csv_file($filename, $data){
+		private function create_csv_file($data){
 			$delimiter=";";
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
 			$uploads = wp_upload_dir();
@@ -206,8 +204,15 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 				mkdir($upload_dir . "/wpsi");
 			}
 
+			//generate random filename for storage
+            if (!get_option('wpsi_file_name')) {
+	            $token = str_shuffle ( time() );
+
+            	update_option('wpsi_file_name', $token);
+            }
+			$filename = get_option('wpsi_file_name');
 			//set the path
-			$file = $upload_dir . "/wpsi/".$filename;
+			$file = $upload_dir . "/wpsi/".$filename.".csv";
 
 			//'a' creates file if not existing, otherwise appends.
 			$csv_handle = fopen ($file,'a');
@@ -227,12 +232,12 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		private function filepath(){
 			$uploads = wp_upload_dir();
 			$upload_dir = $uploads['basedir'];
-			return $upload_dir . "/wpsi/".$this->filename;
+			return $upload_dir . "/wpsi/".get_option('wpsi_file_name').".csv";
 		}
 
 		private function fileurl(){
 			$uploads = wp_upload_dir();
-			return $uploads['baseurl'] . "/wpsi/".$this->filename;
+			return $uploads['baseurl'] . "/wpsi/".get_option('wpsi_file_name').".csv";
 		}
 
 	}
