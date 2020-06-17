@@ -60,7 +60,7 @@ jQuery(document).ready(function($) {
         });
         main_tour.addStep('wpsi-step-3', {
             classes: 'shepherd-theme-arrows shepherd-has-cancel-link',
-            attachTo: '#wpsi-recent-table_wrapper right',
+            attachTo: '.table-overview right',
             title: steps[3]['title'],
             text: wpsi_tour.html.replace('{content}', steps[3]['text']),
             buttons: [
