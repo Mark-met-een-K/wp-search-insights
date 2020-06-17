@@ -115,7 +115,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 5 => array(
                     'title' => __("Our Plugins", "wp-search-insights").'<div class="rsp-logo"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></div>',
                     'content' => $this->generate_other_plugins(),
-                    'class' => 'half-height no-border no-background upsell-grid-container ',
+                    'class' => 'half-height no-border no-background upsell-grid-container upsell',
                     'type' => 'plugins',
                     'can_hide' => false,
                     'controls' => '',
@@ -592,30 +592,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 'wpsi-settings-tab'
             );
 
-            add_settings_field(
-                'wpsi_cleardatabase',
-                __("Clear data on plugin uninstall", 'wp-search-insights'),
-                array($this, 'option_clear_database_on_uninstall'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
-            );
-
-            add_settings_field(
-                'wpsi_clear_database',
-                __("Clear database", 'wp-search-insights'),
-                array($this, 'option_wpsi_clear_database'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
-            );
-
             // Register our setting so that $_POST handling is done for us and
             // our callback function just has to echo the <input>
             register_setting('wpsi-settings-tab', 'wpsi_exclude_admin');
-            register_setting('wpsi-settings-tab', 'wpsi_cleardatabase');
             register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
-
 
 	        add_settings_section(
 		        'wpsi-filter-tab',
@@ -631,7 +613,26 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		        'wpsi-filter',
 		        'wpsi-filter-tab'
 	        );
+
+	        add_settings_field(
+		        'wpsi_cleardatabase',
+		        __("Clear data on plugin uninstall", 'wp-search-insights'),
+		        array($this, 'option_clear_database_on_uninstall'),
+		        'wpsi-filter',
+		        'wpsi-filter-tab'
+	        );
+
+	        add_settings_field(
+		        'wpsi_clear_database',
+		        __("Clear database", 'wp-search-insights'),
+		        array($this, 'option_wpsi_clear_database'),
+		        'wpsi-filter',
+		        'wpsi-filter-tab'
+	        );
+
             register_setting('wpsi-filter-tab', 'wpsi_filter_textarea');
+	        register_setting('wpsi-filter-tab', 'wpsi_cleardatabase');
+
 
         }
 
@@ -975,21 +976,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
-	    /**
-	     * Save button for the forms
-	     */
 
-        public function save_button($add_border=false) {
-            if ($add_border){
-	            ?> <div id="clear-searches-btn-border"></div> <?php
-            }
-            ?>
-            <input class="button-secondary" name="Submit"
-                   type="submit"
-                   value="<?php echo __("Save",
-                       "wp-search-insights"); ?>"/>
-            <?php
-        }
 
         /**
          *
@@ -1114,9 +1101,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches = get_transient("wpsi_popular_searches_month");
-            if ($on_grid) $popular_searches = false;
-            if (!$popular_searches) {
+            $popular_searches_no_results = get_transient("wpsi_popular_searches_month");
+            if ($on_grid) $popular_searches_no_results = false;
+            if (!$popular_searches_no_results) {
                 $args = array(
                     'orderby' => 'frequency',
                     'order' => 'DESC',
@@ -1126,14 +1113,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 //from the dashboard, we don't get a start-end range. We use default month.
                 if (!$start) {
-                    $args['range'] = 'month';
+                    $args['range'] = 'week';
                 } else {
 	                $args['date_from'] = $start;
 	                $args['date_to'] = $end;
                 }
 
-                $popular_searches = WPSI::$search->get_searches($args, $trend = true);
-                set_transient("wpsi_popular_searches_month", $popular_searches, HOUR_IN_SECONDS);
+	            $popular_searches_no_results = WPSI::$search->get_searches($args, $trend = true);
+                set_transient("wpsi_popular_searches_month", $popular_searches_no_results, HOUR_IN_SECONDS);
             }
 
             if (!$on_grid) {
@@ -1141,36 +1128,57 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             } else {
                 $tmpl = $this->get_template('grid-dashboard-row.php');
             }
-            if (count($popular_searches) == 0) {
-                $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
-                    'dashicons-no-alt',
-                    __("No recorded searches yet", "wp-search-insights"),
-                    '',
-                    ''
-                ), $tmpl);
-            }
-	        $home_url = home_url();
-            foreach ($popular_searches as $search) {
-                if ($search->frequency == $search->previous_frequency) {
-                    $icon = 'dashicons-minus';
-                } elseif ($search->frequency > $search->previous_frequency) {
-                    $icon = 'dashicons-arrow-up-alt';
-                } else {
-                    $icon = 'dashicons-arrow-down-alt';
-                }
-                $time = sprintf(__("%s ago", "wp-search-insights"), human_time_diff($search->time, current_time('timestamp')));
-                $searches = sprintf(_n('%s search', '%s searches', $search->frequency, 'wpsi-search-insights'), number_format_i18n($search->frequency));
-                $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
-                    $icon,
-                    $this->get_term_link($search->term, $home_url),
-                    $searches,
-                    $time
-                ), $tmpl);
+
+            if (!$on_grid) {
+	            if ( count( $popular_searches_no_results ) == 0 ) {
+		            $html .= str_replace( array(
+			            "{icon}",
+			            "{link}",
+			            "{searches}",
+			            "{time}"
+		            ), array(
+			            'dashicons-no-alt',
+			            __( "No recorded searches", "wp-search-insights" ),
+			            '',
+			            ''
+		            ), $tmpl );
+	            }
+
+	            $home_url = home_url();
+	            foreach ( $popular_searches_no_results as $search ) {
+		            if ( $search->frequency == $search->previous_frequency ) {
+			            $icon = 'dashicons-minus';
+		            } elseif ( $search->frequency
+		                       > $search->previous_frequency
+		            ) {
+			            $icon = 'dashicons-arrow-up-alt';
+		            } else {
+			            $icon = 'dashicons-arrow-down-alt';
+		            }
+		            $time = sprintf( __( "%s ago", "wp-search-insights" ),
+			            human_time_diff( $search->time,
+				            current_time( 'timestamp' ) ) );
+		            $searches = sprintf( _n( '%s search', '%s searches',
+			            $search->frequency, 'wpsi-search-insights' ),
+			            number_format_i18n( $search->frequency ) );
+		            $html .= str_replace( array(
+			            "{icon}",
+			            "{link}",
+			            "{searches}",
+			            "{time}"
+		            ), array(
+			            $icon,
+			            $this->get_term_link( $search->term, $home_url ),
+			            $searches,
+			            $time
+		            ), $tmpl );
+	            }
+
+	            $widget = str_replace( '{popular_searches}', $html, $widget );
             }
 
-            $widget = str_replace('{popular_searches}', $html, $widget);
-
-            $html = "";
+            //reset html
+	        $html = '';
             $top_searches = get_transient("wpsi_top_searches_week");
 	        if ($on_grid) $top_searches = false;
 
@@ -1179,19 +1187,26 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'orderby' => 'frequency',
                     'order' => 'DESC',
                     'number' => 5,
-                    'range' => 'week',
                 );
+		        if (!$start) {
+			        $args['range'] = 'week';
+		        } else {
+			        $args['date_from'] = $start;
+			        $args['date_to'] = $end;
+		        }
                 $top_searches = WPSI::$search->get_searches($args, $trend = true);
                 set_transient("wpsi_top_searches_week", $top_searches, HOUR_IN_SECONDS);
             }
+
             if (count($top_searches) == 0) {
                 $html .= str_replace(array("{icon}", "{link}", "{searches}", "{time}"), array(
                     'dashicons-no-alt',
-                    __("No recorded searches yet", "wp-search-insights"),
+                    __("No recorded searches", "wp-search-insights"),
                     '',
                     ''
                 ), $tmpl);
             }
+
 	        $home_url = home_url();
             foreach ($top_searches as $search) {
                 if ($search->frequency == $search->previous_frequency) {
@@ -1390,7 +1405,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
         	if (!$home_url) $home_url = home_url();
 
-            $search_url = $home_url. "?s=" . esc_url_raw($term) . "&searchinsights";
+            $search_url = $home_url. "?s=" . esc_attr($term) . "&searchinsights";
 
 	        //make sure the link is not too long
 	        if (strlen($term)>28){
@@ -1663,7 +1678,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ), $element);
             }
 
-	        return $this->get_template('grid-container.php', wpsi_path . '/grid', array( 'content' => '<div class="wpsi-other-plugins-container">'.$output.'</div>', 'grid_type' => 'upsell'));
+            return $output;
         }
 
 	    /**

@@ -23,18 +23,12 @@
 }
 
 #wpsi-dashboard {
-
   .button-secondary {
-    background-color: #fff;
-    border-color: @light-text-color;
-    color:@light-text-color;
-    width: 100px;
-    text-align: center;
+    min-width: 100px;
+  }
+
+  .muuri-item .button-secondary {
     margin-bottom:20px;
-    &:hover {
-      color:#000;
-      border-color:#000;
-    }
   }
 
   //set opacity to 0 to make sure the grid only shows after fully loaded
@@ -224,19 +218,11 @@ widget
       margin-right: 25px;
     }
 
-    .button:hover {
-      background-color: #007BBC;
-    }
-
     .tab-links {
       display: flex;
       flex-direction: row;
       margin-left: 0;
     }
-  }
-
-  #wpsi-dashboard-widget {
-    padding-top: 30px;
   }
 }
 
@@ -339,6 +325,14 @@ widget
 
     &.wpsi-export {
       float: left;
+
+
+    }
+  }
+
+  .wpsi-export-grid {
+    .button-secondary {
+      margin-bottom:0;
     }
   }
 
@@ -376,22 +370,21 @@ widget
     margin: 0px;
     padding: 0px;
     list-style: none;
-    height: 70px;
+    height: 66px;
+    li {
+      background: none;
+      color: #222;
+      display: inline-block;
+      padding: 15px 15px 15px 15px;
+      cursor: pointer;
+      margin: 0;
+      &.current {
+        background: #ffffff;
+        color: #222;
+      }
+    }
   }
 
-  ul.tabs li {
-    background: none;
-    color: #222;
-    display: inline-block;
-    padding: 15px 15px 15px 15px;
-    cursor: pointer;
-    margin: 0;
-  }
-
-  ul.tabs li.current {
-    background: #ffffff;
-    color: #222;
-  }
 
   .tab-content {
     display: none;
@@ -403,7 +396,7 @@ widget
     display: none;
     text-shadow: none !important;
     vertical-align: middle;
-    margin-left: 25px;
+    margin-right: 39px;
     margin-bottom: 10px;
   }
 
@@ -430,16 +423,19 @@ widget
   }
 
   .item-content {
-    padding-top: 15px;
+    padding: 15px 20px;
     flex: 1;
     margin: 0 auto;
     position: relative;
-    width: 95%;
 
     input[type="search"] {
       width: 250px;
-      margin-right: 10px;
+      margin-right: 20px;
       border: 1px solid #DEDEDE;
+      //some style to prevent override from wp on mobile
+      padding: 0 8px;
+      line-height: 2;
+      min-height: 30px;
     }
 
     table {
@@ -562,7 +558,7 @@ widget
     justify-content: center;
     padding-top: 10px;
     position: absolute;
-    bottom: 30px;
+    bottom: 45px;
     width: 100%;
 
     button {
@@ -704,7 +700,7 @@ widget
   }
 
   .percentage {
-    font-size: 1.8em;
+    font-size: 3.2em;
     font-weight: 700;
   }
 
@@ -759,14 +755,11 @@ widget
     float:right;
   }
 
-
-
   .date-btn-all-searches {
     position: absolute;
     right: 180px;
     margin-top: 5px;
   }
-
 
   .wpsi-nr-footer {
     display: flex;
@@ -786,19 +779,6 @@ widget
   .upsell-grid-container {
     display: flex !important; //we need important here, because the grid switch overrides it on element level
     justify-content: space-between;
-
-    .item-content {
-      width: 100%;
-    }
-
-    .item-container {
-      box-shadow: none;
-      border: 1px solid @border-color;
-    }
-
-  }
-
-  .upsell-grid-container {
     .wpsi-drag-handle {
       display: flex;
       align-items: center;
@@ -813,12 +793,7 @@ widget
     }
   }
 
-  .wpsi-other-plugins-container {
-    height: 110px;
-    border-bottom: 1px solid @border-color;
-    padding-bottom: 10px;
-    width: 95%;
-
+  .upsell-grid-container{
     .wpsi-upsell {
       display: flex !important; //we need important here, because the grid switch overrides it on element level
       flex-direction: row;
@@ -847,7 +822,6 @@ widget
 
       .plugin-status {
         margin-left: auto;
-        //padding-right: 25px;
       }
     }
   }
@@ -956,6 +930,15 @@ widget
   }
 
   #settings {
+    .form-table th {
+      font-weight:400;
+    }
+    .wpsi-download-link {
+      padding-top:6px;
+      a {
+        margin-right: 20px;
+      }
+    }
     textarea {width:100%}
     td {
       display: flex;
@@ -1352,7 +1335,7 @@ widget
     width: 135px ;
     background-color: white ;
     color: #0a6aa1 ;
-    border-color: #7e8993;
+    border-color: #ccc;
   }
 }
 
