@@ -137,7 +137,7 @@ function wpsi_tab_options(){
         </div>
         <div class="header-upsell">
             <a href="https://paypal.me/wpsearchinsights" target="_blank">
-                <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
+                <button class="button button-primary donate"><?php _e("Donate", "wp-search-insights");?></button>
             </a>
         </div>
     </div>

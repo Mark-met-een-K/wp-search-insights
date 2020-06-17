@@ -4,6 +4,11 @@
 @light-text-color: #3c3c3c;
 @border-color: #DEDEDE;
 
+//hack to make sure the wp footer is at the bottom
+#wpfooter{
+  position:relative;
+}
+
 //make sure it floats on top of the wp menu
 .daterangepicker.show-calendar {
   z-index: 9999 !important;
