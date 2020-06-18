@@ -1,3 +1,6 @@
+#wpfooter {
+  position: relative;
+}
 .daterangepicker.show-calendar {
   z-index: 9999 !important;
 }
@@ -8,16 +11,10 @@
   margin: 0 0 0 0;
 }
 #wpsi-dashboard .button-secondary {
-  background-color: #fff;
-  border-color: #3c3c3c;
-  color: #3c3c3c;
-  width: 100px;
-  text-align: center;
-  margin-bottom: 20px;
+  min-width: 100px;
 }
-#wpsi-dashboard .button-secondary:hover {
-  color: #000;
-  border-color: #000;
+#wpsi-dashboard .muuri-item .button-secondary {
+  margin-bottom: 20px;
 }
 #wpsi-dashboard .item-container {
   opacity: 0;
@@ -171,16 +168,10 @@ widget
 #wpsi-dashboard .tabs .documentation {
   margin-right: 25px;
 }
-#wpsi-dashboard .tabs .button:hover {
-  background-color: #007BBC;
-}
 #wpsi-dashboard .tabs .tab-links {
   display: flex;
   flex-direction: row;
   margin-left: 0;
-}
-#wpsi-dashboard #wpsi-dashboard-widget {
-  padding-top: 30px;
 }
 .wpsi-dashboard-widget-grid li {
   height: 50px;
@@ -305,6 +296,9 @@ widget
 #wpsi-dashboard .wpsi-date-container.wpsi-export {
   float: left;
 }
+#wpsi-dashboard .wpsi-export-grid .button-secondary {
+  margin-bottom: 0;
+}
 #wpsi-dashboard .dataTables_length {
   display: none;
 }
@@ -325,7 +319,7 @@ widget
   margin: 0px;
   padding: 0px;
   list-style: none;
-  height: 70px;
+  height: 66px;
 }
 #wpsi-dashboard ul.tabs li {
   background: none;
@@ -348,7 +342,7 @@ widget
   display: none;
   text-shadow: none !important;
   vertical-align: middle;
-  margin-left: 25px;
+  margin-right: 39px;
   margin-bottom: 10px;
 }
 #wpsi-dashboard .tab-content.current {
@@ -364,16 +358,18 @@ widget
   flex-direction: column;
 }
 #wpsi-dashboard #dashboard .item-content {
-  padding-top: 15px;
+  padding: 15px 20px;
   flex: 1;
   margin: 0 auto;
   position: relative;
-  width: 95%;
 }
 #wpsi-dashboard #dashboard .item-content input[type="search"] {
   width: 250px;
-  margin-right: 10px;
+  margin-right: 20px;
   border: 1px solid #DEDEDE;
+  padding: 0 8px;
+  line-height: 2;
+  min-height: 30px;
 }
 #wpsi-dashboard #dashboard .item-content table {
   border-collapse: collapse;
@@ -458,7 +454,7 @@ widget
   justify-content: center;
   padding-top: 10px;
   position: absolute;
-  bottom: 30px;
+  bottom: 45px;
   width: 100%;
 }
 #wpsi-dashboard .table-footer button {
@@ -565,7 +561,7 @@ widget
   padding-top: 20px;
 }
 #wpsi-dashboard .percentage {
-  font-size: 1.8em;
+  font-size: 3.2em;
   font-weight: 700;
 }
 #wpsi-dashboard .percentage-text {
@@ -625,13 +621,6 @@ widget
   display: flex !important;
   justify-content: space-between;
 }
-#wpsi-dashboard .upsell-grid-container .item-content {
-  width: 100%;
-}
-#wpsi-dashboard .upsell-grid-container .item-container {
-  box-shadow: none;
-  border: 1px solid #DEDEDE;
-}
 #wpsi-dashboard .upsell-grid-container .wpsi-drag-handle {
   display: flex;
   align-items: center;
@@ -644,35 +633,29 @@ widget
   height: 30px;
   padding-right: 10px;
 }
-#wpsi-dashboard .wpsi-other-plugins-container {
-  height: 110px;
-  border-bottom: 1px solid #DEDEDE;
-  padding-bottom: 10px;
-  width: 95%;
-}
-#wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell {
+#wpsi-dashboard .upsell-grid-container .wpsi-upsell {
   display: flex !important;
   flex-direction: row;
   padding: 6px;
   align-items: center;
   color: #3c3c3c;
 }
-#wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .upsell-round {
+#wpsi-dashboard .upsell-grid-container .wpsi-upsell .upsell-round {
   height: 15px;
   width: 15px;
   border-radius: 50%;
   margin-right: 10px;
 }
-#wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .rsssl-yellow {
+#wpsi-dashboard .upsell-grid-container .wpsi-upsell .rsssl-yellow {
   background-color: #EFBF4B;
 }
-#wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .cmplz-blue {
+#wpsi-dashboard .upsell-grid-container .wpsi-upsell .cmplz-blue {
   background-color: #27ADEA;
 }
-#wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .zip-pink {
+#wpsi-dashboard .upsell-grid-container .wpsi-upsell .zip-pink {
   background-color: #E366A1;
 }
-#wpsi-dashboard .wpsi-other-plugins-container .wpsi-upsell .plugin-status {
+#wpsi-dashboard .upsell-grid-container .wpsi-upsell .plugin-status {
   margin-left: auto;
 }
 #wpsi-dashboard #wpsi-start-export {
@@ -749,6 +732,15 @@ widget
 }
 #wpsi-dashboard .filter-save {
   margin-left: 25px;
+}
+#wpsi-dashboard #settings .form-table th {
+  font-weight: 400;
+}
+#wpsi-dashboard #settings .wpsi-download-link {
+  padding-top: 6px;
+}
+#wpsi-dashboard #settings .wpsi-download-link a {
+  margin-right: 20px;
 }
 #wpsi-dashboard #settings textarea {
   width: 100%;
@@ -1054,7 +1046,7 @@ widget
   width: 135px ;
   background-color: white ;
   color: #0a6aa1;
-  border-color: #7e8993;
+  border-color: #ccc;
 }
 /*skeleton*/
 /*

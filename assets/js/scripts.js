@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
     "use strict";
 
-    var wpsiScreensizeHideColumn = 600;
+    var wpsiScreensizeHideColumn = 768;
     var deleteBtn = $('#wpsi-delete-selected');
     var lastSelectedPage = 0;
 
@@ -63,7 +63,9 @@ jQuery(document).ready(function ($) {
             "columnDefs": [
                 { "visible": false,  "targets": [ 3 ] },
                 { "iDataSort": 3, "aTargets": [ 2] },
-                columnTwoDef
+                columnTwoDef,
+                { "targets": [1,2,3,4], "searchable": false } //search only on first column
+
             ],
             conditionalPaging: true,
             buttons: [

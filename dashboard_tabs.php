@@ -101,6 +101,7 @@ function wpsi_grid_content_settings(){
 	ob_start();
 	do_settings_sections('wpsi-settings');
 	settings_fields('wpsi-settings-tab');
+	wpsi_save_button();
 	return ob_get_clean();
 }
 
@@ -109,7 +110,17 @@ function wpsi_grid_content_filter(){
 	ob_start();
 	do_settings_sections('wpsi-filter');
 	settings_fields('wpsi-filter-tab');
+	wpsi_save_button();
+
 	return ob_get_clean();
+}
+
+/**
+ * Save button for the settings pages
+ */
+
+function wpsi_save_button(){
+	echo '<input class="button-secondary" name="Submit" type="submit" value="'.__("Save", "wp-search-insights").'">';
 }
 
 /**
@@ -124,9 +135,6 @@ function wpsi_tab_options(){
             <span></span>
             <i class="dashicons dashicons-arrow-down-alt2"></i>
         </div>
-        <div class="documentation">
-            <a href="https://wpsearchinsights.com/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
-        </div>
         <div id="wpsi-toggle-options">
             <div id="wpsi-toggle-link-wrap">
                 <button type="button" id="wpsi-show-toggles" class="button button button-upsell"
@@ -135,9 +143,12 @@ function wpsi_tab_options(){
                 </button>
             </div>
         </div>
+        <div class="documentation">
+            <a class="button button-secondary" href="https://wpsearchinsights.com/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
+        </div>
         <div class="header-upsell">
             <a href="https://paypal.me/wpsearchinsights" target="_blank">
-                <button class="button button-upsell donate"><?php _e("Donate", "wp-search-insights");?></button>
+                <button class="button button-primary donate"><?php _e("Donate", "wp-search-insights");?></button>
             </a>
         </div>
     </div>

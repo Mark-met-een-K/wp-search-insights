@@ -27,14 +27,14 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 		public function export_block($blocks){
 			$blocks[] = array(
-				'title' => __( "Export", "wp-search-insights" ),
+				'title' => __( "Data", "wp-search-insights" ),
 				'content' => $this->content_export(),
 				'index' => 'export',
+				'class' => 'wpsi-export-grid',
 				'type'=> 'export',
 				'controls' => '',
 			);
 			return $blocks;
-
 		}
 
 
@@ -44,21 +44,32 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 			$link = '';
 			if (file_exists($this->filepath() )){
-				$link = '<a href="'.$this->fileurl().'">'.__("Download", "wp-search-insights").'</a></div>';
+				$link = '<a href="'.$this->fileurl().'">'.__("Download", "wp-search-insights").'</a>';
 			}
-
 			ob_start();
-			?>
-            <div class="wpsi-date-container wpsi-export">
-                <i class="dashicons dashicons-calendar-alt"></i>&nbsp;
-                <span></span>
-                <i class="dashicons dashicons-arrow-down-alt2"></i>
-            </div>
 
-			<button <?=$disabled?> class="button-secondary" id="wpsi-start-export"><?php _e("Export", "wp-search-insights")?></button>
-			<div class="wpsi-download-link"><?=$link?></div>
-			<?php
-			return ob_get_clean();
+			?>
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><?php _e("Export database", "wp-search-insights")?></th>
+                        <td>
+                            <div class="wpsi-date-container wpsi-export">
+                                <i class="dashicons dashicons-calendar-alt"></i>&nbsp;
+                                <span></span>
+                                <i class="dashicons dashicons-arrow-down-alt2"></i>
+                            </div>
+                            <div class="wpsi-download-link"><?=$link?></div>
+
+                            <button <?=$disabled?> class="button-secondary" id="wpsi-start-export">
+                                <?php _e("Export", "wp-search-insights")?></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+			<?php return ob_get_clean();
 		}
 
 

@@ -8,8 +8,3 @@
 		<div class="item-content">{content}</div>
 	</div>
 </div>
-
-<!--
-
-		<div class="wpsi-nr-header">
-			<div class="wpsi-nr-header-items">-->
