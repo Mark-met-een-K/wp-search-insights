@@ -1693,7 +1693,7 @@ error_log(print_r($args, true));
                 ), $element);
             }
 
-            return $output;
+            return '<div>'.$output.'</div>';
         }
 
 	    /**

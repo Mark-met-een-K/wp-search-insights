@@ -166,7 +166,7 @@ widget
   margin-top: 6px;
 }
 #wpsi-dashboard .tabs .documentation {
-  margin-right: 25px;
+  margin-right: 20px;
 }
 #wpsi-dashboard .tabs .tab-links {
   display: flex;
@@ -288,8 +288,9 @@ widget
 #wpsi-dashboard .wpsi-date-container {
   background: #fff;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border: 1px solid #ccc;
+  border-radius: 3px;
   margin-right: 20px;
   white-space: nowrap;
 }
@@ -751,7 +752,8 @@ widget
   margin-bottom: 20px;
   width: 95%;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div,
+#wpsi-dashboard .upsell-grid-container .item-content > div {
   display: flex !important;
   flex-direction: column;
   flex-wrap: wrap;
@@ -759,24 +761,30 @@ widget
   margin-bottom: 10px;
   border-bottom: 1px solid #DEDEDE;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element,
+#wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element {
   color: #3c3c3c;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element a {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element a,
+#wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element a {
   color: #3c3c3c;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element a:hover {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element a:hover,
+#wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element a:hover {
   color: #d7263d;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-bullet {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-bullet,
+#wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element .wpsi-bullet {
   margin: 7px;
   background-color: #ededed;
   float: left;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-bullet:hover {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-bullet:hover,
+#wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element .wpsi-bullet:hover {
   background-color: #d7263d;
 }
-#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-tips-tricks-content {
+#wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-tips-tricks-content,
+#wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element .wpsi-tips-tricks-content {
   margin: 7px 0;
   float: left;
 }
@@ -1026,11 +1034,11 @@ widget
 }
 #wpsi-toggle-dashboard #wpsi-toggle-dashboard-text {
   padding-top: 25px;
-  padding-left: 15px;
+  padding-left: 35px;
   font-weight: 600;
 }
 #wpsi-toggle-dashboard #wpsi-checkboxes {
-  padding-top: 10px;
+  padding: 10px 0 0 20px;
 }
 #wpsi-toggle-dashboard #wpsi-checkboxes .wpsi-toggle-items {
   margin-left: 15px !important;
@@ -1041,7 +1049,7 @@ widget
 #wpsi-toggle-link-wrap #wpsi-show-toggles {
   width: 135px ;
   background-color: white ;
-  color: #0a6aa1;
+  color: #000000;
   border-color: #ccc;
 }
 /*skeleton*/
