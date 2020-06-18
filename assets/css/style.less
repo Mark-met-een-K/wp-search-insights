@@ -961,36 +961,43 @@ widget
     Tips and Tricks
    */
 
-  .wpsi-tips-tricks .item-content>div {
-    display: flex !important;
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: 100px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid @border-color;
+  .wpsi-tips-tricks, .upsell-grid-container {
+    .item-content > div {
+      display: flex !important;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: 100px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid @border-color;
 
-    .wpsi-tips-tricks-element {
-      a{
-        color:@light-text-color;
-        &:hover {
-        color: @brand-primary;
-      }
-      }
-      .wpsi-bullet {
-        margin:7px;
-        background-color: @grey-light;
-        float:left;
-        &:hover {
-          background-color: @brand-primary;
+      .wpsi-tips-tricks-element {
+        a {
+          color: @light-text-color;
+
+          &:hover {
+            color: @brand-primary;
+          }
         }
-      }
-      color: @light-text-color;
-      .wpsi-tips-tricks-content {
-        margin:7px 0;
 
-        float:left;
-      }
+        .wpsi-bullet {
+          margin: 7px;
+          background-color: @grey-light;
+          float: left;
 
+          &:hover {
+            background-color: @brand-primary;
+          }
+        }
+
+        color: @light-text-color;
+
+        .wpsi-tips-tricks-content {
+          margin: 7px 0;
+
+          float: left;
+        }
+
+      }
     }
   }
 
