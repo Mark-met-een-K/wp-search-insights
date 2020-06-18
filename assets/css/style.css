@@ -782,7 +782,6 @@ widget
 #wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-bullet:hover,
 #wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element .wpsi-bullet:hover {
   background-color: #d7263d;
-  text-decoration: underline;
 }
 #wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element .wpsi-tips-tricks-content,
 #wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element .wpsi-tips-tricks-content {
