@@ -74,19 +74,22 @@ function wpsi_tab_content_settings(){
 			'index' => 'filter',
 			'type'=> 'filter',
 			'controls' => '',
+			'tooltip' => __("Enter the terms you don't want to track here, comma separated.", "wp-search-insights"),
 		),
     );
 	$blocks = apply_filters('wpsi_settings_blocks', $blocks);
 
 	foreach($blocks as $index => $args) {
 		$args['index'] = $index;
+
 		$element    .= WPSI::$admin->get_template( 'grid-element.php',
 			wpsi_path . '/grid' , $args);
 	}
 
 	echo  WPSI::$admin->get_template( 'grid-container.php',wpsi_path . '/grid', array(
 		    'grid_type'=> 'settings',
-	        'content' => $element)
+	        'content' => $element
+        )
 	);
 }
 add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
