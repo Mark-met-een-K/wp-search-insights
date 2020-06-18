@@ -42,21 +42,16 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
             add_action('wp_ajax_wpsi_get_datatable', array($this, 'ajax_get_datatable'));
 
-
             if (current_user_can('manage_options')) {
-                add_action('update_option_wpsi_exclude_admin', array($this, 'redirect_to_settings_tab'));
-                add_action('update_option_wpsi_min_term_length', array($this, 'redirect_to_settings_tab'));
-                add_action('update_option_wpsi_max_term_length', array($this, 'redirect_to_settings_tab'));
-                add_action('update_option_wpsi_select_dashboard_capability', array($this, 'redirect_to_settings_tab'));
+	            add_action('shutdown', array($this, 'redirect_to_settings_tab'));
                 add_action('admin_init', array($this, 'listen_for_clear_database'), 40);
             }
 
             add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
-
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
 
-            }
+        }
 
 
 	    /**
@@ -567,7 +562,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 'wpsi-settings-tab'
             );
 
-
             add_settings_field(
                 'min_search_length',
                 __("Exclude searches shorter than characters", 'wp-search-insights'),
@@ -600,19 +594,30 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
 
 	        add_settings_section(
-		        'wpsi-filter-tab',
+		        'wpsi-settings-tab',
 		        __("", "wpsi-search-insights"),
 		        array($this, 'wpsi_settings_tab_intro'),
 		        'wpsi-filter'
 	        );
+
+	        /**
+	         * filter grid
+	         */
 
 	        add_settings_field(
 		        'wpsi_filter_textarea',
 		        __("Search Filter","wp-search-insights"),
 		        array($this, 'option_textarea_filter'),
 		        'wpsi-filter',
-		        'wpsi-filter-tab'
+		        'wpsi-settings-tab'
 	        );
+
+	        register_setting('wpsi-filter-tab', 'wpsi_filter_textarea');
+
+
+	        /**
+	         * data grid
+             */
 
 	        add_settings_section(
 		        'wpsi-data-tab',
@@ -620,7 +625,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		        array($this, 'wpsi_settings_tab_intro'),
 		        'wpsi-data'
 	        );
-
 
 	        add_settings_field(
 		        'wpsi_cleardatabase',
@@ -638,7 +642,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		        'wpsi-data-tab'
 	        );
 
-            register_setting('wpsi-data-tab', 'wpsi_filter_textarea');
 	        register_setting('wpsi-data-tab', 'wpsi_cleardatabase');
 
 
@@ -1024,11 +1027,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function redirect_to_settings_tab()
         {
-            $url = add_query_arg(array(
-                "page" => "wpsi-settings-page#settings#top",
+            if (isset($_GET['wpsi_redirect_to'])){
+                $url = add_query_arg(array(
+                "page" => "wpsi-settings-page#".sanitize_title($_GET['wpsi_redirect_to'])."#top",
             ), admin_url("tools.php"));
-            wp_safe_redirect($url);
-            exit;
+	            wp_safe_redirect($url);
+	            exit;
+            }
+
         }
 
         /**
@@ -1065,13 +1071,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if (file_exists($theme_file)) {
                 $file = $theme_file;
             }
-error_log(print_r($args, true));
+
             if (isset($args['tooltip'])) {
                 $args['tooltip'] = WPSI::$help->get_title_help_tip($args['tooltip']);
             } else {
 	            $args['tooltip'] = '';
             }
-	        error_log(print_r($args, true));
 
             if (strpos($file, '.php') !== false) {
                 ob_start();
@@ -1081,11 +1086,21 @@ error_log(print_r($args, true));
                 $contents = file_get_contents($file);
             }
 
+	        if (isset($args['type']) && ($args['type'] === 'settings' || $args['type'] === 'license')) {
+		        $form_open =  '<form action="'.esc_url( add_query_arg(array('wpsi_redirect_to' => sanitize_title($args['type'])), admin_url( 'options.php' ))).'" method="post">';
+                $form_close = '</form>';
+		        $button = wpsi_save_button();
+		        $contents = str_replace('{content}', $form_open.'{content}'.$button.$form_close, $contents);
+
+	        }
+
             foreach ($args as $key => $value ){
                 $contents = str_replace('{'.$key.'}', $value, $contents);
             }
 
-            return $contents;
+
+
+	        return $contents;
         }
 
         public function dashboard_row()
