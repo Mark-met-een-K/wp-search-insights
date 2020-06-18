@@ -510,16 +510,27 @@ widget
         border-bottom-left-radius: .55rem;
         border-bottom-right-radius: .55rem;
       }
-
     }
-
   }
 }
 
-  .wpsi-term a {
-    text-decoration: none;
-    color: @light-text-color;
+  //give textarea in filter grid a full width
+.full-width .item-content  {
+  th {
+    display: none;
   }
+  td {
+    padding:0;
+    textarea {
+      height:100px;
+    }
+  }
+}
+
+.wpsi-term a {
+  text-decoration: none;
+  color: @light-text-color;
+}
 
 
 
@@ -778,22 +789,6 @@ widget
     Other plugins
    */
 
-  .upsell-grid-container {
-    display: flex !important; //we need important here, because the grid switch overrides it on element level
-    justify-content: space-between;
-    .wpsi-drag-handle {
-      display: flex;
-      align-items: center;
-      margin-top: -5px;
-      .rsp-logo {
-        margin-left: auto;
-        img {
-          height: 30px;
-          padding-right: 10px;
-        }
-      }
-    }
-  }
 
   .wpsi-bullet {
     height: 15px;
@@ -803,14 +798,19 @@ widget
   }
 
   .upsell-grid-container{
+    //display: flex !important; //we need important here, because the grid switch overrides it on element level
+    //justify-content: space-between;
+    .rsp-logo {
+      img {
+        height: 30px;
+      }
+    }
     .wpsi-upsell {
       display: flex !important; //we need important here, because the grid switch overrides it on element level
       flex-direction: row;
       padding: 6px;
       align-items: center;
       color: @light-text-color;
-
-
 
       .rsssl-yellow {
             background-color: #EFBF4B;
@@ -873,23 +873,6 @@ widget
 
   .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
     display: none;
-  }
-
-  .settings-block {
-    padding-left: 25px;
-    padding-top: 10px;
-    margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
-    width: 800px;
-    float:left;
-    margin-right:30px;
-    &.full-width {
-      tr {
-        display: flex;
-        flex-direction: column;
-      }
-    }
   }
 
   #wpsi-filter {
@@ -1016,15 +999,17 @@ widget
   }
 
   /*Tooltips on dashboard/settings page*/
-
-  #settings .wpsi-tooltip-right {
+  .wpsi-tooltip-right {
     float: right;
-    margin-left: 8px;
-    margin-top: 1px;
   }
 
-  #dashboard .wpsi-tooltip-right {
-    float: right;
+  //.wpsi-grid-tooltip .wpsi-tooltip-right {
+  //  float:left;
+  //}
+
+  #settings .wpsi-tooltip-right {
+    margin-left: 8px;
+    margin-top: 1px;
   }
 
   .dashboard-tooltip-hits > span:nth-child(1) > span:nth-child(1) {

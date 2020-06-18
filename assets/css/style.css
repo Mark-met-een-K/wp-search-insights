@@ -425,6 +425,15 @@ widget
   border-bottom-left-radius: 0.55rem;
   border-bottom-right-radius: 0.55rem;
 }
+#wpsi-dashboard .full-width .item-content th {
+  display: none;
+}
+#wpsi-dashboard .full-width .item-content td {
+  padding: 0;
+}
+#wpsi-dashboard .full-width .item-content td textarea {
+  height: 100px;
+}
 #wpsi-dashboard .wpsi-term a {
   text-decoration: none;
   color: #3c3c3c;
@@ -617,27 +626,14 @@ widget
 #wpsi-dashboard .wpsi-nr-footer .dt-buttons {
   margin: 0 auto;
 }
-#wpsi-dashboard .upsell-grid-container {
-  display: flex !important;
-  justify-content: space-between;
-}
-#wpsi-dashboard .upsell-grid-container .wpsi-drag-handle {
-  display: flex;
-  align-items: center;
-  margin-top: -5px;
-}
-#wpsi-dashboard .upsell-grid-container .wpsi-drag-handle .rsp-logo {
-  margin-left: auto;
-}
-#wpsi-dashboard .upsell-grid-container .wpsi-drag-handle .rsp-logo img {
-  height: 30px;
-  padding-right: 10px;
-}
 #wpsi-dashboard .wpsi-bullet {
   height: 15px;
   width: 15px;
   border-radius: 50%;
   margin-right: 10px;
+}
+#wpsi-dashboard .upsell-grid-container .rsp-logo img {
+  height: 30px;
 }
 #wpsi-dashboard .upsell-grid-container .wpsi-upsell {
   display: flex !important;
@@ -689,20 +685,6 @@ widget
 }
 #wpsi-dashboard .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
   display: none;
-}
-#wpsi-dashboard .settings-block {
-  padding-left: 25px;
-  padding-top: 10px;
-  margin-top: 20px;
-  background-color: #fff;
-  box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
-  width: 800px;
-  float: left;
-  margin-right: 30px;
-}
-#wpsi-dashboard .settings-block.full-width tr {
-  display: flex;
-  flex-direction: column;
 }
 #wpsi-dashboard #wpsi-filter {
   background-color: #fff;
@@ -801,13 +783,12 @@ widget
 #wpsi-dashboard .wpsi-tips-tricks-container-title {
   border-bottom: 1px solid #DEDEDE;
 }
-#wpsi-dashboard #settings .wpsi-tooltip-right {
+#wpsi-dashboard .wpsi-tooltip-right {
   float: right;
+}
+#wpsi-dashboard #settings .wpsi-tooltip-right {
   margin-left: 8px;
   margin-top: 1px;
-}
-#wpsi-dashboard #dashboard .wpsi-tooltip-right {
-  float: right;
 }
 #wpsi-dashboard .dashboard-tooltip-hits > span:nth-child(1) > span:nth-child(1) {
   margin-left: -135px;

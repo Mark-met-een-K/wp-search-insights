@@ -15,12 +15,28 @@ if ( ! class_exists( 'wpsi_help' ) ) {
             return self::$_this;
         }
 
+	    /**
+	     * @param   string   $str
+	     *
+	     * @return false|string
+	     */
+
         public function get_help_tip($str){
-        ?>
-            <span class="wpsi-tooltip-right tooltip-right" data-wpsi-tooltip="<?php echo $str?>">
+            ?>
+            <span class="wpsi-tooltip-right" data-wpsi-tooltip="<?php echo $str?>">
                 <span class="dashicons dashicons-editor-help"></span>
             </span>
-        <?php
+            <?php
         }
+
+	    public function get_title_help_tip($str){
+		    ob_start();
+		    ?>
+		    <span class="wpsi-tooltip-right" data-wpsi-tooltip="<?php echo $str?>">
+                <span class="dashicons dashicons-editor-help"></span>
+            </span>
+		    <?php
+		    return ob_get_clean();
+	    }
     }//class closure
 } //if class exists closure

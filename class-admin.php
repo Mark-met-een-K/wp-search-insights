@@ -113,12 +113,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'controls' => '',
                 ),
                 5 => array(
-                    'title' => __("Our Plugins", "wp-search-insights").'<div class="rsp-logo"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></div>',
+                    'title' => __("Our Plugins", "wp-search-insights"),
                     'content' => $this->generate_other_plugins(),
                     'class' => 'half-height no-border no-background upsell-grid-container upsell',
                     'type' => 'plugins',
                     'can_hide' => false,
-                    'controls' => '',
+                    'controls' => '<div class="rsp-logo"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></div>',
                 ),
             );
         }
@@ -1065,6 +1065,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if (file_exists($theme_file)) {
                 $file = $theme_file;
             }
+error_log(print_r($args, true));
+            if (isset($args['tooltip'])) {
+                $args['tooltip'] = WPSI::$help->get_title_help_tip($args['tooltip']);
+            } else {
+	            $args['tooltip'] = '';
+            }
+	        error_log(print_r($args, true));
 
             if (strpos($file, '.php') !== false) {
                 ob_start();
