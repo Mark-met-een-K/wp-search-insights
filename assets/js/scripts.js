@@ -265,5 +265,16 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+
+
+    /**
+     * Set hover on tips tricks
+     */
+
+    $(".wpsi-tips-tricks-element a").hover(function() {
+        $(this).find('.wpsi-bullet').css("background-color","#d7263d");
+    }, function() {
+        $(this).find('.wpsi-bullet').css("background-color",""); //to remove property set it to ''
+    });
 });
 
