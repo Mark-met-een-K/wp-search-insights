@@ -64,15 +64,15 @@ function wpsi_tab_content_settings(){
 			'content' => wpsi_grid_content_settings(),
 			'class' => '',
 			'index' => 'settings',
-			'type'=> 'settings',
+			'type' => 'settings',
 			'controls' => '',
 		),
 		array(
 			'title' => __( "Filters", "wp-search-insights" ),
 			'content' => wpsi_grid_content_filter(),
 			'class' => 'half-height full-width',
-			'index' => 'filter',
-			'type'=> 'filter',
+			'index' => 'settings',
+			'type' => 'settings',
 			'controls' => '',
 			'tooltip' => __("Enter the terms you don't want to track here, comma separated.", "wp-search-insights"),
 		),
@@ -81,28 +81,22 @@ function wpsi_tab_content_settings(){
 
 	foreach($blocks as $index => $args) {
 		$args['index'] = $index;
-
-		$element    .= WPSI::$admin->get_template( 'grid-element.php',
+		$grid = WPSI::$admin->get_template( 'grid-element.php',
 			wpsi_path . '/grid' , $args);
+		$element .= $grid;
 	}
 
 	echo  WPSI::$admin->get_template( 'grid-container.php',wpsi_path . '/grid', array(
 		    'grid_type'=> 'settings',
-	        'content' => $element
+	        'content' => $element,
         )
 	);
 }
 add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
-
-
-
-
-
 function wpsi_grid_content_settings(){
 	ob_start();
 	do_settings_sections('wpsi-settings');
 	settings_fields('wpsi-settings-tab');
-	wpsi_save_button();
 	return ob_get_clean();
 }
 
@@ -111,7 +105,6 @@ function wpsi_grid_content_filter(){
 	ob_start();
 	do_settings_sections('wpsi-filter');
 	settings_fields('wpsi-filter-tab');
-	wpsi_save_button();
 
 	return ob_get_clean();
 }
@@ -121,7 +114,7 @@ function wpsi_grid_content_filter(){
  */
 
 function wpsi_save_button(){
-	echo '<input class="button-secondary" name="Submit" type="submit" value="'.__("Save", "wp-search-insights").'">';
+	return '<input class="button-secondary" name="Submit" type="submit" value="'.__("Save", "wp-search-insights").'">';
 }
 
 /**

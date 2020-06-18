@@ -20,7 +20,6 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 			add_filter("wpsi_ajax_content_export", array($this, 'ajax_content_export') );
 			add_filter('wpsi_settings_blocks', array($this, 'export_block') );
-
 			add_action('wp_ajax_wpsi_start_export', array($this, 'ajax_start_export'));
 
 		}
@@ -29,9 +28,9 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			$blocks[] = array(
 				'title' => __( "Data", "wp-search-insights" ),
 				'content' => $this->content_export(),
-				'index' => 'export',
+				'index' => 'settings',
 				'class' => 'wpsi-export-grid',
-				'type'=> 'export',
+				'type'=> 'settings',
 				'controls' => '',
 			);
 			return $blocks;
@@ -72,6 +71,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 
 			<?php
+			wpsi_save_button();
 
 			do_settings_sections('wpsi-data');
 			settings_fields('wpsi-data-tab');
