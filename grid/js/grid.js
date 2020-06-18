@@ -19,6 +19,7 @@ jQuery(document).ready(function($) {
      * Init by classname
      * @param className
      */
+
     function wpsiInitGridByClass(className){
         var grid = new Muuri('.wpsi-grid.'+className, {
             dragEnabled: drag_enabled_or_disabled,
@@ -43,15 +44,11 @@ jQuery(document).ready(function($) {
         })
             .on('move', function () {
                 wpsiSaveLayout(grid, className);
-            })
-        ;
+            });
 
-        var layout = window.localStorage.getItem('wpsi_layout_'+className);
-        if (layout && className === 'dashboard') {
-            wpsiloadLayout(grid, layout, className);
-        } else {
-            grid.layout(true);
-        }
+
+        wpsiloadLayout(grid, className);
+
 
         // Must save the layout on first load, otherwise filtering the grid won't work on a new install.
         wpsiSaveLayout(grid, className);
@@ -79,52 +76,71 @@ jQuery(document).ready(function($) {
      */
     function wpsiSaveLayout(grid, className) {
         var layout = wpsiSerializeLayout(grid);
+
         window.localStorage.setItem('wpsi_layout_'+className, layout);
     }
-
-
 
     /**
      * Load a grid layout
      * @param grid
-     * @param serializedLayout
+     * @param className
      */
 
-    function wpsiloadLayout(grid, serializedLayout) {
-        var layout = JSON.parse(serializedLayout);
-        var currentItems = grid.getItems();
-        // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
-        $('.wpsi-item').each(function(){
-            var toggle_id = $(this).data('id');
-            if (localStorage.getItem("wpsi_toggle_data_id_"+toggle_id) === null) {
-                window.localStorage.setItem('wpsi_toggle_data_id_'+toggle_id, 'checked');
+    function wpsiloadLayout(grid, className) {
+        if (className === 'tips_tricks') return;
+        console.log("load layout for "+className);
+        var serializedLayout = window.localStorage.getItem('wpsi_layout_'+className);
+        if (serializedLayout) {
+            var layout = JSON.parse(serializedLayout);
+            console.log(layout);
+            var currentItems = grid.getItems();
+            // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
+            // but only if it's the dashboard.
+            $('.wpsi-item').each(function () {
+
+                var toggle_id = $(this).data('id');
+                if (localStorage.getItem("wpsi_toggle_data_id_" + toggle_id) === null) {
+                    window.localStorage.setItem('wpsi_toggle_data_id_' + toggle_id, 'checked');
+                }
+
+                // Add or remove the active class when the checkbox is checked/unchecked
+                if (window.localStorage.getItem('wpsi_toggle_data_id_' + toggle_id) === 'checked') {
+                    $(this).addClass("muuri-active");
+                } else {
+                    $(this).removeClass("muuri-active");
+                }
+            });
+
+            var currentItemIds = currentItems.map(function (item) {
+                return item.getElement().getAttribute('data-id')
+            });
+            var newItems = [];
+            var itemId;
+            var itemIndex;
+
+            for (var i = 0; i < layout.length; i++) {
+                itemId = layout[i];
+                itemIndex = currentItemIds.indexOf(itemId);
+                if (itemIndex > -1) {
+                    newItems.push(currentItems[itemIndex])
+                }
+            }
+            // Sort and filter the grid
+            try {
+                grid.sort(newItems, {layout: 'instant'});
+                grid.filter('.muuri-active');
+            }
+            catch(err) {
+                $('.wpsi-grid').each(function(){
+                    var className = $(this).data('grid_type');
+                    window.localStorage.removeItem('wpsi_layout_'+className);
+                });
             }
 
-            // Add or remove the active class when the checkbox is checked/unchecked
-            if (window.localStorage.getItem('wpsi_toggle_data_id_'+toggle_id) == 'checked') {
-                $(this).addClass("muuri-active");
-            } else {
-                $(this).removeClass("muuri-active");
-            }
-        });
-
-        var currentItemIds = currentItems.map(function (item) {
-            return item.getElement().getAttribute('data-id')
-        });
-        var newItems = [];
-        var itemId;
-        var itemIndex;
-
-        for (var i = 0; i < layout.length; i++) {
-            itemId = layout[i];
-            itemIndex = currentItemIds.indexOf(itemId);
-            if (itemIndex > -1) {
-                newItems.push(currentItems[itemIndex])
-            }
         }
-        // Sort and filter the grid
-        grid.sort(newItems, {layout: 'instant'});
-        grid.filter('.muuri-active');
+
+        grid.layout(true);
+
     }
 
     // Reload the grid when checkbox value changes

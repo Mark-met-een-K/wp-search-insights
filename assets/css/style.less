@@ -1,8 +1,10 @@
-@brand-primary: #29b6f6;
+@color-blue: #29b6f6;
 @color-success: #61ce70;
-@color-error: #d7263d;
+@brand-primary: #d7263d;
+@color-error: @brand-primary;
 @light-text-color: #3c3c3c;
 @border-color: #DEDEDE;
+@grey-light: #ededed;
 
 //hack to make sure the wp footer is at the bottom
 #wpfooter{
@@ -793,6 +795,13 @@ widget
     }
   }
 
+  .wpsi-bullet {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
   .upsell-grid-container{
     .wpsi-upsell {
       display: flex !important; //we need important here, because the grid switch overrides it on element level
@@ -801,12 +810,7 @@ widget
       align-items: center;
       color: @light-text-color;
 
-      .upsell-round {
-        height: 15px;
-        width: 15px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
+
 
       .rsssl-yellow {
             background-color: #EFBF4B;
@@ -974,7 +978,7 @@ widget
     Tips and Tricks
    */
 
-  .wpsi-tips-tricks .wpsi-tips-tricks-container {
+  .wpsi-tips-tricks .item-content>div {
     display: flex !important;
     flex-direction: column;
     flex-wrap: wrap;
@@ -983,11 +987,27 @@ widget
     border-bottom: 1px solid @border-color;
 
     .wpsi-tips-tricks-element {
-      //font-size: 0.9em;
+      a{
+        color:@light-text-color;
+        &:hover {
+        color: @brand-primary;
+      }
+      }
+      .wpsi-bullet {
+        margin:7px;
+        background-color: @grey-light;
+        float:left;
+        &:hover {
+          background-color: @brand-primary;
+        }
+      }
       color: @light-text-color;
-      padding-bottom: 7px;
-      list-style: decimal;
-      list-style-position: inside;
+      .wpsi-tips-tricks-content {
+        margin:7px 0;
+
+        float:left;
+      }
+
     }
   }
 
@@ -1064,7 +1084,7 @@ widget
   }
 
   input:checked + .wpsi-slider {
-    background-color: @brand-primary;
+    background-color: @color-blue;
 
     &:before {
       -webkit-transform: translateX(17px);
@@ -1074,12 +1094,12 @@ widget
   }
 
   input:checked:disabled + .wpsi-slider {
-    background-color: lighten(@brand-primary, 40%);
+    background-color: lighten(@color-blue, 40%);
   }
 
 
   input:focus + .wpsi-slider {
-    box-shadow: 0 0 1px @brand-primary;
+    box-shadow: 0 0 1px @color-blue;
   }
 
 

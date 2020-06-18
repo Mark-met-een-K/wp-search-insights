@@ -22,7 +22,6 @@ function wpsi_tab_content_dashboard(){
 		wpsi_path . '/grid' );
 	$output     = '';
 
-
 	foreach ( $grid_items as $index => $grid_item ) {
 		$output .= str_replace( array(
 			'{class}',
@@ -46,8 +45,6 @@ function wpsi_tab_content_dashboard(){
 		'grid_type'=> 'dashboard',
 		'content' => $output
     ));
-
-
 }
 
 add_action( "wpsi_tab_content_dashboard", 'wpsi_tab_content_dashboard' );
@@ -73,7 +70,7 @@ function wpsi_tab_content_settings(){
 		array(
 			'title' => __( "Filters", "wp-search-insights" ),
 			'content' => wpsi_grid_content_filter(),
-			'class' => 'full-width',
+			'class' => 'half-height full-width',
 			'index' => 'filter',
 			'type'=> 'filter',
 			'controls' => '',
@@ -81,7 +78,8 @@ function wpsi_tab_content_settings(){
     );
 	$blocks = apply_filters('wpsi_settings_blocks', $blocks);
 
-	foreach($blocks as $args) {
+	foreach($blocks as $index => $args) {
+		$args['index'] = $index;
 		$element    .= WPSI::$admin->get_template( 'grid-element.php',
 			wpsi_path . '/grid' , $args);
 	}

@@ -614,24 +614,32 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		        'wpsi-filter-tab'
 	        );
 
+	        add_settings_section(
+		        'wpsi-data-tab',
+		        __("", "wpsi-search-insights"),
+		        array($this, 'wpsi_settings_tab_intro'),
+		        'wpsi-data'
+	        );
+
+
 	        add_settings_field(
 		        'wpsi_cleardatabase',
 		        __("Clear data on plugin uninstall", 'wp-search-insights'),
 		        array($this, 'option_clear_database_on_uninstall'),
-		        'wpsi-filter',
-		        'wpsi-filter-tab'
+		        'wpsi-data',
+		        'wpsi-data-tab'
 	        );
 
 	        add_settings_field(
 		        'wpsi_clear_database',
 		        __("Clear database", 'wp-search-insights'),
 		        array($this, 'option_wpsi_clear_database'),
-		        'wpsi-filter',
-		        'wpsi-filter-tab'
+		        'wpsi-data',
+		        'wpsi-data-tab'
 	        );
 
-            register_setting('wpsi-filter-tab', 'wpsi_filter_textarea');
-	        register_setting('wpsi-filter-tab', 'wpsi_cleardatabase');
+            register_setting('wpsi-data-tab', 'wpsi_filter_textarea');
+	        register_setting('wpsi-data-tab', 'wpsi_cleardatabase');
 
 
         }
@@ -1633,7 +1641,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             $items = array(
                 1 => array(
-                    'title' => '<div class="rsssl-yellow upsell-round"></div>',
+                    'title' => '<div class="rsssl-yellow wpsi-bullet"></div>',
                     'content' => __("Really Simple SSL - Easily migrate your website to SSL"),
                     'class' => 'rsssl',
                     'constant_free' => 'rsssl_plugin',
@@ -1642,7 +1650,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'search' => 'Really+Simple+SSL+Mark+Wolters',
                 ),
                 2 => array(
-                    'title' => '<div class="cmplz-blue upsell-round"></div>',
+                    'title' => '<div class="cmplz-blue wpsi-bullet"></div>',
                     'content' => __("Complianz Privacy Suite - Consent Management as it should be ", "wp-search-insights"),
                     'class' => 'cmplz',
                     'constant_free' => 'cmplz_plugin',
@@ -1651,7 +1659,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'search' => 'complianz',
                 ),
                 3 => array(
-                    'title' => '<div class="zip-pink upsell-round"></div>',
+                    'title' => '<div class="zip-pink wpsi-bullet"></div>',
                     'content' => __("Zip Recipes - Beautiful recipes optimized for Google ", "wp-search-insights"),
                     'class' => 'zip',
                     'constant_free' => 'ZRDN_PLUGIN_BASENAME',
@@ -1734,24 +1742,20 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'link' => 'https://wpsearchinsights.com/about-search-forms/',
                 ),
             );
-            $button_link = "https://wpsearchinsights.com/tips-tricks/";
-            //$container = $this->get_template('tipstricks-container.php');
-	        $container = $this->get_template('grid-container.php', wpsi_path . '/grid');
-	        $button =     '<a href="{button_link}" target="_blank"><button class="button button-upsell">'.__("View all" , "wp-search-insights").'</button></a>';
-	        $container .= $button;
+	        $button = '<a href="https://wpsearchinsights.com/tips-tricks/" target="_blank"><button class="button button-upsell">'.__("View all" , "wp-search-insights").'</button></a>';
 
-	        $element = $this->get_template('tipstricks-element.php');
-            $output = '';
+	        $container = $this->get_template('tipstricks-element.php');
+	        $output = "";
             foreach ($items as $item) {
-                $output .= str_replace(array(
+	            $output .= str_replace(array(
                     '{link}',
                     '{content}',
                 ), array(
                     $item['link'],
                     $item['content'],
-                ), $element);
+                ), $container);
             }
-            return str_replace(array('{content}' , '{button_link}', '{grid_type}'), array('<div class="wpsi-tips-tricks-container">'.$output.'</div>', $button_link, 'tips_tricks'), $container);
+            return '<div>'.$output.'</div>'.$button;
         }
     }
 }
