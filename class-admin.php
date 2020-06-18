@@ -1708,7 +1708,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 ), $element);
             }
 
-            return $output;
+            return '<div>'.$output.'</div>';
         }
 
 	    /**
