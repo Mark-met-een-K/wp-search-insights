@@ -345,9 +345,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                'export_in_progress' => get_transient('wpsi_export_in_progress'),
 		                'token'   => wp_create_nonce( 'search_insights_nonce'),
 		                'localize'   => array(
-		                	    'previous', __('Previous', 'wp-search-insights'),
-		                	    'next', __('Next', 'wp-search-insights'),
-		                	    'no-searches', __('"No searches recorded in selected period."', 'wp-search-insights'),
+		                	    'search'=> __('Search', 'wp-search-insights'),
+		                	    'previous'=> __('Previous', 'wp-search-insights'),
+		                	    'next'=> __('Next', 'wp-search-insights'),
+		                	    'no-searches'=> __('"No searches recorded in selected period."', 'wp-search-insights'),
 		                ),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
                                                 <option value="month">'.__("Month", "wp-search-insights").'</option>
@@ -955,16 +956,16 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     <div class="wp-search-insights-container">
                         <ul class="tabs">
                             <div class="tabs-content">
-                                <img class="wpsi-settings-logo wpsi-image" src="<?=trailingslashit(wpsi_url)?>assets/images/logo.png" alt="WP Search Insights logo">
+                                <img class="wpsi-settings-logo" src="<?=trailingslashit(wpsi_url)?>assets/images/logo.png" alt="WP Search Insights logo">
                                  <div class="header-links">
-                                    <div class="tab-links">
+                                    <ul class="tab-links">
                                         <?php foreach ($this->tabs as $key => $tab) {
                                             if (isset($tab['capability']) && !current_user_can($tab['capability'])) continue;
 	                                        $current = $key=='dashboard' ? 'current' : '';
                                             ?>
                                             <li class="tab-link <?=$current?>" data-tab="<?=$key?>"><a class="tab-text tab-<?=$key?>" href="#<?=$key?>#top"><?=$tab['title']?></a></li>
                                         <?php }?>
-                                    </div>
+                                    </ul>
                                     <?php do_action('wpsi_tab_options')?>
                                 </div>
                             </div>
