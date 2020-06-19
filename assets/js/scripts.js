@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
 
     var wpsiScreensizeHideColumn = 768;
     var wpsiScreensizeLowerMobile = 480;
-    var wpsiMobileRowCount = 4;
+    var wpsiMobileRowCount = 5;
     var wpsiDefaultRowCount = 7;
     var wpsiDefaultPagingType = 'simple_numbers';
     var wpsiMobilePagingType = 'simple';
@@ -33,6 +33,7 @@ jQuery(document).ready(function ($) {
                 //for mobile, we lower the number of rows
                 if (win.width() < wpsiScreensizeLowerMobile) {
                     table.page.len(wpsiMobileRowCount).draw();
+
                 } else {
                     table.page.len(wpsiDefaultRowCount).draw();
                 }
@@ -60,11 +61,12 @@ jQuery(document).ready(function ($) {
         var pageLength = wpsiDefaultRowCount;
         var pagingType = wpsiDefaultPagingType;
 
-        var columnVisible = 'true';
-        if (win.width() > wpsiScreensizeHideColumn) {
-            columnVisible = 'false';        }
+        var columnVisible = true;
+        if (win.width() < wpsiScreensizeHideColumn) {
+            columnVisible = false;
+        }
         var columnTwoDef = '{ "visible": '+columnVisible+',  "targets": [ 2 ] }';
-
+        console.log(columnTwoDef);
         if (win.width() < wpsiScreensizeLowerMobile) {
             pageLength = wpsiMobileRowCount;
             pagingType = wpsiMobilePagingType;
@@ -73,6 +75,7 @@ jQuery(document).ready(function ($) {
             "dom": 'frt<"table-footer"p><"clear">B',
             "pageLength": pageLength,
             "pagingType": pagingType,
+            "stateSave": true,
             "columns": [
                 { "width": "15%" },
                 { "width": "5%" },
@@ -82,6 +85,7 @@ jQuery(document).ready(function ($) {
             ],
             "columnDefs": [
                 { "visible": false,  "targets": [ 3 ] },
+                { "visible": columnVisible,  "targets": [ 2 ] },
                 { "iDataSort": 3, "aTargets": [ 2] },
                 columnTwoDef,
                 { "targets": [1,2,3,4], "searchable": false } //search only on first column
