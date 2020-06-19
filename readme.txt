@@ -62,7 +62,8 @@ To install this plugin:
 * CSV export directly from server, allowing complete database download
 * State saving of order and page
 * Improved mobile and ipad design
-* Improved front-end user
+* Improved front-end search tracking
+* Ajax tracking made optional, default enabled when any one of the known ajax search plugins is active
 
 = 1.2.1 =
 * Improved review notice dismissal
