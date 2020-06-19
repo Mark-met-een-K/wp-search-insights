@@ -1132,7 +1132,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches_no_results = get_transient("wpsi_popular_searches_month");
+            $popular_searches_no_results = get_transient("wpsi_popular_searches_week");
             if ($on_grid) $popular_searches_no_results = false;
             if (!$popular_searches_no_results) {
                 $args = array(
@@ -1143,7 +1143,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 );
 
                 //from the dashboard, we don't get a start-end range. We use default month.
-                if (!$start) {
+                if (!$on_grid) {
                     $args['range'] = 'week';
                 } else {
 	                $args['date_from'] = $start;
@@ -1151,7 +1151,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 }
 
 	            $popular_searches_no_results = WPSI::$search->get_searches($args, $trend = true);
-                set_transient("wpsi_popular_searches_month", $popular_searches_no_results, HOUR_IN_SECONDS);
+                set_transient("wpsi_popular_searches_week", $popular_searches_no_results, HOUR_IN_SECONDS);
             }
 
             if (!$on_grid) {
@@ -1219,7 +1219,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'order' => 'DESC',
                     'number' => 5,
                 );
-		        if (!$start) {
+		        if (!$on_grid) {
 			        $args['range'] = 'week';
 		        } else {
 			        $args['date_from'] = $start;
