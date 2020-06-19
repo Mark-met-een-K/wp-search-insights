@@ -75,6 +75,7 @@ jQuery(document).ready(function ($) {
             "dom": 'frt<"table-footer"p><"clear">B',
             "pageLength": pageLength,
             "pagingType": pagingType,
+            "stateSave": true,
             "columns": [
                 { "width": "15%" },
                 { "width": "5%" },
