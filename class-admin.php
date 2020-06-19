@@ -1548,7 +1548,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                             <span class="percentage-text"><?php _e("of searches have results", "wp-search-insights");?></span>
                         </div>
                         <div class="wpsi-total-searches">
-                            <span class="wpsi-nr-title-in-widget"><?php _e("Total Searches", "wp-search-insights"); ?></span>
+                            <span class="wpsi-nr-title-in-widget"><?php _e("Total Unique Searches", "wp-search-insights"); ?></span>
                             <span class="wpsi-search-count"><?= $nr_of_terms; ?></span>
                         </div>
                     <?php } else { ?>
