@@ -543,7 +543,7 @@ widget
 #wpsi-dashboard .dataTables_paginate .current {
   color: white;
   background-color: #d7263d;
-  border: 1px solid #979797;
+  border: 0;
 }
 #wpsi-dashboard #wpsi-recent-table_previous {
   padding: 0.5em 1.8em;
