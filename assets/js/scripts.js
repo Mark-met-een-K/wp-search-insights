@@ -2,6 +2,11 @@ jQuery(document).ready(function ($) {
     "use strict";
 
     var wpsiScreensizeHideColumn = 768;
+    var wpsiScreensizeLowerMobile = 480;
+    var wpsiMobileRowCount = 4;
+    var wpsiDefaultRowCount = 7;
+    var wpsiDefaultPagingType = 'simple_numbers';
+    var wpsiMobilePagingType = 'simple';
     var deleteBtn = $('#wpsi-delete-selected');
     var lastSelectedPage = 0;
 
@@ -24,6 +29,13 @@ jQuery(document).ready(function ($) {
                     column.visible(false);
                 }
                 table.columns.adjust().draw();
+
+                //for mobile, we lower the number of rows
+                if (win.width() < wpsiScreensizeLowerMobile) {
+                    table.page.len(wpsiMobileRowCount).draw();
+                } else {
+                    table.page.len(wpsiDefaultRowCount).draw();
+                }
             }
 
         });
@@ -45,14 +57,22 @@ jQuery(document).ready(function ($) {
     function wpsiInitSingleDataTable(container) {
         var table = container.find('.wpsi-table');
         var win = $(window);
+        var pageLength = wpsiDefaultRowCount;
+        var pagingType = wpsiDefaultPagingType;
 
         var columnVisible = 'true';
         if (win.width() > wpsiScreensizeHideColumn) {
             columnVisible = 'false';        }
         var columnTwoDef = '{ "visible": '+columnVisible+',  "targets": [ 2 ] }';
+
+        if (win.width() < wpsiScreensizeLowerMobile) {
+            pageLength = wpsiMobileRowCount;
+            pagingType = wpsiMobilePagingType;
+        }
         table.DataTable( {
             "dom": 'frt<"table-footer"p><"clear">B',
-            "pageLength": 7,
+            "pageLength": pageLength,
+            "pagingType": pagingType,
             "columns": [
                 { "width": "15%" },
                 { "width": "5%" },
@@ -65,20 +85,19 @@ jQuery(document).ready(function ($) {
                 { "iDataSort": 3, "aTargets": [ 2] },
                 columnTwoDef,
                 { "targets": [1,2,3,4], "searchable": false } //search only on first column
-
             ],
-            conditionalPaging: true,
             buttons: [
                 //{extend: 'csv', text: 'Download CSV'}
             ],
+            conditionalPaging: true,
             "language": {
                 "paginate": {
                     "previous": wpsi.localize['previous'],
                     "next": wpsi.localize['next'],
                 },
-                searchPlaceholder: "Search",
+                searchPlaceholder: wpsi.localize['search'],
                 "search": "",
-                "emptyTable": "No searches recorded in selected period!"
+                "emptyTable": wpsi.localize['no-searches']
             },
             "order": [[2, "desc"]],
         });
@@ -88,6 +107,17 @@ jQuery(document).ready(function ($) {
             var info = table.page.info();
             lastSelectedPage = info.page;
         } );
+    }
+
+
+    function localize_html(str) {
+        var strings = wpsi.localize;
+        for (var k in strings) {
+            if (strings.hasOwnProperty(k)) {
+                if ( k === str ) return strings[k];
+            }
+        }
+        return str;
     }
 
 

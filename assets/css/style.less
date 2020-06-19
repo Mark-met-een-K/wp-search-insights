@@ -47,11 +47,7 @@
 @media screen and (max-width: 850px) {
 
   .tabs {
-    #wpsi-toggle-options {
-      display: none;
-    }
-
-    .header-upsell {
+    .documentation, #wpsi-toggle-options,.header-upsell {
       display: none;
     }
   }
@@ -195,10 +191,16 @@ widget
       display: flex;
       width: 100%;
       margin-left: 40px;
+      @media screen and (max-width: 480px) {
+        margin-left: 0;
+      }
     }
 
     .tab-links {
       color: @light-text-color;
+      display: flex;
+      flex-direction: row;
+      margin-left: 0;
     }
 
     .documentation-pro {
@@ -220,11 +222,7 @@ widget
       margin-right: 20px;
     }
 
-    .tab-links {
-      display: flex;
-      flex-direction: row;
-      margin-left: 0;
-    }
+
   }
 }
 
@@ -299,8 +297,18 @@ widget
     }
   }
 
-  //padding-right:15px;
-
+  .wpsi-settings-logo {
+    display: inline-block;
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+  }
+  @media screen and (max-width: 480px) {
+    .wpsi-settings-logo {
+      display:none;
+    }
+  }
+  
   .wpsi-settings-intro {
     margin-left: 0 !important;
   }
@@ -309,12 +317,7 @@ widget
     font-weight: 600;
   }
 
-  .wpsi-image {
-    display: inline-block;
-    vertical-align: middle;
-    height: 50px;
-    width: 50px;
-  }
+
 
 
   .wpsi-date-container {
@@ -325,11 +328,12 @@ widget
     border-radius:3px;
     margin-right: 20px;
     white-space: nowrap;
-
+    @media screen and (max-width: 480px) {
+      width: 18px;
+      overflow: hidden;
+    }
     &.wpsi-export {
       float: left;
-
-
     }
   }
 
@@ -354,11 +358,6 @@ widget
     display: flex;
     flex-flow: row wrap;
     word-break: break-all;
-  }
-
-  .tab-link:hover {
-    //background-color: #EDEDED;
-    //opacity: 0.6;
   }
 
   .wp-search-insights-main .unix-timestamp {
@@ -388,7 +387,6 @@ widget
     }
   }
 
-
   .tab-content {
     display: none;
     background: #F1F1F1;
@@ -396,11 +394,25 @@ widget
   }
 
   #wpsi-delete-selected {
+    .wpsi-delete-icon {
+      display:none;
+    }
+    @media screen and (max-width: 480px) {
+      .wpsi-delete-icon {
+        display:block;
+      }
+      .wpsi-delete-text {
+        display:none;
+      }
+    }
     display: none;
     text-shadow: none !important;
     vertical-align: middle;
     margin-right: 39px;
     margin-bottom: 10px;
+    padding: 10px 10px;
+    line-height: 12px;
+    min-height: 25px;
   }
 
   .tab-content.current {
@@ -439,6 +451,9 @@ widget
       padding: 0 8px;
       line-height: 2;
       min-height: 30px;
+      @media screen and (max-width: 480px) {
+        width: 150px;
+      }
     }
 
     table {
@@ -970,6 +985,10 @@ widget
       height: 100px;
       margin-bottom: 10px;
       border-bottom: 1px solid @border-color;
+      @media screen and (max-width: 480px) {
+        flex-direction: row;
+        overflow: hidden;
+      }
       .wpsi-tips-tricks-element {
         a {
           color: @light-text-color;

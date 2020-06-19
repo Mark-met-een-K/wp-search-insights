@@ -12,7 +12,8 @@ function wpsi_tab_content_dashboard(){
 
 	?>
 	<button class="button" id="wpsi-delete-selected">
-		<?php _e("Delete selected terms", "wp-search-insights") ?>
+        <span class="wpsi-delete-icon"><i class="dashicons dashicons-trash"></i></span>
+        <span class="wpsi-delete-text"><?php _e("Delete selected","wp-search-insights")?></i></span>
 	</button>
 	<?php
 	//get html of block
