@@ -1,5 +1,4 @@
 window.addEventListener('wpsiSwitchTab', function (tab) {
-    console.log("switch tab "+tab);
     wpsiInitGrid();
 });
 
@@ -88,11 +87,9 @@ jQuery(document).ready(function($) {
 
     function wpsiloadLayout(grid, className) {
         if (className === 'tips_tricks') return;
-        console.log("load layout for "+className);
         var serializedLayout = window.localStorage.getItem('wpsi_layout_'+className);
         if (serializedLayout) {
             var layout = JSON.parse(serializedLayout);
-            console.log(layout);
             var currentItems = grid.getItems();
             // Add or remove the muuri-active class for each checkbox. Class is used in filtering.
             // but only if it's the dashboard.
