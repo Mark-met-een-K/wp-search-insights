@@ -66,7 +66,6 @@ jQuery(document).ready(function ($) {
             columnVisible = false;
         }
         var columnTwoDef = '{ "visible": '+columnVisible+',  "targets": [ 2 ] }';
-        console.log(columnTwoDef);
         if (win.width() < wpsiScreensizeLowerMobile) {
             pageLength = wpsiMobileRowCount;
             pagingType = wpsiMobilePagingType;

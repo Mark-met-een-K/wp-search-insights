@@ -641,7 +641,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 			$update_args = array(
 				'term'          => sanitize_text_field($search_term),
-				'referrer'      => esc_url_raw($referrer['url']),
+				'referrer'      => sanitize_text_field($referrer['url']),//we can't use esc_url, because it also may be "home"
 				'referrer_id'   => intval($referrer['post_id']),
 				'time'          => $this->current_time(),
 			);
