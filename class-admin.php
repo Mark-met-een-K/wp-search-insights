@@ -26,6 +26,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $this->capability = get_option('wpsi_select_dashboard_capability');
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
+            add_action('admin_init', array($this, 'maybe_enable_ajax_tracking'));
 
             $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
 
@@ -50,7 +51,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
+        }
 
+	    /**
+	     * Do a one time check if a known ajax plugin is installed. If so, activate Ajax tracking.
+	     */
+
+        public function maybe_enable_ajax_tracking(){
+
+			if (!get_option('wpsi_checked_ajax_plugins')){
+				$ajax_plugin_active =
+					function_exists('searchwp_live_search_request_handler') //SearchWP Live Ajax Search
+					|| defined('ASL_CURRENT_VERSION' ) //ajax search lite
+                    ;
+				if ($ajax_plugin_active) {
+					update_option('wpsi_track_ajax_searches', true);
+				}
+				update_option('wpsi_checked_ajax_plugins', true);
+			}
         }
 
 
@@ -334,6 +352,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 wp_register_script('wpsi',
                     trailingslashit(wpsi_url)
                     . 'assets/js/scripts.js', array("jquery", "wpsi-datepicker", "wpsi-datatables"), wpsi_version);
+
                 wp_enqueue_script('wpsi');
                 wp_localize_script('wpsi', 'wpsi',
                     array(
@@ -587,12 +606,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 'wpsi-settings-tab'
             );
 
+            add_settings_field(
+                'wpsi_track_ajax_searches',
+                __("Track Ajax searches", 'wp-search-insights'),
+                array($this, 'option_wpsi_track_ajax_searches'),
+                'wpsi-settings',
+                'wpsi-settings-tab'
+            );
+
             // Register our setting so that $_POST handling is done for us and
             // our callback function just has to echo the <input>
             register_setting('wpsi-settings-tab', 'wpsi_exclude_admin');
             register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
+            register_setting('wpsi-settings-tab', 'wpsi_track_ajax_searches');
 
 	        add_settings_section(
 		        'wpsi-settings-tab',
@@ -749,6 +777,24 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 <?php
                 WPSI::$help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
+                ?>
+            </div>
+            <?php
+        }
+
+        public function option_wpsi_track_ajax_searches()
+        {
+            ?>
+            <div class="tg-list-item">
+                <label class="wpsi-switch">
+                    <input name="wpsi_track_ajax_searches" type="hidden" value="0"/>
+                    <input name="wpsi_track_ajax_searches" size="40" type="checkbox"
+                           value="1" <?php checked(1, get_option('wpsi_track_ajax_searches'), true) ?> />
+                    <span class="wpsi-slider wpsi-round"></span>
+                </label>
+
+                <?php
+                    WPSI::$help->get_help_tip(__("Enable this option if you want to track searches while users are typing.", "wp-search-insights"));
                 ?>
             </div>
             <?php

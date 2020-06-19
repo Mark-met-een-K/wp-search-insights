@@ -57,9 +57,19 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.3.0 =
+* Load more searches in data range in the background
+* CSV export directly from server, allowing complete database download
+* State saving of order and page
+* Improved mobile and ipad design
+* Improved front-end user
+
+= 1.2.1 =
+* Improved review notice dismissal
 
 = 1.2 =
 * Changed lay-out
+
 = 1.1 =
 * Added text filter area to exclude terms from results
 * Added option to select which user roles can view the dashboard
