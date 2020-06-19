@@ -348,7 +348,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		                	    'search'=> __('Search', 'wp-search-insights'),
 		                	    'previous'=> __('Previous', 'wp-search-insights'),
 		                	    'next'=> __('Next', 'wp-search-insights'),
-		                	    'no-searches'=> __('"No searches recorded in selected period."', 'wp-search-insights'),
+		                	    'no-searches'=> __('No searches recorded in selected period.', 'wp-search-insights'),
 		                ),
 		                'dateFilter'   => '<select class="wpsi-date-filter">
                                                 <option value="month">'.__("Month", "wp-search-insights").'</option>
@@ -1472,7 +1472,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if (strlen($referrer)>25){
                 $referrer = mb_strcut($referrer, 0, 22).'...';
             }
-            return '<a target="_blank" href="' . esc_url_raw($url) . ' target="_blank">' . esc_html($referrer) . '</a>';
+            return '<a target="_blank" href="' . esc_url_raw($url) . ' target="_blank">' . sanitize_text_field($referrer) . '</a>';
         }
 
 	    /**
