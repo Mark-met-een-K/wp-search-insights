@@ -1,11 +1,22 @@
+/**
+WordPress Native
+ */
 #wpfooter {
   position: relative;
 }
-.daterangepicker.show-calendar {
-  z-index: 9999 !important;
+.wpsi-thickboxheader {
+    padding-top: 5px;
+    font-weight: 600;
 }
+
 .update-nag {
   display: none;
+}
+/**
+Start
+*/
+.daterangepicker.show-calendar {
+  z-index: 9999 !important;
 }
 .wrap {
   margin: 0 0 0 0;
@@ -745,7 +756,7 @@ widget
 #wpsi-dashboard .thickbox {
   padding-bottom: 20px;
   background-color: #d7263d;
-  margin-left: -10px;
+  margin-left: 0px;
   color: white;
   border: none;
   height: 30px;
