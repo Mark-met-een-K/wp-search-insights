@@ -555,9 +555,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             // Add the field with the names and function to use for our new
             // settings, put it in our new section
+
             add_settings_field(
                 'exclude_admin_searches',
-                __("Exclude admin searches", 'wp-search-insights'),
+                __("Exclude admin searches", 'wp-search-insights').WPSI::$help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights")),
                 array($this, 'option_wpsi_exclude_admin'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -565,7 +566,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_settings_field(
                 'min_search_length',
-                __("Exclude searches shorter than characters", 'wp-search-insights'),
+                __("Exclude searches shorter than characters", 'wp-search-insights').WPSI::$help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights")),
                 array($this, 'option_min_term_length'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -573,7 +574,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_settings_field(
                 'max_search_length',
-                __("Exclude searches longer than characters", 'wp-search-insights'),
+                __("Exclude searches longer than characters", 'wp-search-insights').WPSI::$help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights")),
                 array($this, 'option_max_term_length'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -581,7 +582,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_settings_field(
                 'wpsi_select_dashboard_capability',
-                __("Who can view the dashboard", 'wp-search-insights'),
+                __("Who can view the dashboard", 'wp-search-insights').WPSI::$help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights")),
                 array($this, 'option_wpsi_select_dashboard_capability'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -629,7 +630,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
 	        add_settings_field(
 		        'wpsi_cleardatabase',
-		        __("Clear data on plugin uninstall", 'wp-search-insights'),
+		        __("Clear data on uninstall", 'wp-search-insights').WPSI::$help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights")),
 		        array($this, 'option_clear_database_on_uninstall'),
 		        'wpsi-data',
 		        'wpsi-data-tab'
@@ -707,10 +708,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                            value="1" <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> />
                     <span class="wpsi-slider wpsi-round"></span>
                 </label>
-
-                <?php
-                WPSI::$help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights"));
-                ?>
             </div>
             <?php
         }
@@ -729,9 +726,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 </select>
             </label>
             <?php
-	        WPSI::$help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights"));
-            ?>
-            <?php
         }
 
 
@@ -746,10 +740,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                            value="1" <?php checked(1, get_option('wpsi_cleardatabase'), true) ?> />
                     <span class="wpsi-slider wpsi-round"></span>
                 </label>
-
-                <?php
-                WPSI::$help->get_help_tip(__("Enable this option if you want to delete the WP Search Insights database tables when you uninstall the plugin.", "wp-search-insights"));
-                ?>
             </div>
             <?php
         }
@@ -760,9 +750,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <input id="wpsi_min_term_length" class="wpsi_term_length" name="wpsi_min_term_length" size="40" min="0"
                    max="24" value="<?php echo intval(get_option('wpsi_min_term_length')) ?>"
                    type="number" <?php checked(1, intval(get_option('wpsi_min_term_length'), true)) ?> </input>
-            <?php
-	        WPSI::$help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
-            ?>
             <?php
         }
 
@@ -777,9 +764,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                    max="255" value="<?php echo intval(get_option('wpsi_max_term_length')) ?>"
                    type="number" <?php checked(1, intval(get_option('wpsi_max_term_length'), true)) ?> </input>
             <?php
-            WPSI::$help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights"));
-            ?>
-            <?php
         }
 
         public function option_wpsi_clear_database()
@@ -792,7 +776,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 'action' => 'wpsi_clear_database',
             );
             $this->add_thickbox_button($args);
-//	        WPSI::$help->get_help_tip(__("Pressing this button will delete all recorded searches from your database", "wp-search-insights"));
             ?>
             <?php
         }

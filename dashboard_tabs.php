@@ -115,7 +115,7 @@ function wpsi_grid_content_filter(){
  */
 
 function wpsi_save_button(){
-	return '<input class="button-secondary" name="Submit" type="submit" value="'.__("Save", "wp-search-insights").'">';
+	return '<div class="wpsi-save-button-container"><input class="button-secondary" name="Submit" type="submit" value="'.__("Save", "wp-search-insights").'"></div>';
 }
 
 /**
