@@ -18,7 +18,7 @@
   position: absolute;
   height: 30px;
   bottom: 0;
-  width: calc(100% - 90px);
+  width: calc(100% - 50px);
   padding: 20px 0;
 }
 #wpsi-dashboard #settings .full-width .wpsi-save-button-container {
