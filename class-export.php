@@ -52,7 +52,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
                 <tbody>
                     <tr>
                         <th scope="row"><?php _e("Export database", "wp-search-insights")?>
-	                        <?php WPSI::$help->get_help_tip(__("Export the contents of your database, filtered by date", "wp-search-insights")); ?>
+	                        <?php echo WPSI::$help->get_help_tip(__("Export the contents of your database, filtered by date", "wp-search-insights")); ?>
                         </th>
                         <td>
                             <div class="wpsi-date-container wpsi-export">

@@ -24,25 +24,7 @@
   margin: 0 0 0 0;
 }
 
-#wpsi-dashboard {
-  .button-secondary {
-    min-width: 100px;
-  }
 
-  .muuri-item .button-secondary {
-    margin-bottom:20px;
-  }
-
-  //set opacity to 0 to make sure the grid only shows after fully loaded
-  .item-container {
-    opacity: 0;
-  }
-
-  #wpsi-recent-table, #wpsi-popular-table {
-    width: 100% !important;
-  }
-
-}
 
 @media screen and (max-width: 850px) {
 
@@ -334,12 +316,6 @@ widget
     }
     &.wpsi-export {
       float: left;
-    }
-  }
-
-  .wpsi-export-grid {
-    .button-secondary {
-      margin-bottom:0;
     }
   }
 
@@ -914,23 +890,6 @@ widget
     flex-direction: column;
   }
 
-  .wpsi-save-button {
-    margin-bottom: 25px;
-    width: 75px;
-  }
-
-  .wpsi-save-button:hover {
-    color: white;
-  }
-
-  #filter-inner {
-    //margin: 25px;
-  }
-
-  .filter-save {
-    margin-left: 25px;
-  }
-
   #settings {
     .form-table th {
       font-weight:400;
@@ -1018,6 +977,11 @@ widget
 
   .wpsi-tips-tricks-container-title {
     border-bottom: 1px solid @border-color;
+  }
+
+  //make sure tooltips are not bold, because of title wrap
+  .wpsi-tooltip-right, .wpsi-tooltip-bottom {
+    font-weight:normal;
   }
 
   /*Tooltips on dashboard/settings page*/

@@ -22,17 +22,19 @@ if ( ! class_exists( 'wpsi_help' ) ) {
 	     */
 
         public function get_help_tip($str){
+	        ob_start();
             ?>
             <span class="wpsi-tooltip-right" data-wpsi-tooltip="<?php echo $str?>">
                 <span class="dashicons dashicons-editor-help"></span>
             </span>
             <?php
+	        return ob_get_clean();
         }
 
 	    public function get_title_help_tip($str){
 		    ob_start();
 		    ?>
-		    <span class="wpsi-tooltip-right" data-wpsi-tooltip="<?php echo $str?>">
+		    <span class="wpsi-tooltip-bottom" data-wpsi-tooltip="<?php echo $str?>">
                 <span class="dashicons dashicons-editor-help"></span>
             </span>
 		    <?php
