@@ -1443,6 +1443,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		            $output .= '</tbody>
                 </table>';
 
+			        error_log($output);
+
 		        return $output;
 	        }
         }
@@ -1464,13 +1466,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
         	if (!$home_url) $home_url = home_url();
 
-            $search_url = $home_url. "?s=" . esc_attr($term) . "&searchinsights";
+            $search_url = $home_url. '?s=' . $term . '&searchinsights';
 
 	        //make sure the link is not too long
 	        if (strlen($term)>28){
 		        $term = mb_strcut($term, 0, 25).'...';
 	        }
-            return '<a href="' . $search_url . '" target="_blank">' . $term . '</a>';
+            return '<a href="' . esc_html($search_url) . '" target="_blank">' . sanitize_text_field($term) . '</a>';
         }
 
         /**
@@ -1500,7 +1502,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             if (strlen($referrer)>25){
                 $referrer = mb_strcut($referrer, 0, 22).'...';
             }
-            return '<a target="_blank" href="' . esc_url_raw($url) . ' target="_blank">' . sanitize_text_field($referrer) . '</a>';
+            return '<a target="_blank" href="' . esc_url_raw($url) . '">' . sanitize_text_field($referrer) . '</a>';
         }
 
 	    /**
