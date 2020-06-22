@@ -29,7 +29,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             add_action('admin_init', array($this, 'maybe_enable_ajax_tracking'));
 
             $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
-
             if ($is_wpsi_page) {
                 add_action('admin_init', array($this, 'init_grid') );
                 add_action('admin_head', array($this, 'inline_styles'));

@@ -760,6 +760,7 @@ widget
 }
 #wpsi-dashboard #settings td {
   display: flex;
+  color: blue;
 }
 #wpsi-dashboard #wpsi_exclude_admin {
   display: none;
