@@ -160,7 +160,7 @@ widget
   margin-top: 6px;
 }
 #wpsi-dashboard .tabs .documentation {
-  margin-right: 20px;
+  margin-right: 15px;
 }
 .wpsi-dashboard-widget-grid li {
   height: 50px;
@@ -285,7 +285,7 @@ widget
   padding: 4px 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  margin-right: 20px;
+  margin-right: 15px;
   white-space: nowrap;
 }
 @media screen and (max-width: 480px) {
@@ -728,6 +728,11 @@ widget
 #wpsi-dashboard #settings .wpsi-download-link {
   padding-top: 6px;
   margin-right: 20px;
+}
+#wpsi-dashboard #settings input,
+#wpsi-dashboard #settings textarea,
+#wpsi-dashboard #settings select {
+  border: 1px solid #DEDEDE;
 }
 #wpsi-dashboard #settings textarea {
   width: 100%;

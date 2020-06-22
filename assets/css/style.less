@@ -201,7 +201,7 @@ widget
     }
 
     .documentation {
-      margin-right: 20px;
+      margin-right: 15px;
     }
 
 
@@ -308,7 +308,7 @@ widget
     padding: 4px 10px;
     border: 1px solid #ccc;
     border-radius:3px;
-    margin-right: 20px;
+    margin-right: 15px;
     white-space: nowrap;
     @media screen and (max-width: 480px) {
       width: 18px;
@@ -422,7 +422,7 @@ widget
     input[type="search"] {
       width: 250px;
       margin-right: 20px;
-      border: 1px solid #DEDEDE;
+      border: 1px solid @border-color;
       //some style to prevent override from wp on mobile
       padding: 0 8px;
       line-height: 2;
@@ -529,7 +529,7 @@ widget
     float:right;
     margin-top:-8px;
     .wpsi-date-filter {
-      border: 1px solid #DEDEDE;
+      border: 1px solid @border-color;
     }
   }
 
@@ -611,8 +611,8 @@ widget
     color: black;
     padding: 0.5em 1em;
     box-sizing: border-box;
-    border: 1px solid #DEDEDE;
-    box-shadow: 0px 1px 1px #DEDEDE;
+    border: 1px solid @border-color;
+    box-shadow: 0px 1px 1px @border-color;
   }
 
   .dataTables_paginate .current {
@@ -897,6 +897,9 @@ widget
     .wpsi-download-link {
       padding-top:6px;
       margin-right: 20px;
+    }
+    input, textarea, select {
+      border: 1px solid @border-color;
     }
     textarea {width:100%}
     td {
