@@ -144,15 +144,18 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         localStorage.setItem('wpsi_range_end', end.unix());
                     }
 
+                    var wpsiPluginActivated = '<?php echo get_option('wpsi_activation_time')?>';
+
                     $('.wpsi-date-container.wpsi-table-range').daterangepicker(
                         {
                             ranges: {
-                                'Today': [moment(), moment()],
-                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                '<?php _e('Today', 'wp-search-insights')?>': [moment(), moment()],
+                                '<?php _e('All time', 'wp-search-insights')?>': [moment.unix(wpsiPluginActivated), moment()],
+                                '<?php _e('Yesterday', 'wp-search-insights')?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                '<?php _e('Last 7 Days', 'wp-search-insights')?>': [moment().subtract(6, 'days'), moment()],
+                                '<?php _e('Last 30 Days', 'wp-search-insights')?>': [moment().subtract(29, 'days'), moment()],
+                                '<?php _e('This Month', 'wp-search-insights')?>': [moment().startOf('month'), moment().endOf('month')],
+                                '<?php _e('Last Month', 'wp-search-insights')?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                             },
                             "locale": {
                                 "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",

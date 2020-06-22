@@ -17,10 +17,13 @@ if (!class_exists("wpsi_review")) {
 //			update_option('wpsi_review_notice_shown',false);
 //			update_option('wpsi_activation_time',  strtotime("-2 month"));
 			//show review notice, only to free users
+
+            if (!get_option('wpsi_activation_time')){
+				update_option('wpsi_activation_time', time());
+			}
+
 			if (!defined("wpsi_premium") && !is_multisite()) {
-			    if (!get_option('wpsi_activation_time')){
-				    update_option('wpsi_activation_time', time());
-			    }
+
 				$this->searchcount = get_transient('wpsi_total_searchcount');
 				if (!$this->searchcount){
 				    if (!get_option('wpsi_database_created') ) return;
