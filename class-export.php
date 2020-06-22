@@ -52,7 +52,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
                 <tbody>
                     <tr>
                         <th scope="row"><?php _e("Export database", "wp-search-insights")?>
-	                        <?php WPSI::$help->get_help_tip(__("Export the contents of your database, filtered by date", "wp-search-insights")); ?>
+	                        <?php echo WPSI::$help->get_help_tip(__("Export the contents of your database, filtered by date", "wp-search-insights")); ?>
                         </th>
                         <td>
                             <div class="wpsi-date-container wpsi-export">
@@ -210,7 +210,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		 */
 
 		private function create_csv_file($data){
-			$delimiter=";";
+			$delimiter=",";
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
 			$uploads = wp_upload_dir();
 			$upload_dir = $uploads['basedir'];

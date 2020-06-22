@@ -20,12 +20,36 @@
 
     #wpsi-dashboard {
         #dashboard {
-            padding: 0px;
+            padding: 0;
         }
         .wpsi-grid {
             margin-left: 10px;
         }
     }
+}
+#wpsi-dashboard  {
+
+    #settings {
+        .wpsi-save-button-container {
+            border-top:1px solid #dedede;
+            position: absolute;
+            height: 30px;
+            bottom: 0;
+            width: calc(100% -  50px);
+            padding: 20px 0;
+        }
+        .full-width  .wpsi-save-button-container{
+            border-top:0;
+        }
+        .button-secondary {
+            min-width: 100px;
+        }
+    }
+
+    #wpsi-recent-table, #wpsi-popular-table {
+        width: 100% !important;
+    }
+
 }
 
 .wpsi-grid {
@@ -47,6 +71,9 @@
             height: ( 0.5 * @gridblock_height );
             .item-container{
                 height: (@gridblock_height / 2)- 2*@grid_margin;
+
+                //set opacity to 0 to make sure the grid only shows after fully loaded
+                opacity: 0;
             }
             .item-content {
                 height: ( 0.5 * @gridblock_height ) - 2 * @grid_header_height - 2*@grid_margin - @grid_header_padding_top - @grid_header_padding_bottom;

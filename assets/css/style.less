@@ -24,25 +24,7 @@
   margin: 0 0 0 0;
 }
 
-#wpsi-dashboard {
-  .button-secondary {
-    min-width: 100px;
-  }
 
-  .muuri-item .button-secondary {
-    margin-bottom:20px;
-  }
-
-  //set opacity to 0 to make sure the grid only shows after fully loaded
-  .item-container {
-    opacity: 0;
-  }
-
-  #wpsi-recent-table, #wpsi-popular-table {
-    width: 100% !important;
-  }
-
-}
 
 @media screen and (max-width: 850px) {
 
@@ -219,10 +201,8 @@ widget
     }
 
     .documentation {
-      margin-right: 20px;
+      margin-right: 15px;
     }
-
-
   }
 }
 
@@ -334,12 +314,6 @@ widget
     }
     &.wpsi-export {
       float: left;
-    }
-  }
-
-  .wpsi-export-grid {
-    .button-secondary {
-      margin-bottom:0;
     }
   }
 
@@ -642,7 +616,7 @@ widget
   .dataTables_paginate .current {
     color: white;
     background-color: @color-error;
-    border: 1px solid #979797;
+    border: 0;
   }
 
   #wpsi-recent-table_previous {
@@ -914,23 +888,6 @@ widget
     flex-direction: column;
   }
 
-  .wpsi-save-button {
-    margin-bottom: 25px;
-    width: 75px;
-  }
-
-  .wpsi-save-button:hover {
-    color: white;
-  }
-
-  #filter-inner {
-    //margin: 25px;
-  }
-
-  .filter-save {
-    margin-left: 25px;
-  }
-
   #settings {
     .form-table th {
       font-weight:400;
@@ -986,8 +943,11 @@ widget
         flex-direction: row;
         overflow: hidden;
       }
-      .wpsi-tips-tricks-element {
+
+
+      .wpsi-tips-tricks-element, .plugin-text {
         a {
+          text-decoration: none;
           color: @light-text-color;
 
           &:hover {
@@ -1018,6 +978,11 @@ widget
 
   .wpsi-tips-tricks-container-title {
     border-bottom: 1px solid @border-color;
+  }
+
+  //make sure tooltips are not bold, because of title wrap
+  .wpsi-tooltip-right, .wpsi-tooltip-bottom {
+    font-weight:normal;
   }
 
   /*Tooltips on dashboard/settings page*/

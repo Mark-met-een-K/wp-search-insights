@@ -58,12 +58,16 @@ To install this plugin:
 
 == Changelog ==
 = 1.3.0 =
+* Changed to date-range picker
 * Load more searches in data range in the background
 * CSV export directly from server, allowing complete database download
 * State saving of order and page
 * Improved mobile and ipad design
 * Improved front-end search tracking
 * Ajax tracking made optional, default enabled when any one of the known ajax search plugins is active
+
+= 1.2.1 =
+* Improved review notice dismissal
 
 = 1.2.1 =
 * Improved review notice dismissal
