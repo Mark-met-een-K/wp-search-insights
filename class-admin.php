@@ -314,6 +314,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     content: "\f335";
                     opacity: 0.7;
                 }
+
             </style>
 
 			<?php

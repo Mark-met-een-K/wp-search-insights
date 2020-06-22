@@ -1086,7 +1086,10 @@ widget
   color: #000000;
   border-color: #ccc;
 }
-/*skeleton*/
+.wpsi-thickboxheader {
+  margin-top: 15px;
+  font-weight: 600;
+}
 /*
 Animated skeleton screen using CSS.
 
