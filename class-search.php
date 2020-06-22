@@ -104,6 +104,9 @@ if ( ! class_exists( 'Search' ) ) {
 
 
 		public function enqueue_assets() {
+
+			if (!get_option('wpsi_track_ajax_searches')) return;
+
 			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
             wp_register_script( 'search-insights-frontend-js',
                 trailingslashit( wpsi_url )
@@ -187,7 +190,6 @@ if ( ! class_exists( 'Search' ) ) {
 	        if (strlen( $search_term ) === 0) {
 		        return;
 	        }
-
 	        /**
 	         * allow skipping this search term
 	         */

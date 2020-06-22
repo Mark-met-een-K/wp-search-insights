@@ -8,7 +8,6 @@ jQuery(document).ready(function ($) {
     var doneTypingInterval = 800;
     var activeSearchObject;
     var ajaxCallActive = false;
-
     //on keyup, start the countdown
     $(input_type_search, input_name_search).on('keyup', function (e) {
         activeSearchObject = $(this);
