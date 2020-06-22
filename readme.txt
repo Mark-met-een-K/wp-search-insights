@@ -65,10 +65,13 @@ To install this plugin:
 * Improved mobile and ipad design
 * Improved front-end search tracking
 * Ajax tracking made optional, default enabled when any one of the known ajax search plugins is active
+
 = 1.2.1 =
 * Improved review notice dismissal
+
 = 1.2 =
 * Changed lay-out
+
 = 1.1 =
 * Added text filter area to exclude terms from results
 * Added option to select which user roles can view the dashboard
