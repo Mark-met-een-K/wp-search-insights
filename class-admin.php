@@ -125,11 +125,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 jQuery(document).ready(function ($) {
                     "use strict";
 
+                    var endOfDay = moment().endOf('day').add( moment().utcOffset(), 'm' );
                     var unixStart = localStorage.getItem('wpsi_range_start');
                     var unixEnd = localStorage.getItem('wpsi_range_end');
+
                      if (unixStart === null || unixEnd === null ) {
-                        unixStart = moment().subtract(1, 'week').unix();
-                        unixEnd = moment().unix();
+                        unixStart = endOfDay.subtract(1, 'week').unix();
+                        unixEnd = endOfDay.unix();
                         localStorage.setItem('wpsi_range_start', unixStart);
                         localStorage.setItem('wpsi_range_end', unixEnd);
                      }
@@ -148,9 +150,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         {
                             ranges: {
                                 'Today': [moment(), moment()],
-                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'Yesterday': [endOfDay.subtract(2, 'days'), endOfDay.subtract(1, 'days')],
+                                'Last 7 Days': [endOfDay.subtract(8, 'days'), endOfDay.subtract(1, 'days')],
+                                'Last 30 Days': [moment().subtract(31, 'days'), endOfDay.subtract(1, 'days')],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                             },
