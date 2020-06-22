@@ -724,6 +724,7 @@ widget
 }
 #wpsi-dashboard #settings .form-table th {
   font-weight: 400;
+  width: initial;
 }
 #wpsi-dashboard #settings .wpsi-download-link {
   padding-top: 6px;
@@ -1085,7 +1086,10 @@ widget
   color: #000000;
   border-color: #ccc;
 }
-/*skeleton*/
+.wpsi-thickboxheader {
+  margin-top: 15px;
+  font-weight: 600;
+}
 /*
 Animated skeleton screen using CSS.
 
