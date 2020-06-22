@@ -782,6 +782,7 @@ widget
 #wpsi-dashboard .upsell-grid-container .item-content > div .wpsi-tips-tricks-element a,
 #wpsi-dashboard .wpsi-tips-tricks .item-content > div .plugin-text a,
 #wpsi-dashboard .upsell-grid-container .item-content > div .plugin-text a {
+  text-decoration: none;
   color: #3c3c3c;
 }
 #wpsi-dashboard .wpsi-tips-tricks .item-content > div .wpsi-tips-tricks-element a:hover,
