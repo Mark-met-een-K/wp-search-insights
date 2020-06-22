@@ -69,6 +69,9 @@ To install this plugin:
 = 1.2.1 =
 * Improved review notice dismissal
 
+= 1.2.1 =
+* Improved review notice dismissal
+
 = 1.2 =
 * Changed lay-out
 

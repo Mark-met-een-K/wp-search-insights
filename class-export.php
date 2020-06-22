@@ -210,7 +210,7 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 		 */
 
 		private function create_csv_file($data){
-			$delimiter=";";
+			$delimiter=",";
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
 			$uploads = wp_upload_dir();
 			$upload_dir = $uploads['basedir'];
