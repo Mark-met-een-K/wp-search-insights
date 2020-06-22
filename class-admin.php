@@ -1703,6 +1703,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	     */
 
         public function get_status_link($item){
+//            if (is_multisite()){
+                $install_url = network_admin_url('plugin-install.php?s=');
+//            } else {
+//                $install_url = admin_url('plugin-install.php?s=');
+//            }
+
 	        if (defined($item['constant_free']) && defined($item['constant_premium'])) {
 		        $status = __("Installed", "wp-search-insights");
 	        } elseif (defined($item['constant_free']) && !defined($item['constant_premium'])) {
@@ -1710,7 +1716,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		        $text = __('Upgrade to pro', 'wp-search-insights');
 		        $status = "<a href=$link>$text</a>";
 	        } else {
-		        $link = admin_url() . "plugin-install.php?s=".$item['search']."&tab=search&type=term";
+		        $link = $install_url.$item['search']."&tab=search&type=term";
 		        $text = __('Install', 'wp-search-insights');
 		        $status = "<a href=$link>$text</a>";
 	        }
