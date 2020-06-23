@@ -158,18 +158,21 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                     function wpsiUpdateDate(start, end) {
                         $('.wpsi-date-container span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                        localStorage.setItem('wpsi_range_start', start.unix());
-                        localStorage.setItem('wpsi_range_end', end.unix());
+                        localStorage.setItem('wpsi_range_start', start.add( moment().utcOffset(), 'm' ).unix());
+                        localStorage.setItem('wpsi_range_end', end.add( moment().utcOffset(), 'm' ).unix());
                     }
-                    var yesterdayStart = moment().endOf('day').subtract(2, 'days');
+                    var todayStart = moment().endOf('day').subtract(1, 'days').add(1, 'minutes');
+                    var todayEnd = moment().endOf('day');
+                    var yesterdayStart = moment().endOf('day').subtract(2, 'days').add(1, 'minutes');
+
                     var yesterdayEnd = moment().endOf('day').subtract(1, 'days');
-                    var lastWeekStart = moment().endOf('day').subtract(8, 'days');
+                    var lastWeekStart = moment().endOf('day').subtract(8, 'days').add(1, 'minutes');
                     var lastWeekEnd = moment().endOf('day').subtract(1, 'days');
 
                     $('.wpsi-date-container.wpsi-table-range').daterangepicker(
                         {
                             ranges: {
-                                'Today': [moment(), moment()],
+                                'Today': [todayStart, todayEnd],
                                 'Yesterday': [yesterdayStart, yesterdayEnd],
                                 'Last 7 Days': [lastWeekStart, lastWeekEnd],
                                 'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
@@ -273,11 +276,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         }, function (start, end, label) {
                             wpsiUpdateDate(start, end);
                         });
-
-
-
-
-
 
                 });
 	        </script>
