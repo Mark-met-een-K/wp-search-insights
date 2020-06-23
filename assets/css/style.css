@@ -419,10 +419,18 @@ widget
   font-size: 12px;
 }
 #wpsi-dashboard #dashboard .item-content table th {
-  letter-spacing: 0.1em;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: right;
 }
 #wpsi-dashboard #dashboard .item-content table th:focus {
   outline: none;
+}
+#wpsi-dashboard #dashboard .item-content table th.sorting_asc {
+  background-image: url(../images/sort_asc.png);
+}
+#wpsi-dashboard #dashboard .item-content table th.sorting_desc {
+  background-image: url(../images/sort_desc.png);
 }
 #wpsi-dashboard #dashboard .item-content table tbody {
   color: #3c3c3c;
@@ -524,16 +532,20 @@ widget
   border: 1px solid #DEDEDE;
   box-shadow: 0px 1px 1px #DEDEDE;
 }
-#wpsi-dashboard .dataTables_paginate .current {
+#wpsi-dashboard .dataTables_paginate .paginate_button.next,
+#wpsi-dashboard .dataTables_paginate .paginate_button.previous {
+  padding: 0.5em 1.8em;
+  color: #d7263d;
+}
+#wpsi-dashboard .dataTables_paginate .paginate_button.disabled {
+  color: #ededed;
+}
+#wpsi-dashboard .dataTables_paginate .paginate_button.current {
   color: white;
   background-color: #d7263d;
   border: 0;
 }
 #wpsi-dashboard #wpsi-recent-table_previous {
-  padding: 0.5em 1.8em;
-  color: #d7263d;
-}
-#wpsi-dashboard #wpsi-recent-table_next {
   padding: 0.5em 1.8em;
   color: #d7263d;
 }
@@ -730,7 +742,7 @@ widget
   padding-top: 6px;
   margin-right: 20px;
 }
-#wpsi-dashboard #settings input,
+#wpsi-dashboard #settings input[type=text],
 #wpsi-dashboard #settings textarea,
 #wpsi-dashboard #settings select {
   border: 1px solid #DEDEDE;
@@ -738,7 +750,7 @@ widget
 #wpsi-dashboard #settings textarea {
   width: 100%;
 }
-#wpsi-dashboard #settings td {
+#wpsi-dashboard #settings .wpsi-export-grid td {
   display: flex;
 }
 #wpsi-dashboard #wpsi_exclude_admin {
@@ -755,7 +767,6 @@ widget
   color: white;
   border: none;
   height: 30px;
-  width: 150px;
 }
 #wpsi-dashboard #clear-searches-btn-border {
   border-bottom: 1px solid #DEDEDE;

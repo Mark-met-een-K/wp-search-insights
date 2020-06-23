@@ -413,7 +413,6 @@ if ( ! class_exists( 'Search' ) ) {
                 'result_count' => false,
 				'number' => -1,
 				'term'=> false,
-				'time' => false,
 				'compare' => false,
                 'from' => "*",
 				'range' => false,
@@ -440,11 +439,14 @@ if ( ! class_exists( 'Search' ) ) {
 		            default:
 			            $range = time() - MONTH_IN_SECONDS;
 	            }
-	            $args['time'] = $range;
+	            $args['date_from'] = $range;
+	            $args['date_to'] = time();
             }
 
 			global $wpdb;
 			$table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+			$table_name_single = $wpdb->prefix . 'searchinsights_single';
+
 			$limit = '';
 			if ($args['number']!=-1){
 				$count = intval($args['number']);
@@ -453,24 +455,22 @@ if ( ! class_exists( 'Search' ) ) {
 			$order = $args['order']=='ASC' ? 'ASC' : 'DESC';
 			$orderby = sanitize_title($args['orderby']);
 			$where = '';
-			if ($args['result_count']!==FALSE){
-                $where .= " AND result_count ";
-                if ($args['compare']) {
-                    $where .= $args['compare'];
-                } else {
-	                $where .= "=";
-                }
-                $where .= $args['result_count'];
-			}
 
 			if ($args['term']){
 				$where .= $wpdb->prepare(' AND term = %s ',sanitize_text_field($args['term']));
 			}
 
-			if ($args['time']){
-				$compare = $args['compare']=='>' ? '>' : '<';
-				$time = intval($args['time']);
-				$where .=" AND time > $time ";
+			//split of trend where because we don't want the range here.
+			$trend_where = $where;
+
+			if ($args['result_count']!==FALSE){
+				$where .= " AND result_count ";
+				if ($args['compare']) {
+					$where .= $args['compare'];
+				} else {
+					$where .= "=";
+				}
+				$where .= $args['result_count'];
 			}
 
 			if ($args['date_from']){
@@ -500,9 +500,9 @@ if ( ! class_exists( 'Search' ) ) {
 					$last_period_end = strtotime("-1 $period");
 				}
 
-				$where .= " AND time > $last_period_start AND time < $last_period_end";
-				$previous_period_sql = "SELECT frequency as previous_frequency, id from $table_name_archive WHERE 1=1 $where ORDER BY $orderby $order $limit";
-				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.id = previous.id";
+				$trend_where .= " AND time > $last_period_start AND time < $last_period_end";
+				$previous_period_sql = "SELECT COUNT(*) as previous_frequency, term from $table_name_single WHERE 1=1 $trend_where GROUP BY term";
+				$search_sql = "select current.*, previous.previous_frequency from ($search_sql) as current left join ($previous_period_sql) as previous ON current.term = previous.term";
 			}
 
 			if ($args['count']) {
@@ -537,7 +537,6 @@ if ( ! class_exists( 'Search' ) ) {
 				'order' => 'DESC',
 				'orderby' => 'time',
 				'term'=> false,
-				'time' => false,
 				'compare' => ">",
 				'range' => false,
 				'result_count' => false,
@@ -565,8 +564,8 @@ if ( ! class_exists( 'Search' ) ) {
 					default:
 						$range = time() - MONTH_IN_SECONDS;
 				}
-				unset($args['range']);
-				$args['time'] = $range;
+				$args['date_from'] = $range;
+				$args['date_to'] = time();
 			}
 
 			global $wpdb;
@@ -584,12 +583,6 @@ if ( ! class_exists( 'Search' ) ) {
 			$where = '';
 			if ($args['term']){
 				$where .= $wpdb->prepare(' AND term = %s ', sanitize_text_field($args['term']));
-			}
-
-			if ($args['time']){
-				$compare = $args['compare']=='>' ? '>' : '<';
-				$time = intval($args['time']);
-				$where .=" AND time $compare $time ";
 			}
 
 			if ($args['date_from']){

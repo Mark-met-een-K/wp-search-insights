@@ -473,8 +473,15 @@ widget
         &:focus {
           outline: none;
         }
-
-        letter-spacing: .1em;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        background-position: right;
+        &.sorting_asc{
+          background-image: url(../images/sort_asc.png);
+        }
+        &.sorting_desc{
+          background-image: url(../images/sort_desc.png);
+        }
       }
 
       tbody {
@@ -603,20 +610,26 @@ widget
     margin-bottom: 10px;
     //text-align: left;
     cursor: pointer;
-  }
+    .paginate_button {
+      color: black;
+      padding: 0.5em 1em;
+      box-sizing: border-box;
+      border: 1px solid @border-color;
+      box-shadow: 0px 1px 1px @border-color;
+      &.next, &.previous {
+        padding: 0.5em 1.8em;
+        color: @color-error;
+      }
+      &.disabled {
+        color:@grey-light;
+      }
+      &.current {
+        color: white;
+        background-color: @color-error;
+        border: 0;
+      }
+    }
 
-  .dataTables_paginate .paginate_button {
-    color: black;
-    padding: 0.5em 1em;
-    box-sizing: border-box;
-    border: 1px solid @border-color;
-    box-shadow: 0px 1px 1px @border-color;
-  }
-
-  .dataTables_paginate .current {
-    color: white;
-    background-color: @color-error;
-    border: 0;
   }
 
   #wpsi-recent-table_previous {
@@ -625,8 +638,7 @@ widget
   }
 
   #wpsi-recent-table_next {
-    padding: 0.5em 1.8em;
-    color: @color-error;
+
   }
 
   /*
@@ -897,11 +909,11 @@ widget
       padding-top:6px;
       margin-right: 20px;
     }
-    input, textarea, select {
+    input[type=text], textarea, select {
       border: 1px solid @border-color;
     }
     textarea {width:100%}
-    td {
+    .wpsi-export-grid td {
       display: flex;
     }
   }
@@ -922,7 +934,6 @@ widget
     color: white;
     border: none;
     height: 30px;
-    width: 150px;
   }
 
   #clear-searches-btn-border {

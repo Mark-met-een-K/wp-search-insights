@@ -237,14 +237,27 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 			//create a line with headers
 			$headers = $this->parse_headers_from_array($data);
-			fputcsv($csv_handle, $headers, $delimiter);
+			$has_time_column = array_search('time', $headers);
+			if ( $has_time_column !== FALSE ) {
+				$headers[] = __("date", "wp-search-insights");
+            }
 
+			fputcsv($csv_handle, $headers, $delimiter);
+            $data = array_map(array($this, 'localize_date') , $data);
 			foreach ($data as $line) {
 				$line = array_map('sanitize_text_field', $line);
 				fputcsv($csv_handle, $line, $delimiter);
 			}
 			fclose ($csv_handle);
 		}
+
+		public function localize_date($row){
+            if (isset($row['time'])) {
+                $this->add_nice_time_header = true;
+                $row['nice_time'] = WPSI::$admin->localize_date($row['time']);
+            }
+			return $row;
+        }
 
 
 		private function filepath(){
