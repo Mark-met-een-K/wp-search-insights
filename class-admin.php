@@ -142,13 +142,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 jQuery(document).ready(function ($) {
                     "use strict";
 
-                    var endOfDay = moment().endOf('day').add( moment().utcOffset(), 'm' );
                     var unixStart = localStorage.getItem('wpsi_range_start');
                     var unixEnd = localStorage.getItem('wpsi_range_end');
 
                      if (unixStart === null || unixEnd === null ) {
-                        unixStart = endOfDay.subtract(1, 'week').unix();
-                        unixEnd = endOfDay.unix();
+                        unixStart = moment().endOf('day').subtract(1, 'week').unix();
+                        unixEnd = moment().endOf('day').unix();
                         localStorage.setItem('wpsi_range_start', unixStart);
                         localStorage.setItem('wpsi_range_end', unixEnd);
                      }
@@ -162,14 +161,18 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         localStorage.setItem('wpsi_range_start', start.unix());
                         localStorage.setItem('wpsi_range_end', end.unix());
                     }
+                    var yesterdayStart = moment().endOf('day').subtract(2, 'days');
+                    var yesterdayEnd = moment().endOf('day').subtract(1, 'days');
+                    var lastWeekStart = moment().endOf('day').subtract(8, 'days');
+                    var lastWeekEnd = moment().endOf('day').subtract(1, 'days');
 
                     $('.wpsi-date-container.wpsi-table-range').daterangepicker(
                         {
                             ranges: {
                                 'Today': [moment(), moment()],
-                                'Yesterday': [endOfDay.subtract(2, 'days'), endOfDay.subtract(1, 'days')],
-                                'Last 7 Days': [endOfDay.subtract(8, 'days'), endOfDay.subtract(1, 'days')],
-                                'Last 30 Days': [moment().subtract(31, 'days'), endOfDay.subtract(1, 'days')],
+                                'Yesterday': [yesterdayStart, yesterdayEnd],
+                                'Last 7 Days': [lastWeekStart, lastWeekEnd],
+                                'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                             },
@@ -222,9 +225,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         {
                             ranges: {
                                 'Today': [moment(), moment()],
-                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'Yesterday': [yesterdayStart, yesterdayEnd],
+                                'Last 7 Days': [lastWeekStart, lastWeekEnd],
+                                'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                             },
@@ -1163,7 +1166,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches_no_results = get_transient("wpsi_popular_searches_week");
+            $popular_searches_no_results = false;//get_transient("wpsi_popular_searches_week");
             if ($on_grid) $popular_searches_no_results = false;
             if (!$popular_searches_no_results) {
                 $args = array(
@@ -1175,14 +1178,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
                 //from the dashboard, we don't get a start-end range. We use default month.
                 if (!$on_grid) {
-                    $args['range'] = 'week';
+                    $args['range'] = 'month';
                 } else {
 	                $args['date_from'] = $start;
 	                $args['date_to'] = $end;
                 }
 
 	            $popular_searches_no_results = WPSI::$search->get_searches($args, $trend = true);
-                set_transient("wpsi_popular_searches_week", $popular_searches_no_results, HOUR_IN_SECONDS);
+	            if (!$on_grid) set_transient("wpsi_popular_searches_week", $popular_searches_no_results, HOUR_IN_SECONDS);
             }
 
             if (!$on_grid) {
@@ -1230,7 +1233,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			            "{time}"
 		            ), array(
 			            $icon,
-			            $this->get_term_link( $search->term, $home_url ),
+			            $this->get_term_link( $search->term, $home_url )."-".$search->frequency."-".$search->previous_frequency,
 			            $searches,
 			            $time
 		            ), $tmpl );
@@ -1241,7 +1244,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             //reset html
 	        $html = '';
-            $top_searches = get_transient("wpsi_top_searches_week");
+            $top_searches = false;//get_transient("wpsi_top_searches_week");
 	        if ($on_grid) $top_searches = false;
 
 	        if (!$top_searches) {
@@ -1251,13 +1254,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'number' => 5,
                 );
 		        if (!$on_grid) {
-			        $args['range'] = 'week';
+			        $args['range'] = 'month';
 		        } else {
 			        $args['date_from'] = $start;
 			        $args['date_to'] = $end;
 		        }
                 $top_searches = WPSI::$search->get_searches($args, $trend = true);
-                set_transient("wpsi_top_searches_week", $top_searches, HOUR_IN_SECONDS);
+		        if (!$on_grid) set_transient("wpsi_top_searches_week", $top_searches, HOUR_IN_SECONDS);
             }
 
             if (count($top_searches) == 0) {
@@ -1415,7 +1418,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         <td data-label="Term" class="wpsi-term"
                             data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term , $home_url).'</td>
                         <td>'.$search->result_count.'</td>
-                        <td data-label="When">'. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
+                        <td data-label="When">'. $this->localize_date( $search->time ).'</td>
                         <td data-label="When-unix">'.$search->time.'</td>                        <td>'.$this->get_referrer_link($search) .'</td>
                     </tr>';
 		        }
@@ -1438,7 +1441,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         '<tr>
                             <td data-label="Term" class="wpsi-term" data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term, $home_url ).'</td>
                             <td>'.$search->result_count.'</td>
-                            <td data-label="When">'. sprintf("%s at %s", date( get_option('date_format'), $search->time ), date( get_option('time_format'), $search->time ) ).'</td>
+                            <td data-label="When">'. $this->localize_date( $search->time ).'</td>
                             <td data-label="When-unix">'.$search->time.'</td>
                             <td>'.$this->get_referrer_link( $search ).'</td>
                         </tr>';
@@ -1446,13 +1449,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		            $output .= '</tbody>
                 </table>';
 
-			        error_log($output);
-
 		        return $output;
 	        }
         }
 
-
+        public function localize_date($unix){
+	        return sprintf("%s at %s", date( str_replace( 'F', 'M', get_option('date_format')), $unix  ), date( get_option('time_format'), $unix ) );
+        }
 
 
 
