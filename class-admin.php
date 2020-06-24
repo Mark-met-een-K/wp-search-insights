@@ -1231,7 +1231,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 			            "{time}"
 		            ), array(
 			            $icon,
-			            $this->get_term_link( $search->term, $home_url )."-".$search->frequency."-".$search->previous_frequency,
+			            $this->get_term_link( $search->term, $home_url ),
 			            $searches,
 			            $time
 		            ), $tmpl );
