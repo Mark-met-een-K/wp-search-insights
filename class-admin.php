@@ -1164,7 +1164,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $html = "";
 
             //only use cached data on dash
-            $popular_searches_no_results = false;//get_transient("wpsi_popular_searches_week");
+            $popular_searches_no_results = get_transient("wpsi_popular_searches_week");
             if ($on_grid) $popular_searches_no_results = false;
             if (!$popular_searches_no_results) {
                 $args = array(
@@ -1242,7 +1242,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             //reset html
 	        $html = '';
-            $top_searches = false;//get_transient("wpsi_top_searches_week");
+            $top_searches = get_transient("wpsi_top_searches_week");
 	        if ($on_grid) $top_searches = false;
 
 	        if (!$top_searches) {

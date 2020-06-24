@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/wpsearchinsights
 Tags: search, analytics, search term, recording searches, searches, search form, search filter
 Requires at least: 4.6
 License: GPL2
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.6
 Stable tag: 1.3.0
 
