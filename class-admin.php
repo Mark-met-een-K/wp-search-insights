@@ -1484,9 +1484,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_term_link($term, $home_url = false)
         {
-        	if (!$home_url) $home_url = home_url();
+	        $custom_search_parameter = get_option('wpsi_custom_search_parameter');
+	        $search_parameter = $custom_search_parameter ? sanitize_title($custom_search_parameter) : 's';
 
-            $search_url = $home_url. '?s=' . $term . '&searchinsights';
+	        if (!$home_url) $home_url = home_url();
+
+            $search_url = $home_url. "?$search_parameter=" . $term . '&searchinsights';
 
 	        //make sure the link is not too long
 	        if (strlen($term)>28){

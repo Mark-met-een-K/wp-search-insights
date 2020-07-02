@@ -5,6 +5,6 @@ if (class_exists( 'bbPress' )) {
 	require_once( 'bbpress.php' );
 }
 
-if (defined('toolset_constant_here') ){
+if (defined('WPV_PATH') ){
 	require_once('toolset.php');
 }
