@@ -6,7 +6,7 @@ Requires at least: 4.6
 License: GPL2
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
@@ -57,6 +57,10 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.3.2 =
+* Improvement: added support for Toolset search
+* Improvement: added option to provide your own search parameter
+
 = 1.3.1 =
 * Fix: remove frequency numbers from overview
 
