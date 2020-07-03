@@ -712,9 +712,6 @@ widget
 #wpsi-dashboard .form-table {
   padding-left: 50px;
 }
-#wpsi-dashboard .form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
-  display: none;
-}
 #wpsi-dashboard #wpsi-filter {
   background-color: #fff;
   height: 250px;
@@ -735,6 +732,7 @@ widget
   flex-direction: column;
 }
 #wpsi-dashboard #settings .form-table th {
+  padding-top: 16px;
   font-weight: 400;
   width: initial;
 }

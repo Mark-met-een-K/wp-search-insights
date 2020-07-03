@@ -26,7 +26,7 @@ if ( ! class_exists( 'Search' ) ) {
 			add_action( 'wp_ajax_wpsi_process_search', array( $this, 'get_ajax_search') );
 			add_action( 'plugins_loaded', array( $this, 'update_db' ) );
 			add_action('wp_ajax_wpsi_delete_terms', array($this, 'ajax_delete_terms'));
-
+			add_action('init', array($this, 'get_custom_search'));
 		}
 
 		static function this() {
@@ -143,6 +143,48 @@ if ( ! class_exists( 'Search' ) ) {
 				$this->process_search_term( $search_term , $result_count );
 
             }
+		}
+
+		/**
+		 * Get search with a custom search parameter
+		 */
+
+		public function get_custom_search() {
+			//get custom search parameter
+			$custom_search_parameter = sanitize_title(get_option('wpsi_custom_search_parameter'));
+			$caller = $this->get_caller_by_search_parameter($custom_search_parameter);
+
+			if (strlen($custom_search_parameter)>0 && isset($_GET[$custom_search_parameter])) {
+				$result_count = 0;
+				//Get the search term
+				$search_term
+					= sanitize_text_field( $_GET[ $custom_search_parameter ] );
+				// Get the search count. This data is displayed in the admin dashboard.
+				$args = array(
+					'posts_per_page' => - 1,
+					'post_status'    => 'publish',
+					'offset'         => 0,
+					's'              => $search_term,
+				);
+				$posts = get_posts( $args );
+				if ( $posts ) {
+					$result_count = count( $posts );
+				}
+
+				// Process term and count, add additional information and write to DB
+				$this->process_search_term( $search_term, $result_count, $caller);
+			}
+		}
+
+		/**
+		 * Get caller of search term by parameter
+		 * @param string $search_parameter
+		 *
+		 * @return mixed|void
+		 */
+
+		public function get_caller_by_search_parameter($search_parameter) {
+			return apply_filters('wpsi_get_caller_by_search_parameter', 'wordpress', $search_parameter);
 		}
 
         /**

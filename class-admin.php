@@ -618,6 +618,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 'wpsi-settings-tab'
             );
 
+            add_settings_field(
+                'wpsi_custom_search_parameter',
+                __("Custom search parameter", 'wp-search-insights'),
+                array($this, 'option_wpsi_custom_search_parameter'),
+                'wpsi-settings',
+                'wpsi-settings-tab'
+            );
+
             // Register our setting so that $_POST handling is done for us and
             // our callback function just has to echo the <input>
             register_setting('wpsi-settings-tab', 'wpsi_exclude_admin');
@@ -625,6 +633,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
             register_setting('wpsi-settings-tab', 'wpsi_track_ajax_searches');
+	        register_setting('wpsi-settings-tab', 'wpsi_custom_search_parameter');
 
 	        add_settings_section(
 		        'wpsi-settings-tab',
@@ -793,12 +802,19 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
+        public function option_wpsi_custom_search_parameter(){
+	        ?>
+            <input id="wpsi_custom_search_parameter" class="wpsi_custom_search_parameter" name="wpsi_custom_search_parameter" size="40"  value="<?php echo get_option('wpsi_custom_search_parameter') ?>"
+                   type="text">
+	        <?php
+        }
+
         public function option_min_term_length()
         {
             ?>
             <input id="wpsi_min_term_length" class="wpsi_term_length" name="wpsi_min_term_length" size="40" min="0"
                    max="24" value="<?php echo intval(get_option('wpsi_min_term_length')) ?>"
-                   type="number" <?php checked(1, intval(get_option('wpsi_min_term_length'), true)) ?> </input>
+                   type="number">
             <?php
         }
 
@@ -811,7 +827,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             ?>
             <input id="wpsi_max_term_length" class="wpsi_term_length" name="wpsi_max_term_length" size="40" min="0"
                    max="255" value="<?php echo intval(get_option('wpsi_max_term_length')) ?>"
-                   type="number" <?php checked(1, intval(get_option('wpsi_max_term_length'), true)) ?> </input>
+                   type="number">
             <?php
         }
 
@@ -1468,9 +1484,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_term_link($term, $home_url = false)
         {
-        	if (!$home_url) $home_url = home_url();
+	        $custom_search_parameter = get_option('wpsi_custom_search_parameter');
+	        $search_parameter = $custom_search_parameter ? sanitize_title($custom_search_parameter) : 's';
 
-            $search_url = $home_url. '?s=' . $term . '&searchinsights';
+	        if (!$home_url) $home_url = home_url();
+
+            $search_url = $home_url. "?$search_parameter=" . $term . '&searchinsights';
 
 	        //make sure the link is not too long
 	        if (strlen($term)>28){
