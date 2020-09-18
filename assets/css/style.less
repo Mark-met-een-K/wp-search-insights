@@ -43,6 +43,10 @@
 
     #wpsi-recent-table_wrapper {
       overflow: hidden;
+      .dataTables_paginate {
+        //display: flex;
+        //flex-wrap: wrap;
+      }
     }
 
     .inside > div:nth-child(1) {
@@ -56,6 +60,11 @@
     .table-footer {
       position: relative;
       bottom: 0;
+      .wpsi-page-nr {
+        flex: 1;
+        padding-left: 10px;
+        margin-top: -10px;
+      }
     }
 
     #wpsi-toggle-arrows {
@@ -68,6 +77,7 @@
     }
 
     .item-container {
+      //height: 800px;
       width: 95vw;
     }
 
@@ -83,6 +93,11 @@
 
     #settings {
       margin-left: 0;
+      .item-container {
+        width: 85vw;
+        height: 800px;
+        clear:both
+      }
     }
   }
 }

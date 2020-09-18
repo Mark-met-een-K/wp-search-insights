@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
             pagingType = wpsiMobilePagingType;
         }
         table.DataTable( {
-            "dom": 'frt<"table-footer"p><"clear">B',
+            "dom": 'frt<"table-footer"p<"wpsi-page-nr">><"clear">B',
             "pageLength": pageLength,
             "pagingType": pagingType,
             "stateSave": true,
@@ -105,10 +105,17 @@ jQuery(document).ready(function ($) {
             "order": [[2, "desc"]],
         });
 
+        $(".wpsi-page-nr").text(1);
+
         container.find('.wpsi-table').on( 'page.dt', function () {
             var table = $(this).closest('table').DataTable();
             var info = table.page.info();
             lastSelectedPage = info.page;
+            if (win.width() < wpsiScreensizeLowerMobile) {
+                // +1 because it starts counting at 0
+                var currentPage = lastSelectedPage +1;
+                $(".wpsi-page-nr").text(currentPage + "/" + info.pages);
+            }
         } );
     }
 

@@ -33,6 +33,11 @@
     position: relative;
     bottom: 0;
   }
+  #wpsi-dashboard .table-footer .wpsi-page-nr {
+    flex: 1;
+    padding-left: 10px;
+    margin-top: -10px;
+  }
   #wpsi-dashboard #wpsi-toggle-arrows {
     margin-top: 6px;
   }
@@ -51,6 +56,11 @@
   }
   #wpsi-dashboard #settings {
     margin-left: 0;
+  }
+  #wpsi-dashboard #settings .item-container {
+    width: 85vw;
+    height: 800px;
+    clear: both;
   }
 }
 /**
