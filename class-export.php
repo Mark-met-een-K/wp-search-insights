@@ -24,6 +24,12 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 
 		}
 
+		/**
+         * Add settings block for the export option
+		 * @param array $blocks
+		 *
+		 * @return array
+		 */
 		public function export_block($blocks){
 			$blocks[] = array(
 				'title' => __( "Data", "wp-search-insights" ),
@@ -36,6 +42,10 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			return $blocks;
 		}
 
+		/**
+         * Content of export block
+		 * @return string
+		 */
 
 		public function content_export(){
 			if (!current_user_can('manage_options')) return;
@@ -79,7 +89,9 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
             return ob_get_clean();
 		}
 
-
+		/**
+		 * Start export with ajax call
+		 */
 
 		public function ajax_start_export()
 		{
@@ -153,6 +165,13 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			exit;
 		}
 
+		/**
+         * process a csv chunk
+		 * @param array $args
+		 *
+		 * @return float
+		 * @throws Exception
+		 */
 
 		public function process_csv_chunk($args = array()){
 			if ( !get_transient('wpsi_export_in_progress') ) return;
@@ -251,6 +270,12 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			fclose ($csv_handle);
 		}
 
+		/**
+         * Get a localized date for this row
+		 * @param $row
+		 *
+		 * @return mixed
+		 */
 		public function localize_date($row){
             if (isset($row['time'])) {
                 $this->add_nice_time_header = true;
@@ -259,6 +284,10 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			return $row;
         }
 
+		/**
+         * Get a filepath
+		 * @return string
+		 */
 
 		private function filepath(){
 			$uploads = wp_upload_dir();
@@ -266,6 +295,10 @@ if ( ! class_exists( 'WPSI_EXPORT' ) ) {
 			return $upload_dir . "/wpsi/".get_option('wpsi_file_name').".csv";
 		}
 
+		/**
+         * Get a file URL
+		 * @return string
+		 */
 		private function fileurl(){
 			$uploads = wp_upload_dir();
 			return $uploads['baseurl'] . "/wpsi/".get_option('wpsi_file_name').".csv";

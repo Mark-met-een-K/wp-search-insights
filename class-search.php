@@ -33,6 +33,10 @@ if ( ! class_exists( 'Search' ) ) {
 			return self::$_this;
 		}
 
+		/**
+		 * Delete array of terms using ajax
+		 */
+
 		public function ajax_delete_terms()
 		{
 			$error = false;
@@ -74,8 +78,9 @@ if ( ! class_exists( 'Search' ) ) {
 
 		/**
 		 * Delete term by id
-		 * @param $term_id
+		 * @param int $term_id
 		 */
+
 		public function delete_term($term_id){
 
 			if (!current_user_can('manage_options')) return;
@@ -293,8 +298,8 @@ if ( ! class_exists( 'Search' ) ) {
         }
 
 		/**
-		 * @param $search_term
-         * @param $result_count
+		 * @param string $search_term
+         * @param int $result_count
 		 *
 		 *  Write search term to both tables
 		 *
@@ -364,10 +369,6 @@ if ( ! class_exists( 'Search' ) ) {
 			if (!$row) return false;
 
 			return $row;
-
-		}
-
-		public function get_duplicate_and_fuzzy($term){
 
 		}
 
@@ -712,7 +713,8 @@ if ( ! class_exists( 'Search' ) ) {
 		}
 
 		/**
-		 * @param $search_term
+		 * @param string $search_term
+		 * @param int $result_count
 		 *
 		 * Write search term to archive table Any additional information such as time and referer is added here too
 		 *

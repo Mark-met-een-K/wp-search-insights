@@ -168,3 +168,9 @@ function search_insights_activation_hook() {
 }
 //Call register activation hook outside of class.
 register_activation_hook( __FILE__, 'search_insights_activation_hook' );
+
+
+function wpsi_clear_scheduled_hooks(){
+	wp_clear_scheduled_hook( 'wpsi_every_five_minutes_hook' );
+}
+register_deactivation_hook( __FILE__, 'wpsi_clear_scheduled_hooks' );
