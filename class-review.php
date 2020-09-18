@@ -48,6 +48,9 @@ if (!class_exists("wpsi_review")) {
 			return self::$_this;
 		}
 
+		/**
+		 * Show a notice to the user
+		 */
 		public function show_leave_review_notice()
 		{
 			if (isset( $_GET['wpsi_dismiss_review'] ) ) return;
