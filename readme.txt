@@ -56,6 +56,13 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.3.4 =
+* Mobile pagination
+* PHP docs update
+
+= 1.3.3 =
+* WP 5.5 compatibility
+
 = 1.3.2 =
 * Improvement: added support for Toolset search
 * Improvement: added option to provide your own search parameter
