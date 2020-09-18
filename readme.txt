@@ -3,9 +3,9 @@ Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
 Tags: search, analytics, statistics, history, recording searches
 License: GPL2
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 1.3.2
+Stable tag: 1.3.4
 
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
