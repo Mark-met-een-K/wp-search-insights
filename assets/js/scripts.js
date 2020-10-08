@@ -105,8 +105,6 @@ jQuery(document).ready(function ($) {
             "order": [[2, "desc"]],
         });
 
-        $(".wpsi-page-nr").text(1);
-
         container.find('.wpsi-table').on( 'page.dt', function () {
             var table = $(this).closest('table').DataTable();
             var info = table.page.info();

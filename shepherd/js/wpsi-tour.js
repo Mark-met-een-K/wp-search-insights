@@ -1,30 +1,30 @@
 jQuery(document).ready(function($) {
-        if (!window.Shepherd) return;
+    if (!window.Shepherd) return;
 
-        var plugins_overview_tour = new Shepherd.Tour();
-        var widget_tour = new Shepherd.Tour();
-        var main_tour = new Shepherd.Tour();
+    var plugins_overview_tour = new Shepherd.Tour();
+    var widget_tour = new Shepherd.Tour();
+    var main_tour = new Shepherd.Tour();
 
-        plugins_overview_tour.options.defaults = widget_tour.options.defaults = main_tour.options.defaults = {
-            classes: 'shepherd-theme-arrows',
-            scrollTo: true,
-            scrollToHandler: function(e) {
-                $('html, body').animate({
-                    scrollTop: $(e).offset().top-200
-                }, 1000);
-            },
-            showCancelLink: true,
-            tetherOptions: {
-                constraints: [
-                    {
-                        to: 'scrollParent',
-                        attachment: 'together',
-                        pin: false
-                    }
-                ]
-            }
-        };
-        var steps = wpsi_tour.steps;
+    plugins_overview_tour.options.defaults = widget_tour.options.defaults = main_tour.options.defaults = {
+        classes: 'shepherd-theme-arrows',
+        scrollTo: true,
+        scrollToHandler: function(e) {
+            $('html, body').animate({
+                scrollTop: $(e).offset().top-200
+            }, 1000);
+        },
+        showCancelLink: true,
+        tetherOptions: {
+            constraints: [
+                {
+                    to: 'scrollParent',
+                    attachment: 'together',
+                    pin: false
+                }
+            ]
+        }
+    };
+    var steps = wpsi_tour.steps;
 
     plugins_overview_tour.addStep('wpsi-step-1', {
             classes: 'shepherd-theme-arrows wpsi-plugins-overview-tour-container shepherd-has-cancel-link',

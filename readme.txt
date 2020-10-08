@@ -1,11 +1,11 @@
-=== WP Search Insights ===
+=== WP Search Insights - Privacy-Friendly Search Analytics ===
 Contributors: markwolters, RogierLankhorst
 Donate link: https://www.paypal.me/wpsearchinsights
 Tags: search, analytics, statistics, history, recording searches
 License: GPL2
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 1.3.4
+Stable tag: 1.3.6
 
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
@@ -56,6 +56,12 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.3.6 =
+* Fix: random number one next to delete button
+
+= 1.3.5 =
+* Name change
+
 = 1.3.4 =
 * Mobile pagination
 * PHP docs update
