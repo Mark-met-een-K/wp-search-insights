@@ -96,6 +96,10 @@ jQuery(document).ready(function($) {
             $('.wpsi-item').each(function () {
 
                 var toggle_id = $(this).data('id');
+
+                //if the layout has less blocks then there actually are, we add it here. Otherwise it ends up floating over another block
+                if ( !layout.includes( toggle_id.toString() ) ) layout.push( toggle_id.toString() );
+
                 if (localStorage.getItem("wpsi_toggle_data_id_" + toggle_id) === null) {
                     window.localStorage.setItem('wpsi_toggle_data_id_' + toggle_id, 'checked');
                 }
