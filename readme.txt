@@ -1,5 +1,5 @@
 === WP Search Insights - Privacy-Friendly Search Analytics ===
-Contributors: markwolters, RogierLankhorst
+Contributors: markwolters
 Donate link: https://www.paypal.me/wpsearchinsights
 Tags: search, analytics, statistics, history, recording searches
 Requires at least: 4.8
@@ -28,9 +28,6 @@ Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-sea
 
 = Love WP Search Insights? =
 Hopefully, this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
-
-Check out other plugins developed by Really Simple Plugins as well: 
-[Complianz](https://wordpress.org/plugins/complianz-gdpr/), [Really Simple SSL](https://wordpress.org/plugins/really-simple-ssl/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
 
 [Contact](https://wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
 

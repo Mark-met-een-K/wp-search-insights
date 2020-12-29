@@ -6,7 +6,7 @@
  * Version: 1.3.6
  * Text Domain: wp-search-insights
  * Domain Path: /languages
- * Author: Really Simple Plugins
+ * Author: Mark Wolters
  * Author URI: https://www.wpsearchinsights.com
  */
 
