@@ -26,7 +26,8 @@ if ( ! class_exists( 'Search' ) ) {
 			add_action( 'wp_ajax_wpsi_process_search', array( $this, 'get_ajax_search') );
 			add_action( 'plugins_loaded', array( $this, 'update_db' ) );
 			add_action('wp_ajax_wpsi_delete_terms', array($this, 'ajax_delete_terms'));
-			add_action('init', array($this, 'get_custom_search'));
+            add_action('wp_ajax_wpsi_ignore_terms', array($this, 'ajax_ignore_terms'));
+            add_action('init', array($this, 'get_custom_search'));
 		}
 
 		static function this() {
@@ -75,8 +76,54 @@ if ( ! class_exists( 'Search' ) ) {
 			exit;
 		}
 
+        /**
+         * Delete array of terms using ajax
+         */
 
-		/**
+        public function ajax_ignore_terms()
+        {
+            $error = false;
+
+            if (!current_user_can('manage_options')) {
+
+                $error = true;
+            }
+
+            if (!isset($_POST['term_ids'])){
+                $error = true;
+            }
+
+            if (!isset($_POST['token'])){
+                $error = true;
+            }
+
+            if (!$error && !wp_verify_nonce(sanitize_title($_POST['token']), 'search_insights_nonce')){
+                $error = true;
+            }
+
+            error_log(print_r($_POST, true) );
+
+            if (!$error){
+                $term_ids = json_decode($_POST['term_ids']);
+                foreach($term_ids as $term_id){
+                    $this->ignore_term(intval($term_id));
+                }
+            }
+
+            $data = array(
+                'success' => !$error,
+            );
+
+            $response = json_encode($data);
+            header("Content-Type: application/json");
+            echo $response;
+            exit;
+        }
+
+
+
+
+        /**
 		 * Delete term by id
 		 * @param int $term_id
 		 */
@@ -96,17 +143,60 @@ if ( ! class_exists( 'Search' ) ) {
 
 			if ($term_single){
 				$count = $wpdb->get_var($wpdb->prepare("select count(*) as count from {$wpdb->prefix}searchinsights_archive where term = %s", sanitize_text_field($term_single) ) );
-				if ($count<=1) {
-					$wpdb->delete(
-						$wpdb->prefix . 'searchinsights_archive',
-						array( 'term' => sanitize_text_field( $term_single ) )
-					);
-				}
+
+				$count = $count - 1;
+
+				if ( $count === 0 ) {
+                    $wpdb->delete(
+                        $wpdb->prefix . 'searchinsights_archive',
+                        array('term' => $term_single)
+                    );
+                } else {
+                    $wpdb->update(
+                        $wpdb->prefix . 'searchinsights_archive',
+                        array('frequency' => intval($count)),
+                        array('term' => $term_single)
+                    );
+                }
 			}
 
 			WPSI::$admin->clear_cache();
 		}
 
+        /**
+         * Delete term by id
+         * @param int $term_id
+         */
+
+        public function ignore_term($term_id){
+
+            if (!current_user_can('manage_options')) return;
+
+            global $wpdb;
+            //get the term, so we can also remove it from the single table
+            $term_single = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_single where id=%s", intval($term_id)));
+
+            $wpdb->delete(
+                $wpdb->prefix . 'searchinsights_single',
+                array('id' => intval($term_id))
+            );
+
+            // Add to filtered terms
+            $filter = get_option('wpsi_filter_textarea');
+            error_log($filter);
+
+            if ($term_single){
+                $count = $wpdb->get_var($wpdb->prepare("select count(*) as count from {$wpdb->prefix}searchinsights_archive where term = %s", sanitize_text_field($term_single) ) );
+                if ($count<=1) {
+                    $wpdb->delete(
+                        $wpdb->prefix . 'searchinsights_archive',
+                        array( 'term' => sanitize_text_field( $term_single ) )
+                    );
+                }
+            }
+
+            WPSI::$admin->clear_cache();
+        }
 
 		public function enqueue_assets() {
 

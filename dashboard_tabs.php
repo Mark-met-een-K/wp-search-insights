@@ -9,8 +9,12 @@ function wpsi_tab_content_dashboard(){
 	if (!is_user_logged_in()) return;
 
 	?>
+    <button class="button" id="wpsi-ignore-selected">
+<!--        <span class="wpsi-delete-icon"><i class="dashicons dashicons-trash"></i></span>-->
+        <span class="wpsi-delete-text"><?php _e("Ignore selected","wp-search-insights")?></i></span>
+    </button>
 	<button class="button" id="wpsi-delete-selected">
-        <span class="wpsi-delete-icon"><i class="dashicons dashicons-trash"></i></span>
+<!--        <span class="wpsi-delete-icon"><i class="dashicons dashicons-trash"></i></span>-->
         <span class="wpsi-delete-text"><?php _e("Delete selected","wp-search-insights")?></i></span>
 	</button>
 	<?php

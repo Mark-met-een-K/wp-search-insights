@@ -951,7 +951,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             delete_transient( 'wpsi_popular_searches' );
             delete_transient( 'wpsi_top_searches' );
 	        delete_transient('wpsi_plus_ones');
-
         }
 
         /**

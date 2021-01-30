@@ -7,6 +7,7 @@ jQuery(document).ready(function ($) {
     var wpsiDefaultRowCount = 7;
     var wpsiDefaultPagingType = 'simple_numbers';
     var wpsiMobilePagingType = 'simple';
+    var ignoreBtn = $('#wpsi-ignore-selected');
     var deleteBtn = $('#wpsi-delete-selected');
     var lastSelectedPage = 0;
 
@@ -161,6 +162,7 @@ jQuery(document).ready(function ($) {
                     if (type==='all') {
                         wpsiInitSingleDataTable(container);
                         wpsiInitDeleteCapability();
+                        wpsiInitIgnoreCapability();
                     }
                 } else {
                     var table = container.find('table').DataTable();
@@ -215,6 +217,7 @@ jQuery(document).ready(function ($) {
             var table = $(this).closest('.item-content').find('.dataTable');
             table.find('.wpsi-selected').each(function () {
                 $('#wpsi-delete-selected').attr('disabled', false);
+                $('#wpsi-ignore-selected').attr('disabled', false);
             });
 
         });
@@ -252,6 +255,71 @@ jQuery(document).ready(function ($) {
                     });
 
                     $('#wpsi-delete-selected').attr('disabled', true);
+                }
+            });
+        });
+    }
+
+    /**
+     * select and delete functions
+     */
+    function wpsiInitIgnoreCapability() {
+        //move button to location in table
+        $(".table-footer").append(ignoreBtn);
+        ignoreBtn.show();
+
+        //set button to disabled
+        $('#wpsi-ignore-selected').attr('disabled', true);
+
+        // $('.dataTable tbody').on('click', 'tr', function (event) {
+        //     $('#wpsi-delete-selected').attr('disabled', true);
+        //     if ($(this).hasClass('wpsi-selected')) {
+        //         $(this).removeClass('wpsi-selected');
+        //     } else {
+        //         $(this).addClass('wpsi-selected');
+        //     }
+
+            //if at least one row is selected, enable the delete button
+            var table = $(this).closest('.item-content').find('.dataTable');
+            table.find('.wpsi-selected').each(function () {
+                console.log("Selected, set ign 2 dis");
+            // });
+
+        });
+
+        $(document).on('click', '#wpsi-ignore-selected', function () {
+            var termIDs = [];
+
+            $('.dataTable').each(function () {
+                var table = $(this);
+                //get all selected rows
+                table.find('.wpsi-selected').each(function () {
+                    var row = $(this);
+                    termIDs.push($(this).find('.wpsi-term').data('term_id'));
+                    row.css('background-color', '#d7263d2e');
+                });
+
+            });
+
+            $.ajax({
+                type: "POST",
+                url: wpsi.ajaxurl,
+                dataType: 'json',
+                data: ({
+                    action: 'wpsi_ignore_terms',
+                    term_ids: JSON.stringify(termIDs),
+                    token: wpsi.token
+                }),
+                success: function (response) {
+                    //get all occurrences on this page for this term id
+                    $('.dataTable').each(function () {
+                        var table = $(this).DataTable();
+                        while ($('.wpsi-selected').length) {
+                            table.row('.wpsi-selected').remove().draw(false);
+                        }
+                    });
+
+                    $('#wpsi-ignore-selected').attr('disabled', true);
                 }
             });
         });
