@@ -346,7 +346,8 @@ widget
   background: #F1F1F1;
   padding: 15px;
 }
-#wpsi-dashboard #wpsi-delete-selected {
+#wpsi-dashboard #wpsi-delete-selected,
+#wpsi-dashboard #wpsi-ignore-selected {
   display: none;
   text-shadow: none !important;
   vertical-align: middle;
@@ -356,16 +357,22 @@ widget
   line-height: 12px;
   min-height: 25px;
 }
-#wpsi-dashboard #wpsi-delete-selected .wpsi-delete-icon {
+#wpsi-dashboard #wpsi-delete-selected .wpsi-delete-icon,
+#wpsi-dashboard #wpsi-ignore-selected .wpsi-delete-icon {
   display: none;
 }
 @media screen and (max-width: 480px) {
-  #wpsi-dashboard #wpsi-delete-selected .wpsi-delete-icon {
+  #wpsi-dashboard #wpsi-delete-selected .wpsi-delete-icon,
+  #wpsi-dashboard #wpsi-ignore-selected .wpsi-delete-icon {
     display: block;
   }
-  #wpsi-dashboard #wpsi-delete-selected .wpsi-delete-text {
+  #wpsi-dashboard #wpsi-delete-selected .wpsi-delete-text,
+  #wpsi-dashboard #wpsi-ignore-selected .wpsi-delete-text {
     display: none;
   }
+}
+#wpsi-dashboard #wpsi-delete-selected {
+  margin-right: 20px;
 }
 #wpsi-dashboard .tab-content.current {
   display: inherit;

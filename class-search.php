@@ -101,8 +101,6 @@ if ( ! class_exists( 'Search' ) ) {
                 $error = true;
             }
 
-            error_log(print_r($_POST, true) );
-
             if (!$error){
                 $term_ids = json_decode($_POST['term_ids']);
                 foreach($term_ids as $term_id){
@@ -136,66 +134,99 @@ if ( ! class_exists( 'Search' ) ) {
 			//get the term, so we can also remove it from the single table
 			$term_single = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_single where id=%s", intval($term_id)));
 
-			$wpdb->delete(
-				$wpdb->prefix . 'searchinsights_single',
-				array('id' => intval($term_id))
-			);
-
 			if ($term_single){
-				$count = $wpdb->get_var($wpdb->prepare("select count(*) as count from {$wpdb->prefix}searchinsights_archive where term = %s", sanitize_text_field($term_single) ) );
-
-				$count = $count - 1;
-
-				if ( $count === 0 ) {
+			    // Get the frequency of term
+				$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}searchinsights_single WHERE term = '$term_single'");
+				// Substract 1 since we deleted this entry
+				$count = ( $count - 1 );
+				// Delete from archive if count is 0
+				if ( $count === intval(0) ) {
                     $wpdb->delete(
                         $wpdb->prefix . 'searchinsights_archive',
                         array('term' => $term_single)
                     );
                 } else {
+				    // Update the frequency in archive table
                     $wpdb->update(
                         $wpdb->prefix . 'searchinsights_archive',
-                        array('frequency' => intval($count)),
+                        array('frequency' => intval( $count ) ),
                         array('term' => $term_single)
                     );
                 }
 			}
-
-			WPSI::$admin->clear_cache();
-		}
-
-        /**
-         * Delete term by id
-         * @param int $term_id
-         */
-
-        public function ignore_term($term_id){
-
-            if (!current_user_can('manage_options')) return;
-
-            global $wpdb;
-            //get the term, so we can also remove it from the single table
-            $term_single = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_single where id=%s", intval($term_id)));
 
             $wpdb->delete(
                 $wpdb->prefix . 'searchinsights_single',
                 array('id' => intval($term_id))
             );
 
+			WPSI::$admin->clear_cache();
+		}
+
+        /**
+         * Ignore term
+         * Add to filter, delete all references from single/archive table
+         * @since 1.3.7
+         * @param int $term_id
+         */
+
+        public function ignore_term($term_id){
+
+            if ( !current_user_can('manage_options') ) return;
+
+            global $wpdb;
+            //get the term, so we can also remove it from the single table
+            $term_single = $wpdb->get_var($wpdb->prepare("select term from {$wpdb->prefix}searchinsights_single where id=%s", intval($term_id)));
+
             // Add to filtered terms
             $filter = get_option('wpsi_filter_textarea');
-            error_log($filter);
 
-            if ($term_single){
-                $count = $wpdb->get_var($wpdb->prepare("select count(*) as count from {$wpdb->prefix}searchinsights_archive where term = %s", sanitize_text_field($term_single) ) );
-                if ($count<=1) {
-                    $wpdb->delete(
-                        $wpdb->prefix . 'searchinsights_archive',
-                        array( 'term' => sanitize_text_field( $term_single ) )
-                    );
+            //@todo do not add term to filter if filtr already contains it
+            // Do not add , when the current filter ends with it
+            if ( !$filter ) {
+                $filter = $term_single;
+            }
+
+            if ( strpos($filter, $term_single) === false ) {
+                if ( $this->endsWith($filter, ',') ) {
+                    $filter = $filter . " " . $term_single;
+                } else {
+                    $filter = $filter . ", " . $term_single;
                 }
             }
 
+            // Update the filter option
+            update_option('wpsi_filter_textarea', $filter );
+
+            $wpdb->delete(
+                $wpdb->prefix . 'searchinsights_single',
+                array('term' => $term_single)
+            );
+
+            if ($term_single){
+                $wpdb->delete(
+                    $wpdb->prefix . 'searchinsights_archive',
+                    array( 'term' => sanitize_text_field( $term_single ) )
+                );
+            }
+
             WPSI::$admin->clear_cache();
+        }
+
+        public function endsWith($haystack, $needle)
+        {
+            $length = strlen($needle);
+            if ($length == 0) {
+                return true;
+            }
+
+            return (substr($haystack, -$length) === $needle);
+        }
+
+        public function startsWith($haystack, $needle)
+        {
+            $length = strlen($needle);
+            return (substr($haystack, 0, $length) === $needle);
         }
 
 		public function enqueue_assets() {

@@ -253,8 +253,8 @@ jQuery(document).ready(function ($) {
                             table.row('.wpsi-selected').remove().draw(false);
                         }
                     });
-
                     $('#wpsi-delete-selected').attr('disabled', true);
+                    $('#wpsi-ignore-selected').attr('disabled', true);
                 }
             });
         });
@@ -270,22 +270,6 @@ jQuery(document).ready(function ($) {
 
         //set button to disabled
         $('#wpsi-ignore-selected').attr('disabled', true);
-
-        // $('.dataTable tbody').on('click', 'tr', function (event) {
-        //     $('#wpsi-delete-selected').attr('disabled', true);
-        //     if ($(this).hasClass('wpsi-selected')) {
-        //         $(this).removeClass('wpsi-selected');
-        //     } else {
-        //         $(this).addClass('wpsi-selected');
-        //     }
-
-            //if at least one row is selected, enable the delete button
-            var table = $(this).closest('.item-content').find('.dataTable');
-            table.find('.wpsi-selected').each(function () {
-                console.log("Selected, set ign 2 dis");
-            // });
-
-        });
 
         $(document).on('click', '#wpsi-ignore-selected', function () {
             var termIDs = [];
@@ -318,7 +302,7 @@ jQuery(document).ready(function ($) {
                             table.row('.wpsi-selected').remove().draw(false);
                         }
                     });
-
+                    $('#wpsi-delete-selected').attr('disabled', true);
                     $('#wpsi-ignore-selected').attr('disabled', true);
                 }
             });
