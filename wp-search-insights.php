@@ -3,15 +3,15 @@
  * Plugin Name: WP Search Insights - Privacy-Friendly Search Analytics
  * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
  * Description: WP Search Insights shows you what your users are looking for on your site, and which searches don't have results
- * Version: 1.3.6
+ * Version: 1.3.7
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters
- * Author URI: https://www.wpsearchinsights.com
+ * Author URI: https://www.wpsi.io
  */
 
 /*
-    Copyright 2018  WP Search Insights  (email : support@wpsearchinsights.com)
+    Copyright 2018  WP Search Insights  (email : support@wpsi.io)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
