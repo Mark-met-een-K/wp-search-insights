@@ -141,7 +141,7 @@ function wpsi_tab_options(){
             </div>
         </div>
         <div class="documentation">
-            <a class="button button-secondary" href="https://wpsearchinsights.com/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
+            <a class="button button-secondary" href="https://wpsi.io/#faq"><?php _e("Documentation", "wp-search-insights");?></a>
         </div>
         <div class="header-upsell">
             <a href="https://paypal.me/wpsearchinsights" target="_blank">

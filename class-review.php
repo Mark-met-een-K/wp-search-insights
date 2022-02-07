@@ -86,9 +86,9 @@ if (!class_exists("wpsi_review")) {
                     <div class="wpsi-review-image"><img width=80px" src="<?php echo wpsi_url?>/assets/images/logo.png" alt="review-logo"></div>
                 <div style="margin-left:30px">
                 <?php if ($this->searchcount>$this->minimum_count){?>
-				<p><?php printf(__('Hi, WP Search Insights has given you insights on over %s searches on your site already, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), $this->searchcount, '<a href="wpsearchinsights.com/contact" target="_blank">', '</a>'); ?></p>
+				<p><?php printf(__('Hi, WP Search Insights has given you insights on over %s searches on your site already, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), $this->searchcount, '<a href="wpsi.io/contact" target="_blank">', '</a>'); ?></p>
 				<?php } else { ?>
-                    <p><?php printf(__('Hi, you have been using WP Search Insights for a month now, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), '<a href="https://wpsearchinsights.com/contact " target="_blank">', '</a>'); ?></p>
+                    <p><?php printf(__('Hi, you have been using WP Search Insights for a month now, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'wp-search-insights'), '<a href="https://wpsi.io/contact " target="_blank">', '</a>'); ?></p>
                 <?php } ?>
                 <i class="wpsi-signature">- Mark</i>
 

@@ -7,11 +7,11 @@
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters
- * Author URI: https://www.wpsearchinsights.com
+ * Author URI: https://www.wpsi.io
  */
 
 /*
-    Copyright 2018  WP Search Insights  (email : support@wpsearchinsights.com)
+    Copyright 2018  WP Search Insights  (email : support@wpsi.io)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as

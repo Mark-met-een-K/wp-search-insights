@@ -546,7 +546,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             array_unshift($links, $settings_link);
 
             $faq_link
-                = '<a href="https://wpsearchinsights.com/documentation/" target="_blank">'
+                = '<a href="https://wpsi.io/documentation/" target="_blank">'
                 . __('Docs', 'wp-search-insights') . '</a>';
             array_unshift($links, $faq_link);
 
@@ -717,7 +717,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             $content = sprintf(
                 __('WP Search Insights does not process any personal identifiable information, so the GDPR does not apply to these plugins or usage of these plugins on your website. You can find our privacy policy <a href="%s" target="_blank">here</a>.', 'wp-search-insights'),
-                'https://wpsearchinsights.com/privacy-statement/'
+                'https://wpsi.io/privacy-statement/'
             );
 
             wp_add_privacy_policy_content(
@@ -1799,30 +1799,30 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $items = array(
                 1 => array(
                     'content' => __("Writing Content for Google", "wp-search-insights"),
-                    'link'    => 'https://wpsearchinsights.com/writing-content-for-google/',
+                    'link'    => 'https://wpsi.io/writing-content-for-google/',
                 ),
                 2 => array(
                     'content' => __("WP Search Insights Beginner's Guide", "wp-search-insights"),
-                    'link' => 'https://wpsearchinsights.com/wp-search-insights-beginners-guide/',
+                    'link' => 'https://wpsi.io/wp-search-insights-beginners-guide/',
                 ),
                 3 => array(
                     'content' => __("Using CSV/Excel Exports", "wp-search-insights"),
-                    'link' => 'https://wpsearchinsights.com/using-csv-excel-exports/',
+                    'link' => 'https://wpsi.io/using-csv-excel-exports/',
                 ),
                 4 => array(
                     'content' => __("Improving your Search Result Page", "wp-search-insights"),
-                    'link' => 'https://wpsearchinsights.com/improving-your-search-result-page/',
+                    'link' => 'https://wpsi.io/improving-your-search-result-page/',
                 ),
                 5 => array(
                     'content' => __("The Search Filter", "wp-search-insights"),
-                    'link' => 'https://wpsearchinsights.com/the-search-filter/',
+                    'link' => 'https://wpsi.io/the-search-filter/',
                 ),
                 6 => array(
                     'content' => __("Positioning your search form", "wp-search-insights"),
-                    'link' => 'https://wpsearchinsights.com/about-search-forms/',
+                    'link' => 'https://wpsi.io/about-search-forms/',
                 ),
             );
-	        $button = '<a href="https://wpsearchinsights.com/tips-tricks/" target="_blank"><button class="button button-upsell">'.__("View all" , "wp-search-insights").'</button></a>';
+	        $button = '<a href="https://wpsi.io/tips-tricks/" target="_blank"><button class="button button-upsell">'.__("View all" , "wp-search-insights").'</button></a>';
 
 	        $container = $this->get_template('tipstricks-element.php');
 	        $output = "";

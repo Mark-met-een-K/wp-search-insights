@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
             $admin_url = admin_url("tools.php?page=wpsi-settings-page");
             echo sprintf(__("%sDashboard%s ", "wp-search-insights"), "<a href='$admin_url'>", '<div class="dashicons dashicons-external"></div></a>'); ?> |
 	    <?php
-	    $help_url = "https://wpsearchinsights.com";
+	    $help_url = "https://wpsi.io";
 	    echo sprintf(__("%sHelp%s ", "wp-search-insights"), "<a target='_blank' href='$help_url'>", '<div class="dashicons dashicons-external"></div></a>'); ?>
     </div>
 </div></div>
