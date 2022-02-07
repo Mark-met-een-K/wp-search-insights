@@ -6,7 +6,7 @@ Requires at least: 4.8
 License: GPL2
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
@@ -29,14 +29,14 @@ Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-sea
 = Love WP Search Insights? =
 Hopefully, this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
 
-[Contact](https://wpsearchinsights.com/contact/) us if you have any questions, issues, or suggestions.
+[Contact](https://wpsi.io/contact/) us if you have any questions, issues, or suggestions.
 
 = WP Search Insights in your language? =
 Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/wp-search-insights).
 
 == Frequently asked questions ==
 = Where can I find documentation? =
-* WP Search Insights maintains a knowledgebase at https://wpsearchinsights.com.
+* WP Search Insights maintains a knowledgebase at https://wpsi.io.
 = Where can I find the search results or settings? =
 * You can find the plugins dashboard and settings in the Tools -> Search Insights menu
 = How does it work?
@@ -54,6 +54,9 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.3.7 =
+* Updated domain in readme/files
+
 = 1.3.6 =
 * Fix: random number one next to delete button
 
