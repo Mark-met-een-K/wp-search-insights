@@ -124,14 +124,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     'can_hide' => true,
                     'controls' => '',
                 ),
-                5 => array(
-                    'title' => __("Our Plugins", "wp-search-insights"),
-                    'content' => $this->generate_other_plugins(),
-                    'class' => 'half-height no-border no-background upsell-grid-container upsell',
-                    'type' => 'plugins',
-                    'can_hide' => false,
-                    'controls' => '<div class="rsp-logo"><a href="https://really-simple-plugins.com/"><img src="'. trailingslashit(wpsi_url) .'assets/images/really-simple-plugins.png" /></a></div>',
-                ),
             );
         }
 
@@ -1710,64 +1702,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             </div>
             <?php
             return ob_get_clean();
-        }
-
-
-        public function generate_other_plugins()
-        {
-            $items = array(
-                1 => array(
-                    'title' => '<div class="rsssl-yellow wpsi-bullet"></div>',
-                    'content' => __("Really Simple SSL - Easily migrate your website to SSL"),
-                    'link' => 'https://wordpress.org/plugins/really-simple-ssl/',
-                    'class' => 'rsssl',
-                    'constant_free' => 'rsssl_plugin',
-                    'constant_premium' => 'rsssl_pro_plugin',
-                    'website' => 'https://really-simple-ssl.com/pro',
-                    'search' => 'Really+Simple+SSL+Mark+Wolters',
-                ),
-                2 => array(
-                    'title' => '<div class="cmplz-blue wpsi-bullet"></div>',
-                    'content' => __("Complianz Privacy Suite - Cookie Consent Management as it should be ", "wp-search-insights"),
-                    'link' => 'https://wordpress.org/plugins/complianz-gdpr/',
-                    'class' => 'cmplz',
-                    'constant_free' => 'cmplz_plugin',
-                    'constant_premium' => 'cmplz_premium',
-                    'website' => 'https://complianz.io/pricing',
-                    'search' => 'complianz',
-                ),
-                3 => array(
-                    'title' => '<div class="zip-pink wpsi-bullet"></div>',
-                    'content' => __("Zip Recipes - Beautiful recipes optimized for Google ", "wp-search-insights"),
-                    'link' => 'https://wordpress.org/plugins/zip-recipes/',
-                    'class' => 'zip',
-                    'constant_free' => 'ZRDN_PLUGIN_BASENAME',
-                    'constant_premium' => 'ZRDN_PREMIUM',
-                    'website' => 'https://ziprecipes.net/premium/',
-                    'search' => 'zip+recipes+recipe+maker+really+simple+plugins',                ),
-            );
-
-            $element = $this->get_template('upsell-element.php');
-            $output = '';
-            foreach ($items as $item) {
-                $output .= str_replace(array(
-                    '{title}',
-                    '{link}',
-                    '{content}',
-                    '{status}',
-                    '{class}',
-                    '{controls}',
-                ), array(
-                    $item['title'],
-                    $item['link'],
-                    $item['content'],
-                    $this->get_status_link($item),
-                    $item['class'],
-                    '',
-                ), $element);
-            }
-
-            return '<div>'.$output.'</div>';
         }
 
 	    /**
