@@ -77,7 +77,7 @@ if ( ! class_exists( 'Search' ) ) {
 		}
 
         /**
-         * Delete array of terms using ajax
+         * Ignore array of terms using ajax
          */
 
         public function ajax_ignore_terms()
@@ -181,7 +181,6 @@ if ( ! class_exists( 'Search' ) ) {
             // Add to filtered terms
             $filter = get_option('wpsi_filter_textarea');
 
-            //@todo do not add term to filter if filtr already contains it
             // Do not add , when the current filter ends with it
             if ( !$filter ) {
                 $filter = $term_single;

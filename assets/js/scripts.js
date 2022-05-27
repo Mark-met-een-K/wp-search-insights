@@ -204,9 +204,11 @@ jQuery(document).ready(function ($) {
 
         //set button to disabled
         $('#wpsi-delete-selected').attr('disabled', true);
+        $('#wpsi-ignore-selected').attr('disabled', true);
 
         $('.dataTable tbody').on('click', 'tr', function (event) {
             $('#wpsi-delete-selected').attr('disabled', true);
+            $('#wpsi-ignore-selected').attr('disabled', true);
             if ($(this).hasClass('wpsi-selected')) {
                 $(this).removeClass('wpsi-selected');
             } else {
