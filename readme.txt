@@ -6,7 +6,7 @@ Requires at least: 4.8
 License: GPL2
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
@@ -55,7 +55,7 @@ To install this plugin:
 
 == Changelog ==
 = 1.3.8 =
-* Added ignore result button to all searches table
+* Added ignore button to all searches table
 
 = 1.3.7 =
 * Updated domain in readme/files
