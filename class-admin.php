@@ -348,7 +348,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		            . 'assets/datepicker/datepicker.js', array("jquery", "moment"), wpsi_version);
 
                 wp_register_style('wpsi',
-                    trailingslashit(wpsi_url) . "assets/css/style.min.css", "",
+                    trailingslashit(wpsi_url) . "assets/css/style.css", "",
                     wpsi_version);
                 wp_enqueue_style('wpsi');
 
@@ -901,14 +901,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
-        /*
-
-
-
-
-
-         */
-
         public function option_textarea_filter()
         {
             ?>
@@ -950,8 +942,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function clear_cache(){
             delete_transient( 'wpsi_popular_searches' );
             delete_transient( 'wpsi_top_searches' );
+            delete_transient('wpsi_top_searches_week' );
+            delete_transient('wpsi_popular_searches_week' );
 	        delete_transient('wpsi_plus_ones');
-
         }
 
         /**

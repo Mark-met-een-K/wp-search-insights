@@ -6,12 +6,15 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
  */
 
 function wpsi_tab_content_dashboard(){
+    
 	if (!is_user_logged_in()) return;
 
 	?>
-	<button class="button" id="wpsi-delete-selected">
-        <span class="wpsi-delete-icon"><i class="dashicons dashicons-trash"></i></span>
-        <span class="wpsi-delete-text"><?php _e("Delete selected","wp-search-insights")?></i></span>
+    <button class="button" id="wpsi-ignore-selected">
+        <span class="wpsi-delete-text"><?php _e("Delete and ignore selected","wp-search-insights")?></span>
+    </button>
+    <button class="button" id="wpsi-delete-selected">
+        <span class="wpsi-delete-text"><?php _e("Delete selected","wp-search-insights")?></span>
 	</button>
 	<?php
 	//get html of block
