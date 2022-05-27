@@ -54,8 +54,11 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
-= 1.3.7 =
+= 1.3.8 =
 * Added ignore result button to all searches table
+
+= 1.3.7 =
+* Updated domain in readme/files
 
 = 1.3.6 =
 * Fix: random number one next to delete button
