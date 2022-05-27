@@ -55,7 +55,7 @@ To install this plugin:
 
 == Changelog ==
 = 1.3.8 =
-* Added ignore result button to all searches table
+* Added ignore button to all searches table
 
 = 1.3.7 =
 * Updated domain in readme/files
