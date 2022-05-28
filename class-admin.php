@@ -192,12 +192,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         {
                             ranges: {
                                 'Today': [todayStart, todayEnd],
-                                'All time': [moment.unix(wpsiPluginActivated), moment()],
                                 'Yesterday': [yesterdayStart, yesterdayEnd],
                                 'Last 7 Days': [lastWeekStart, lastWeekEnd],
                                 'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                                'All time': [moment.unix(wpsiPluginActivated), moment()]
                             },
                             "locale": {
                                 "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
@@ -248,12 +248,12 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                         {
                             ranges: {
                                 'Today': [todayStart, todayEnd],
-                                'All time': [moment.unix(wpsiPluginActivated), moment()],
                                 'Yesterday': [yesterdayStart, yesterdayEnd],
                                 'Last 7 Days': [lastWeekStart, lastWeekEnd],
                                 'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                                'All time': [moment.unix(wpsiPluginActivated), moment()]
                             },
                             "locale": {
                                 "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
@@ -1582,15 +1582,17 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	        $custom_search_parameter = get_option('wpsi_custom_search_parameter');
 	        $search_parameter = $custom_search_parameter ? sanitize_title($custom_search_parameter) : 's';
 
+            $class = '';
+
 	        if (!$home_url) $home_url = home_url();
 
             $search_url = $home_url. "?$search_parameter=" . $term . '&searchinsights';
 
-	        //make sure the link is not too long
-	        if (strlen($term)>28){
-		        $term = mb_strcut($term, 0, 25).'...';
+	        // Add ellipsis class to show long texts on hover
+	        if (strlen($term)>40){
+		        $class='ellipsis';
 	        }
-            return '<a href="' . esc_html($search_url) . '" target="_blank">' . sanitize_text_field($term) . '</a>';
+            return '<a href="' . esc_html($search_url) . '" target="_blank">' . '<span class="' . $class .'" data-text="' . sanitize_text_field($term) . '">' . sanitize_text_field($term) . '</span>' . '</a>';
         }
 
         /**

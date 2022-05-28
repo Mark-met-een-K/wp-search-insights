@@ -184,6 +184,7 @@ widget
   justify-content: space-between;
 }
 .term-frequency-container {
+  max-width: 175px;
   padding-left: 25px;
   padding-top: 10px;
 }
@@ -207,6 +208,7 @@ widget
 }
 .wpsi-dashboard-widget-grid .wpsi-frequency {
   padding-top: 10px;
+  text-align: right;
 }
 .wpsi-dashboard-widget-grid .wpsi-time {
   margin-top: -10px;
@@ -476,9 +478,47 @@ widget
 #wpsi-dashboard .full-width .item-content td textarea {
   height: 100px;
 }
+#wpsi-dashboard .wpsi-term {
+  max-width: 250px;
+}
 #wpsi-dashboard .wpsi-term a {
   text-decoration: none;
   color: #3c3c3c;
+  max-width: 200px;
+  display: block;
+}
+#wpsi-dashboard .ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s linear;
+  white-space: nowrap;
+}
+#wpsi-dashboard .ellipsis:focus,
+#wpsi-dashboard .ellipsis:hover {
+  color: transparent;
+}
+#wpsi-dashboard .ellipsis:focus:after,
+#wpsi-dashboard .ellipsis:hover:after {
+  content: attr(data-text);
+  overflow: visible;
+  text-overflow: inherit;
+  background: #fff;
+  position: absolute;
+  left: auto;
+  top: auto;
+  width: auto;
+  max-width: 30rem;
+  border: 1px solid #DEDEDE;
+  border-radius: 5px;
+  padding: 0.5rem;
+  box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
+  white-space: normal;
+  word-wrap: break-word;
+  display: block;
+  color: black;
+  margin-top: -1.25rem;
+  z-index: 2;
 }
 #wpsi-dashboard .wpsi-grid-controls {
   float: right;
