@@ -14,8 +14,6 @@ if (!class_exists("wpsi_review")) {
 				wp_die(sprintf(__('%s is a singleton class and you cannot create a second instance.', 'wpsi-search-insights'), get_class($this)));
 
 			self::$_this = $this;
-//			update_option('wpsi_review_notice_shown',false);
-//			update_option('wpsi_activation_time',  strtotime("-2 month"));
 			//show review notice, only to free users
 			if (!defined("wpsi_premium") && !is_multisite()) {
 			    if (!get_option('wpsi_activation_time')){

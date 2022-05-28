@@ -64,7 +64,7 @@ function wpsi_tab_content_settings(){
         array(
 			'title' => __( "General settings", "wp-search-insights" ),
 			'content' => wpsi_grid_content_settings(),
-			'class' => '',
+			'class' => 'wpsi-settings',
 			'index' => 'settings',
 			'type' => 'settings',
 			'controls' => '',
