@@ -56,6 +56,8 @@ To install this plugin:
 == Changelog ==
 = 1.3.8 =
 * Added ignore button to all searches table
+* Added option to clear database tables after certain time period
+* Added all time option to search overview
 
 = 1.3.7 =
 * Updated domain in readme/files

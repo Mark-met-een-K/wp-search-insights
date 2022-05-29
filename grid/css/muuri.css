@@ -100,4 +100,7 @@
   border-style: dashed;
   padding: 0;
 }
+.wpsi-grid .wpsi-item.wpsi-settings .item-container {
+  min-height: 550px;
+}
 /*# sourceMappingURL=muuri.css.map */

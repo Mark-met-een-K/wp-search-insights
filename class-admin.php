@@ -27,11 +27,17 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_init', array($this, 'maybe_enable_ajax_tracking'));
+            add_action( 'admin_init', array( $this, 'check_upgrade' ), 10, 2 );
 
             $is_wpsi_page = isset($_GET['page']) && $_GET['page'] === 'wpsi-settings-page' ? true : false;
             if ($is_wpsi_page) {
                 add_action('admin_init', array($this, 'init_grid') );
                 add_action('admin_head', array($this, 'inline_styles'));
+
+                // Dot not add action to clear entries from db when the option is set to never
+                if (get_option('wpsi_select_term_deletion_period') && get_option('wpsi_select_term_deletion_period') !== 'never') {
+                    add_action('admin_init', array($this, 'clear_entries_from_database'));
+                }
             }
 
             add_action('admin_init', array($this, 'add_privacy_info'));
@@ -50,6 +56,25 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             add_action('wp_dashboard_setup', array($this, 'add_wpsi_dashboard_widget'));
 			add_action('admin_menu', array($this, 'maybe_add_plus_one') );
 			add_action('wpsi_on_settings_page', array($this, 'reset_plus_one_ten_searches') );
+        }
+
+        /**
+         *
+         * Stuff to update after plugin upgrade
+         *
+         * @since 1.3
+         *
+         */
+
+        public function check_upgrade() {
+
+            $prev_version = get_option( 'wpsi-current-version', false );
+
+            if ( $prev_version && version_compare( $prev_version, '1.3.7', '<' ) ) {
+                update_option('wpsi_select_term_deletion_period' , 'never');
+            }
+
+            update_option( 'wpsi-current-version', wpsi_version );
         }
 
 	    /**
@@ -161,6 +186,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     var lastWeekStart = moment().endOf('day').subtract(8, 'days').add(1, 'minutes');
                     var lastWeekEnd = moment().endOf('day').subtract(1, 'days');
 
+                    var wpsiPluginActivated = '<?php echo get_option('wpsi_activation_time')?>';
+
                     $('.wpsi-date-container.wpsi-table-range').daterangepicker(
                         {
                             ranges: {
@@ -169,7 +196,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                                 'Last 7 Days': [lastWeekStart, lastWeekEnd],
                                 'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                                'All time': [moment.unix(wpsiPluginActivated), moment()]
                             },
                             "locale": {
                                 "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
@@ -219,12 +247,13 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     $('.wpsi-date-container.wpsi-export').daterangepicker(
                         {
                             ranges: {
-                                'Today': [moment(), moment()],
+                                'Today': [todayStart, todayEnd],
                                 'Yesterday': [yesterdayStart, yesterdayEnd],
                                 'Last 7 Days': [lastWeekStart, lastWeekEnd],
                                 'Last 30 Days': [moment().subtract(31, 'days'), yesterdayEnd],
                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                                'All time': [moment.unix(wpsiPluginActivated), moment()]
                             },
                             "locale": {
                                 "format": "<?php _e( 'MM/DD/YYYY', 'wp-search-insights' );?>",
@@ -372,8 +401,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	                )
                 );
 
-
-
                 // The dashboard widget doesn't use fontello or pagination, return here if we're on the WP dashboard.
                 if ($hook == 'index.php') return;
 
@@ -386,10 +413,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             }
         }
-
-
-
-
 
 		public function reset_plus_one_ten_searches(){
 		    if (get_option('wpsi_ten_searches_viewed_settings_page')) return;
@@ -604,15 +627,23 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_settings_field(
                 'wpsi_track_ajax_searches',
-                __("Track Ajax searches", 'wp-search-insights'),
+                __("Track Ajax searches", 'wp-search-insights').WPSI::$help->get_help_tip(__("Track searches made via an AJAX request. Enable if you use an AJAX search plugin", "wp-search-insights")),
                 array($this, 'option_wpsi_track_ajax_searches'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
             );
 
             add_settings_field(
+                'wpsi_delete_terms_after_period',
+                __("Automatically delete terms from your database after this period", 'wp-search-insights').WPSI::$help->get_help_tip(__("Automatically delete all WP Search Insights entries from the database after this time period", "wp-search-insights")),
+                array($this, 'option_wpsi_delete_terms_after_period'),
+                'wpsi-settings',
+                'wpsi-settings-tab'
+            );
+
+            add_settings_field(
                 'wpsi_custom_search_parameter',
-                __("Custom search parameter", 'wp-search-insights'),
+                __("Custom search parameter", 'wp-search-insights').WPSI::$help->get_help_tip(__("Set a custom search paramater. Default WordPress is ?=s. Replace the 's' with your own paramater. For example 'search' for the Search REST API which uses ?=search", "wp-search-insights")),
                 array($this, 'option_wpsi_custom_search_parameter'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -625,7 +656,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
             register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
             register_setting('wpsi-settings-tab', 'wpsi_track_ajax_searches');
-	        register_setting('wpsi-settings-tab', 'wpsi_custom_search_parameter');
+            register_setting('wpsi-settings-tab', 'wpsi_select_term_deletion_period');
+            register_setting('wpsi-settings-tab', 'wpsi_custom_search_parameter');
 
 	        add_settings_section(
 		        'wpsi-settings-tab',
@@ -794,6 +826,38 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
+        /**
+         * Set the option to automatically delete search terms from the database after a certain time period
+         *
+         * @since 1.3
+         *
+         */
+
+        public function option_wpsi_delete_terms_after_period()
+        {
+            ?>
+            <label class="wpsi-select-deletion-period">
+                <select name="wpsi_select_term_deletion_period" id="wpsi_select_term_deletion_period">
+                    <option value="never" <?php if (get_option('wpsi_select_term_deletion_period') == 'never') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Never', 'wp-search-insights'); ?></option>
+                    <option value="week" <?php if (get_option('wpsi_select_term_deletion_period') == 'week') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Week', 'wp-search-insights'); ?></option>
+                    <option value="month" <?php if (get_option('wpsi_select_term_deletion_period') == 'month') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Month', 'wp-search-insights'); ?></option>
+                    <option value="year" <?php if (get_option('wpsi_select_term_deletion_period') == 'year') {
+                        echo 'selected="selected"';
+                    } ?>><?php _e('Year', 'wp-search-insights'); ?></option>
+                </select>
+            </label>
+            <?php
+            WPSI::$help->get_help_tip(__("When to delete terms from your database after this time period", "wp-search-insights"));
+            ?>
+            <?php
+        }
+
         public function option_wpsi_custom_search_parameter(){
 	        ?>
             <input id="wpsi_custom_search_parameter" class="wpsi_custom_search_parameter" name="wpsi_custom_search_parameter" size="40"  value="<?php echo get_option('wpsi_custom_search_parameter') ?>"
@@ -845,7 +909,6 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function add_thickbox_button($args)
         {
-
 
             $default_args = array(
                 "title" => '',
@@ -928,15 +991,61 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         }
 
         /**
+         * Delete entries from database after certain period
+         *
+         * @since 1.3.8
+         *
+         */
+
+        public function clear_entries_from_database() {
+            // Nonce is already verified before calling this function
+            if (!current_user_can($this->capability)) {
+                return;
+            }
+
+            $period = get_option('wpsi_select_term_deletion_period');
+
+            $past_date = '';
+
+            if ($period == 'week') {
+                $past_date = strtotime("-1 week");
+            }
+
+            if ($period == 'month') {
+                $past_date = strtotime("-1 month");
+            }
+
+            if ($period == 'year') {
+                $past_date = strtotime("-1 year");
+            }
+
+            $this->delete_from_tables_after_period($past_date);
+        }
+
+        public function delete_from_tables_after_period($past_date) {
+
+            if ( ! current_user_can( $this->capability ) ) return;
+
+            global $wpdb;
+
+            $table_name_single = $wpdb->prefix . 'searchinsights_single';
+            $table_name_archive = $wpdb->prefix . 'searchinsights_archive';
+
+            $wpdb->query("DELETE FROM $table_name_single WHERE (time < $past_date)");
+            $wpdb->query("DELETE FROM $table_name_archive WHERE (time < $past_date)");
+
+        }
+
+        /**
          * Clear the transient caches
          */
 
         public function clear_cache(){
             delete_transient( 'wpsi_popular_searches' );
             delete_transient( 'wpsi_top_searches' );
-            delete_transient('wpsi_top_searches_week' );
-            delete_transient('wpsi_popular_searches_week' );
-	        delete_transient('wpsi_plus_ones');
+            delete_transient( 'wpsi_top_searches_week' );
+            delete_transient( 'wpsi_popular_searches_week' );
+	        delete_transient( 'wpsi_plus_ones');
         }
 
         /**
@@ -1416,9 +1525,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                     <tr>
                         <td data-label="Term" class="wpsi-term"
                             data-term_id="'.$search->id.'">'.$this->get_term_link( $search->term , $home_url).'</td>
-                        <td>'.$search->result_count.'</td>
+                        <td data-label="Result-count">'.$search->result_count.'</td>
                         <td data-label="When">'. $this->localize_date( $search->time ).'</td>
-                        <td data-label="When-unix">'.$search->time.'</td>                        <td>'.$this->get_referrer_link($search) .'</td>
+                        <td data-label="When-unix">'.$search->time.'</td>                        
+                        <td>'.$this->get_referrer_link($search) .'</td>
                     </tr>';
 		        }
 		        return $output;
@@ -1472,15 +1582,17 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	        $custom_search_parameter = get_option('wpsi_custom_search_parameter');
 	        $search_parameter = $custom_search_parameter ? sanitize_title($custom_search_parameter) : 's';
 
+            $class = '';
+
 	        if (!$home_url) $home_url = home_url();
 
             $search_url = $home_url. "?$search_parameter=" . $term . '&searchinsights';
 
-	        //make sure the link is not too long
-	        if (strlen($term)>28){
-		        $term = mb_strcut($term, 0, 25).'...';
+	        // Add ellipsis class to show long texts on hover
+	        if (strlen($term)>40){
+		        $class='ellipsis';
 	        }
-            return '<a href="' . esc_html($search_url) . '" target="_blank">' . sanitize_text_field($term) . '</a>';
+            return '<a href="' . esc_html($search_url) . '" target="_blank">' . '<span class="' . $class .'" data-text="' . sanitize_text_field($term) . '">' . sanitize_text_field($term) . '</span>' . '</a>';
         }
 
         /**

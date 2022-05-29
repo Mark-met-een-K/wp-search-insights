@@ -8,7 +8,7 @@ defined('ABSPATH') or die("you do not have acces to this page!");
 function wpsi_schedule_cron() {
 	$useCron = true;
 	if ($useCron) {
-		if ( ! wp_next_scheduled('cmplz_every_five_minutes_hook') ) {
+		if ( ! wp_next_scheduled('wpsi_every_five_minutes_hook') ) {
 			wp_schedule_event( time(), 'wpsi_every_five_minutes', 'wpsi_every_five_minutes_hook' );
 		}
 
