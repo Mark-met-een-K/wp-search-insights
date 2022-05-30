@@ -487,19 +487,19 @@ widget
   max-width: 200px;
   display: block;
 }
-#wpsi-dashboard .ellipsis {
+#wpsi-dashboard .wpsi-ellipsis {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.2s linear;
   white-space: nowrap;
 }
-#wpsi-dashboard .ellipsis:focus,
-#wpsi-dashboard .ellipsis:hover {
+#wpsi-dashboard .wpsi-ellipsis:focus,
+#wpsi-dashboard .wpsi-ellipsis:hover {
   color: transparent;
 }
-#wpsi-dashboard .ellipsis:focus:after,
-#wpsi-dashboard .ellipsis:hover:after {
+#wpsi-dashboard .wpsi-ellipsis:focus:after,
+#wpsi-dashboard .wpsi-ellipsis:hover:after {
   content: attr(data-text);
   overflow: visible;
   text-overflow: inherit;
