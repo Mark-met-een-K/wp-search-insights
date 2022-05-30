@@ -643,7 +643,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             add_settings_field(
                 'wpsi_custom_search_parameter',
-                __("Custom search parameter", 'wp-search-insights').WPSI::$help->get_help_tip(__("Set a custom search paramater. Default WordPress is ?=s. Replace the 's' with your own paramater. For example 'search' for the Search REST API which uses ?=search", "wp-search-insights")),
+                __("Custom search parameter", 'wp-search-insights').WPSI::$help->get_help_tip(__("Set a custom search parameter. Default WordPress is ?=s. Replace the 's' with your own paramater. For example 'search' for the Search REST API which uses ?=search", "wp-search-insights")),
                 array($this, 'option_wpsi_custom_search_parameter'),
                 'wpsi-settings',
                 'wpsi-settings-tab'
@@ -1588,9 +1588,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             $search_url = $home_url. "?$search_parameter=" . $term . '&searchinsights';
 
-	        // Add ellipsis class to show long texts on hover
+	        // Add wpsi-ellipsis class to show long texts on hover
 	        if (strlen($term)>40){
-		        $class='ellipsis';
+		        $class='wpsi-ellipsis';
 	        }
             return '<a href="' . esc_html($search_url) . '" target="_blank">' . '<span class="' . $class .'" data-text="' . sanitize_text_field($term) . '">' . sanitize_text_field($term) . '</span>' . '</a>';
         }

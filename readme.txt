@@ -58,6 +58,8 @@ To install this plugin:
 * Added ignore button to all searches table
 * Added option to clear database tables after certain time period
 * Added all time option to search overview
+* Fix: search terms containing multiple words are now correctly filtered
+* Fix: filter is now case-insensitive
 
 = 1.3.7 =
 * Updated domain in readme/files

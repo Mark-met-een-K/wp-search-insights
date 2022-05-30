@@ -373,15 +373,19 @@ if ( ! class_exists( 'Search' ) ) {
 
 	        $filtered_terms = get_option('wpsi_filter_textarea');
 
-	        // Remove commas from option
-	        $filtered_terms = preg_replace('#\s+#',',',trim($filtered_terms));
-	        $filtered_terms = str_replace(',,',',', $filtered_terms);
+            // Remove commas from option
+            $filtered_terms = str_replace(',,',',', $filtered_terms);
 			if (!empty($filtered_terms)){
 				$filtered_terms = explode(",", $filtered_terms);
 
 				// Check if search term should be filtered
 				foreach ($filtered_terms as $term) {
-					if ($term === $search_term) {
+
+                    // Trim
+                    $term = trim( strtolower( $term ) );
+                    $search_term = trim( strtolower( $search_term ) );
+
+					if ( $term ===  $search_term ) {
 						return;
 					}
 				}
@@ -928,7 +932,3 @@ if ( ! class_exists( 'Search' ) ) {
 
 	}
 }
-
-
-
-
