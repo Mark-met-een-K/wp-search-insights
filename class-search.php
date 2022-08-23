@@ -287,7 +287,7 @@ if ( ! class_exists( 'Search' ) ) {
 				// Get the search count. This data is displayed in the admin dashboard.
 				$args = array(
 					'posts_per_page' => - 1,
-					'post_status'    => 'publish',
+					'post_status'    => apply_filters('wpsi_post_status_override' , 'publish'),
 					'offset'         => 0,
 					's'              => $search_term,
 				);
