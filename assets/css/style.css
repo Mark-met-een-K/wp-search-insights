@@ -743,6 +743,10 @@ widget
 #wpsi-dashboard #wpsi-start-export {
   float: right;
 }
+#wpsi-dashboard .wpsi-settings .item-content {
+  max-height: 400px;
+  overflow-y: scroll;
+}
 #wpsi-dashboard .wpsi-settings-intro {
   display: inline-block;
   padding-top: 10px;

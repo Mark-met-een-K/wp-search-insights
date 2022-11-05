@@ -6,7 +6,7 @@ Requires at least: 4.8
 License: GPL2
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 
 Privacy-friendly search analytics. Gain insight into on-page user search behavior.
 
@@ -54,6 +54,9 @@ To install this plugin:
 3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
 
 == Changelog ==
+= 1.3.9 =
+* Added scrollbar to settings block on overflow
+
 = 1.3.8 =
 * Added ignore button to all searches table
 * Added option to clear database tables after certain time period
