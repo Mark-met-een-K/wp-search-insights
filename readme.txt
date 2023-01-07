@@ -56,6 +56,8 @@ To install this plugin:
 == Changelog ==
 = 1.3.9 =
 * Added scrollbar to settings block on overflow
+* Fixed dashboard capability check for non-administrator users
+* Fixed BBPress integration
 
 = 1.3.8 =
 * Added ignore button to all searches table
