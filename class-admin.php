@@ -1412,7 +1412,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		    $error = false;
 		    $total = 0;
 		    $html  = __("No data found", "wp-search-insights");
-		    if (!current_user_can('manage_options')) {
+            if ( ! current_user_can( $this->capability ) ) {
 			    $error = true;
 		    }
 
