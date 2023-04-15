@@ -98,7 +98,7 @@ add_action( "wpsi_tab_content_settings", 'wpsi_tab_content_settings');
 function wpsi_grid_content_settings(){
 	ob_start();
 	do_settings_sections('wpsi-settings');
-	settings_fields('wpsi-settings-tab');
+	settings_fields('searchinsights-settings-tab');
 	return ob_get_clean();
 }
 
