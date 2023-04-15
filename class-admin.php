@@ -23,7 +23,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
             self::$_this = $this;
 
-            $this->capability = get_option('wpsi_select_dashboard_capability');
+            $this->capability = get_option('searchinsights_select_dashboard_capability');
             add_action('admin_menu', array($this, 'add_settings_page'), 40);
             add_action('admin_init', array($this, 'wpsi_settings_section_and_fields'));
             add_action('admin_init', array($this, 'maybe_enable_ajax_tracking'));
@@ -35,7 +35,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 add_action('admin_head', array($this, 'inline_styles'));
 
                 // Dot not add action to clear entries from db when the option is set to never
-                if (get_option('wpsi_select_term_deletion_period') && get_option('wpsi_select_term_deletion_period') !== 'never') {
+                if (get_option('searchinsights_select_term_deletion_period') && get_option('searchinsights_select_term_deletion_period') !== 'never') {
                     add_action('admin_init', array($this, 'clear_entries_from_database'));
                 }
             }
@@ -71,8 +71,32 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             $prev_version = get_option( 'wpsi-current-version', false );
 
             if ( $prev_version && version_compare( $prev_version, '1.3.7', '<' ) ) {
-                update_option('wpsi_select_term_deletion_period' , 'never');
+                update_option('searchinsights_select_term_deletion_period' , 'never');
             }
+
+            // Update wpsi_ settings options to searchinsights_
+            if ( $prev_version && version_compare( $prev_version, '1.4.0', '<' ) ) {
+                $options_to_update = array(
+                    'wpsi_exclude_admin' => 'searchinsights_exclude_admin',
+                    'wpsi_min_term_length' => 'searchinsights_min_term_length',
+                    'wpsi_max_term_length' => 'searchinsights_max_term_length',
+                    'wpsi_select_dashboard_capability' => 'searchinsights_select_dashboard_capability',
+                    'wpsi_track_ajax_searches' => 'searchinsights_track_ajax_searches',
+                    'wpsi_select_term_deletion_period' => 'searchinsights_select_term_deletion_period',
+                    'wpsi_custom_search_parameter' => 'searchinsights_custom_search_parameter'
+                );
+
+                foreach ($options_to_update as $old_option => $new_option) {
+                    $option_value = get_option($old_option);
+                    if ( isset($option_value) && $option_value !== false ) {
+                        {
+                            update_option($new_option, $option_value);
+                            delete_option($old_option);
+                        }
+                    }
+                }
+            }
+
 
             update_option( 'wpsi-current-version', wpsi_version );
         }
@@ -89,7 +113,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 					|| defined('ASL_CURRENT_VERSION' ) //ajax search lite
                     ;
 				if ($ajax_plugin_active) {
-					update_option('wpsi_track_ajax_searches', true);
+					update_option('searchinsights_track_ajax_searches', true);
 				}
 				update_option('wpsi_checked_ajax_plugins', true);
 			}
@@ -584,10 +608,10 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 	        add_thickbox();
             // Add a settings section to the 'Settings' tab
             add_settings_section(
-                'wpsi-settings-tab',
+                'searchinsights-settings-tab',
                 __("", "wpsi-search-insights"),
                 array($this, 'wpsi_settings_tab_intro'),
-                'wpsi-settings'
+                'searchinsights-settings'
             );
 
             // Add the field with the names and function to use for our new
@@ -596,71 +620,71 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             add_settings_field(
                 'exclude_admin_searches',
                 __("Exclude admin searches", 'wp-search-insights').WPSI::$help->get_help_tip(__("With this option enabled all searches of logged in administrators will be ignored", "wp-search-insights")),
-                array($this, 'option_wpsi_exclude_admin'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                array($this, 'option_searchinsights_exclude_admin'),
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             add_settings_field(
                 'min_search_length',
                 __("Exclude searches shorter than characters", 'wp-search-insights').WPSI::$help->get_help_tip(__("All searches with a count below this value will be ignored. Set to 0 for no limitations.", "wp-search-insights")),
                 array($this, 'option_min_term_length'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             add_settings_field(
                 'max_search_length',
                 __("Exclude searches longer than characters", 'wp-search-insights').WPSI::$help->get_help_tip(__("All searches with a count above this value will be ignored. Set to 0 for no limitations.", "wp-search-insights")),
                 array($this, 'option_max_term_length'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             add_settings_field(
-                'wpsi_select_dashboard_capability',
+                'searchinsights_select_dashboard_capability',
                 __("Who can view the dashboard", 'wp-search-insights').WPSI::$help->get_help_tip(__("Select who can view the dashboard. Choose between administrators and all users", "wp-search-insights")),
-                array($this, 'option_wpsi_select_dashboard_capability'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                array($this, 'option_searchinsights_select_dashboard_capability'),
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             add_settings_field(
-                'wpsi_track_ajax_searches',
+                'searchinsights_track_ajax_searches',
                 __("Track Ajax searches", 'wp-search-insights').WPSI::$help->get_help_tip(__("Track searches made via an AJAX request. Enable if you use an AJAX search plugin", "wp-search-insights")),
-                array($this, 'option_wpsi_track_ajax_searches'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                array($this, 'option_searchinsights_track_ajax_searches'),
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             add_settings_field(
                 'wpsi_delete_terms_after_period',
                 __("Automatically delete terms from your database after this period", 'wp-search-insights').WPSI::$help->get_help_tip(__("Automatically delete all WP Search Insights entries from the database after this time period", "wp-search-insights")),
                 array($this, 'option_wpsi_delete_terms_after_period'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             add_settings_field(
-                'wpsi_custom_search_parameter',
+                'searchinsights_custom_search_parameter',
                 __("Custom search parameter", 'wp-search-insights').WPSI::$help->get_help_tip(__("Set a custom search parameter. Default WordPress is ?=s. Replace the 's' with your own paramater. For example 'search' for the Search REST API which uses ?=search", "wp-search-insights")),
-                array($this, 'option_wpsi_custom_search_parameter'),
-                'wpsi-settings',
-                'wpsi-settings-tab'
+                array($this, 'option_searchinsights_custom_search_parameter'),
+                'searchinsights-settings',
+                'searchinsights-settings-tab'
             );
 
             // Register our setting so that $_POST handling is done for us and
             // our callback function just has to echo the <input>
-            register_setting('wpsi-settings-tab', 'wpsi_exclude_admin');
-            register_setting('wpsi-settings-tab', 'wpsi_min_term_length');
-            register_setting('wpsi-settings-tab', 'wpsi_max_term_length');
-            register_setting('wpsi-settings-tab', 'wpsi_select_dashboard_capability');
-            register_setting('wpsi-settings-tab', 'wpsi_track_ajax_searches');
-            register_setting('wpsi-settings-tab', 'wpsi_select_term_deletion_period');
-            register_setting('wpsi-settings-tab', 'wpsi_custom_search_parameter');
+            register_setting('searchinsights-settings-tab', 'searchinsights_exclude_admin');
+            register_setting('searchinsights-settings-tab', 'searchinsights_min_term_length');
+            register_setting('searchinsights-settings-tab', 'searchinsights_max_term_length');
+            register_setting('searchinsights-settings-tab', 'searchinsights_select_dashboard_capability');
+            register_setting('searchinsights-settings-tab', 'searchinsights_track_ajax_searches');
+            register_setting('searchinsights-settings-tab', 'searchinsights_select_term_deletion_period');
+            register_setting('searchinsights-settings-tab', 'searchinsights_custom_search_parameter');
 
 	        add_settings_section(
-		        'wpsi-settings-tab',
+		        'searchinsights-settings-tab',
 		        __("", "wpsi-search-insights"),
 		        array($this, 'wpsi_settings_tab_intro'),
 		        'wpsi-filter'
@@ -675,7 +699,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 		        __("Search Filter","wp-search-insights"),
 		        array($this, 'option_textarea_filter'),
 		        'wpsi-filter',
-		        'wpsi-settings-tab'
+		        'searchinsights-settings-tab'
 	        );
 
 	        register_setting('wpsi-filter-tab', 'wpsi_filter_textarea');
@@ -761,30 +785,30 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function wpsi_settings_tab_intro() {}
 
-        public function option_wpsi_exclude_admin()
+        public function option_searchinsights_exclude_admin()
         {
             ?>
             <div class="tg-list-item">
                 <label class="wpsi-switch">
-                    <input name="wpsi_exclude_admin" type="hidden" value="0"/>
+                    <input name="searchinsights_exclude_admin" type="hidden" value="0"/>
 
-                    <input name="wpsi_exclude_admin" size="40" type="checkbox"
-                           value="1" <?php checked(1, get_option('wpsi_exclude_admin'), true) ?> />
+                    <input name="searchinsights_exclude_admin" size="40" type="checkbox"
+                           value="1" <?php checked(1, get_option('searchinsights_exclude_admin'), true) ?> />
                     <span class="wpsi-slider wpsi-round"></span>
                 </label>
             </div>
             <?php
         }
 
-        public function option_wpsi_select_dashboard_capability()
+        public function option_searchinsights_select_dashboard_capability()
         {
             ?>
             <label class="wpsi-select-capability">
-                <select name="wpsi_select_dashboard_capability" id="wpsi_select_dashboard_capability">
-                    <option value="activate_plugins" <?php if (get_option('wpsi_select_dashboard_capability') == 'activate_plugins') {
+                <select name="searchinsights_select_dashboard_capability" id="searchinsights_select_dashboard_capability">
+                    <option value="activate_plugins" <?php if (get_option('searchinsights_select_dashboard_capability') == 'activate_plugins') {
                         echo 'selected="selected"';
                     } ?>><?php _e('Administrators', 'wp-search-insights'); ?></option>
-                    <option value="read" <?php if (get_option('wpsi_select_dashboard_capability') == 'read') {
+                    <option value="read" <?php if (get_option('searchinsights_select_dashboard_capability') == 'read') {
                         echo 'selected="selected"';
                     } ?>><?php _e('All Users', 'wp-search-insights'); ?></option>
                 </select>
@@ -808,14 +832,14 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
-        public function option_wpsi_track_ajax_searches()
+        public function option_searchinsights_track_ajax_searches()
         {
             ?>
             <div class="tg-list-item">
                 <label class="wpsi-switch">
-                    <input name="wpsi_track_ajax_searches" type="hidden" value="0"/>
-                    <input name="wpsi_track_ajax_searches" size="40" type="checkbox"
-                           value="1" <?php checked(1, get_option('wpsi_track_ajax_searches'), true) ?> />
+                    <input name="searchinsights_track_ajax_searches" type="hidden" value="0"/>
+                    <input name="searchinsights_track_ajax_searches" size="40" type="checkbox"
+                           value="1" <?php checked(1, get_option('searchinsights_track_ajax_searches'), true) ?> />
                     <span class="wpsi-slider wpsi-round"></span>
                 </label>
 
@@ -837,17 +861,17 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         {
             ?>
             <label class="wpsi-select-deletion-period">
-                <select name="wpsi_select_term_deletion_period" id="wpsi_select_term_deletion_period">
-                    <option value="never" <?php if (get_option('wpsi_select_term_deletion_period') == 'never') {
+                <select name="searchinsights_select_term_deletion_period" id="searchinsights_select_term_deletion_period">
+                    <option value="never" <?php if (get_option('searchinsights_select_term_deletion_period') == 'never') {
                         echo 'selected="selected"';
                     } ?>><?php _e('Never', 'wp-search-insights'); ?></option>
-                    <option value="week" <?php if (get_option('wpsi_select_term_deletion_period') == 'week') {
+                    <option value="week" <?php if (get_option('searchinsights_select_term_deletion_period') == 'week') {
                         echo 'selected="selected"';
                     } ?>><?php _e('Week', 'wp-search-insights'); ?></option>
-                    <option value="month" <?php if (get_option('wpsi_select_term_deletion_period') == 'month') {
+                    <option value="month" <?php if (get_option('searchinsights_select_term_deletion_period') == 'month') {
                         echo 'selected="selected"';
                     } ?>><?php _e('Month', 'wp-search-insights'); ?></option>
-                    <option value="year" <?php if (get_option('wpsi_select_term_deletion_period') == 'year') {
+                    <option value="year" <?php if (get_option('searchinsights_select_term_deletion_period') == 'year') {
                         echo 'selected="selected"';
                     } ?>><?php _e('Year', 'wp-search-insights'); ?></option>
                 </select>
@@ -858,9 +882,9 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
             <?php
         }
 
-        public function option_wpsi_custom_search_parameter(){
+        public function option_searchinsights_custom_search_parameter(){
 	        ?>
-            <input id="wpsi_custom_search_parameter" class="wpsi_custom_search_parameter" name="wpsi_custom_search_parameter" size="40"  value="<?php echo get_option('wpsi_custom_search_parameter') ?>"
+            <input id="searchinsights_custom_search_parameter" class="searchinsights_custom_search_parameter" name="searchinsights_custom_search_parameter" size="40"  value="<?php echo get_option('searchinsights_custom_search_parameter') ?>"
                    type="text">
 	        <?php
         }
@@ -868,8 +892,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function option_min_term_length()
         {
             ?>
-            <input id="wpsi_min_term_length" class="wpsi_term_length" name="wpsi_min_term_length" size="40" min="0"
-                   max="24" value="<?php echo intval(get_option('wpsi_min_term_length')) ?>"
+            <input id="searchinsights_min_term_length" class="wpsi_term_length" name="searchinsights_min_term_length" size="40" min="0"
+                   max="24" value="<?php echo intval(get_option('searchinsights_min_term_length')) ?>"
                    type="number">
             <?php
         }
@@ -881,8 +905,8 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
         public function option_max_term_length()
         {
             ?>
-            <input id="wpsi_max_term_length" class="wpsi_term_length" name="wpsi_max_term_length" size="40" min="0"
-                   max="255" value="<?php echo intval(get_option('wpsi_max_term_length')) ?>"
+            <input id="searchinsights_max_term_length" class="wpsi_term_length" name="searchinsights_max_term_length" size="40" min="0"
+                   max="255" value="<?php echo intval(get_option('searchinsights_max_term_length')) ?>"
                    type="number">
             <?php
         }
@@ -1003,7 +1027,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
                 return;
             }
 
-            $period = get_option('wpsi_select_term_deletion_period');
+            $period = get_option('searchinsights_select_term_deletion_period');
 
             $past_date = '';
 
@@ -1579,7 +1603,7 @@ if ( ! class_exists( 'WPSI_ADMIN' ) ) {
 
         public function get_term_link($term, $home_url = false)
         {
-	        $custom_search_parameter = get_option('wpsi_custom_search_parameter');
+	        $custom_search_parameter = get_option('searchinsights_custom_search_parameter');
 	        $search_parameter = $custom_search_parameter ? sanitize_title($custom_search_parameter) : 's';
 
             $class = '';

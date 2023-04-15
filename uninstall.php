@@ -26,9 +26,9 @@ function remove_db_entries_on_uninstall()
 
 if (get_option('wpsi_cleardatabase')) {
 	$options = array(
-		'wpsi_exclude_admin',
-		'wpsi_min_term_length',
-		'wpsi_max_term_length',
+		'searchinsights_exclude_admin',
+		'searchinsights_min_term_length',
+		'searchinsights_max_term_length',
 		'search_insights_db_version',
 		'wpsi_ten_searches_viewed_settings_page',
 	);

@@ -2,7 +2,7 @@
 add_action('admin_init', 'wpsi_maybe_set_custom_search_parameter');
 function wpsi_maybe_set_custom_search_parameter(){
 	if (!get_option('wpsi_toolset_configured') ) {
-		update_option('wpsi_custom_search_parameter', 'wpv_post_search');
+		update_option('searchinsights_custom_search_parameter', 'wpv_post_search');
 		update_option('wpsi_toolset_configured', true);
 	}
 }

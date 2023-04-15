@@ -230,7 +230,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 		public function enqueue_assets() {
 
-			if (!get_option('wpsi_track_ajax_searches')) return;
+			if (!get_option('searchinsights_track_ajax_searches')) return;
 
 			$minified = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
             wp_register_script( 'search-insights-frontend-js',
@@ -276,7 +276,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 		public function get_custom_search() {
 			//get custom search parameter
-			$custom_search_parameter = sanitize_title(get_option('wpsi_custom_search_parameter'));
+			$custom_search_parameter = sanitize_title(get_option('searchinsights_custom_search_parameter'));
 			$caller = $this->get_caller_by_search_parameter($custom_search_parameter);
 
 			if (strlen($custom_search_parameter)>0 && isset($_GET[$custom_search_parameter])) {
@@ -393,7 +393,7 @@ if ( ! class_exists( 'Search' ) ) {
 
 
 	        // Return if the query comes from an administrator and the exclude admin searches option is been enabled
-            if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'wpsi_exclude_admin' )) {
+            if ( in_array( 'administrator', wp_get_current_user()->roles ) && get_option( 'searchinsights_exclude_admin' )) {
 	            return;
             }
 
@@ -405,11 +405,11 @@ if ( ! class_exists( 'Search' ) ) {
             }
 
             // Check if the term length is below minimum value option
-            if ( (strlen($search_term) < (get_option('wpsi_min_term_length') ) ) && (get_option('wpsi_min_term_length') !== 0) ) {
+            if ( (strlen($search_term) < (get_option('searchinsights_min_term_length') ) ) && (get_option('searchinsights_min_term_length') !== 0) ) {
                 return;
             }
 
-            if ( (strlen($search_term) > (get_option('wpsi_max_term_length') ) ) && (get_option('wpsi_max_term_length') !== 0 ) ) {
+            if ( (strlen($search_term) > (get_option('searchinsights_max_term_length') ) ) && (get_option('searchinsights_max_term_length') !== 0 ) ) {
                 return;
             }
 
