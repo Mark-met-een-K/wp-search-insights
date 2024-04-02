@@ -1,34 +1,46 @@
 === WP Search Insights - Privacy-Friendly Search Analytics ===
 Contributors: markwolters
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, analytics, statistics, history, recording searches
+Tags: search, analytics, statistics, tracking, optimization
 Requires at least: 4.8
 License: GPL2
 Tested up to: 6.5
 Requires PHP: 5.6
 Stable tag: 1.3.9
 
-Privacy-friendly search analytics. Gain insight into on-page user search behavior.
+WP Search Insights is a privacy-friendly WordPress search analytics plugin that helps you gain valuable insights into your website's search performance and user behavior. Optimize your WordPress search experience and improve your site's content based on real user search data.
 
 == Description ==
-WP Search Insights records all searches made on your website. See from which post, page, or product a search originated in a clean and straightforward dashboard. Keep records of most popular searches, with and without results. Rank keywords by popularity and use the search filter to keep out spam.
+WP Search Insights is a powerful WordPress search analytics plugin that records all searches made on your website. It has helped countless website owners optimize their content and improve user engagement. Get a clear understanding of what your users are searching for and take your website's search experience to the next level. With a clean and intuitive dashboard, you can easily see which posts, pages, or products users are searching from and what search queries are most popular.
 
-Any code suggestions? We're on [GitHub](https://github.com/Mark-met-een-K/wp-search-insights) as well!
+Don't miss out on the opportunity to unleash the full potential of your website's search data. Install WP Search Insights today and start making data-driven decisions that will transform your content strategy and skyrocket your website's success.
 
 == Features ==
-* Records search activity on your website
-* Explore results in custom date ranges
-* Keep records of most popular searches, with and without results
-* Rank keywords by popularity
-* Search filter to keep out spam
-* Works with Ajax Search forms
-* Records originating pages and subsequent landing page after a search query
-* Export records in CSV
-* Privacy-friendly search analytics
+* Track and analyze WordPress search queries
+* Identify most popular search terms, with and without results
+* See search origination pages and landing pages
+* Filter out spam searches
+* Compatible with Ajax search forms
+* Export search data to CSV for further analysis
+* Privacy-friendly approach to search analytics
+
+== Improve Your WordPress Search Experience ==
+= Understand Your Users' Search Behavior =
+By understanding what your users are searching for, you can optimize your website's content to better meet their needs. WP Search Insights provides you with the data you need to make informed decisions about your content strategy, ultimately leading to a better user experience and increased engagement.
+
+= Identify Content Gaps and Opportunities =
+One of the key features of WP Search Insights is its ability to highlight searches that yield no results. This valuable information allows you to identify content gaps on your website and presents an opportunity to create new, targeted content that directly addresses your users' needs. By filling these gaps, you can significantly improve your website's search performance and user satisfaction.
+
+= Make Data-Driven Content Decisions =
+Armed with the insights provided by WP Search Insights, you'll be able to make data-driven decisions to optimize your content strategy. Creating content that aligns with your users' search intent will not only improve their search experience but also demonstrate your commitment to providing the information they are actively seeking.
+
+= Foster a Strong Connection with Your Audience =
+Ultimately, by leveraging the power of search data and addressing content gaps, you can create a website that anticipates and exceeds your users' expectations. WP Search Insights empowers you to foster a strong connection with your audience, leading to increased trust, loyalty, and long-term success for your website.
 
 = Love WP Search Insights? =
-Hopefully, this plugin gives you valuable insights into what your users are looking for. If you want to support the continuing development of this plugin, please leave us a review!
+We hope this WordPress search analytics plugin provides you with valuable insights into your users' search behavior. If you find WP Search Insights helpful, please support its ongoing development by leaving us a positive review!
 
+Any code suggestions? We're on GitHub as well!
 [Contact](https://wpsi.io/contact/) us if you have any questions, issues, or suggestions.
 
 = WP Search Insights in your language? =
@@ -36,22 +48,23 @@ Translations can be added very easily [here](https://translate.wordpress.org/pro
 
 == Frequently asked questions ==
 = Where can I find documentation? =
-* WP Search Insights maintains a knowledgebase at https://wpsi.io.
-= Where can I find the search results or settings? =
-* You can find the plugins dashboard and settings in the Tools -> Search Insights menu
-= How does it work?
-* Search forms are standard in WordPress and should be used by anyone to improve user experience. Recording visitors searches will give you insight into what your visitors are looking for, from which page, and what post is most relevant for their query. Analyzing this data will make your website a better fit for your next visitors!
+* Visit the WP Search Insights knowledgebase at https://wpsi.io for comprehensive documentation.
+= Where can I access the search results and plugin settings? =
+* You can find the plugin's dashboard and settings under the Tools -> WP Search Insights menu in your WordPress admin area.
+= How does WP Search Insights work? =
+* WordPress search forms are essential for improving user experience. By recording visitor searches, WP Search Insights provides valuable data on what your visitors are looking for, which pages they are searching from, and which posts are most relevant to their queries. Analyzing this data helps you optimize your website to better serve your visitors' needs.
 = Can I leave a feature request? =
-* Yes, and please do! After our first release we will keep adding new features to free and develop premium add-ons to complement the data recorded by WP Search Insights. 
-= Can I remove results? =
-* Yes. Under settings you can clear your database searches. This cannot be overturned. Deleting single search queries can be removed from the dashboard by using the ‘delete’ option.
+* Absolutely! We are continuously working on improving WP Search Insights and developing premium add-ons to enhance the search data analysis capabilities. Please share your feature requests with us.
+= Is it possible to remove search results? =
+* Yes. In the plugin settings, you can clear your entire search database. Please note that this action cannot be reversed. Individual search queries can be deleted from the dashboard using the 'delete' option.
 
 == Installation ==
 To install this plugin:
 
-1. Download the plugin
-2. Upload the plugin to the wp-content/plugins directory,
-3. Searches are already being recorded! Follow the link in the activation notice to your WP Search Insights dashboard.
+1. Download the plugin.
+2. Upload the plugin to the wp-content/plugins directory.
+3. Activate the plugin. Searches will start being recorded immediately.
+4. Follow the link in the activation notice to access your WP Search Insights dashboard.
 
 == Changelog ==
 = 1.3.9 =
