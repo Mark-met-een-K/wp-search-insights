@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/wpsearchinsights
 Tags: search, analytics, statistics, history, recording searches
 Requires at least: 4.8
 License: GPL2
-Tested up to: 6.0
+Tested up to: 6.5
 Requires PHP: 5.6
 Stable tag: 1.3.9
 
@@ -55,6 +55,7 @@ To install this plugin:
 
 == Changelog ==
 = 1.3.9 =
+* Fixed an issue with overlapping blocks on settings page which caused the save button to disappear
 * Added scrollbar to settings block on overflow
 * Fixed dashboard capability check for non-administrator users
 * Fixed BBPress integration
