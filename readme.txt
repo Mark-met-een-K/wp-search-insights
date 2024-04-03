@@ -7,8 +7,7 @@ License: GPL2
 Tested up to: 6.5
 Requires PHP: 5.6
 Stable tag: 1.3.9
-
-WP Search Insights is a privacy-friendly WordPress search analytics plugin that helps you gain valuable insights into your website's search performance and user behavior. Optimize your WordPress search experience and improve your site's content based on real user search data.
+Gain valuable insights into your website's search performance and user behavior. Optimize your content based on real search data and boost engagement.
 
 == Description ==
 WP Search Insights is a powerful WordPress search analytics plugin that records all searches made on your website. It has helped countless website owners optimize their content and improve user engagement. Get a clear understanding of what your users are searching for and take your website's search experience to the next level. With a clean and intuitive dashboard, you can easily see which posts, pages, or products users are searching from and what search queries are most popular.
@@ -48,7 +47,7 @@ Translations can be added very easily [here](https://translate.wordpress.org/pro
 
 == Frequently asked questions ==
 = Where can I find documentation? =
-* Visit the WP Search Insights knowledgebase at https://wpsi.io for comprehensive documentation.
+* Visit the WP Search Insights knowledge base at [https://wpsi.io](https://wpsi.io/contact/) for comprehensive documentation.
 = Where can I access the search results and plugin settings? =
 * You can find the plugin's dashboard and settings under the Tools -> WP Search Insights menu in your WordPress admin area.
 = How does WP Search Insights work? =
