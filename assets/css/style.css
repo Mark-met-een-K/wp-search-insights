@@ -59,8 +59,12 @@
   }
   #wpsi-dashboard #settings .item-container {
     width: 85vw;
-    height: 800px;
     clear: both;
+  }
+  #wpsi-dashboard #settings .item-container #wpsi_select_dashboard_capability,
+  #wpsi-dashboard #settings .item-container #wpsi_select_term_deletion_period,
+  #wpsi-dashboard #settings .item-container .wpsi_term_length {
+    font-size: 14px;
   }
 }
 /**
@@ -744,7 +748,7 @@ widget
   float: right;
 }
 #wpsi-dashboard .wpsi-settings .item-content {
-  max-height: 400px;
+  max-height: 325px;
   overflow-y: scroll;
 }
 #wpsi-dashboard .wpsi-settings-intro {
@@ -1219,8 +1223,7 @@ Animating one layer of the background which is a tilted linear gradient with whi
 }
 .wpsi-panel.wpsi-notice {
   background-color: #fff;
-  border-color: #fff;
-  border: 0;
+  border: 0 #fff;
   border-left: 4px solid #29b6f6;
   color: black;
   margin: 10px 0px 10px 0px;
