@@ -29,11 +29,11 @@
   #wpsi-dashboard #wpsi-dashboard .dataTables_wrapper {
     max-width: 650px;
   }
-  #wpsi-dashboard .table-footer {
+  #wpsi-dashboard .wpsi-table-footer {
     position: relative;
     bottom: 0;
   }
-  #wpsi-dashboard .table-footer .wpsi-page-nr {
+  #wpsi-dashboard .wpsi-table-footer .wpsi-page-nr {
     flex: 1;
     padding-left: 10px;
     margin-top: -10px;
@@ -543,7 +543,7 @@ widget
 #wpsi-dashboard #term-link {
   text-decoration: none;
 }
-#wpsi-dashboard .table-footer {
+#wpsi-dashboard .wpsi-table-footer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -552,7 +552,7 @@ widget
   bottom: 45px;
   width: 100%;
 }
-#wpsi-dashboard .table-footer button {
+#wpsi-dashboard .wpsi-table-footer button {
   float: right;
 }
 #wpsi-dashboard .dataTables_info {

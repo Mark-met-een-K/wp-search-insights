@@ -72,7 +72,7 @@ jQuery(document).ready(function ($) {
             pagingType = wpsiMobilePagingType;
         }
         table.DataTable( {
-            "dom": 'frt<"table-footer"p<"wpsi-page-nr">><"clear">B',
+            "dom": 'frt<"wpsi-table-footer"p<"wpsi-page-nr">><"clear">B',
             "pageLength": pageLength,
             "pagingType": pagingType,
             "stateSave": true,
@@ -199,7 +199,7 @@ jQuery(document).ready(function ($) {
      */
     function wpsiInitDeleteCapability() {
         //move button to location in table
-        $(".table-footer").append(deleteBtn);
+        $(".wpsi-table-footer").append(deleteBtn);
         deleteBtn.show();
 
         //set button to disabled
@@ -267,7 +267,7 @@ jQuery(document).ready(function ($) {
      */
     function wpsiInitIgnoreCapability() {
         //move button to location in table
-        $(".table-footer").append(ignoreBtn);
+        $(".wpsi-table-footer").append(ignoreBtn);
         ignoreBtn.show();
 
         //set button to disabled
