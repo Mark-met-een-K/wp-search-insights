@@ -3,10 +3,12 @@
  * Plugin Name: WP Search Insights - Privacy-Friendly Search Analytics
  * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
  * Description: WP Search Insights shows you what your users are looking for on your site, and which searches don't have results
- * Version: 1.3.9
+ * Version: 1.4.0
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters
+ * Requires PHP: 7.0
+ * Requires at least: 4.8
  * Author URI: https://www.wpsi.io
  */
 
@@ -62,7 +64,6 @@ if ( ! class_exists( 'WPSI' ) ) {
 		private function __construct() {
 			self::setup_constants();
 			self::includes();
-			self::load_translation();
 
 			self::$search = new search();
 
@@ -101,11 +102,7 @@ if ( ! class_exists( 'WPSI' ) ) {
 			define( 'wpsi_plugin', plugin_basename( __FILE__ ) );
 			define( 'wpsi_plugin_file', __FILE__ );
 
-			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-			$plugin_data = get_plugin_data( __FILE__ );
-			$debug       = defined( "WP_DEBUG" ) && WP_DEBUG ? time() : "";
-			define( 'wpsi_version',
-				$plugin_data['Version'] . $debug );
+            define( 'wpsi_version', '1.4.0');
 		}
 
 		private function includes() {
@@ -121,18 +118,6 @@ if ( ! class_exists( 'WPSI' ) ) {
 			}
 			require_once( wpsi_path . 'class-search.php' );
 			require_once( wpsi_path . 'integrations/integrations.php' );
-		}
-
-		/**
-		 * Load plugin translations.
-		 *
-		 * @return void
-		 * @since 1.0.0
-		 *
-		 */
-		private function load_translation() {
-			load_plugin_textdomain( 'wp-search-insights', false,
-				wpsi_path . '/languages/' );
 		}
 
 		/**
