@@ -1,95 +1,111 @@
-=== WP Search Insights - Privacy-Friendly Search Analytics ===
+=== Search Insights - Privacy-Friendly Search Analytics ===
 Contributors: markwolters
 Donate link: https://www.paypal.me/wpsearchinsights
-Tags: search, analytics, insights, monitoring, statistics
+Tags: search analytics, search, statistics, insights, content
 Requires at least: 4.8
-License: GPL2
+License: GPLv2
 Tested up to: 6.8
-Requires PHP: 5.6
-Stable tag: 1.4.0
+Requires PHP: 7.0
+Stable tag: 2.0
 
-See exactly what your visitors search for and optimize your content with privacy-friendly analytics. No external services, just actionable insights.
+Uncover exactly what visitors search for on your site. Stop guessing what content to create, fix content gaps, and boost engagement.
 
 == Description ==
-Tired of guessing what your visitors are looking for? WP Search Insights shows you exactly what users search for on your site, helping you:
+**Ever wondered what your visitors are really looking for?** The answer is in their searches.
 
-✓ Discover topics your users care about
-✓ Identify and fix "no results" searches
-✓ See which pages trigger the most searches
-✓ Make data-driven content decisions
+**Search Insights** reveals valuable user intent that most site owners never see. Our intuitive analytics dashboard shows you exactly what your audience wants - helping you create content that meets their needs before they look elsewhere.
 
-Unlike other analytics tools, WP Search Insights is completely privacy-friendly and keeps all data on your own server. No external services, no personal data collection, just clean, actionable search insights.
+🔍 **Know exactly what to create next based on real user demand**
 
-Perfect for content creators, online stores, membership sites, and any WordPress site wanting to understand and serve their visitors better.
+With our powerful, privacy-first search analytics, you'll:
 
-== Key Features ==
-* Complete Search Tracking - Capture every search query, including Ajax searches
-* Search Origin Analysis - See exactly which pages trigger searches
-* Failed Search Detection - Instantly spot when users can't find what they need
-* Privacy-First Analytics - All data stays on your server, GDPR-friendly
-* Easy CSV Export - Download your search data for deeper analysis
-* Spam Protection - Built-in filters keep your data clean and relevant
+✅ **Uncover hidden content opportunities** your competitors are missing
+✅ **See which search terms are trending up** to stay ahead of the curve
+✅ **Identify frustrating "no results" searches** that are costing you conversions
+✅ **Measure your content effectiveness** with clear success rate metrics
+✅ **Understand user journeys** by seeing which pages trigger searches
 
-== Improve Your WordPress Search Experience ==
-WP Search Insights helps you improve the WordPress search experience in the following ways:
+Unlike Google Analytics or other complex tools, Search Insights gives you **actionable data without the privacy headaches**. All information stays on your server with zero personal data collected - making it 100% GDPR-friendly.
 
-= Understand Your Users' Search Behavior =
-By understanding what your users are searching for, you can optimize your website's content to better meet their needs. WP Search Insights provides you with the data you need to make informed decisions about your content strategy, ultimately leading to a better user experience and increased engagement.
+== Key Features of Search Insights ==
+* **Intuitive Analytics Dashboard** - access all your search insights from a dedicated admin menu
+* **Trend Visualization** - identify rising search topics that represent content opportunities
+* **Smart Search Filtering** - easily toggle between successful searches and missed opportunities
+* **High-Performance Engine** - handles thousands of searches easily
+* **Privacy-First Design** - all data stays on your server with zero external services
+* **Search Origin Tracking** - see exactly which pages trigger searches
 
-= Identify Content Gaps and Opportunities =
-One of the key features of WP Search Insights is its ability to highlight searches that yield no results. This valuable information allows you to identify content gaps on your website and presents an opportunity to create new, targeted content that directly addresses your users' needs. By filling these gaps, you can significantly improve your website's search performance and user satisfaction.
+== Why Thousands of Site Owners Rely on Search Insights ==
 
-= Make Data-Driven Content Decisions =
-Armed with the insights provided by WP Search Insights, you'll be able to make data-driven decisions to optimize your content strategy. Creating content that aligns with your users' search intent will not only improve their search experience but also demonstrate your commitment to providing the information they are actively seeking.
+= Create Content That Actually Converts =
+Stop wasting time creating content nobody wants. Search Insights shows you exactly what your visitors are actively looking for - so you can create high-converting content that meets real demand.
 
-= Foster a Strong Connection with Your Audience =
-Ultimately, by leveraging the power of search data and addressing content gaps, you can create a website that anticipates and exceeds your users' expectations. WP Search Insights empowers you to foster a strong connection with your audience, leading to increased trust, loyalty, and long-term success for your website.
+= Discover Untapped Opportunities =
+The new "searches without results" filter instantly reveals content gaps your competitors haven't noticed yet - perfect for capturing underserved audiences and search traffic.
 
-== Who Uses WP Search Insights? ==
-* Content Publishers - Understand what content your readers want
-* Online Stores - See what products customers are looking for
-* Membership Sites - Improve your knowledge base searchability
-* News Sites - Track trending topics through search patterns
-* Educational Sites - Optimize your course and material findability
+= Stay Ahead with Trend Detection =
+The exclusive trend visualization shows which topics are gaining momentum, helping you create timely content before everyone else jumps on the bandwagon.
 
-Any code suggestions? We're on GitHub as well!
-[Contact](https://wpsi.io/contact/) us if you have any questions, issues, or suggestions.
+= Eliminate Visitor Frustration =
+Nothing drives visitors away faster than failed searches. Search Insights pinpoints exactly where users get stuck, so you can fix broken paths and keep visitors engaged.
 
-= WP Search Insights in your language? =
+= Perfect for Privacy-Conscious Sites =
+In today's privacy-focused world, Search Insights gives you deep analytics with none of the compliance headaches. No external services, no personal data collection.
+
+== Who Gets the Most Value from Search Insights? ==
+
+* **Content Publishers** - Create exactly what your readers want, when they want it
+* **WooCommerce Stores** - Discover products customers want but can't find on your site
+* **Membership Sites** - Slash support tickets by improving documentation searchability
+* **Education Sites** - Optimize course materials based on student confusion points
+* **Forums & Communities** - Stay ahead of member interests through search trend analysis
+
+== Key Features That Make Search Insights Essential ==
+* **Complete Search Intelligence** - Capture every search query including Ajax searches
+* **Trend Analysis** - Exclusive visualization of rising search terms
+* **Search Success Metrics** - Measure how effectively your content meets visitor needs
+* **Failed Search Detection** - Instantly identify content gaps costing you conversions
+* **Search Origin Tracking** - See exactly which pages trigger search behavior
+* **Lightning-Fast Performance** - Optimized for sites with thousands of daily searches
+* **Easy CSV Export** - Download your insights for team sharing or deeper analysis
+* **Zero Privacy Concerns** - All data stays on your server, making GDPR compliance effortless
+* **Instant Value** - Clean, intuitive dashboard works right out of the box
+
+= Search Insights in your language? =
 Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/wp-search-insights).
 
-= Love WP Search Insights? =
-We hope this WordPress search analytics plugin provides you with valuable insights into your users' search behavior. If you find WP Search Insights helpful, please support its ongoing development by leaving us a positive review!
+= Love Search Insights? =
+If Search Insights has helped you improve your site and create better content, please take a moment to leave a [⭐⭐⭐⭐⭐ review](https://wordpress.org/plugins/wp-search-insights/#reviews)!
 
 == Frequently asked questions ==
 = Will this plugin slow down my site? =
-* No! WP Search Insights is lightweight and only activates when searches occur. It has no impact on your site's general performance.
+* No! Search insights is lightweight and only activates when searches occur. It has no impact on your site's general performance.
 = Does this work with custom search forms? =
-* Yes! WP Search Insights works with the default WordPress search and popular search plugins including Ajax-powered searches.
+* Yes! Search insights works with the default WordPress search and popular search plugins including Ajax-powered searches.
 = What about privacy and GDPR? =
-* WP Search Insights is privacy-first: all data stays on your server, no personal information is collected, and no data is sent to external services.
+* Search insights is privacy-first: all data stays on your server, no personal information is collected, and no data is sent to external services.
 = Where can I find documentation? =
-* Visit the WP Search Insights knowledge base at [https://wpsi.io](https://wpsi.io/contact/) for comprehensive documentation.
+* Visit the Search insights knowledge base at [https://wpsi.io](https://wpsi.io/docs/) for comprehensive documentation.
 = Where can I access the search results and plugin settings? =
-* You can find the plugin's dashboard and settings under the Tools -> WP Search Insights menu in your WordPress admin area.
-= How does WP Search Insights work? =
-* WordPress search forms are essential for improving user experience. By recording visitor searches, WP Search Insights provides valuable data on what your visitors are looking for, which pages they are searching from, and which posts are most relevant to their queries. Analyzing this data helps you optimize your website to better serve your visitors' needs.
+* You can find the plugin's dashboard and settings under the Tools -> Search insights menu in your WordPress admin area.
+= How does Search insights work? =
+* WordPress search forms are essential for improving user experience. By recording visitor searches, Search insights provides valuable data on what your visitors are looking for, which pages they are searching from, and which posts are most relevant to their queries. Analyzing this data helps you optimize your website to better serve your visitors' needs.
 = Can I leave a feature request? =
-* Absolutely! We are continuously working on improving WP Search Insights and developing premium add-ons to enhance the search data analysis capabilities. Please share your feature requests with us.
+* Absolutely! We are continuously working on improving Search insights and developing premium add-ons to enhance the search data analysis capabilities. Please share your feature requests with us.
 = Is it possible to remove search results? =
 * Yes. In the plugin settings, you can clear your entire search database. Please note that this action cannot be reversed. Individual search queries can be deleted from the dashboard using the 'delete' option.
 
 == Installation ==
-Two ways to install WP Search Insights:
+Two ways to install Search insights:
 
 1. From your WordPress dashboard:
    * Go to Plugins > Add New
-   * Search for 'WP Search Insights'
+   * Search for 'Search insights'
    * Click 'Install Now' and then 'Activate'
    * Your search tracking will start automatically!
 
 2. Manual installation:
-   * Download WP Search Insights from wordpress.org
+   * Download Search insights from wordpress.org
    * Go to Plugins > Add New > Upload Plugin
    * Upload the plugin file
    * Activate the plugin
@@ -97,6 +113,37 @@ Two ways to install WP Search Insights:
 That's it! Click the link in the activation notice to see your search insights dashboard.
 
 == Changelog ==
+= 2.0
+* New: Rebranded from "WP Search Insights" to "Search Insights" with dedicated admin menu
+* New: Added trend data visualization to popular searches
+* New: Filter to view searches with or without results in popular searches block
+* New: Visual loading indicators for large datasets
+* New: Added database indexes for improved query performance
+* New: Completely redesigned export experience
+* New: AJAX-based settings saving with visual feedback
+* New: Custom lightweight modal system (replacing ThickBox)
+* Improved: Date ranges like "Today" or "Last 7 days" now properly update to reflect the current date
+* Improved: Optimized queries for large datasets with better performance
+* Improved: Enhanced search tracking for more accurate analytics
+* Improved: Tooltips are now always visible when needed
+* Improved: Increased settings block height to prevent unnecessary scrolling
+* Improved: Shortened pagination in the All Searches table for large datasets
+* Improved: Standardized timestamp storage to UTC
+* Improved: Various styling consistency enhancements across all screens
+* Dev: Added wpsi_batch_size filter to control AJAX batch size
+* Dev: Added wpsi_datatable_columns filter to customize table columns
+* Dev: Added wpsi_table_row_data filter to modify table row contents
+* Dev: Added wpsi_dashboard_widget_cache_time filter (props @azinfiro)
+* Updated: DataTables library with proper CSS prefixing
+* Updated: Shepherd.js tour guide library
+* Updated: Muuri.js grid layout library
+* Updated: Help tips and guided tour content
+* Fixed: 'Clear data on uninstall' option now properly removes all plugin data
+* Fixed: All issues flagged by the WordPress Plugin Checker
+* Removed: Tether library dependency
+* Removed: Redundant moment.js (now using WP core version)
+* Tested: Compatible with WordPress 6.8
+
 = 1.4.0 =
 * Fixed a textdomain notification introduced in WordPress 6.7
 
@@ -166,4 +213,5 @@ That's it! Click the link in the activation notice to see your search insights d
 * Please backup before upgrading.
 
 == Screenshots ==
-1. WP Search Insights Dashboard
+1. Search insights Dashboard
+2. Search Insights Settings Page

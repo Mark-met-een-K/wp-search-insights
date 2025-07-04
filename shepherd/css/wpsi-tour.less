@@ -1,74 +1,313 @@
-/**css hooks
+@import "../../assets/css/colors";
+@import "../../assets/css/font-sizes";
 
- */
+/* Tour Styling - WPSI Theme */
 
-.wpsi-tour-hook{
-float:left;
-}
-/**
-Plugins overview tour
-*/
+// Base styles for all Shepherd elements
+.shepherd-element {
+  max-width: 400px;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px @box-shadow-color;
+  background: @background-color;
+  //border: 1px solid @border-color;
+  z-index: 10000;
 
-.wpsi-plugins-overview-tour-container {
-  margin-left: 200px;
-}
-
-/**
-  Dashboard tour
- */
-
-.shepherd-element.shepherd-theme-arrows.shepherd-has-title .shepherd-content header {
-  background-color: #d7263d;
-  display: inline-block;
-  width: 100%;
-  height: 45px;
+  &:focus {
+    outline: none;
   }
 
-.shepherd-element.shepherd-theme-arrows .shepherd-content header h3 {
-  color: white;
-  font-weight: 700;
+  // Prevents text selection during tour
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons  {
-  font-weight: 700;
+// Header styling
+.shepherd-header {
+  border-radius: 4px 4px 0 0;
+  background-color: @brand-primary !important;
+
+  h3 {
+    color: white;
+  }
+
+  // Close button
+  .shepherd-cancel-icon {
+    font-size: @font-size-xxl;
+    color: white !important;
+    opacity: 0.8;
+    margin: 0;
+    padding: 0;
+    top: 15px;
+    right: 15px;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+      color: @brand-primary;
+    }
+  }
 }
 
+// Step title
 .shepherd-title {
-  font-size: 16px;
+  font-size: @font-size-h3;
+  font-weight: 600;
+  color: @title-text-color;
+  margin: 0;
+  padding: 0;
 }
 
-.shepherd-content {
-  width: 450px;
+// Content area
+.shepherd-text {
+  padding: 15px;
+  font-size: @font-size-base;
+  line-height: 1.6;
+  color: @text-color;
 }
-.shepherd-step {
+
+// Footer with buttons
+.shepherd-footer {
+  padding: 10px 15px 15px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 0;
+
+  // Spacing between buttons
+  .shepherd-button:not(:last-child) {
+    margin-right: 10px;
+  }
+
+    .shepherd-button:not(:disabled):hover {
+        background-color: @brand-primary;
+        opacity: 0.8;
+    }
+}
+
+// Button styling
+.shepherd-button {
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-size: @font-size-base;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  border: 1px solid transparent;
+  margin: 0;
+
+  // Default button (previous, cancel, etc)
+  background: @grey-light;
+  color: @text-color;
+
+  &:hover {
+    background: darken(@grey-light, 5%);
+  }
+
+  // Primary button (next, finish)
+  &.shepherd-button-primary {
+    background: @brand-primary;
+    color: white;
+
+    &:hover {
+      background: ligthen(@brand-primary, 5%);
+    }
+
+    &:active {
+      background: ligthen(@brand-primary, 10%);
+    }
+  }
+}
+
+// Pointers/arrows
+.shepherd-arrow {
+  border-width: 8px;
+
+  // Top arrow (pointing down)
+  &.shepherd-arrow-top {
+    border-bottom-color: @background-color;
+    filter: drop-shadow(0 -1px 1px @box-shadow-color);
+
+    &::before {
+      border-bottom-color: @border-color;
+    }
+  }
+
+  // Bottom arrow (pointing up)
+  &.shepherd-arrow-bottom {
+    border-top-color: @background-color;
+    filter: drop-shadow(0 1px 1px @box-shadow-color);
+
+    &::before {
+      border-top-color: @border-color;
+    }
+  }
+
+  // Left arrow (pointing right)
+  &.shepherd-arrow-left {
+    border-right-color: @background-color;
+    filter: drop-shadow(-1px 0 1px @box-shadow-color);
+
+    &::before {
+      border-right-color: @border-color;
+    }
+  }
+
+  // Right arrow (pointing left)
+  &.shepherd-arrow-right {
+    border-left-color: @background-color;
+    filter: drop-shadow(1px 0 1px @box-shadow-color);
+
+    &::before {
+      border-left-color: @border-color;
+    }
+  }
+}
+
+// Modal overlay styling
+.shepherd-modal-overlay-container {
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  pointer-events: none;
+
+  &.shepherd-modal-is-visible {
+    opacity: 0.5;
+    background: rgba(0, 0, 0, 0.4);
+    pointer-events: auto;
+  }
+}
+
+// Highlighted elements
+.shepherd-highlight {
+  box-shadow: 0 0 10px 3px @brand-primary-light, 0 0 15px 1px @brand-primary-light, 0 0 20px 1px @brand-primary-light;
+  border-radius: 4px;
   z-index: 9999 !important;
 }
 
-wpsi-tour-logo {
-  height: 70px;
-  //margin-left: 25px;
+// Ensure focus elements are above the overlay
+.shepherd-target.shepherd-enabled {
+  z-index: 10001 !important;
 
+  &:focus {
+    outline: none;
+  }
 }
 
-.wpsi-tour-logo-text {
-  height: 70px;
-  display: flex;
-}
-
-.wpsi-tour-text {
-  display: flex;
-  margin-left: 25px;
-  justify-content: center;
-  flex-direction: column;
-}
-
+// Special styling for specific elements
+// Make buttons match WPSI style
 .shepherd-button {
-  text-transform: none !important;
+  height: 30px;
+  line-height: 28px;
+  padding: 0 10px;
+
+  &.shepherd-button-primary {
+    border: 1px solid darken(@brand-primary, 5%);
+  }
 }
 
-.shepherd-element.shepherd-theme-arrows.shepherd-has-title .shepherd-content header a.shepherd-cancel-link {
-  opacity: 1;
-  color: #f2f2f2;
-  font-weight: bold;
-  margin-top: -1px;
+// Responsive adjustments for mobile
+@media (max-width: 767px) {
+  .shepherd-element {
+    max-width: 300px;
+  }
+
+  .shepherd-text {
+    font-size: @font-size-small;
+    padding: 10px;
+  }
+
+  .shepherd-footer {
+    padding: 7px 10px 10px;
+  }
+
+  .shepherd-button {
+    padding: 6px 8px;
+    font-size: @font-size-small;
+  }
+}
+
+// Fix z-index issues with WordPress admin bar
+#wpadminbar {
+  z-index: 99999 !important;
+}
+
+// Enhanced styling for highlighted items during tour
+.tour-active {
+  .wpsi-grid [data-table_type],
+  .wpsi-date-container.wpsi-table-range,
+  #wpsi-delete-selected,
+  #wpsi-ignore-selected,
+  #wpsi-popular-filter-select,
+  #wpsi-show-toggles,
+  .tab-settings,
+  #toplevel_page_wpsi-settings-page {
+    &.shepherd-target {
+      position: relative;
+      z-index: 10001;
+      animation: wpsi-pulse 2s infinite;
+    }
+  }
+}
+
+// Pulse animation for highlighted elements
+@keyframes wpsi-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(215, 38, 61, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(215, 38, 61, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(215, 38, 61, 0);
+  }
+}
+
+// Fix for specific WordPress admin elements
+.wp-toolbar body.shepherd-active {
+  margin-top: 32px;
+
+  @media (max-width: 782px) {
+    margin-top: 46px;
+  }
+}
+
+// Make sure the Shepherd steps are above everything else
+body.shepherd-active {
+  .shepherd-step {
+    z-index: 100000;
+  }
+}
+
+/* More specific selectors for the cancel tour link */
+.shepherd-footer .shepherd-button.wpsi-cancel-tour-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: @wpsi-blue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 14px;
+    box-shadow: none;
+    margin-right: auto;
+}
+
+.shepherd-footer .shepherd-button.wpsi-cancel-tour-link:hover {
+    color: @wpsi-blue-light;
+    text-decoration: underline;
+    background: none;
+}
+
+/* More specific selector for the footer */
+.shepherd-element .shepherd-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
 }

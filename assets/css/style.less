@@ -1,20 +1,9 @@
-@color-blue: #29b6f6;
-@color-success: #61ce70;
-@brand-primary: #d7263d;
-@color-error: @brand-primary;
-@light-text-color: #3c3c3c;
-@border-color: #DEDEDE;
-@grey-light: #ededed;
-
-//hack to make sure the wp footer is at the bottom
-#wpfooter{
-  position:relative;
-}
-
-//make sure it floats on top of the wp menu
-.daterangepicker.show-calendar {
-  z-index: 9999 !important;
-}
+@import "colors.less";
+@import "shared-components";
+@import "font-sizes";
+@import "unified-rows.less";
+@import "modal";
+@import "toast";
 
 .update-nag {
   display: none;
@@ -24,12 +13,10 @@
   margin: 0 0 0 0;
 }
 
-
-
 @media screen and (max-width: 850px) {
 
   .tabs {
-    .documentation, #wpsi-toggle-options,.header-upsell {
+    .documentation, #wpsi-toggle-options, .header-upsell {
       display: none;
     }
   }
@@ -49,18 +36,8 @@
       float: none;
     }
 
-    #wpsi-dashboard .dataTables_wrapper {
+    #wpsi-dashboard .wpsi-dataTables_wrapper {
       max-width: 650px;
-    }
-
-    .table-footer {
-      position: relative;
-      bottom: 0;
-      .wpsi-page-nr {
-        flex: 1;
-        padding-left: 10px;
-        margin-top: -10px;
-      }
     }
 
     #wpsi-toggle-arrows {
@@ -88,11 +65,13 @@
 
     #settings {
       margin-left: 0;
+
       .item-container {
         width: 85vw;
-        clear:both;
+        clear: both;
+
         #wpsi_select_dashboard_capability, #wpsi_select_term_deletion_period, .wpsi_term_length {
-          font-size: 14px;
+          font-size: @font-size-large;
         }
       }
     }
@@ -103,16 +82,17 @@
 widget
  */
 #dashboard_widget_wpsi, #wpsi-dashboard {
-  font-size:13px;
+  font-size: @font-size-dashboard-widget;
+
   .inside {
     padding: 0;
 
     #wpsi-dashboard-widget {
+
       h3 {
+        font-size: @font-size-h3;
         font-weight: 600;
-        margin-top: 10px;
-        margin-left: 20px;
-        padding-bottom: 5px;
+        padding: 10px;
       }
 
       .wpsi-widget-logo {
@@ -124,48 +104,12 @@ widget
         }
       }
 
-      ul {
-        background-color: #fafafa;
-        margin: 0;
-      }
-
-      li {
-        border-top: 1px solid #eee;
-        margin: 0;
-        padding: 8px 12px;
-        color: #32373c;
-        position: relative;
-
-        .wpsi-rowfooter {
-          display: flex;
-          justify-content: space-between;
-
-          .wpsi-frequency {
-            color: @light-text-color;
-          }
-
-          .wpsi-time {
-            margin-left: 25px;
-            color: @light-text-color;
-          }
-        }
-
-      }
-
-      .dashicons-arrow-up-alt {
-        color: @color-success;
-      }
-
-      .dashicons-arrow-down-alt {
-        color: @color-error;
-      }
-
       #wpsi-dashboard-widget-footer {
         margin-top: 0;
         margin-bottom: 0;
         padding: 12px;
         border-top: 1px solid #eee;
-        color: #ddd;
+        color: @light-text-color;
       }
     }
   }
@@ -173,8 +117,73 @@ widget
 
 #wpsi-dashboard {
 
+  // Base typography
+  font-size: @font-size-base;
+  line-height: 1.5;
+  color: @text-color;
+
+  // Headings hierarchy
+  h1 {
+    font-size: @font-size-h1;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: @font-size-h2;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    font-size: @font-size-h3;
+    font-weight: 600;
+    color: @table-head-text-color;
+    margin: 0.675rem;
+  }
+
+  h4 {
+    font-size: @font-size-large;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  // Standard text elements
+  p {
+    font-size: @font-size-base;
+    margin-bottom: 15px;
+  }
+
+  // Table typography
+  table {
+    font-size: @font-size-base;
+
+    th {
+      font-size: @font-size-large;
+      font-weight: 600;
+    }
+
+    td {
+      font-size: @font-size-small;
+    }
+  }
+
+  // Form elements
+  input, select, textarea, button {
+    font-size: @font-size-base;
+  }
+
+  // Icons
+  .dashicons {
+    font-size: @font-size-xl;
+  }
+
+  .wpsi-large-icon,
+  .hit-icon {
+    font-size: @font-size-icon;
+  }
+
   .tabs {
-    background: #fff;
+    background: @background-color;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -185,6 +194,7 @@ widget
       display: flex;
       width: 100%;
       margin-left: 40px;
+      align-items: center;
       @media screen and (max-width: 480px) {
         margin-left: 0;
       }
@@ -218,59 +228,6 @@ widget
   }
 }
 
-.wpsi-dashboard-widget-grid {
-  li {
-    height: 50px;
-    border-top: 0 !important;
-    border-bottom: 1px solid @border-color;
-    background-color: #fff;
-  }
-}
-
-.search-info-container {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.term-frequency-container {
-  max-width: 175px;
-  padding-left: 25px;
-  padding-top: 10px;
-
-  a {
-    text-decoration: none;
-    color: black;
-  }
-}
-
-.widget-row {
-  display: flex;
-}
-
-.widget-row .dashicons {
-  font-size: 15px;
-  padding-top: 5px;
-  margin-top: 10px;
-}
-
-.wpsi-dashboard-widget-grid {
-  .wpsi-time {
-    margin: 0 !important;
-  }
-
-  padding-top: 5px;
-
-  .wpsi-frequency {
-    padding-top: 10px;
-    text-align: right;
-  }
-
-  .wpsi-time {
-    margin-top: -10px
-  }
-}
-
 #wpsi-dashboard {
 
   /*
@@ -280,11 +237,11 @@ widget
   */
 
   .tab-text {
-    color: #444444;
-    font-size: 1.2em;
-    text-decoration: none;
+    color: @light-text-color;
+    font-size: @font-size-tab-text;
     outline: 0;
     box-shadow: 0 0 0 0;
+    text-decoration: none;
 
     &:focus {
       box-shadow: initial;
@@ -297,50 +254,81 @@ widget
     height: 50px;
     width: 50px;
   }
+
   @media screen and (max-width: 480px) {
     .wpsi-settings-logo {
-      display:none;
+      display: none;
     }
   }
-  
+
   .wpsi-settings-intro {
     margin-left: 0 !important;
   }
 
-  .wpsi-settings-intro-text {
-    font-weight: 600;
-  }
-
-
-
-
   .wpsi-date-container {
-    background: #fff;
+    background: @background-color;
     cursor: pointer;
     padding: 4px 10px;
     border: 1px solid #ccc;
-    border-radius:3px;
+    border-radius: 3px;
     margin-right: 15px;
     white-space: nowrap;
     @media screen and (max-width: 480px) {
       width: 18px;
       overflow: hidden;
     }
+
     &.wpsi-export {
       float: left;
     }
   }
 
-  //hide the "25 entries" dropdown
-  .dataTables_length {
-    display: none;
+  // Search
+  .dt-search {
+    float: right;
+    margin-bottom: 0;
+    font-weight: 500;
+
+    .dt-input {
+      border: 1px solid @border-color;
+      padding: 0 30px 0 8px; // Right padding for the icon
+      line-height: 2;
+      min-height: 30px;
+      width: 250px;
+    }
   }
 
-  .dataTables_filter {
-    margin: -56px 0 0 0;
-    position: absolute;
-    right: 0;
+  .wpsi-search-container {
+    float: right;
+    margin-bottom: 0;
+    margin-top: -5px; // Vertical alignment with title
   }
+
+  .wpsi-search-input-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .wpsi-search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    pointer-events: none; // Clicks pass through to input
+  }
+
+  // Mobile responsive styles
+  @media screen and (max-width: 480px) {
+    .wpsi-search-container {
+      margin-top: 0; // Different alignment for mobile
+    }
+
+    .dt-search .dt-input {
+      width: 150px; // Narrower search field on mobile
+    }
+  }
+  // End search
 
   .search-insights-dashboard {
     display: flex;
@@ -361,36 +349,40 @@ widget
     padding: 0px;
     list-style: none;
     height: 66px;
+
     li {
       background: none;
-      color: #222;
+      color: @text-color;
       display: inline-block;
       padding: 15px 15px 15px 15px;
       cursor: pointer;
       margin: 0;
+
       &.current {
-        background: #ffffff;
-        color: #222;
+        background: @background-color;
+        color: @text-color;
       }
     }
   }
 
   .tab-content {
     display: none;
-    background: #F1F1F1;
+    background: #F0F0F1; // Default WP background
     padding: 15px;
   }
 
   #wpsi-delete-selected, #wpsi-ignore-selected {
     .wpsi-delete-icon {
-      display:none;
+      display: none;
     }
+
     @media screen and (max-width: 480px) {
       .wpsi-delete-icon {
-        display:block;
+        display: block;
       }
+
       .wpsi-delete-text {
-        display:none;
+        display: none;
       }
     }
     display: none;
@@ -406,6 +398,7 @@ widget
   #wpsi-delete-selected {
     margin-right: 20px;
   }
+
   #wpsi-ignore-selected {
     //margin-right: 50px;
   }
@@ -425,124 +418,137 @@ widget
   */
 
   #dashboard {
-  .dataTables_wrapper {
-    //max-width: 800px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-  }
+    //.wpsi-dataTables_wrapper {
+    //  //max-width: 800px;
+    //  display: flex;
+    //  justify-content: space-between;
+    //  flex-direction: column;
+    //}
 
-  .item-content {
-    padding: 15px 20px;
-    flex: 1;
-    margin: 0 auto;
-    position: relative;
+    .item-content {
+      padding: 15px 20px;
+      flex: 1;
+      margin: 0 auto;
+      position: relative;
 
-    input[type="search"] {
-      width: 250px;
-      margin-right: 20px;
-      border: 1px solid @border-color;
-      //some style to prevent override from wp on mobile
-      padding: 0 8px;
-      line-height: 2;
-      min-height: 30px;
-      @media screen and (max-width: 480px) {
-        width: 150px;
+      input[type="search"] {
+        width: 250px;
+        margin-right: 20px;
+        border: 1px solid @border-color;
+        //some style to prevent override from wp on mobile
+        padding: 0 8px;
+        line-height: 2;
+        min-height: 30px;
+        @media screen and (max-width: 480px) {
+          width: 150px;
+        }
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        table-layout: fixed;
+        justify-content: normal;
+
+        &.wpsi-dataTable {
+          tbody {
+            tr.wpsi-selected {
+              background-color: @wpsi-blue-light;
+
+              // Ensure text is readable on the blue background
+              td {
+                background-color: @wpsi-blue-light;
+
+                a {
+                  color: white;
+                  text-decoration: underline;
+                }
+              }
+
+              &:hover {
+                background-color: lighten(@wpsi-blue-light, 5%);
+              }
+            }
+          }
+        }
+
+        caption {
+          height: 50px;
+          text-align: left;
+          margin-top: -10px;
+          padding-bottom: 10px;
+        }
+
+        tbody tr {
+          border-bottom: .1em solid @border-color;
+        }
+
+        tr {
+          height: 40px;
+          padding: .35em;
+        }
+
+        th,
+        td {
+          padding: .625em;
+          text-align: left;
+          font-size: @font-size-small;
+        }
+
+        th {
+          color: @table-head-text-color;
+          font-size: @font-size-large;
+
+          &:focus {
+            outline: none;
+          }
+
+          cursor: pointer;
+          background-repeat: no-repeat;
+          background-position: right;
+        }
+
+        tbody {
+          color: @light-text-color;
+        }
+
+        tr:first-child {
+          border-top-left-radius: .55rem;
+          border-top-right-radius: .55rem;
+        }
+
+        tr:last-child {
+          margin-bottom: 0;
+          border-bottom-left-radius: .55rem;
+          border-bottom-right-radius: .55rem;
+        }
       }
     }
-
-    table {
-      border-collapse: collapse;
-      margin: 0;
-      padding: 0;
-      table-layout: fixed;
-      justify-content: normal;
-
-      &.dataTable {
-        .wpsi-selected {
-          background-color: rgba(41, 182, 246, 0.35);
-        }
-      }
-
-      caption {
-        height: 50px;
-        text-align: left;
-        margin-top: -10px;
-        padding-bottom: 10px;
-      }
-
-      tbody tr {
-        border-bottom: .1em solid @border-color;
-      }
-
-      tr {
-        height: 40px;
-        background-color: #f8f8f8;
-        padding: .35em;
-      }
-      th,
-      td {
-        padding: .625em;
-        text-align: left;
-        font-size: 12px;
-      }
-
-      th {
-        &:focus {
-          outline: none;
-        }
-        cursor: pointer;
-        background-repeat: no-repeat;
-        background-position: right;
-        &.sorting_asc{
-          background-image: url(../images/sort_asc.png);
-        }
-        &.sorting_desc{
-          background-image: url(../images/sort_desc.png);
-        }
-      }
-
-      tbody {
-        color: @light-text-color;
-      }
-
-      tr:nth-child(even) {
-        background-color: #FFFFFF;
-      }
-
-      tr:nth-child(odd) {
-        background-color: #FFFFFF;
-      }
-
-      tr:first-child {
-        border-top-left-radius: .55rem;
-        border-top-right-radius: .55rem;
-      }
-
-      tr:last-child {
-        margin-bottom: 0;
-        border-bottom-left-radius: .55rem;
-        border-bottom-right-radius: .55rem;
-      }
-    }
   }
-}
 
   //give textarea in filter grid a full width
-  .full-width .item-content  {
+  .full-width .item-content {
     th {
       display: none;
     }
+
     td {
-      padding:0;
+      padding: 0;
+
       textarea {
-        height:100px;
+        height: 100px;
       }
     }
   }
 
   .wpsi-term {
     max-width: 250px;
+
+    span {
+      display: inline-block;
+    }
+
     a {
       text-decoration: none;
       color: @light-text-color;
@@ -557,18 +563,21 @@ widget
     text-overflow: ellipsis;
     transition: all .2s linear;
     white-space: nowrap;
+    cursor: pointer;
   }
+
   .wpsi-ellipsis:focus, .wpsi-ellipsis:hover {
-    color:transparent;
+    color: transparent;
   }
-  .wpsi-ellipsis:focus:after,.wpsi-ellipsis:hover:after{
-    content:attr(data-text);
+
+  .wpsi-ellipsis:focus:after, .wpsi-ellipsis:hover:after {
+    content: attr(data-text);
     overflow: visible;
     text-overflow: inherit;
-    background: #fff;
+    background: @background-color;
     position: absolute;
-    left:auto;
-    top:auto;
+    left: auto;
+    top: auto;
     width: auto;
     max-width: 30rem;
     border: 1px solid @border-color;
@@ -577,22 +586,22 @@ widget
     box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
     white-space: normal;
     word-wrap: break-word;
-    display:block;
-    color:black;
-    margin-top:-1.25rem;
+    display: block;
+    color: black;
+    margin-top: -1.25rem;
     z-index: 2;
   }
 
   .wpsi-grid-controls {
-    float:right;
-    margin-top:-8px;
+    float: right;
+
     .wpsi-date-filter {
       border: 1px solid @border-color;
     }
   }
 
   .hit-icon {
-    font-size: 1.6em;
+    font-size: @font-size-icon;
   }
 
   .icon-cancel {
@@ -611,7 +620,7 @@ widget
       Table footer
    */
 
-  .table-footer {
+  .wpsi-table-footer {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -625,62 +634,83 @@ widget
     }
   }
 
-  .dataTables_info {
-    text-align: left;
-    margin-left: 15px;
-    width: 30%;
-  }
+  .wpsi-dt-pagination {
+      flex: 1;
+      margin-bottom: 10px;
+      cursor: pointer;
+      .dt-paging {
+          nav {
+              display: flex;
+              flex-direction: row;
+          }
 
-  .dt-buttons {
-    text-align: center;
-    width: 30%;
-  }
+          // Rest of pagination styling
+          .dt-paging-button {
+              color: @text-color;
+              padding: 0.5em 1em;
+              box-sizing: border-box;
+              border: 1px solid @border-color;
+              box-shadow: 0px 1px 1px @border-color;
+              margin: 0 2px;
+              background-color: white;
 
-  .dt-button {
-    position: relative;
-    display: inline-block;
-    background: none;
-    border: none;
-    padding-top: 20px;
-    cursor: pointer;
-    text-decoration: -webkit-link;
-    color: #0073aa;
-    transition-property: border, background, color;
-    transition-duration: .05s;
-    transition-timing-function: ease-in-out;
-    text-decoration: underline;
-  }
+              &.next,
+              &.previous {
+                  padding: 0.5em 1.8em;
+                  color: @brand-primary;
+              }
 
-  .dt-button:hover {
-    opacity: 0.75;
-  }
+              &.disabled {
+                  // disabled styling
+                  color: #aaaaaa;
+                  background-color: #f9f9f9;
+                  border-color: #e8e8e8;
+                  cursor: not-allowed;
+                  opacity: 0.7;
+                  box-shadow: none;
+              }
 
-  .dataTables_paginate {;
-    flex: 1;
-    margin-bottom: 10px;
-    //text-align: left;
-    cursor: pointer;
-    .paginate_button {
-      color: black;
-      padding: 0.5em 1em;
-      box-sizing: border-box;
-      border: 1px solid @border-color;
-      box-shadow: 0px 1px 1px @border-color;
-      &.next, &.previous {
-        padding: 0.5em 1.8em;
-        color: @color-error;
+              &:hover {
+                  background-color: #f9f9f9;
+                  cursor: pointer;
+              }
+
+              &.current {
+                  color: white;
+                  background-color: @brand-primary;
+                  border: 0;
+              }
+          }
       }
-      &.disabled {
-        color:@grey-light;
-      }
-      &.current {
-        color: white;
-        background-color: @color-error;
-        border: 0;
-      }
+  }
+
+    .wpsi-pagination-compact {
+        .paginate_button {
+            // Make buttons more compact when there are many pages
+            padding: 0.3em 0.5em !important;
+
+            // Hide some page numbers when we have too many
+            &:nth-child(n+7):nth-child(-n+100) {
+                display: none;
+            }
+
+            // But always show the first few, last few, and current page area
+            &.current,
+            &.current + .paginate_button,
+            &.current - .paginate_button,
+            &:first-child,
+            &:nth-child(2),
+            &:nth-last-child(1),
+            &:nth-last-child(2) {
+                display: inline-block !important;
+            }
+        }
+
+        // Add overflow handling just in case
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
     }
-
-  }
 
   #wpsi-recent-table_previous {
     padding: 0.5em 1.8em;
@@ -701,7 +731,7 @@ widget
   }
 
   .wpsi-nr-title {
-    font-size: 1.1em;
+    font-size: @font-size-h3;
     font-weight: 700;
   }
 
@@ -729,50 +759,34 @@ widget
     border-bottom: 1px solid @border-color;
   }
 
+  // Trend indicators in results cards
+  .wpsi-trend {
+    margin-left: 8px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    &.wpsi-trend-up {
+      color: @color-success;
+    }
+
+    &.wpsi-trend-down {
+      color: @color-error;
+    }
+
+    &.wpsi-trend-new {
+      background-color: @wpsi-blue;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+  }
+
   .popular-terms-title {
     padding-top: 15px;
   }
-
-  /*
-    Progress bar
-   */
-
-  .progress-bar-container {
-    padding-top: 15px;
-    margin: 0 auto;
-
-  }
-
-  .progress {
-    overflow: hidden;
-    height: 20px;
-    border-radius: 5px;
-    background-color: #f7f7f7;
-  }
-
-  .progress .bar {
-    height: 100%;
-    background-color: @color-success;
-
-  }
-
-  // End progess bar
-
-  .progress-text {
-    display: flex;
-    padding-top: 20px;
-  }
-
-  .percentage {
-    font-size: 3.2em;
-    font-weight: 700;
-  }
-
-  .percentage-text {
-    padding-left: 10px;
-  }
-
-  // End progress section
 
   .dot {
     height: 10px;
@@ -814,9 +828,9 @@ widget
   }
 
   .wpsi-search-count {
-    font-size: 1.1em;
+    font-size: @font-size-h3;
     font-weight: 700;
-    float:right;
+    float: right;
   }
 
   .date-btn-all-searches {
@@ -848,41 +862,8 @@ widget
     margin-right: 10px;
   }
 
-  .upsell-grid-container{
-    //display: flex !important; //we need important here, because the grid switch overrides it on element level
-    //justify-content: space-between;
-    .rsp-logo {
-      img {
-        height: 30px;
-      }
-    }
-    .wpsi-upsell {
-      display: flex !important; //we need important here, because the grid switch overrides it on element level
-      flex-direction: row;
-      padding: 6px;
-      align-items: center;
-      color: @light-text-color;
-
-      .rsssl-yellow {
-          background-color: #EFBF4B;
-      }
-
-      .cmplz-blue  {
-          background-color: #27ADEA;
-      }
-
-      .zip-pink {
-        background-color: #E366A1;
-      }
-
-      .plugin-status {
-        margin-left: auto;
-      }
-    }
-  }
-
   #wpsi-start-export {
-    float:right;
+    float: right;
   }
 
   /*
@@ -905,15 +886,9 @@ widget
     margin-left: -58px;
   }
 
-  .icon-cog-alt {
-    display: inline-block;
-    font-size: 2.3em;
-    color: #d7263d;
-    vertical-align: middle;
-  }
-
   .wpsi-settings-intro-text {
-    font-size: 1.3em;
+    font-weight: 600;
+    font-size: @font-size-settings-intro;
     margin-left: 10px;
     display: inline-block;
     vertical-align: middle;
@@ -927,17 +902,6 @@ widget
 
   .form-table {
     padding-left: 50px;
-  }
-
-  //.form-table > tbody:nth-child(1) > tr:nth-child(6) > th:nth-child(1) {
-  //  display: none;
-  //}
-
-  #wpsi-filter {
-    background-color: #fff;
-    height: 250px;
-    width: 825px;
-    box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.2);
   }
 
   .settings-title {
@@ -959,18 +923,24 @@ widget
 
   #settings {
     .form-table th {
-      padding-top:16px;
-      font-weight:400;
-      width:initial;
+      padding-top: 16px;
+      width: initial;
+      font-weight: 400;
     }
+
     .wpsi-download-link {
-      padding-top:6px;
+      padding-top: 6px;
       margin-right: 20px;
     }
+
     input[type=text], textarea, select {
       border: 1px solid @border-color;
     }
-    textarea {width:100%}
+
+    textarea {
+      width: 100%
+    }
+
     .wpsi-export-grid td {
       display: flex;
     }
@@ -985,15 +955,6 @@ widget
     text-align: center;
   }
 
-  .thickbox {
-    padding-bottom: 20px;
-    background-color: @color-error;
-    margin-left: -10px;
-    color: white;
-    border: none;
-    height: 30px;
-  }
-
   #clear-searches-btn-border {
     border-bottom: 1px solid @border-color;
     margin-bottom: 20px;
@@ -1004,7 +965,7 @@ widget
     Tips and Tricks
    */
 
-  .wpsi-tips-tricks, .upsell-grid-container {
+  .wpsi-tips-tricks {
     .item-content > div {
       display: flex !important;
       flex-direction: column;
@@ -1012,72 +973,75 @@ widget
       height: 100px;
       margin-bottom: 10px;
       border-bottom: 1px solid @border-color;
+
       @media screen and (max-width: 480px) {
         flex-direction: row;
+        height: auto;
         overflow: hidden;
       }
 
+      .wpsi-tips-tricks-element {
+        width: 45%;
+        margin-right: 5%;
+        color: @light-text-color;
 
-      .wpsi-tips-tricks-element, .plugin-text {
+        @media screen and (max-width: 480px) {
+          width: 100%;
+        }
+
         a {
+          display: flex;
+          align-items: center;
           text-decoration: none;
           color: @light-text-color;
+          padding: 5px 0;
 
           &:hover {
             color: @brand-primary;
+
+            .wpsi-bullet {
+              background-color: @brand-primary;
+            }
           }
         }
 
         .wpsi-bullet {
-          margin: 7px;
+          flex-shrink: 0;
+          width: 8px;
+          height: 8px;
           background-color: @grey-light;
-          float: left;
-
-          &:hover {
-            background-color: @brand-primary;
-          }
+          border-radius: 50%;
+          margin-right: 12px;
+          transition: background-color 0.2s ease;
         }
-        color: @light-text-color;
 
         .wpsi-tips-tricks-content {
-          margin: 7px 0;
-
-          float: left;
+          flex: 1;
+          line-height: 1.4;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: inline-block;
+          vertical-align: middle;
         }
-
       }
+    }
+
+    .item-content a {
+      text-decoration: none;
+    }
+
+    // Button styling
+    .button-upsell {
+      margin-top: 16px;
+      margin-left: 15px;
+      display: block;
+      clear: both;
     }
   }
 
   .wpsi-tips-tricks-container-title {
     border-bottom: 1px solid @border-color;
-  }
-
-  //make sure tooltips are not bold, because of title wrap
-  .wpsi-tooltip-right, .wpsi-tooltip-bottom {
-    font-weight:normal;
-  }
-
-  /*Tooltips on dashboard/settings page*/
-  .wpsi-tooltip-right {
-    float: right;
-  }
-
-  //.wpsi-grid-tooltip .wpsi-tooltip-right {
-  //  float:left;
-  //}
-
-  #settings .wpsi-tooltip-right {
-    margin-left: 8px;
-    margin-top: 1px;
-  }
-
-  .dashboard-tooltip-hits > span:nth-child(1) > span:nth-child(1) {
-    margin-left: -135px;
-  }
-
-  .dashboard-tooltip-from > span:nth-child(1) > span:nth-child(1) {
-    margin-left: -65px;
   }
 
   /*
@@ -1113,7 +1077,7 @@ widget
       width: 15px;
       left: 4px;
       bottom: 3px;
-      background-color: white;
+      background-color: @background-color;
       -webkit-transition: .4s;
       transition: .4s;
     }
@@ -1129,61 +1093,115 @@ widget
   }
 
   input:checked + .wpsi-slider {
-    background-color: @color-blue;
+    background-color: @wpsi-blue;
 
     &:before {
-      -webkit-transform: translateX(17px);
       -ms-transform: translateX(17px);
+      transform: translateX(17px);
       transform: translateX(17px);
     }
   }
 
   input:checked:disabled + .wpsi-slider {
-    background-color: lighten(@color-blue, 40%);
+    background-color: lighten(@wpsi-blue, 40%);
   }
 
 
   input:focus + .wpsi-slider {
-    box-shadow: 0 0 1px @color-blue;
+    box-shadow: 0 0 1px @wpsi-blue;
   }
 
+  /* Base tooltip styles */
+  /* Make sure the tooltip container is also set to overflow visible */
 
-  /* wpsi-tooltip for settings page */
-  /* Base styles for the element that has a wpsi-tooltip */
+  .wpsi-item,
+  .item-container,
+  .item-content,
+  .wpsi-table,
+  .wpsi-grid,
+  .wpsi-grid .wpsi-item .item-container {
+    overflow: visible !important;
+  }
+
+  /* Base tooltip styling */
 
   [data-wpsi-tooltip],
+  .wpsi-tooltip-right,
+  .wpsi-tooltip-bottom,
   .wpsi-tooltip {
     position: relative;
+    display: inline-block;
     cursor: pointer;
+    overflow: visible !important;
+    z-index: 10000000;
   }
 
-  /* Base styles for the entire tooltip */
+  /* Force tooltip content to appear above everything else */
+
+  .wpsi-tooltip-right:after {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Ensure tooltip root element is positioned properly */
+
+  [data-wpsi-tooltip] {
+    position: relative;
+  }
+
+  /* Tooltip container and arrow */
 
   [data-wpsi-tooltip]:before,
   [data-wpsi-tooltip]:after,
   .wpsi-tooltip:before,
-  .wpsi-tooltip:after {
+  .wpsi-tooltip:after,
+  .wpsi-tooltip-right:before,
+  .wpsi-tooltip-right:after,
+  .wpsi-tooltip-bottom:before,
+  .wpsi-tooltip-bottom:after {
     position: absolute;
+    z-index: 10000001;
+    pointer-events: none;
     visibility: hidden;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
-    -webkit-transition: opacity 0.2s ease-in-out,
-    visibility 0.2s ease-in-out,
-    -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
-    -moz-transition: opacity 0.2s ease-in-out,
-    visibility 0.2s ease-in-out,
-    -moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
     transition: opacity 0.2s ease-in-out,
     visibility 0.2s ease-in-out,
     transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    pointer-events: none;
+    border-radius: 5px;
   }
 
-  /* Show the entire wpsi-tooltip on hover and focus */
+  /* Tooltip arrow styling */
+
+  [data-wpsi-tooltip]:before,
+  .wpsi-tooltip:before,
+  .wpsi-tooltip-right:before,
+  .wpsi-tooltip-bottom:before {
+    content: "";
+    border: 6px solid transparent;
+    background: transparent;
+  }
+
+  /* Tooltip content styling */
+
+  [data-wpsi-tooltip]:after,
+  .wpsi-tooltip:after,
+  .wpsi-tooltip-right:after,
+  .wpsi-tooltip-bottom:after {
+    content: attr(data-wpsi-tooltip);
+    padding: 8px;
+    background-color: @tooltip-background-color;
+    color: @tooltip-text-color;
+    font-size: @font-size-base;
+    line-height: 1.2;
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 175px;
+    max-width: 500px;
+    width: auto;
+    font-weight: 400;
+    opacity: 0;
+  }
+
+  /* Show tooltips on hover/focus */
 
   [data-wpsi-tooltip]:hover:before,
   [data-wpsi-tooltip]:hover:after,
@@ -1192,66 +1210,37 @@ widget
   .wpsi-tooltip:hover:before,
   .wpsi-tooltip:hover:after,
   .wpsi-tooltip:focus:before,
-  .wpsi-tooltip:focus:after {
+  .wpsi-tooltip:focus:after,
+  .wpsi-tooltip-right:hover:before,
+  .wpsi-tooltip-right:hover:after,
+  .wpsi-tooltip-right:focus:before,
+  .wpsi-tooltip-right:focus:after,
+  .wpsi-tooltip-bottom:hover:before,
+  .wpsi-tooltip-bottom:hover:after,
+  .wpsi-tooltip-bottom:focus:before,
+  .wpsi-tooltip-bottom:focus:after {
     visibility: visible;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
   }
 
-  /* Base styles for the wpsi-tooltip's directional arrow */
-
-  .wpsi-tooltip:before,
-  [data-wpsi-tooltip]:before {
-    z-index: 1001;
-    border: 6px solid transparent;
-    background: transparent;
-    content: "";
-  }
-
-  /* Base styles for the wpsi-tooltip's content area */
-
-  .wpsi-tooltip:after,
-  [data-wpsi-tooltip]:after {
-    z-index: 1000;
-    padding: 8px;
-    width: 160px;
-    background-color: #000;
-    background-color: hsla(0, 0%, 20%, 0.9);
-    color: #fff;
-    content: attr(data-wpsi-tooltip);
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  /* Directions */
-
-  /* Top (default) */
+  /* Position: Top (default) */
 
   [data-wpsi-tooltip]:before,
   [data-wpsi-tooltip]:after,
   .wpsi-tooltip:before,
-  .wpsi-tooltip:after,
-  .wpsi-tooltip-top:before,
-  .wpsi-tooltip-top:after {
+  .wpsi-tooltip:after {
     bottom: 100%;
     left: 50%;
   }
 
   [data-wpsi-tooltip]:before,
-  .wpsi-tooltip:before,
-  .wpsi-tooltip-top:before {
+  .wpsi-tooltip:before {
     margin-left: -6px;
     margin-bottom: -12px;
-    border-top-color: #000;
-    border-top-color: hsla(0, 0%, 20%, 0.9);
   }
 
-  /* Horizontally align top/bottom wpsi-tooltips */
-
   [data-wpsi-tooltip]:after,
-  .wpsi-tooltip:after,
-  .wpsi-tooltip-top:after {
+  .wpsi-tooltip:after {
     margin-left: -80px;
   }
 
@@ -1262,44 +1251,11 @@ widget
   .wpsi-tooltip:hover:before,
   .wpsi-tooltip:hover:after,
   .wpsi-tooltip:focus:before,
-  .wpsi-tooltip:focus:after,
-  .wpsi-tooltip-top:hover:before,
-  .wpsi-tooltip-top:hover:after,
-  .wpsi-tooltip-top:focus:before,
-  .wpsi-tooltip-top:focus:after {
-    -webkit-transform: translateY(-12px);
-    -moz-transform: translateY(-12px);
+  .wpsi-tooltip:focus:after {
     transform: translateY(-12px);
   }
 
-  /* Left */
-
-  .wpsi-tooltip-left:before,
-  .wpsi-tooltip-left:after {
-    right: 100%;
-    bottom: 50%;
-    left: auto;
-  }
-
-  .wpsi-tooltip-left:before {
-    margin-left: 0;
-    margin-right: -12px;
-    margin-bottom: 0;
-    border-top-color: transparent;
-    border-left-color: #000;
-    border-left-color: hsla(0, 0%, 20%, 0.9);
-  }
-
-  .wpsi-tooltip-left:hover:before,
-  .wpsi-tooltip-left:hover:after,
-  .wpsi-tooltip-left:focus:before,
-  .wpsi-tooltip-left:focus:after {
-    -webkit-transform: translateX(-12px);
-    -moz-transform: translateX(-12px);
-    transform: translateX(-12px);
-  }
-
-  /* Bottom */
+  /* Position: Bottom */
 
   .wpsi-tooltip-bottom:before,
   .wpsi-tooltip-bottom:after {
@@ -1311,21 +1267,20 @@ widget
   .wpsi-tooltip-bottom:before {
     margin-top: -12px;
     margin-bottom: 0;
-    border-top-color: transparent;
-    border-bottom-color: #000;
-    border-bottom-color: hsla(0, 0%, 20%, 0.9);
   }
 
   .wpsi-tooltip-bottom:hover:before,
   .wpsi-tooltip-bottom:hover:after,
   .wpsi-tooltip-bottom:focus:before,
   .wpsi-tooltip-bottom:focus:after {
-    -webkit-transform: translateY(12px);
-    -moz-transform: translateY(12px);
     transform: translateY(12px);
   }
 
-  /* Right */
+  /* Position: Right */
+
+  .wpsi-tooltip-right {
+    float: right;
+  }
 
   .wpsi-tooltip-right:before,
   .wpsi-tooltip-right:after {
@@ -1336,36 +1291,37 @@ widget
   .wpsi-tooltip-right:before {
     margin-bottom: 0;
     margin-left: -12px;
-    border-top-color: transparent;
-    border-right-color: #000;
-    border-right-color: hsla(0, 0%, 20%, 0.9);
+    top: 3px;
+  }
+
+  .wpsi-tooltip-right:after {
+    margin-left: 0;
+    margin-bottom: -16px;
   }
 
   .wpsi-tooltip-right:hover:before,
   .wpsi-tooltip-right:hover:after,
   .wpsi-tooltip-right:focus:before,
   .wpsi-tooltip-right:focus:after {
-    -webkit-transform: translateX(12px);
-    -moz-transform: translateX(12px);
     transform: translateX(12px);
   }
 
-  /* Move directional arrows down a bit for left/right wpsi-tooltips */
+  /* Special case positioning */
 
-  .wpsi-tooltip-left:before,
-  .wpsi-tooltip-right:before {
-    top: 3px;
+  #settings .wpsi-tooltip-right {
+    margin-left: 8px;
+    margin-top: 1px;
   }
 
-  /* Vertically center wpsi-tooltip content for left/right wpsi-tooltips */
-
-  .wpsi-tooltip-left:after,
-  .wpsi-tooltip-right:after {
-    margin-left: 0;
-    margin-bottom: -16px;
+  .dashboard-tooltip-hits > span:nth-child(1) > span:nth-child(1) {
+    margin-left: -135px;
   }
+
+  .dashboard-tooltip-from > span:nth-child(1) > span:nth-child(1) {
+    margin-left: -65px;
+  }
+
 }
-
 
 /*
     Toggle boxes styling
@@ -1376,17 +1332,20 @@ widget
   height: 90px;
   display: none;
   position: relative;
-  background-color: #fff;
+  background-color: @background-color;
   border: 1px solid rgb(204, 208, 212);
   border-top: 0;
   box-shadow: 0 0 0 transparent;
+
   #wpsi-toggle-dashboard-text {
     padding-top: 25px;
     padding-left: 35px;
     font-weight: 600;
   }
+
   #wpsi-checkboxes {
     padding: 10px 0 0 20px;
+
     .wpsi-toggle-items {
       margin-left: 15px !important;
     }
@@ -1396,20 +1355,19 @@ widget
 
 #wpsi-toggle-link-wrap {
   width: 150px;
+
   #wpsi-show-toggles {
-    width: 135px ;
-    background-color: white ;
-    color: #000000 ;
+    width: 135px;
+    background-color: @background-color;
+    color: black;
     border-color: #ccc;
   }
 }
 
 .wpsi-thickboxheader {
-  margin-top:15px;
+  margin-top: 15px;
   font-weight: 600;
 }
-
-
 
 /*
 Animated skeleton screen using CSS.
@@ -1424,106 +1382,520 @@ Animating one layer of the background which is a tilted linear gradient with whi
 */
 .wpsi-skeleton:empty {
 
-    width: 350px;
-    height: 400px; /* change height to see repeat-y behavior */
+  width: 350px;
+  height: 400px; /* change height to see repeat-y behavior */
 
-    background-image:
-            linear-gradient( 100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 80% ),
-            linear-gradient( #dadada 20px, transparent 0 ),
-            linear-gradient( #dadada 20px, transparent 0 ),
-            linear-gradient( #dadada 20px, transparent 0 ),
-            linear-gradient( #dadada 20px, transparent 0 );
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 80%),
+  linear-gradient(#dadada 20px, transparent 0),
+  linear-gradient(#dadada 20px, transparent 0),
+  linear-gradient(#dadada 20px, transparent 0),
+  linear-gradient(#dadada 20px, transparent 0);
 
-    background-repeat: repeat-y;
+  background-repeat: repeat-y;
 
-    background-size:
-            50px 160px, /* highlight */
-            150px 160px,
-            350px 160px,
-            300px 160px,
-            250px 160px;
+  background-size: 50px 160px, /* highlight */ 150px 160px,
+  350px 160px,
+  300px 160px,
+  250px 160px;
 
-    background-position:
-            0 0, /* highlight */
-            0px 0,
-            0px 40px,
-            0px 80px,
-            0px 120px;
+  background-position: 0 0, /* highlight */ 0px 0,
+  0px 40px,
+  0px 80px,
+  0px 120px;
 
-    animation: shine 1s infinite;
+  animation: shine 1s infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 100% 0, /* move highlight to right */ 0px 0,
+    0px 40px,
+    0px 80px,
+    0px 120px;
   }
+}
 
-  @keyframes shine {
-    to {
-      background-position:
-              100% 0, /* move highlight to right */
-              0px 0,
-              0px 40px,
-              0px 80px,
-              0px 120px;
+/*
+
+Settings block height
+
+ */
+.wpsi-grid .wpsi-item.wpsi-settings {
+  height: auto;
+  max-height: 650px; /* Increase from default 500px */
+}
+
+/* Adjust the content container height accordingly */
+.wpsi-grid .wpsi-item.wpsi-settings .item-container {
+  height: 630px; /* Increase from default 480px */
+}
+
+/* Adjust the item-content height */
+.wpsi-grid .wpsi-item.wpsi-settings .item-content {
+  height: 568px; /* Adjust from default 438px */
+  overflow-y: auto;
+}
+
+/* Hide scrollbar when content doesn't overflow */
+.wpsi-grid .wpsi-item.wpsi-settings .item-content:not(:hover)::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+/* Show scrollbar on hover only when needed */
+.wpsi-grid .wpsi-item.wpsi-settings .item-content:hover::-webkit-scrollbar {
+  width: 8px;
+}
+
+.wpsi-grid .wpsi-item.wpsi-settings .item-content:hover::-webkit-scrollbar-thumb {
+  background-color: #cdcdcd;
+  border-radius: 4px;
+}
+
+/* For Firefox */
+.wpsi-grid .wpsi-item.wpsi-settings .item-content {
+  scrollbar-width: none;
+  overflow-y: auto !important;
+  max-height: 550px !important;
+}
+
+.wpsi-grid .wpsi-item.wpsi-settings .item-content:hover {
+  scrollbar-width: thin;
+  scrollbar-color: #cdcdcd transparent;
+}
+
+/* Fix grid item stacking */
+.wpsi-grid .wpsi-item.wpsi-analytics {
+  z-index: 2; /* Higher than tips and tricks block */
+}
+
+.wpsi-drag-handle {
+  color: @title-text-color;
+}
+
+// Unified card styling for consistent design
+.wpsi-card-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.wpsi-card-title {
+  color: @table-head-text-color;
+  font-size: @font-size-large;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+// Ensure proper spacing in cards without internal headers
+.wpsi-data-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+  height: 100%;
+
+  .wpsi-card-number {
+    margin-top: 0;
+    font-size: @font-size-card-number;
+    font-weight: bold;
+    color: @text-color;
+    padding: 5px;
+
+    .wpsi-trend {
+      margin-left: 5px;
+      white-space: nowrap;
+      font-size: @font-size-base;
+      font-weight: normal;
+      opacity: 0.85;
+    }
+
+    .wpsi-trend-context {
+      color: @light-text-color;
+      opacity: 0.7;
+      font-size: @font-size-small;
+      white-space: nowrap;
     }
   }
 
-  /* Notices */
-.wpsi-panel {
-
-  .wpsi-panel-title{
-    cursor: pointer;
+  .wpsi-card-footer {
+    color: @light-text-color;
+    font-size: @font-size-small;
+    padding: 5px;
   }
 
-  .wpsi-field>div{
-    margin:10px 0;
+  // Colors for trend indicators
+  .wpsi-trend-up {
+    color: @color-success;
   }
 
-  .wpsi-panel-content {
-    display:none;
-    background-color:#fff;
-    border: 1px solid #d6d8db;
-    border-top: 0;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 10px 15px;
-  }
-  h1 {
-    font-size:22px;
-  }
-  font-size: 13px!important;
-  p {
-    font-size: 13px!important;
+  .wpsi-trend-down {
+    color: @color-error;
   }
 
-  color: #383d41;
-  background-color: #F2F2F2;
-  border: 1px solid #d6d8db;
-  padding: 10px 15px;
-  border-radius: 0px;
-  margin: 0px 0;
+  // Class to hide the now-redundant headers
+  .wpsi-card-header {
+    display: none;
+    font-size: @font-size-card-header;
+  }
+}
 
-  &.wpsi-notice {
+// Success and warning card colors
+.wpsi-data-card.success {
+  border-left: 4px solid @color-success;
+}
+
+.wpsi-data-card.warning {
+  border-left: 4px solid @brand-primary;
+}
+
+// Maintain consistent card layouts across plugin
+.wpsi-data-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+// Dashicon help
+.dashicons-editor-help {
+  color: @tooltip-color;
+}
+
+// Fix for tooltips in results block being hidden behind popular searches block
+#wpsi-dashboard {
+  // Give the grid items proper stacking behavior
+  .wpsi-grid {
+    .wpsi-item {
+      // When tooltips are active, increase z-index dramatically
+      &[data-table_type="results"] {
+        &:hover {
+          z-index: 1000 !important; // Make sure results block goes above all others when being interacted with
+        }
+
+        // Target the specific tooltip elements
+        .wpsi-tooltip-right,
+        .wpsi-tooltip-bottom,
+        [data-wpsi-tooltip] {
+          &:hover, &:focus {
+            z-index: 100001 !important; // Even higher z-index for the actual tooltip
+          }
+        }
+      }
+
+      // Prevent popular searches block from having higher stacking priority
+      &[data-table_type="popular"] {
+        // Ensure it doesn't override other elements' z-index when not interacted with
+        z-index: 1;
+      }
+    }
+  }
+
+  // Make sure tooltips themselves can break out of any containers
+  .wpsi-tooltip-right:after,
+  .wpsi-tooltip-bottom:after,
+  [data-wpsi-tooltip]:after {
+    // Increase z-index for all tooltip content
+    z-index: 100002 !important;
+  }
+}
+
+// Full overlay loading indicator
+.wpsi-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+
+  .wpsi-loading-content {
+    text-align: center;
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .wpsi-loading-spinner {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: @brand-primary;
+      animation: wpsi-spin 1s ease-in-out infinite;
+      margin-bottom: 10px;
+    }
+
+    .wpsi-loading-text {
+      font-size: 14px;
+      color: @text-color;
+      margin-top: 10px;
+    }
+
+    .wpsi-loading-percentage {
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .wpsi-loading-progress-container {
+      margin-top: 15px;
+      width: 200px;
+      height: 8px;
+      background-color: #e2e4e7;
+      border-radius: 4px;
+      overflow: hidden;
+
+      .wpsi-loading-progress {
+        height: 100%;
+        background-color: @brand-primary;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+    }
+  }
+}
+
+@keyframes wpsi-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Make sure the count shows properly in different contexts
+#wpsi-total-count,
+.wpsi-search-count {
+  font-weight: 500;
+  font-size: @font-size-base;
+}
+
+// Improve responsiveness
+@media (max-width: 782px) {
+  .wpsi-search-count {
+    font-size: @font-size-base;
+  }
+}
+
+// Enhanced sorting indicators for DataTables
+.wpsi-table {
+  // Target the header container
+  .dt-column-header {
+    display: flex;
+    align-items: center;
+    position: relative; // Ensure relative positioning for absolute children
+  }
+
+  // Title text
+  .dt-column-title {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  // Style the sort indicator element directly
+  .dt-column-order {
+    position: relative; // For absolute positioning of pseudo elements
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+
+    // Default state (sortable but not sorted)
+    &::before {
+      content: "";
+      position: absolute;
+      top: 9px; // absolute value for dot, we cannot get it perfectly centered with %
+      left: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: @grey-light;
+      opacity: 0.6;
+    }
+  }
+
+  // For active ascending sort
+  th.dt-ordering-asc .dt-column-order {
+    &::before {
+      content: none; // Remove dot
+    }
+
+    &::after {
+      content: "\f142"; // Dashicons arrow up
+      font-family: dashicons;
+      position: absolute;
+      top: 50%;
+      left: 7px;
+      transform: translate(-50%, -50%); // Perfect centering
+      font-size: 18px;
+      color: @brand-primary;
+      opacity: 1;
+      font-weight: bold;
+    }
+  }
+
+  // For active descending sort
+  th.dt-ordering-desc .dt-column-order {
+    &::before {
+      content: none; // Remove dot
+    }
+
+    &::after {
+      content: "\f140"; // Dashicons arrow down
+      font-family: dashicons;
+      position: absolute;
+      top: 50%;
+      left: 7px;
+      transform: translate(-50%, -50%); // Perfect centering
+      font-size: 18px;
+      color: @brand-primary;
+      opacity: 1;
+      font-weight: bold;
+    }
+  }
+
+  // Hide dot for columns that aren't sortable
+  th:not(.dt-orderable-asc):not(.dt-orderable-desc) .dt-column-order::before {
+    display: none;
+  }
+
+  // Hover effect
+  th:hover .dt-column-order::before,
+  th:hover .dt-column-order::after {
+    opacity: 1;
+  }
+}
+
+.wpsi-stat-trend {
+  margin-left: 10px;
+  display: inline-block;
+
+  // Inherit existing wpsi-trend styles
+  .wpsi-trend {
+    font-size: @font-size-base;
+    margin-left: 0;
+  }
+
+  .wpsi-trend-context {
+    color: @text-color;
+    opacity: 0.7;
+    font-size: @font-size-small;
+    white-space: nowrap;
+  }
+}
+
+// Popular searches filter dropdown
+.wpsi-popular-filter {
+  position: relative;
+  display: inline-block;
+
+  select {
+    padding: 5px 28px 5px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: 3px;
+    border: 1px solid @border-color;
+    color: @light-text-color;
     background-color: #fff;
-    border: 0 #fff;
-    border-left: 4px solid #29b6f6;
-    color: black;
-    margin: 10px 0px 10px 0px;
-    padding-left: 15px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="%23555" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #999;
+    }
+
+    &:focus {
+      border-color: #5b9dd9;
+      box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+      outline: none;
+    }
   }
-  &.wpsi-success {
-    background-color: #61ce70;
-    border-color: #61ce70;
-    color: #fff;
-  }
-  &.wpsi-warning {
-    color: #333333;
-    background-color: #fbc43d;
-    border-color: #fbc43d;
-    margin: 10px 0px 10px 0px;
+}
+
+// Pagination styles
+.wpsi-popular-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  position: fixed;
+  bottom: 20px;
+  gap: 10px;
+  border-color: @border-color;
+
+  .wpsi-pagination-btn {
+    box-sizing: border-box;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 1px 1px #e0e0e0;
+    margin: 0 2px;
+    background-color: white;
+    padding: 0.5em 1.8em;
+    color: #d7263d;
+    cursor: pointer;
+
+    &:hover:not([disabled]) {
+      background-color: @border-color;
+      cursor: pointer;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
-  ul {
-    list-style-type: disc;
-    margin-left: 22px;
+  .wpsi-pagination-info {
+    color: @text-color;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+}
+
+// Pro upsell box
+.wpsi-pro-upsell {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f9f9e8;
+  border: 1px solid #e5e5b8;
+  border-radius: 3px;
+
+  p {
+    color: #666;
+    margin: 0 0 10px 0;
+    font-size: 13px;
   }
 
+  a.button-primary {
+    background-color: #d7263d;
+    border-color: #c52236;
 
+    &:hover {
+      background-color: #c52236;
+      border-color: #b31e30;
+    }
+  }
+}
 
+.daterangepicker {
+  z-index: 100000 !important; // Higher than modal backdrop, to prevent issues on export
+
+  // Make sure dropdowns within datepicker also stay on top
+  .ranges, .drp-calendar, .drp-buttons {
+    z-index: 100001 !important;
+  }
+
+  // Ensure the calendar stays visible
+  &.show-calendar {
+    z-index: 100000 !important;
+  }
 }

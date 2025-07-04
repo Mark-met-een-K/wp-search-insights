@@ -70,8 +70,11 @@
   height: 22px;
   border-bottom: 1px solid #dedede;
   padding: 20px 25px 10px;
-  font-size: 1.2em;
+  font-size: 16px;
   font-weight: bold;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
 }
 .wpsi-grid .wpsi-item .wpsi-item-header .wpsi-drag-handle {
   cursor: pointer;

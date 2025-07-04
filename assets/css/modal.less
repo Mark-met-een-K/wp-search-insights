@@ -1,0 +1,268 @@
+@import "colors";
+@import "font-sizes";
+
+.wpsi-modal {
+  display: none;
+  position: fixed;
+  z-index: 999999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+
+  &-small {
+    .wpsi-modal-content {
+      max-width: 400px;
+    }
+  }
+
+  &-medium {
+    .wpsi-modal-content {
+      max-width: 600px;
+    }
+  }
+
+  &-large {
+    .wpsi-modal-content {
+      max-width: 800px;
+    }
+  }
+
+  &.wpsi-show-modal {
+    display: flex !important;
+  }
+
+  &-content {
+    position: relative;
+    background-color: #fff;
+    margin: auto;
+    padding: 0;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    max-width: 90%;
+    max-height: 90vh;
+    transform: none !important; /* Remove any transforms that might affect centering */
+    animation: wpsiModalFadeIn 0.3s;
+  }
+
+  &-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid @border-color;
+    background-color: @color-error;
+    color: #ffffff;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+    h3 {
+      margin: 0;
+      color: #ffffff;
+      font-size: @font-size-h3;
+      font-weight: 600;
+    }
+  }
+
+  &-close {
+    color: #f2f2f2;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: -5px;
+
+    &:hover,
+    &:focus {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+
+  &-body {
+    padding: 20px;
+    font-size: @font-size-base;
+    line-height: 1.5;
+  }
+
+  &-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #dedede;
+    text-align: right;
+  }
+
+  &-action {
+    width: 130px;
+    height: 30px;
+    line-height: 28px !important;
+    text-align: center;
+    font-weight: 600 !important;
+    margin-right: 10px !important;
+  }
+
+  &-cancel {
+    height: 30px;
+    line-height: 28px !important;
+  }
+
+  .daterangepicker, .dropdown-menu, .select2-dropdown {
+    z-index: 100010 !important;
+  }
+
+}
+
+@keyframes wpsiModalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Lock body scrolling when modal is open */
+body.wpsi-modal-open {
+  overflow: hidden;
+}
+
+.wpsi-export-modal-date {
+  margin: 15px 0;
+  padding: 8px 12px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+
+  .dashicons {
+    color: @light-text-color;
+    margin-top: 3px;
+  }
+
+  span {
+    margin: 0 8px;
+  }
+}
+
+.wpsi-export-progress {
+  margin: 20px 0;
+
+  .wpsi-export-progress-bar {
+    width: 100%;
+    height: 16px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &-inner {
+      height: 100%;
+      background-color: #2271b1;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+  }
+
+  .wpsi-export-status {
+    text-align: center;
+    margin-top: 8px;
+
+    .wpsi-export-percentage {
+      font-weight: 500;
+    }
+  }
+}
+
+// Download link styling
+.wpsi-download-text-link {
+  margin: 15px 0;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    color: #2271b1;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    .dashicons {
+      margin-right: 5px;
+    }
+  }
+}
+
+// Force min-width for daterangepicker
+.wpsi-modal-body {
+  overflow: visible;
+}
+
+// Create a separate rule for daterangepicker outside the modal-body context
+.daterangepicker {
+  // Ensure adequate width and centered positioning
+  min-width: 540px !important;
+  max-width: 90vw; // Prevent overflow on smaller screens
+
+  // Force absolute positioning relative to the viewport
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  // Perfect centering
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important; // Remove any margins
+
+  // Ensure it's above everything
+  z-index: 100000 !important;
+
+  // Adjust the calendars to have proper width
+  .drp-calendar {
+    max-width: none;
+
+    &.left, &.right {
+      min-width: 250px;
+    }
+  }
+
+  // Fix the ranges section width
+  .ranges {
+    min-width: 150px;
+  }
+}
+
+// Add a backdrop for the datepicker
+.daterangepicker-open {
+  &:before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+  }
+}
+
+.wpsi-inline-download-link {
+  //margin-left: 10px;
+  //color: @wpsi-blue;
+  //text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Simple modal footer layout
+.wpsi-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

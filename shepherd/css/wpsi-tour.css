@@ -1,60 +1,232 @@
-/**css hooks
-
- */
-.wpsi-tour-hook {
-  float: left;
+/* Tour Styling - WPSI Theme */
+.shepherd-element {
+  max-width: 400px;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(78, 78, 78, 0.1);
+  background: #fff;
+  z-index: 10000;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-/**
-Plugins overview tour
-*/
-.wpsi-plugins-overview-tour-container {
-  margin-left: 200px;
+.shepherd-element:focus {
+  outline: none;
 }
-/**
-  Dashboard tour
- */
-.shepherd-element.shepherd-theme-arrows.shepherd-has-title .shepherd-content header {
-  background-color: #d7263d;
-  display: inline-block;
-  width: 100%;
-  height: 45px;
+.shepherd-header {
+  border-radius: 4px 4px 0 0;
+  background-color: #d7263d !important;
 }
-.shepherd-element.shepherd-theme-arrows .shepherd-content header h3 {
+.shepherd-header h3 {
   color: white;
-  font-weight: 700;
 }
-.shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons {
-  font-weight: 700;
+.shepherd-header .shepherd-cancel-icon {
+  font-size: 24px;
+  color: white !important;
+  opacity: 0.8;
+  margin: 0;
+  padding: 0;
+  top: 15px;
+  right: 15px;
+  transition: opacity 0.2s ease-in-out;
+}
+.shepherd-header .shepherd-cancel-icon:hover {
+  opacity: 1;
+  color: #d7263d;
 }
 .shepherd-title {
   font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+  padding: 0;
 }
-.shepherd-content {
-  width: 450px;
+.shepherd-text {
+  padding: 15px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #333333;
 }
-.shepherd-step {
-  z-index: 9999 !important;
-}
-wpsi-tour-logo {
-  height: 70px;
-}
-.wpsi-tour-logo-text {
-  height: 70px;
+.shepherd-footer {
+  padding: 10px 15px 15px;
   display: flex;
+  justify-content: flex-end;
+  border-top: 0;
 }
-.wpsi-tour-text {
-  display: flex;
-  margin-left: 25px;
-  justify-content: center;
-  flex-direction: column;
+.shepherd-footer .shepherd-button:not(:last-child) {
+  margin-right: 10px;
+}
+.shepherd-footer .shepherd-button:not(:disabled):hover {
+  background-color: #d7263d;
+  opacity: 0.8;
 }
 .shepherd-button {
-  text-transform: none !important;
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  border: 1px solid transparent;
+  margin: 0;
+  background: #ededed;
+  color: #333333;
 }
-.shepherd-element.shepherd-theme-arrows.shepherd-has-title .shepherd-content header a.shepherd-cancel-link {
-  opacity: 1;
-  color: #f2f2f2;
-  font-weight: bold;
-  margin-top: -1px;
+.shepherd-button:hover {
+  background: #e0e0e0;
+}
+.shepherd-button.shepherd-button-primary {
+  background: #d7263d;
+  color: white;
+}
+.shepherd-button.shepherd-button-primary:hover {
+  background: ligthen(#d7263d, 5%);
+}
+.shepherd-button.shepherd-button-primary:active {
+  background: ligthen(#d7263d, 10%);
+}
+.shepherd-arrow {
+  border-width: 8px;
+}
+.shepherd-arrow.shepherd-arrow-top {
+  border-bottom-color: #fff;
+  filter: drop-shadow(0 -1px 1px rgba(78, 78, 78, 0.1));
+}
+.shepherd-arrow.shepherd-arrow-top::before {
+  border-bottom-color: #e0e0e0;
+}
+.shepherd-arrow.shepherd-arrow-bottom {
+  border-top-color: #fff;
+  filter: drop-shadow(0 1px 1px rgba(78, 78, 78, 0.1));
+}
+.shepherd-arrow.shepherd-arrow-bottom::before {
+  border-top-color: #e0e0e0;
+}
+.shepherd-arrow.shepherd-arrow-left {
+  border-right-color: #fff;
+  filter: drop-shadow(-1px 0 1px rgba(78, 78, 78, 0.1));
+}
+.shepherd-arrow.shepherd-arrow-left::before {
+  border-right-color: #e0e0e0;
+}
+.shepherd-arrow.shepherd-arrow-right {
+  border-left-color: #fff;
+  filter: drop-shadow(1px 0 1px rgba(78, 78, 78, 0.1));
+}
+.shepherd-arrow.shepherd-arrow-right::before {
+  border-left-color: #e0e0e0;
+}
+.shepherd-modal-overlay-container {
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+}
+.shepherd-highlight {
+  box-shadow: 0 0 10px 3px #d7263d59, 0 0 15px 1px #d7263d59, 0 0 20px 1px #d7263d59;
+  border-radius: 4px;
+  z-index: 9999 !important;
+}
+.shepherd-target.shepherd-enabled {
+  z-index: 10001 !important;
+}
+.shepherd-target.shepherd-enabled:focus {
+  outline: none;
+}
+.shepherd-button {
+  height: 30px;
+  line-height: 28px;
+  padding: 0 10px;
+}
+.shepherd-button.shepherd-button-primary {
+  border: 1px solid #c12237;
+}
+@media (max-width: 767px) {
+  .shepherd-element {
+    max-width: 300px;
+  }
+  .shepherd-text {
+    font-size: 12px;
+    padding: 10px;
+  }
+  .shepherd-footer {
+    padding: 7px 10px 10px;
+  }
+  .shepherd-button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+#wpadminbar {
+  z-index: 99999 !important;
+}
+.tour-active .wpsi-grid [data-table_type].shepherd-target,
+.tour-active .wpsi-date-container.wpsi-table-range.shepherd-target,
+.tour-active #wpsi-delete-selected.shepherd-target,
+.tour-active #wpsi-ignore-selected.shepherd-target,
+.tour-active #wpsi-popular-filter-select.shepherd-target,
+.tour-active #wpsi-show-toggles.shepherd-target,
+.tour-active .tab-settings.shepherd-target,
+.tour-active #toplevel_page_wpsi-settings-page.shepherd-target {
+  position: relative;
+  z-index: 10001;
+  animation: wpsi-pulse 2s infinite;
+}
+@keyframes wpsi-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(215, 38, 61, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(215, 38, 61, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(215, 38, 61, 0);
+  }
+}
+.wp-toolbar body.shepherd-active {
+  margin-top: 32px;
+}
+@media (max-width: 782px) {
+  .wp-toolbar body.shepherd-active {
+    margin-top: 46px;
+  }
+}
+body.shepherd-active .shepherd-step {
+  z-index: 100000;
+}
+/* More specific selectors for the cancel tour link */
+.shepherd-footer .shepherd-button.wpsi-cancel-tour-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #2695d7;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 14px;
+  box-shadow: none;
+  margin-right: auto;
+}
+.shepherd-footer .shepherd-button.wpsi-cancel-tour-link:hover {
+  color: #2695d759;
+  text-decoration: underline;
+  background: none;
+}
+/* More specific selector for the footer */
+.shepherd-element .shepherd-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
 }
 /*# sourceMappingURL=wpsi-tour.css.map */

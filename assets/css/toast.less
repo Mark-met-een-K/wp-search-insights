@@ -1,0 +1,118 @@
+@import "colors";
+@import "font-sizes";
+
+// Toast notification
+.wpsi-toast {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: 0 8px 24px @box-shadow-color;
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 99999;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+
+  &.wpsi-toast-show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &.wpsi-toast-hide {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .wpsi-toast-content {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+  }
+
+  .wpsi-toast-icon {
+    margin-right: 10px;
+
+    .dashicons {
+      font-size: @font-size-xl;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .wpsi-toast-message {
+    flex: 1;
+    font-size: @font-size-large;
+  }
+
+  &.wpsi-toast-success {
+    border-left: 4px solid @color-success;
+
+    .wpsi-toast-icon .dashicons {
+      color: @color-success;
+    }
+  }
+
+  &.wpsi-toast-error {
+    border-left: 4px solid @color-error;
+
+    .wpsi-toast-icon .dashicons {
+      color: @color-error;
+    }
+  }
+
+  .wpsi-toast-progress {
+    height: 3px;
+    //background-color: @border-color;
+    width: 100%;
+    opacity: 0.7;
+  }
+}
+
+// Animation for spinner
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+// Save button feedback
+.wpsi-save-feedback {
+    margin-left: 10px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    font-weight: 500;
+    display: inline-block;
+
+    &.wpsi-feedback-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+  &.wpsi-save-success {
+    color: @color-success;
+  }
+
+  &.wpsi-save-error {
+    color: @color-error;
+  }
+}
+
+// Button styles - if needed to add
+.wpsi-save-button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+
+  input[type="submit"] {
+    margin-right: 10px;
+  }
+}
