@@ -6,7 +6,7 @@ Requires at least: 4.8
 License: GPLv2
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.0
+Stable tag: 2.1
 
 Uncover exactly what visitors search for on your site. Stop guessing what content to create, fix content gaps, and boost engagement.
 
@@ -113,6 +113,9 @@ Two ways to install Search insights:
 That's it! Click the link in the activation notice to see your search insights dashboard.
 
 == Changelog ==
+= 2.1. =
+* Improvement: greatly improved filtering of spammy search terms
+
 = 2.0
 * New: Rebranded from "WP Search Insights" to "Search Insights" with dedicated admin menu
 * New: Added trend data visualization to popular searches

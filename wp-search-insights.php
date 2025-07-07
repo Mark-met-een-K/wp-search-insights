@@ -4,7 +4,7 @@
  * Plugin URI: https://www.wordpress.org/plugins/wp-search-insights
  * License: GPLv2
  * Description: Uncover exactly what visitors search for on your site. Make data-driven content decisions, identify content gaps, and improve user experience with privacy-focused search analytics.
- * Version: 2.0
+ * Version: 2.1
  * Text Domain: wp-search-insights
  * Domain Path: /languages
  * Author: Mark Wolters
@@ -62,12 +62,14 @@ if (!class_exists('WPSI')) {
         public static $review;
         public static $help;
         public static $export;
+        public static $spam_filter;
 
         private function __construct()
         {
             $this->setup_constants();
             $this->includes();
 
+            self::$spam_filter = new WPSI_Spam_Filter();
             self::$search = new search();
 
             if (is_admin()) {
@@ -108,7 +110,7 @@ if (!class_exists('WPSI')) {
             define('wpsi_plugin', plugin_basename(__FILE__));
             define('wpsi_plugin_file', __FILE__);
 
-            define('wpsi_version', '2.0');
+            define('wpsi_version', '2.1');
         }
 
         private function includes()
@@ -132,6 +134,7 @@ if (!class_exists('WPSI')) {
             }
 
             require_once(wpsi_path . 'class-search.php');
+            require_once(wpsi_path . 'includes/class-spam-filter.php');
             require_once(wpsi_path . 'integrations/integrations.php');
         }
 

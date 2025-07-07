@@ -319,6 +319,7 @@ if (!class_exists('Search')) {
          */
 
         public function get_regular_search() {
+
             global $wp_query;
 
             if ( is_search() ) {
@@ -467,6 +468,20 @@ if (!class_exists('Search')) {
 
             // Skip terms exceeding configured limit
             if (strlen($search_term) > 255) {
+                return;
+            }
+
+            // Check for spam (always enabled unless constant override)
+            // Update spam filter statistics
+            WPSI::$spam_filter->update_stats('checked');
+
+            if (WPSI::$spam_filter->is_spam($search_term)) {
+                // Update spam filter statistics
+                WPSI::$spam_filter->update_stats('blocked');
+
+                // Allow logging of blocked spam terms
+                do_action('wpsi_spam_blocked', $search_term);
+
                 return;
             }
 
@@ -1495,5 +1510,6 @@ if (!class_exists('Search')) {
                 'httponly' => false // Need JavaScript access
             ]);
         }
+
     }
 }

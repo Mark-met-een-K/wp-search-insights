@@ -48,6 +48,7 @@ if (get_option('wpsi_cleardatabase')) {
         'wpsi_database_created',
         'wpsi_database_postids_upgrade_completed',
         'wpsi_tour_cancelled',
+        'wpsi_spam_filter_stats',
         'wpsi_version_two_installation_time'
     );
     foreach ($options as $option_name) {

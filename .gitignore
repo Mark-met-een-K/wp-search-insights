@@ -41,4 +41,5 @@ generatefiles.py
 plugin-documentation.md
 copy-wpsi.sh
 .editorconfig
+.claude
 claude.md
